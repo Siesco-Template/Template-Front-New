@@ -81,7 +81,7 @@ const Login = () => {
         <div className={styles.wrapper}>
             <h2 className={styles.title}>Xoş gəlmişsiniz!</h2>
             <p className={styles.subtitle}>
-                Əsas missiyasımız kənar dövlət maliyyə nəzarəti vasitəsilə dövlət vəsaitlərinə nəzarət sahəsində Azərbaycan Respublikası vətəndaşlarının mənafeyini təmin etmək və dövlət vəsaitlərinin istifadəsində qanunauyğunluğu, effektivliyi və hesabatlılığı artırmaqdır.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam nulla adipisci incidunt et ratione possimus repellat ipsum reiciendis dolor at suscipit iure, facere sunt temporibus sequi sint ex accusantium culpa?
             </p>
             <form className={styles.form} onSubmit={handleSubmit(handleLogin)}>
                 <div className={styles.inputs}>

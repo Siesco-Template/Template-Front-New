@@ -70,14 +70,13 @@ const Header_Content = () => {
             <div className={styles.mainHeader}>
                 <div className={styles.centralOnTop}>
                     <div className={cls(styles.logo)}>
-                        <img
+                        {/* <img
                             src={logoSrc}
-                            // src={pinned ? logo_img_pinned : logoSrc}
                             alt="logo"
                             style={{ transition: 'opacity 0.3s ease-in-out' }}
                             onClick={() => navigate('/')}
-                        />
-                        <span onClick={() => navigate('/')}>AFMİS</span>
+                        /> */}
+                        <span onClick={() => navigate('/')}>Template</span>
                     </div>
                     <div className={styles.searchWithButtons}>
                         <div className={styles.btngroup}>

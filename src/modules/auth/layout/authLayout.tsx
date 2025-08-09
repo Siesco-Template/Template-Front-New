@@ -4,9 +4,9 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router';
 import { useAuthStore } from '@/store/authStore';
 
 import { APP_URLS } from '@/services/config/url.config';
+
 import largeLogo from '../shared/images/ar-logo.png';
 import chart from '../shared/images/charts.png';
-
 import mainLogo from '../shared/images/logo.svg?url';
 import authLayoutImg from '../shared/images/right.png';
 import './layout.css';
@@ -34,10 +34,10 @@ const AuthLayout = () => {
         <main className={styles.authContainer}>
             <section className={styles.leftSection}>
                 <div className={styles.logoWrapper}>
-                    <Link to={APP_URLS.root()}>
+                    {/* <Link to={APP_URLS.root()}>
                         <img src={logoSrc} alt="Site Logo" />
-                    </Link>
-                    <h2>AFMİS</h2>
+                    </Link> */}
+                    <h2>Template</h2>
                 </div>
                 <div className={styles.outletWrapper}>
                     <Outlet />
@@ -48,10 +48,7 @@ const AuthLayout = () => {
                 style={{
                     backgroundImage: `linear-gradient(0deg, rgba(1, 14, 106, 0.21), rgba(1, 14, 106, 0.21)), url(${authLayoutImg})`,
                 }}
-            >
-                <img src={largeLogo} draggable={false} alt="Auth Image" className={styles.authLogo} />
-                <img src={chart} draggable={false} alt="Auth Image" className={styles.authLogo} />
-            </div>
+            ></div>
         </main>
     );
 };
