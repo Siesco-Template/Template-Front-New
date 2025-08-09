@@ -1,0 +1,83 @@
+.paginationWrapper {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    gap: var(--pm-150);
+    padding: 0 var(--pm-700);
+    max-width: 100%;
+    font-size: var(--fs-50);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pagination > button {
+    outline: none;
+    border: 1.5px solid hsl(var(--clr-white-700));
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--r-300);
+    width: var(--wh-350);
+    height: var(--wh-350);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    color: hsl(var(--clr-grey-400));
+    transition:
+        background var(--animation) ease,
+        color var(--animation) ease;
+}
+
+.pagination > button:hover {
+    background: hsl(var(--clr-white-700));
+}
+
+.pagination > button[data-part='item']:is([data-selected]) {
+    background: hsl(var(--clr-primary-500));
+    color: #fff;
+}
+
+.noPadding {
+    padding: 0;
+}
+
+@media (max-width: 600px) {
+    .pagination {
+        padding: var(--pm-300) var(--pm-500);
+        /* gap: var(--pm-200); */
+    }
+}
+
+@media (max-width: 440px) {
+    .pagination {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .paginationWrapper {
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+
+    .pagination::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* .paginationPrevTrigger,
+.paginationNextTrigger {
+    background-color: #fff !important;
+    border: 1.5px solid hsl(var(--clr-primary-500)) !important;
+} */
+
+.paginationPrevTrigger:is(:disabled, [data-disabled]),
+.paginationNextTrigger:is(:disabled, [data-disabled]) {
+    cursor: default;
+    background: transparent !important;
+    color: hsl(var(--clr-grey-200)) !important;
+}

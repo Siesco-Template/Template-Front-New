@@ -1,0 +1,335 @@
+.mainHeader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+.centralOnTop {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    width: 60%;
+}
+.searchWithButtons {
+    display: flex !important;
+    align-items: center;
+    gap: 32px;
+    height: 100%;
+    width: 100%;
+}
+
+.btngroup {
+    display: flex !important;
+    align-items: center;
+    gap: 7px;
+    height: 100%;
+}
+
+.searchWithButtons .btngroup button {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all var(--animation);
+
+    border-radius: 12px;
+    border: 1px solid var(--Foundation-surface-White, #fff);
+    background: transparent;
+}
+
+.searchWithButtons .btngroup button:hover {
+    background: hsl(var(--clr-white-50));
+}
+
+.searchOnTop {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.logo {
+    width: auto;
+    min-width: 240px;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    gap: 4px;
+}
+
+.logo span {
+    color: hsl(var(--clr-primary-900));
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.pinned img {
+    width: 60px;
+    object-fit: contain;
+    height: 100%;
+}
+
+.unpin img {
+    width: auto;
+    object-fit: contain;
+    height: 100%;
+}
+
+.sideNav {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 0;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.inp {
+    max-width: 400px;
+    width: 100%;
+}
+
+.inpField {
+    background: transparent !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    padding: 8px 16px 8px 48px !important;
+    border: 1px solid #fff !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    &::placeholder {
+        color: #fff !important;
+    }
+}
+
+.fullName {
+    color: hsl(var(--clr-primary-900));
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    wrap: nowrap;
+}
+
+.initialsAvatar {
+    width: 36px;
+    height: 36px;
+    background-color: #fff;
+    color: #283593;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.iconBtn {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    border: 1px solid var(--Foundation-surface-White, #fff);
+    transition: all var(--animation);
+}
+
+.iconBtn:hover {
+    background: hsl(var(--clr-white-50));
+}
+
+/* responsivlik */
+
+@media (max-width: 600px) {
+    .searchWithButtons {
+        display: none !important;
+    }
+
+    .searchOnTop {
+        display: none;
+    }
+}
+
+@media (max-width: 900px) {
+    .searchOnTop {
+        display: none;
+    }
+}
+
+/* Side Panel */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 97%;
+    overflow-y: auto;
+    gap: var(--pm-200);
+}
+
+.label {
+    color: hsl(var(--clr-grey-400));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: var(--pm-200);
+}
+
+/* Download Panel */
+.downloadItems {
+    margin: var(--pm-200) 0;
+}
+
+.downloadItem {
+    width: 100%;
+    border-radius: 8px;
+    background: var(--Foundation-surface-Normal, #f9fafb);
+    display: flex;
+    height: 44px;
+    padding: 4px 8px;
+    align-items: center;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.downloadItem p {
+    overflow: hidden;
+    color: var(--foundation-dark-normal-active, #3d4c5e);
+    text-overflow: ellipsis;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 166.667% */
+    margin: 0;
+}
+
+.downloadItem span {
+    color: var(--foundation-dark-light-active, #909dad);
+    font-family: Poppins;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 160% */
+}
+
+.downloadItem .itemBtnGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.downloadItemsGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+/* History Panel */
+.historyItems {
+    margin: var(--pm-200) 0;
+}
+
+.historyItemsGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-200);
+}
+
+.historyItem {
+    display: flex;
+    align-items: center;
+    height: var(--wh-300);
+    padding: var(--pm-150) var(--pm-200);
+    gap: var(--pm-300);
+    border-radius: var(--r-200);
+    background: hsl(var(--clr-white-600));
+}
+
+.historyItem p {
+    overflow: hidden;
+    color: hsl(var(--clr-grey-600));
+    text-overflow: ellipsis;
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--wh-200);
+    overflow: hidden;
+    text-wrap: nowrap;
+    margin: 0;
+}
+
+.historyItem span {
+    color: hsl(var(--clr-grey-300));
+    font-size: var(--fs-25);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--wh-150);
+    text-wrap: nowrap;
+}
+
+/* Favorites Panel */
+.favoriteItem svg {
+    margin-top: var(--pm-50);
+}
+
+.favoriteItem {
+    font-family: Poppins, sans-serif;
+    display: flex;
+    align-items: flex-start;
+    padding: var(--pm-200);
+    gap: var(--pm-200);
+    align-self: stretch;
+    border-radius: var(--r-300);
+    background: hsl(var(--clr-white-600));
+}
+
+.favoriteItemContent h3 {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+}
+
+.favoriteItemContent p {
+    color: hsl(var(--clr-grey-400));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+}

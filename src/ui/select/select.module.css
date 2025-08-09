@@ -1,0 +1,194 @@
+/* Root wrapper */
+.selectSimple {
+    /* display: inline-block; */
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-100);
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-family: inherit;
+}
+
+/* Label */
+.label {
+    color: hsl(var(--clr-blue-900));
+    font-weight: 500;
+    font-size: var(--fs-50);
+    line-height: var(--fs-200);
+}
+
+.control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 4px 10px;
+    /* padding: var(--pm-200) var(--pm-400); */
+    background-color: #fff;
+    border: 1px solid hsl(var(--clr-grey-300));
+    /* border: 1px solid hsl(var(--clr-primary-500)); */
+    border-radius: var(--pm-300);
+    /* color: hsl(var(--clr-grey-250)); */
+    font-size: var(--fs-100);
+    transition:
+        border-color var(--animation),
+        box-shadow var(--animation);
+    cursor: pointer;
+    outline: none;
+    /* max-height: var(--wh-450); */
+    max-height: var(--fs-600) !important;
+}
+.placeholderGrey {
+    color: hsl(var(--clr-grey-300));
+}
+
+.valueBlack {
+    color: hsl(var(--clr-primary-900));
+    text-align: left;
+}
+
+/* .trigger:hover {
+    border-color: hsl(var(--clr-primary-500));
+} */
+
+/* Focus state */
+.trigger:focus {
+    outline: none;
+    /* border-color: hsl(var(--clr-primary-500)); */
+}
+
+.trigger[data-invalid='true'] {
+    border-color: hsl(var(--clr-red-400));
+}
+.trigger[data-state='open'] {
+    border: 1px solid hsl(var(--clr-primary-500));
+}
+/* Disabled state */
+.trigger[data-disabled] {
+    background-color: hsl(var(--clr-white-600));
+    color: hsl(var(--clr-grey-100));
+    /* border-color: #f2f4f7; */
+    border-color: hsl(var(--clr-white-700));
+    cursor: not-allowed;
+}
+
+.trigger:focus,
+.trigger:focus-visible,
+.trigger[data-focus-visible] {
+    outline: none;
+    box-shadow: none;
+}
+
+.trigger[data-focus],
+.trigger[data-focus-visible] {
+    outline: none;
+    box-shadow: none;
+}
+
+/* The little chevron */
+.arrowIcon {
+    /* margin-left: var(--pm-700); */
+    flex-shrink: 0;
+}
+.arrowIcon path {
+   fill: #9E9E9E;
+    /* #9E9E9 */
+}
+
+.selectSimpleContent {
+    background-color: #fff;
+    /* border: 1px solid hsl(var(--clr-grey-300)); */
+    border-radius: var(--r-350);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    margin-top: var(--pm-200);
+    overflow: hidden;
+    z-index: 120000;
+    width: 100%;
+}
+
+.itemGroup {
+    padding: var(--pm-200);
+    max-height: var(--wh-600);
+    overflow-y: auto;
+}
+
+.item {
+    padding: var(--pm-200) var(--pm-400);
+    cursor: pointer;
+    transition: background-color var(--animation);
+    border-radius: var(--r-200);
+    text-align: left;
+}
+
+.item:hover,
+.item[data-highlighted] {
+    background-color: hsl(var(--clr-blue-50));
+}
+
+.item[data-selected] {
+    color: hsl(var(--clr-primary-100));
+    font-weight: 700;
+}
+
+.item[data-disabled] {
+    color: hsl(var(--clr-grey-300));
+    cursor: not-allowed;
+}
+
+.description {
+    margin-top: 0.25rem;
+    color: #b2bbc6 !important;
+    font-size: var(--fs-50) !important;
+}
+
+.descriptionError {
+    margin-top: 0.25rem;
+    color: hsl(var(--clr-red-400)) !important;
+    font-size: var(--fs-50) !important;
+}
+
+.clearTrigger {
+    position: absolute;
+    top: 50%;
+    /* right: 2rem; */
+    right: 2.5rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.searchWrapper {
+    padding: var(--pm-200) var(--pm-400);
+    border-bottom: 1px solid #e4e7ec;
+}
+
+.searchContainer {
+    box-sizing: border-box;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e4e7ec;
+}
+
+.searchInput::placeholder {
+    color: var(--foundation-dark-light-active, #909dad);
+}
+
+.noResult {
+    padding: 1rem;
+    text-align: center;
+    color: #9aa2b1;
+    font-size: 0.875rem;
+}

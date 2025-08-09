@@ -1,0 +1,126 @@
+.settingsHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: var(--global-justify-content);
+    gap: var(--pm-100);
+    margin-bottom: var(--pm-600);
+}
+
+.settingsHeader .headerTitle {
+    color: var(--clr-primary-900, #05194a);
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.settingsHeader .headerDescription {
+    color: hsl(var(--clr-grey-400));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.settingsSection {
+    display: flex;
+    flex-direction: column;
+    padding: var(--pm-400);
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--pm-500);
+    align-self: stretch;
+    border-radius: var(--r-300);
+    background: hsl(var(--clr-white-600));
+    margin-bottom: var(--pm-400);
+}
+
+.settingsSection .section {
+    display: flex;
+    gap: var(--pm-400);
+    width: 100%;
+}
+
+.settingsSection .section div {
+    flex: 1;
+}
+
+.settingsSection .section h3 {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.settingsSection .section p {
+    color: var(--Foundation-dark-Normal, #5e6c79);
+    font-family: Poppins;
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.sliderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sliderDescription {
+    color: hsl(var(--clr-grey-300));
+    text-align: center;
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.switchesContainer > div {
+    padding: var(--pm-200) 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.switchesContainer > div:first-child {
+    border-bottom: 1px solid hsl(var(--clr-white-800));
+}
+
+.switchesContainer > span {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@media (max-width: 620px) {
+    .section {
+        gap: 14px;
+        flex-direction: column;
+    }
+    .sliderContainer {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .settingsHeader {
+        flex-direction: column;
+        gap: var(--pm-400);
+        min-height: auto;
+        align-items: flex-start;
+    }
+    .settingsHeader h2 {
+        font-size: var(--fs-300);
+    }
+
+    .buttonContainer {
+        width: 100%;
+    }
+    .buttonContainer > button {
+        flex: 1;
+    }
+}

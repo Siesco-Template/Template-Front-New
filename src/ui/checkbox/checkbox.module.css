@@ -1,0 +1,186 @@
+.checkbox {
+    transition: all var(--animation);
+    display: flex;
+    align-items: center;
+    gap: var(--pm-200);
+    cursor: pointer;
+}
+
+.checkbox [data-part='control'] {
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox.variant-default [data-part='control'] {
+    padding: 0;
+    transition: all var(--animation);
+    border-radius: var(--r-100);
+}
+
+/* checkbox icon */
+.checkbox [data-part='indicator'] > svg {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* checkbox size */
+.checkbox[data-size='100'] [data-part='control'] {
+    width: var(--wh-150);
+    height: var(--wh-150);
+}
+
+.checkbox[data-size='200'] [data-part='control'] {
+    width: var(--wh-200);
+    height: var(--wh-200);
+}
+
+.checkbox[data-size='300'] [data-part='control'] {
+    width: var(--wh-250);
+    height: var(--wh-250);
+}
+
+.checkbox.variant-default[data-color='blue'] [data-part='control'] {
+    background: hsl(var(--clr-background));
+}
+
+.checkbox.variant-default[data-color='blue'][data-hover] [data-part='control'] {
+    background: hsla(var(--clr-blue-100) / 0.75);
+}
+.checkbox.variant-default[data-color='blue'] [data-part='control'],
+.checkbox.variant-default:is(:checked, [data-state='checked']) [data-part='control'] {
+    background: hsl(var(--clr-blue-50));
+}
+.checkbox.variant-default[data-color='blue']
+    [data-part='control']:is(:checked, [data-state='checked'])
+    [data-part='control'] {
+    background: hsl(var(--clr-blue-50));
+}
+.checkbox.variant-default[data-color='blue']
+    [data-part='control']:is(:checked, [data-state='checked'])[data-hover]
+    [data-part='control'] {
+    background: hsla(var(--clr-blue-100) / 0.75);
+}
+.checkbox.variant-default [data-part='control'][data-focus] [data-part='control'] {
+    background: hsl(var(--clr-background));
+    box-shadow: 0 0 0 var(--pm-50) hsla(var(--clr-blue-200) / 0.5);
+}
+.checkbox.variant-default[data-color='blue'] [data-part='control'][data-active] {
+    background: hsl(var(--clr-background));
+}
+.checkbox.variant-default[data-color='blue'] [data-part='indicator'] {
+    color: hsl(var(--clr-blue-500));
+}
+.checkbox.variant-default[data-color='blue'][data-hover] [data-part='control'] {
+    background: hsl(var(--clr-background));
+}
+.checkbox.variant-default[data-color='blue']:is(:checked, [data-state='checked']) [data-part='control'] {
+    border: 2px solid hsl(var(--clr-blue-500));
+}
+.checkbox.variant-default[data-color='blue'] [data-part='control'] {
+    border: 2px solid hsl(var(--clr-grey-400));
+}
+
+/* Primary color variant */
+.checkbox.variant-default[data-color='primary'] [data-part='control'] {
+    background: hsl(var(--clr-background));
+}
+
+.checkbox.variant-default[data-color='primary'] [data-part='indicator'] {
+    color: hsl(var(--clr-primary-500));
+}
+
+.checkbox.variant-default[data-color='primary'] [data-part='control'],
+.checkbox.variant-default:is(:checked, [data-state='checked']) [data-part='control'] {
+    background: hsl(var(--clr-white-50));
+}
+.checkbox.variant-default[data-color='primary']:is(:checked, [data-state='checked']) [data-part='control'] {
+    background: hsl(var(--clr-primary-50));
+}
+
+.checkbox.variant-default[data-color='primary'][data-hover] [data-part='control'] {
+    background: hsla(var(--clr-primary-100) / 0.75);
+}
+/* .checkbox.variant-default[data-color="primary"]:is(:checked, [data-state="checked"]) [data-part="control"][data-hover]{
+	background: hsla(var(--clr-primary-100)/ .75);
+} */
+.checkbox.variant-default[data-color='primary'] [data-part='control'][data-focus] {
+    box-shadow: 0 0 0 var(--pm-50) hsla(var(--clr-blue-200) / 0.5);
+}
+.checkbox.variant-default[data-color='primary'] [data-part='control'][data-active] {
+    background: hsl(var(--clr-background));
+}
+
+.checkbox.variant-default[data-color='primary']:is(:checked, [data-state='checked']) [data-part='control'] {
+    border: 2px solid hsl(var(--clr-primary-500));
+    background-color: hsl(var(--clr-primary-500));
+}
+.checkbox.variant-default[data-color='primary'] [data-part='control'] {
+    border: 2px solid hsl(var(--clr-grey-100));
+}
+
+.checkbox.variant-disabled [data-part='control'] {
+    border: 1px solid hsl(var(--clr-grey-400));
+    border-radius: var(--r-100);
+}
+.checkbox.variant-disabled [data-part='label'] {
+    color: hsl(var(--clr-grey-400));
+}
+.checkbox.variant-disabled [data-part='control'] > svg {
+    color: hsl(var(--clr-grey-400));
+}
+
+.checkbox.variant-default[data-color='primary-blue'] [data-part='control'] {
+    background: hsl(var(--clr-background));
+}
+
+.checkbox.variant-default[data-color='primary-blue'] [data-part='indicator'] {
+    color: hsl(var(--clr-white));
+}
+
+.checkbox.variant-default[data-color='primary-blue'] [data-part='control'],
+.checkbox.variant-default:is(:checked, [data-state='checked']) [data-part='control'] {
+    background: transparent;
+    border: 1px solid hsl(var(--clr-blue-50));
+}
+.checkbox.variant-default[data-color='primary-blue']:is(:checked, [data-state='checked']) [data-part='control'] {
+    background: hsl(var(--clr-primary-50));
+}
+
+.checkbox.variant-default[data-color='primary-blue'][data-hover] [data-part='control'] {
+    background: hsla(var(--clr-primary-50) / 0.75);
+}
+.checkbox.variant-default[data-color='primary-blue']:is(:checked, [data-state='checked'])
+    [data-part='control'][data-hover] {
+    background: hsla(var(--clr-primary-400) / 0.75);
+}
+.checkbox.variant-default[data-color='primary-blue'] [data-part='control'][data-focus] {
+    box-shadow: 0 0 0 var(--pm-50) hsla(var(--clr-blue-200) / 0.5);
+}
+.checkbox.variant-default[data-color='primary-blue'] [data-part='control'][data-active] {
+    background: hsl(var(--clr-background));
+}
+
+.checkbox.variant-default[data-color='primary-blue']:is(:checked, [data-state='checked']) [data-part='control'] {
+    border: 1px solid hsl(var(--clr-blue-500));
+    background: hsl(var(--clr-primary-500));
+}
+.checkbox.variant-default[data-color='primary-blue'] [data-part='control'] {
+    border: 1px solid hsl(var(--clr-grey-700));
+}
+
+/* Hidden Input */
+
+.hiddenInputFixed {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+    pointer-events: none;
+}

@@ -1,0 +1,86 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 70px);
+    overflow: hidden;
+}
+
+.tableArea {
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    background: var(--Foundation-surface-White, #fff);
+    height: 100%;
+    transition: all 0.3s ease;
+    overflow-x: auto;
+    padding: 16px 16px 0 16px;
+}
+
+.tableScrollWrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.panel {
+    position: absolute;
+    top: 0;
+    width: 270px;
+    height: 100%;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    transition: all 0.4s ease;
+    will-change: transform;
+    border-radius: 12px;
+}
+.filterPanel {
+    right: 0;
+    height: 100%;
+}
+.configPanel {
+    right: 0;
+    height: 100%;
+}
+
+.collapsed {
+    transform: translateX(100%);
+}
+.expanded {
+    transform: translateX(0);
+}
+
+.modalContent {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.modalContent h1 {
+    color: var(--Foundation-primary-blue-900, #05194a);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.btnGroup {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.spinner {
+    border: 2px solid hsl(var(--clr-primary-900));
+    border-top: 2px solid hsl(var(--clr-primary-900));
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}

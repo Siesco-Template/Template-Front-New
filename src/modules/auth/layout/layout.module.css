@@ -1,0 +1,56 @@
+.authContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 100dvh;
+  background-color: hsl(var(--clr-white-200));
+  overflow-y: auto;
+}
+
+.leftSection {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  padding-block: 72px;
+}
+
+.logoWrapper img {
+  object-fit: contain;
+  width: auto;
+  height: var(--pm-325);
+}
+
+.outletWrapper {
+  width: min(77%, 552px);
+}
+
+.rightSection {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  gap: var(--pm-925);
+}
+
+.authLogo {
+  object-fit: cover;
+}
+.logoWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-200);
+}
+.logoWrapper h2 {
+    font-size: var(--fs-300);
+    color: hsl(var(--clr-primary-900));
+    font-weight: 500;
+    margin-top: 10px;
+}

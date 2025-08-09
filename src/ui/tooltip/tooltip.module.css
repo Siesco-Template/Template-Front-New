@@ -1,0 +1,11 @@
+.trigger {
+	border: none;
+	background: none;
+	outline: none;
+}
+
+.tooltip-content {
+	background: hsl(var(--clr-grey-50));
+	border-radius: var(--r-200);
+	padding: var(--pm-300) var(--pm-400);
+}

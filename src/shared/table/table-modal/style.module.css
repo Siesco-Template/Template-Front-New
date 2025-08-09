@@ -1,0 +1,11 @@
+.modalContent {
+    width: 100%;
+}
+
+.modalTitle {
+    color: var(--Neutral-900, #212121);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 33px; /* 165% */
+}

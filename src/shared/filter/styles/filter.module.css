@@ -1,0 +1,93 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.filterContainer {
+    height: 100%;
+    width: 280px;
+    border-radius: 16px 16px;
+    background: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    transition: width 0.4s ease;
+    padding: 15px 15px;
+}
+
+.filterContent {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    transition:
+        transform 0.4s ease,
+        opacity 0.4s ease;
+    gap: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.filterScrollableContent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 14px;
+    padding: 12px 5px;
+}
+
+.expanded .filterContent {
+    /* transform: translateX(0); */
+    opacity: 1;
+}
+
+.collapsed .filterContent {
+    /* transform: translateX(-100%); */
+    opacity: 0;
+    pointer-events: none;
+}
+
+.expanded.collapseButton {
+    left: -13px;
+}
+
+.collapseButton {
+    position: absolute;
+    top: 15px;
+    left: -33px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #9e9e9e;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 3423232;
+}
+
+.leftBorder {
+    /* position: relative;
+    width: 6px;
+    height: 100%; */
+    /* background-color: #9e9e9e; */
+    /* border-radius: 8px 0 0 8px; */
+    /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+    display: none;
+}

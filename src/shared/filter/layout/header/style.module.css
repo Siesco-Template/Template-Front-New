@@ -1,0 +1,53 @@
+.header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--foundation-surface-light-hover, #f5f7f9);
+
+    padding: 2px;
+    border-radius: 12px;
+}
+
+.tabs {
+    display: flex;
+    gap: 0;
+}
+
+.tabButton {
+    all: unset;
+    cursor: pointer;
+    width: 42%;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 12px;
+
+    color: #5e6470;
+    transition: all 0.2s ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.active {
+    background-color: hsl(var(--clr-blue-500));
+    color: white;
+    box-shadow: 0px 4px 8px rgba(10, 80, 216, 0.25);
+}
+
+.header__title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    color: var(--color-primary);
+}

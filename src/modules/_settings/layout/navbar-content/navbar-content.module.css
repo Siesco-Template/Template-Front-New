@@ -1,0 +1,98 @@
+/* Navbar.module.css */
+.navbar {
+    padding: 16px;
+}
+
+.navList {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+}
+
+.navItem {
+    position: relative;
+    color: hsl(var(--clr-grey-700));
+}
+
+.navButton {
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: hsl(var(--clr-grey-700));
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+    /* 14/Medium */
+    font-family: 'DM Sans';
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 21px */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--pm-200);
+}
+
+.subMenu {
+    position: absolute;
+    left: 0;
+    margin-top: 35px;
+    background: hsl(var(--clr-background));
+    color: hsl(var(--clr-grey-700));
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 10;
+}
+
+.subMenu.open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.subMenuDown {
+    top: calc(100% - 30px);
+    bottom: auto;
+    transform-origin: top center;
+    transform: translateY(-10px);
+}
+
+.subMenuUp {
+    bottom: calc(100% + 8px);
+    top: auto;
+    transform-origin: bottom center;
+    transform: translateY(10px);
+}
+
+.subMenuItem {
+    cursor: pointer;
+    padding: 8px 16px;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+.arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+.rotated {
+    transform: rotate(180deg);
+}

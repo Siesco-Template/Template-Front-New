@@ -1,0 +1,34 @@
+<svg width="55" height="28" viewBox="0 0 55 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1031_46081)">
+<mask id="path-3-inside-1_1031_46081" fill="white">
+<path d="M0.5 0H54.5V28H0.5V0Z"/>
+</mask>
+<path d="M54.5 0H53.5V28H54.5H55.5V0H54.5Z" fill="#9E9E9E" mask="url(#path-3-inside-1_1031_46081)"/>
+<mask id="path-5-inside-2_1031_46081" fill="white">
+<path d="M0.5 0H54.5V7H0.5V0Z"/>
+</mask>
+<path d="M0.5 0H54.5V7H0.5V0Z" fill="white"/>
+<path d="M0.5 0V-0.2H0.3V0H0.5ZM54.5 0H54.7V-0.2H54.5V0ZM0.5 0V0.2H54.5V0V-0.2H0.5V0ZM54.5 0H54.3V7H54.5H54.7V0H54.5ZM0.5 7H0.7V0H0.5H0.3V7H0.5Z" fill="#9E9E9E" mask="url(#path-5-inside-2_1031_46081)"/>
+<mask id="path-7-inside-3_1031_46081" fill="white">
+<path d="M0.5 7H54.5V14H0.5V7Z"/>
+</mask>
+<path d="M0.5 7H54.5V14H0.5V7Z" fill="white"/>
+<path d="M0.5 7V6.8H0.3V7H0.5ZM54.5 7H54.7V6.8H54.5V7ZM0.5 7V7.2H54.5V7V6.8H0.5V7ZM54.5 7H54.3V14H54.5H54.7V7H54.5ZM0.5 14H0.7V7H0.5H0.3V14H0.5Z" fill="#9E9E9E" mask="url(#path-7-inside-3_1031_46081)"/>
+<mask id="path-9-inside-4_1031_46081" fill="white">
+<path d="M0.5 14H54.5V21H0.5V14Z"/>
+</mask>
+<path d="M0.5 14H54.5V21H0.5V14Z" fill="white"/>
+<path d="M0.5 14V13.8H0.3V14H0.5ZM54.5 14H54.7V13.8H54.5V14ZM0.5 14V14.2H54.5V14V13.8H0.5V14ZM54.5 14H54.3V21H54.5H54.7V14H54.5ZM0.5 21H0.7V14H0.5H0.3V21H0.5Z" fill="#9E9E9E" mask="url(#path-9-inside-4_1031_46081)"/>
+<mask id="path-11-inside-5_1031_46081" fill="white">
+<path d="M0.5 21H54.5V28H0.5V21Z"/>
+</mask>
+<path d="M0.5 21H54.5V28H0.5V21Z" fill="white"/>
+<path d="M0.5 21V20.8H0.3V21H0.5ZM54.5 21H54.7V20.8H54.5V21ZM54.5 28V28.2H54.7V28H54.5ZM0.5 28H0.3V28.2H0.5V28ZM0.5 21V21.2H54.5V21V20.8H0.5V21ZM54.5 21H54.3V28H54.5H54.7V21H54.5ZM54.5 28V27.8H0.5V28V28.2H54.5V28ZM0.5 28H0.7V21H0.5H0.3V28H0.5Z" fill="#9E9E9E" mask="url(#path-11-inside-5_1031_46081)"/>
+</g>
+<path d="M8 0.5H47C51.1421 0.5 54.5 3.85786 54.5 8V20C54.5 24.1421 51.1421 27.5 47 27.5H8C3.85786 27.5 0.5 24.1421 0.5 20V8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#9E9E9E"/>
+<defs>
+<clipPath id="clip0_1031_46081">
+<path d="M0 8C0 3.58172 3.58172 0 8 0H47C51.4183 0 55 3.58172 55 8V20C55 24.4183 51.4183 28 47 28H8C3.58172 28 0 24.4183 0 20V8Z" fill="white"/>
+</clipPath>
+</defs>
+</svg>

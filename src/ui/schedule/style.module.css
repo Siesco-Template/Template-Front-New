@@ -1,0 +1,19 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.loaderIcon {
+    width: 50px;
+    height: 50px;
+}
+.noData {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 220px);
+
+    font-size: 24px;
+}

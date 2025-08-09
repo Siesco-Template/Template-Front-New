@@ -1,0 +1,100 @@
+.notificationDetailsContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-500);
+}
+
+.notificationHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.notificationHeaderLeft {
+    display: flex;
+    gap: var(--pm-200);
+}
+
+.backButton {
+    height: var(--wh-400);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.notificationIcon {
+    border-radius: 50%;
+    background: hsl(var(--clr-white-200));
+    width: var(--wh-400);
+    height: var(--wh-400);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: var(--pm-100);
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.text h3 {
+    color: hsl(var(--clr-primary-900));
+    text-overflow: ellipsis;
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.text p {
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: hsl(var(--clr-grey-600));
+}
+
+.notificationRight {
+    color: hsl(var(--clr-grey-300));
+    text-align: right;
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.description {
+    text-overflow: ellipsis;
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transition: color 0.25s ease-in-out;
+}
+
+.notificationBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-400);
+}
+
+.notificationBody h3 {
+    color: hsl(var(--clr-primary-900));
+    text-overflow: ellipsis;
+    font-size: var(--fs-200);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.notificationBody p {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}

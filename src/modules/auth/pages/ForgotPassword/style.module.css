@@ -1,0 +1,48 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--pm-700);
+}
+
+.title {
+    text-align: center;
+    color: hsl(var(--clr-blue-900));
+    font-size: var(--fs-300) !important;
+    font-weight: 500;
+}
+
+.description {
+    width: 74%;
+    text-align: center;
+    color: hsl(var(--clr-primary-900));
+    line-height: 21px;
+}
+
+.form {
+    width: 100%;
+    padding: var(--pm-500) !important;
+    background: #FFF;
+    border-radius: var(--r-400);
+}
+
+.inputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-300);
+}
+
+.buttonGroup {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--pm-300);
+    margin-top: var(--pm-600) !important;
+}
+
+.button {
+    width: 100%;
+}

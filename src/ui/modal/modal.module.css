@@ -1,0 +1,185 @@
+.dialogBackdrop {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0.8;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.dialogPositioner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    margin: auto;
+}
+
+.dialogTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mediumSize {
+    max-width: 472px;
+    width: 100%;
+}
+.mediumSize .dialogTitle {
+    color: hsl(var(--clr-grey-450));
+    font-size: var(--fs-200);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--fs-300);
+}
+.mediumSize .dialogContent {
+    background: hsl(var(--clr-grey-50));
+    padding: var(--pm-500);
+    border-radius: var(--r-300);
+    box-shadow: 0px 4px 25px 0px rgba(95, 142, 211, 0.1);
+}
+
+.smallSize {
+    max-width: 450px;
+    width: 100%;
+}
+
+.smallSize .dialogTitle {
+    color: hsl(var(--clr-grey-450));
+    font-size: var(--fs-200);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--fs-300);
+}
+.smallSize .dialogContent {
+    background: hsl(var(--clr-grey-50));
+    padding: var(--pm-500);
+    border-radius: var(--r-300);
+    box-shadow: 0px 4px 25px 0px rgba(95, 142, 211, 0.1);
+}
+
+.largeSize {
+    max-width: 720px;
+    width: 100%;
+}
+.largeSize .dialogTitle {
+    color: hsl(var(--clr-grey-450));
+    font-size: var(--fs-200);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--fs-300);
+}
+.largeSize .dialogContent {
+    background: hsl(var(--clr-grey-50));
+    padding: var(--pm-500);
+    border-radius: var(--r-300);
+    box-shadow: 0px 4px 25px 0px rgba(95, 142, 211, 0.1);
+}
+
+.extraLargeSize {
+    max-width: 800px;
+    width: 100%;
+}
+.extraLargeSize .dialogTitle {
+    color: hsl(var(--clr-grey-450));
+    font-size: var(--fs-200);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--fs-300);
+}
+.extraLargeSize .dialogContent {
+    background: hsl(var(--clr-grey-50));
+    padding: var(--pm-500);
+    border-radius: var(--r-300);
+    box-shadow: 0px 4px 25px 0px rgba(95, 142, 211, 0.1);
+}
+
+.closeButton {
+    display: flex;
+    width: var(--wh-350);
+    height: var(--wh-350);
+    padding: var(--pm-200) var(--pm-300);
+    justify-content: center;
+    align-items: center;
+    gap: var(--pm-200);
+    border-radius: var(--r-300);
+    border: 1px solid #fff;
+    background: hsl(var(--clr-white-200));
+}
+
+.title_icon {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-400);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@media screen and (max-width: 576px) {
+    .smallSize,
+    .mediumSize,
+    .largeSize {
+        width: 98%;
+        margin: auto;
+    }
+
+    .confirmPositioner.smallSize,
+    .confirmPositioner.defaultSize {
+        width: 90%;
+        margin: auto;
+    }
+}
+
+/* confirm dialog */
+.confirmDialog {
+    width: var(--wh-800);
+}
+
+.confirmBackdrop {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0.8;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.confirmPositioner {
+    position: absolute;
+    background: hsl(var(--clr-background));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    border-radius: var(--r-300);
+}
+
+.dialogContent {
+    background: hsl(var(--clr-grey-50));
+    padding: var(--pm-500);
+    border-radius: var(--r-300);
+    box-shadow: 0px 4px 25px 0px rgba(95, 142, 211, 0.1);
+}
+
+.confirmPositioner.defaultSize {
+    max-width: var(--wh-850);
+}
+
+.confirmTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: hsl(var(--clr-grey-450));
+    font-size: var(--fs-200);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--fs-300);
+    margin-bottom: var(--pm-500);
+}
+.confirmButtons {
+    display: flex;
+    justify-content: end;
+    margin-top: var(--pm-500);
+    gap: var(--pm-300);
+}

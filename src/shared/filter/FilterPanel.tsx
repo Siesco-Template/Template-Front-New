@@ -1,0 +1,448 @@
+import React, { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router';
+
+import dayjs from 'dayjs';
+
+import { filterService } from '@/services/filter/filter.service';
+
+import S_Select_Simple, { Item } from '@/ui/select/select-simple';
+
+import { useTableContext } from '../table/table-context';
+import { useDebounce } from '../table/useDebounce';
+import { applyFiltersToUrl, parseFiltersFromUrl } from './config/filterHelpers';
+import { FilterKey } from './config/filterTypeEnum';
+import DropdownMultiSelect from './filters/CatalogWithMultiSelect';
+import DateIntervalFilter from './filters/DateIntervalFilter';
+import DraggableItems from './filters/Draggable';
+import NumberIntervalFilter from './filters/NumberIntervalFilter';
+import SavedFilters from './filters/SavedFilters';
+import TextFilter from './filters/TextFilter';
+import FilterHeader from './layout/filterHeader';
+import Header from './layout/header';
+import SearchHeader from './layout/searchHeader';
+import Button from './shared/button';
+import ConfirmModal from './shared/modal';
+import styles from './styles/filter.module.css';
+import { FilterConfig } from './types';
+
+interface FilterPanelProps {
+    filters: FilterConfig[];
+    onChange: (key: string, value: any) => void;
+    storageKey: string;
+    isCollapsed?: boolean;
+    onToggleCollapse?: () => void;
+    table_key: string;
+}
+
+const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey, table_key, isCollapsed }) => {
+    const [activeTab, setActiveTab] = useState<'default' | 'saved'>('default');
+    const [savedFilters, setSavedFilters] = useState<FilterConfig[]>([]);
+    const [sortMode, setSortMode] = useState(false);
+    const [searchText, setSearchText] = useState<string>('');
+    const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+    const [filterName, setFilterName] = useState('');
+
+    const location = useLocation();
+    const selectRef = useRef<HTMLDivElement | null>(null);
+    const [mainWidth, setMainWidth] = useState<string>('200px');
+
+    const handleResize = () => {
+        if (selectRef.current) {
+            const width = selectRef.current.offsetWidth - 20;
+            setMainWidth(`${width}px`);
+        }
+    };
+
+    useDebounce(mainWidth, 200, handleResize);
+    useEffect(() => {
+        handleResize();
+    }, []);
+
+    const { filterDataState } = useTableContext();
+
+    useEffect(() => {
+        const orderKey = `filter_order_${storageKey}`;
+        const visibilityKey = `filter_visibility_${storageKey}`;
+
+        const savedOrder = JSON.parse(localStorage.getItem(orderKey) || '[]');
+        const visibilityMap = JSON.parse(localStorage.getItem(visibilityKey) || '{}');
+
+        let updated: any = filters.map((f: any) => ({
+            ...f,
+            visible: visibilityMap[f.key] ?? true,
+        }));
+
+        if (savedOrder.length > 0) {
+            updated = [
+                ...savedOrder.map((k: any) => updated.find((f: any) => f.key === k)).filter(Boolean),
+            ] as FilterConfig[];
+        }
+
+        setSavedFilters(updated);
+    }, [filters, storageKey]);
+
+    useEffect(() => {
+        if (filters.length === 0) return;
+
+        const initFilters = async () => {
+            const hasUrl = window.location.hash.includes('filterData=');
+
+            if (hasUrl) {
+                // 1) Əgər URL-də varsa, orada olanları parse edib set edək
+                const fromUrl = parseFiltersFromUrl(filters);
+                setSavedFilters(fromUrl);
+                // kontekstdəki actual filterDataState də yenilə
+                fromUrl.forEach((f: any) => onChange(f.key, f.value));
+            } else {
+                // 2) URL-də yoxdursa, backend-dən default alıb həm state-ə, həm URL-ə yazaq
+                try {
+                    const res = await filterService.getDefaultFilter(table_key);
+                    const defVals = Array.isArray(res.filterValues) ? res.filterValues : [];
+                    const merged = filters.map((f) => {
+                        const df = defVals.find((d: any) => d.column === (f.key || f.column));
+                        return { ...f, value: df?.value ?? f.value };
+                    });
+
+                    setSavedFilters(merged);
+                    // kontekstdə update et
+                    merged.forEach((f: any) => onChange(f.key, f.value));
+
+                    // URL üçün temizlənmiş massiv
+                    const cleaned = merged
+                        .filter(
+                            (f) =>
+                                f.value != null &&
+                                !(typeof f.value === 'string' && f.value.trim() === '') &&
+                                !(Array.isArray(f.value) && f.value.length === 0)
+                        )
+                        .map((f) => ({ id: f.key || f.column, value: f.value }));
+
+                    applyFiltersToUrl(cleaned, filterDataState.skip, filterDataState.take, filterDataState.sort);
+                } catch {
+                    setSavedFilters(filters);
+                }
+            }
+        };
+
+        initFilters();
+    }, [filters]);
+
+    const handleResetFilters = () => {
+        setSearchText('');
+
+        const resetFilters = filters.map((f) => {
+            let resetValue: any = '';
+
+            if (f.type === 'select') {
+                resetValue = '';
+            } else if (f.type === 'number-interval') {
+                resetValue = { min: '', max: '' };
+            }
+
+            return { ...f, value: resetValue };
+        });
+
+        setSavedFilters(resetFilters);
+        resetFilters.forEach((f: any) => onChange(f.key, f.value));
+
+        const currentHash = window.location.hash.split('?')[0];
+        window.location.hash = currentHash;
+    };
+
+    const handleUpdateFilter = (key: string, value: any) => {
+        const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
+        setSavedFilters(updatedFilters);
+        onChange(key, value);
+    };
+
+    const renderFilter = (filter: any) => {
+        const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
+        switch (filter.type || filter.filterKey) {
+            case FilterKey.Text: // 1
+                return (
+                    <TextFilter
+                        key={filter.key || filter.column}
+                        label={filter.label || filter.column}
+                        value={filter.value || ''}
+                        placeholder={filter.placeholder || filter.column}
+                        onChange={(val) => _onChange(filter.key, val)}
+                        readOnly={filter.readOnly}
+                    />
+                );
+            case FilterKey.NumberInterval: // 3
+                return (
+                    <NumberIntervalFilter
+                        key={filter.key || filter.column}
+                        label={filter.label || filter.column}
+                        value={filter.value || { min: '', max: '' }}
+                        onChange={(val) => _onChange(filter.key, val)}
+                        readOnly={filter.readOnly}
+                        placeholder={filter.placeholder || filter.column}
+                    />
+                );
+            case FilterKey.MultiSelect: // 5
+                return (
+                    <DropdownMultiSelect
+                        key={filter.key}
+                        label={filter.label}
+                        filterKey={filter.key}
+                        options={filter.options || []}
+                        value={filter.value || []}
+                        onChange={(key, values) => _onChange(key, values)}
+                        disabled={filter.readOnly}
+                    />
+                );
+            case FilterKey.Select: // 4
+                return (
+                    <S_Select_Simple
+                        key={filter.key}
+                        items={
+                            (filter.options || []).map((opt: any) => ({
+                                label: opt.label,
+                                value: opt.value,
+                                disabled: !!opt.disabled,
+                            })) as Item[]
+                        }
+                        value={filter.value ? [filter.value] : []}
+                        setSelectedItems={(selectedItems) => {
+                            const newVal = selectedItems.length > 0 ? selectedItems[0].value : '';
+                            _onChange(filter.key, newVal);
+                        }}
+                        placeholder={filter.placeholder || 'Seçin'}
+                        label={filter.label}
+                        disabled={filter.readOnly}
+                        itemsContentMinWidth={mainWidth}
+                    />
+                );
+
+            case FilterKey.DateInterval: // 7
+                return (
+                    <DateIntervalFilter
+                        key={filter.key}
+                        label={filter.label}
+                        value={filter.value || ['', '']}
+                        onChange={(val) => _onChange(filter.key, val)}
+                        readOnly={filter.readOnly}
+                        singlePlaceholder={filter.placeholder}
+                        rangePlaceholders={filter.rangePlaceholders}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
+    const handleSaveSort = () => {
+        setSortMode(false);
+    };
+
+    const handleSaveCurrentFilters = () => {
+        setIsSaveModalOpen(true);
+    };
+
+    const handleApplySavedFilter = (filters: FilterConfig[]) => {
+        const cleanedFilters = filters?.map((f) => ({
+            id: f.key || f.column,
+            value: f.value,
+        }));
+
+        applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort);
+    };
+
+    const handleApplyFilters = () => {
+        const filterItems = savedFilters?.map((f) => ({
+            id: f.key || f.column,
+            value: f.value,
+        }));
+
+        applyFiltersToUrl(filterItems, filterDataState.skip, filterDataState.take, filterDataState.sort);
+    };
+
+    const filteredSavedFilters = savedFilters
+        .filter((filter) => filter.visible !== false)
+        .filter((filter) => {
+            const columnMatch = filter?.column?.toLowerCase().includes(searchText?.toLowerCase());
+            const labelMatch = filter?.label?.toLowerCase().includes(searchText?.toLowerCase());
+            return columnMatch || labelMatch;
+        });
+
+    const handleResetOrder = () => {};
+
+    const handleSaveFilter = async (name?: string) => {
+        if (!name) return;
+
+        const newFilter: any = {
+            tableId: table_key,
+            filterTitle: name,
+            filterValues: savedFilters
+                .map((f: any) => {
+                    const value = f.value && f.value.toString().length > 0 ? f.value.toString() : '';
+
+                    if (value !== '') {
+                        return {
+                            column: f.key,
+                            value: value,
+                            filterOperation: 1,
+                            filterKey: f.type,
+                        };
+                    }
+                    return null;
+                })
+                .filter((filter: any) => filter !== null),
+        };
+
+        try {
+            const response = await filterService.createFilter(newFilter);
+            toast.success('Filter uğurla yaradıldı');
+
+            setFilterName('');
+            setIsSaveModalOpen(false);
+        } catch (error) {
+            console.error('Filteri yaratmaqda xəta baş verdi:', error);
+        }
+    };
+
+    const handleSaveAndApplyFilter = async (name?: string) => {
+        if (!name) return;
+
+        const newFilter: any = {
+            tableId: table_key,
+            filterTitle: name,
+            filterValues: savedFilters
+                .map((f: any) => {
+                    const value = f.value;
+
+                    const isEmpty =
+                        value === null ||
+                        value === undefined ||
+                        (typeof value === 'string' && value.trim() === '') ||
+                        (Array.isArray(value) && value.length === 0) ||
+                        (typeof value === 'object' &&
+                            'min' in value &&
+                            'max' in value &&
+                            value.min === '' &&
+                            value.max === '');
+
+                    if (isEmpty) return null;
+
+                    let filterOperation = 1;
+
+                    // Tipə görə operation təyini
+                    if (f.type === FilterKey.Text || f.type === 'text') {
+                        filterOperation = 3;
+                    } else if (f.type === FilterKey.NumberInterval || f.type === 'number-interval') {
+                        filterOperation = 11;
+                    } else if (f.type === FilterKey.DateInterval || f.type === 'date-interval') {
+                        filterOperation = 11;
+                    }
+
+                    let formattedValue = value;
+
+                    // Tək tarix daxil olunubsa, +1 gün et
+                    if ((f.type === FilterKey.DateInterval || f.type === 'date-interval') && Array.isArray(value)) {
+                        const [start, end] = value;
+
+                        if (start && !end) {
+                            const nextDay = dayjs(start, 'DD.MM.YYYY').add(1, 'day').format('DD.MM.YYYY');
+                            formattedValue = [start, nextDay];
+                        } else if (start && end && start === end) {
+                            const nextDay = dayjs(start, 'DD.MM.YYYY').add(1, 'day').format('DD.MM.YYYY');
+                            formattedValue = [start, nextDay];
+                        }
+                    }
+
+                    return {
+                        column: f.key,
+                        value:
+                            Array.isArray(formattedValue) ||
+                            (typeof formattedValue === 'object' && 'min' in formattedValue)
+                                ? formattedValue
+                                : formattedValue.toString(),
+                        filterOperation,
+                        filterKey: f.type,
+                    };
+                })
+                .filter((filter: any) => filter !== null),
+        };
+
+        try {
+            const response = await filterService.createFilter(newFilter);
+
+            const cleanedFilters = newFilter?.filterValues?.map((f: any) => ({
+                id: f.column,
+                value: f.value,
+            }));
+
+            applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort);
+
+            setFilterName('');
+            setIsSaveModalOpen(false);
+        } catch (error) {
+            console.error('Filteri yaratmaqda xəta baş verdi:', error);
+        }
+    };
+    return (
+        <>
+            <div className={styles.wrapper}>
+                <div className={styles.filterContainer}>
+                    <div className={styles.filterContent} ref={selectRef}>
+                        <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+                        <div className={styles.filterScrollableContent}>
+                            {activeTab === 'default' ? (
+                                <>
+                                    <FilterHeader
+                                        onSortClick={() => setSortMode(!sortMode)}
+                                        sortMode={sortMode}
+                                        onSaveSort={handleSaveSort}
+                                        onSaveFilters={handleSaveCurrentFilters}
+                                    />
+                                    <SearchHeader
+                                        onReset={sortMode ? handleResetOrder : handleResetFilters}
+                                        onSearchChange={(val) => setSearchText(val)}
+                                        searchText={searchText}
+                                    />
+
+                                    {sortMode ? (
+                                        <DraggableItems
+                                            savedFilters={savedFilters}
+                                            setSavedFilters={setSavedFilters}
+                                            storageKey={storageKey}
+                                        />
+                                    ) : (
+                                        <>
+                                            {filteredSavedFilters.map(renderFilter)}
+                                            <Button
+                                                variant="tertiary"
+                                                onClick={handleApplyFilters}
+                                                // disabled={!isAnyFilterFilled}
+                                            >
+                                                Tətbiq et
+                                            </Button>
+                                        </>
+                                    )}
+                                </>
+                            ) : (
+                                <SavedFilters
+                                    renderFilter={renderFilter}
+                                    onApplyFilter={handleApplySavedFilter}
+                                    table_key={table_key}
+                                    filters={filters}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </div>{' '}
+            </div>
+            <ConfirmModal
+                open={isSaveModalOpen}
+                onOpenChange={setIsSaveModalOpen}
+                onSave={handleSaveFilter}
+                onSaveAndUse={handleSaveAndApplyFilter}
+                mode="create"
+            />
+        </>
+    );
+};
+
+export default FilterPanel;

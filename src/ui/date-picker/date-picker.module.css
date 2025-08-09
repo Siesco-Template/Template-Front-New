@@ -1,0 +1,218 @@
+.datePickerRoot {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: var(--pm-100);
+}
+.label {
+    font-size: var(--fs-50);
+    color: hsl(var(--clr-primary-900));
+    font-weight: 500;
+    line-height: 16px;
+}
+
+.errorText {
+    color: hsl(var(--clr-red-400)) !important;
+    font-size: var(--fs-50) !important;
+}
+
+.datePickerControl {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-200);
+    border: 1px solid hsl(var(--clr-grey-300));
+    padding: 10px var(--pm-400);
+    border-radius: var(--r-300);
+    background-color: hsl(var(--clr-white));
+    width: 100%;
+    max-height: var(--fs-600) !important;
+    min-height: var(--fs-600) !important;
+    /* justify-content: space-between; */
+    /* grid-template-columns: auto 1fr; */
+}
+
+.errorControl {
+    border-color: hsl(var(--clr-red-400));
+}
+
+.datePickerInput {
+    min-width: 80px;
+    border: none;
+    outline: none;
+    flex: 1;
+}
+.datePickerInput::placeholder {
+    color: hsl(var(--clr-grey-300));
+}
+
+.datePickerTrigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    color: hsl(var(--clr-grey-300));
+}
+.datePickerTrigger svg g path {
+    stroke: hsl(var(--clr-grey-300));
+}
+
+.datePickerClearTrigger {
+    background: none;
+    border: none;
+    color: hsl(var(--clr-grey-800));
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.datePickerContent {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: var(--r-200);
+    padding: var(--pm-300);
+    box-shadow: 0px 0px 8px 2px hsl(var(--clr-grey-100));
+    color: hsl(var(--clr-grey-800));
+    font-weight: 600;
+    font-size: var(--fs-100);
+    line-height: var(--fs-300);
+    z-index: 101;
+}
+
+.datePickerTable {
+    width: 100%;
+}
+
+.datePickerTableCell {
+    width: 14.2%;
+    text-align: center;
+    padding: var(--pm-150);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.datePickerTableCell:hover {
+    background-color: #f0f0f0;
+}
+
+.datePickerTableCellTrigger {
+    display: block;
+    padding: 4px;
+}
+
+.datePickerViewControl {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--pm-200);
+    margin-bottom: var(--pm-200);
+}
+
+.datePickerPrevTrigger,
+.datePickerNextTrigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: hsl(var(--clr-grey-800));
+    font-weight: 600;
+    font-size: var(--fs-100);
+    line-height: var(--fs-300);
+}
+.datePickerPrevTrigger svg path,
+.datePickerNextTrigger svg path {
+    stroke: hsl(var(--clr-grey-800));
+}
+
+/* 1. Selected day (on the trigger button) */
+
+.selectedCell[data-scope='date-picker'][data-part='table-cell'][aria-selected='true'] {
+    background-color: hsl(var(--clr-primary-500));
+    color: hsl(var(--clr-white));
+}
+
+/* 2. Disabled / out-of-range days */
+[data-scope='date-picker'] [data-part='table-cell-trigger'][disabled],
+[data-scope='date-picker'] [data-part='table-cell-trigger'][aria-disabled='true'] {
+    color: hsl(var(--clr-grey-300));
+}
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-view='month'],
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-view='year'] {
+    padding: 4px;
+    min-width: 30px;
+    min-height: 30px;
+    border-radius: 4px;
+    text-align: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-view='month']:hover,
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-view='year']:hover {
+    background: rgba(126, 126, 126, 0.171);
+}
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-focus][data-view='month'],
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-focus][data-view='year'] {
+    background: rgba(165, 151, 165, 0.085);
+    color: hsl(var(--clr-primary-500));
+}
+
+/* Invisible */
+
+[data-scope='date-picker'][data-part='table-cell']:has(
+        [data-scope='date-picker'][data-part='table-cell-trigger'][data-outside-range]
+    ) {
+    visibility: hidden;
+}
+
+[data-scope='date-picker'][data-part='table-cell'][data-outside-range]:hover,
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-outside-range]:hover {
+    background-color: transparent !important;
+    color: hsl(var(--clr-grey-300));
+    cursor: default;
+}
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-selected][data-view='month'],
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-selected][data-view='year'] {
+    background: hsl(var(--clr-primary-500)) !important;
+    color: white !important ;
+}
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-view='month'][data-in-range]:not([data-selected]),
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-view='year'][data-in-range]:not([data-selected]) {
+    background: rgb(240, 219, 240);
+}
+
+/* ----------------------------------------------------------------------- */
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-unavailable] {
+    text-decoration: line-through;
+    opacity: 1;
+}
+
+[data-scope='date-picker'][data-part='table-cell-trigger'][data-disabled] {
+    opacity: 1;
+}
+
+[data-scope='date-picker'][data-part='content'] {
+    min-width: 320px;
+    background: white;
+    border-radius: 8px;
+}
+
+[data-scope='date-picker'][data-part='table'] {
+    min-width: 240px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+[data-scope='date-picker'][data-part='view-trigger'][data-view='month'] {
+    border: 0;
+    padding: 4px 20px;
+    border-radius: 4px;
+}

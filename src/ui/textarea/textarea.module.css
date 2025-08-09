@@ -1,0 +1,47 @@
+.textarea {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.textarea label {
+    color: hsl(var(--clr-primary-500));
+    font-weight: 500;
+    font-size: var(--fs-50);
+    line-height: 16px;
+}
+
+.textareaField {
+    width: 100%;
+    padding: 8px;
+    border-radius: var(--r-300);
+    font-size: 14px;
+    border: 1px solid hsl(var(--clr-grey-400));
+    font-size: var(--fs-200);
+    padding: 10px var(--pm-400);
+    background: hsl(var(--clr-white));
+    outline: none;
+}
+
+.textareaField[data-error='true'] {
+    border-color: red;
+}
+
+.textareaField[data-size='small'] {
+    font-size: 12px;
+    padding: 6px;
+}
+
+.textareaField[data-size='medium'] {
+    font-size: 14px;
+}
+
+.textareaField[data-size='default'] {
+    font-size: 16px;
+    padding: 10px;
+}
+
+.errorText {
+    color: hsl(var(--clr-red-400)) !important;
+    font-size: var(--fs-50) !important;
+    margin-top: var(--pm-100);
+}

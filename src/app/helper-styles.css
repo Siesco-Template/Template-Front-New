@@ -1,0 +1,236 @@
+html {
+    scroll-behavior: smooth;
+}
+body {
+    height: 100dvh;
+    color: hsl(var(--clr-foreground));
+    background: hsl(var(--clr-background));
+}
+#root {
+    height: 100dvh;
+}
+main {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+.container {
+    width: 100%;
+    padding-left: var(--pm-500);
+    padding-right: var(--pm-500);
+    margin: 0 auto;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (min-width: 1400px) {
+    .container {
+        width: 90%;
+    }
+}
+@media (min-width: 1140px) and (max-width: 1400px) {
+    .container {
+        width: 1080px;
+    }
+}
+@media (min-width: 900px) and (max-width: 1140px) {
+    .container {
+        width: 90%;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+    .container {
+        width: 95%;
+    }
+}
+
+button {
+    background: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all var(--animation);
+}
+ol,
+ul,
+li,
+a {
+    text-decoration: none;
+    /* list-style-type: none; */
+}
+li {
+    display: inline-flex;
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+    width: var(--wh-50);
+    height: var(--wh-50);
+}
+*::-webkit-scrollbar-track {
+    background: hsl(var(--clr-background));
+    border-radius: var(--r-100);
+}
+*::-webkit-scrollbar-thumb {
+    background: hsl(var(--clr-grey-100));
+    border-radius: var(--r-200);
+    transition: all var(--animation);
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--clr-primary-600));
+}
+
+.header-menu {
+    border: none;
+    outline: none;
+    border-radius: var(--r-300) !important;
+    box-shadow: 0px 0px 8px 2px hsl(var(--clr-grey-100));
+    min-width: 130px;
+    cursor: pointer;
+}
+
+.header-menu [data-part='item'] {
+    width: 100%;
+    padding: var(--pm-300) var(--pm-400);
+    border-radius: var(--r-300);
+    transition: all var(--animation);
+    color: hsl(var(--clr-grey-900));
+}
+
+.header-menu [data-part='item']:hover {
+    background: hsl(var(--clr-primary-100)) !important;
+    color: hsl(var(--clr-grey-900)) !important;
+}
+.header-menu [data-part='item']:hover > svg {
+    color: hsl(var(--clr-primary-600)) !important;
+}
+.header-menu [data-part='item']:hover > span {
+    color: hsl(var(--clr-primary-600)) !important;
+}
+.header-menu [data-part='separator'] {
+    border: 1px solid hsl(var(--clr-grey-100));
+}
+
+[data-scope='menu'][data-part='content'],
+[data-scope='menu'][data-part='positioner'] {
+    background: hsl(var(--clr-white));
+    border-radius: var(--r-300);
+}
+[data-scope='menu'][data-part='content'][data-state='open'] {
+    animation: menuFadeIn var(--animation) ease-in-out;
+}
+[data-scope='menu'][data-part='content'][data-state='closed'] {
+    animation: menuFadeOut var(--animation) ease-in-out;
+}
+@keyframes menuFadeIn {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes menuFadeOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+}
+
+.ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+    border-radius: var(--s, 8px);
+    border: 1px solid var(--Secondary-secondary-50, #fef5e7);
+    background: var(--Grey-grey-100, #f6f6f6);
+}
+
+.ant-select-single.ant-select-show-arrow .ant-select-selection-item {
+    color: var(--foundation-dark-normal-active, #3d4c5e);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+    font-family: 'DM Sans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+.ant-select-single {
+    height: 30px !important;
+}
+
+.ant-select-single .ant-select-arrow {
+    color: var(--foundation-dark-normal-active, #3d4c5e);
+}
+
+.ant-input-outlined {
+    border-radius: var(--s, 8px);
+    border: 1px solid var(--Secondary-secondary-50, #fef5e7);
+    background-color: var(--Grey-grey-100, #f6f6f6);
+}
+
+.customCheckbox .ant-checkbox-inner {
+    border: 1px solid var(--Accent-Color-Blue-blue-300, #75acda);
+    background: var(--Blue-50, #eff8ff);
+    width: 18px;
+    height: 18px;
+}
+
+.customCheckbox .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #1269b5 !important; /* istədiyin göy rəng */
+    border-color: #1269b5 !important;
+}
+
+.customCheckbox .ant-checkbox-input:focus + .ant-checkbox-inner {
+    box-shadow: 0 0 0 2px rgba(18, 105, 181, 0.2);
+}
+
+/* React Quill */
+
+.ql-container {
+    color: hsl(var(--clr-grey-300)) !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: var(--wh-250) !important;
+
+    border-radius: var(--r-300) !important;
+    border: 1px solid hsl(var(--clr-grey-300)) !important;
+
+    padding: 16px;
+}
+
+.ql-editor {
+    padding: 0px !important;
+    min-height: var(--wh-600);
+    max-height: var(--wh-650);
+    max-width: 580px;
+    color: hsl(var(--clr-primary-900));
+}
+.ql-editor.ql-blank::before {
+    color: hsl(var(--clr-grey-300)) !important;
+}
+.customToolbar button.ql-bold::before,
+.customToolbar button.ql-italic::before,
+.customToolbar button.ql-underline::before {
+    content: none !important;
+}
+
+.customToolbar button svg {
+    display: block;
+    width: 1em !important;
+    height: 1em !important;
+}

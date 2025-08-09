@@ -1,0 +1,18 @@
+.modalContent {
+    max-width: 472px;
+    width: 100%;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-500);
+}
+
+.body p {
+    color: hsl(var(--clr-grey-600));
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--pm-550);
+}

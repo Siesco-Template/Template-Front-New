@@ -1,0 +1,58 @@
+.container {
+    width: 100%;
+}
+
+.labelWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    color: hsl(var(--clr-blue-900));
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 1px;
+}
+
+.switchButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.inputWrapper {
+    width: 100%;
+}
+
+.datePicker {
+    border-radius: 12px;
+    border: 1px solid var(--foundation-dark-light-active, #909dad);
+    width: 100%;
+}
+
+.inlineContainer {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row-reverse;
+    gap: 10px;
+}
+
+.inlineContainer .labelWrapper {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.inlineContainer .inputWrapper {
+    flex-grow: 1;
+}
+.datePicker {
+    padding: 5px 10px;
+}

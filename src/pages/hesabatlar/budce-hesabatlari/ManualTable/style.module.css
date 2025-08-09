@@ -1,0 +1,113 @@
+.tableWrapper {
+    height: 100%;
+    overflow-y: auto;
+    max-height: 80vh;
+    background-color: white;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    min-width: 700px;
+}
+
+.table thead {
+    background: var(--foundation-surface-light-hover, #f5f7f9);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e3e5e8;
+    text-align: center;
+}
+
+.inputCell {
+    width: 100%;
+    overflow: hidden;
+    color: var(--Foundation-primary-blue-900, #05194a);
+    text-overflow: ellipsis;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 166.667% */
+
+    text-align: inherit; /* parent td-dən alsın */
+    background-color: inherit;
+}
+
+.inputCell:focus {
+    outline: none;
+}
+
+.table .thContent {
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    height: 100% !important;
+    justify-content: space-between;
+}
+
+.table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e3e5e8;
+    vertical-align: middle;
+    background-color: rgb(250, 250, 250);
+}
+
+.thContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 8px;
+    overflow: hidden;
+}
+
+/* ------------------- */
+
+.table th {
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--Foundation-dark-Lighter, #b2bbc6);
+
+    background: var(--foundation-surface-light-hover, #f5f7f9);
+    height: 85px;
+}
+
+.table th span {
+    color: var(--foundation-dark-normal-active, #3d4c5e);
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: center;
+
+    max-width: 190px !important;
+    padding-right: 14px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.catalogWrapper {
+    width: 100%;
+    margin: auto;
+}
+
+.catalogWrapper div {
+    /* max-width: 190px !important; */
+}
+
+.catalogWrapper:first-child div {
+    margin: auto !important;
+}

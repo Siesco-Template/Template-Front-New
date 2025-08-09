@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-100);
+  width: 100%;
+}
+
+.label {
+      font-size: var(--fs-50);
+    color: hsl(var(--clr-primary-900));
+    font-weight: 500;
+    line-height: 16px;
+}
+
+.datePicker {
+  display: flex;
+    align-items: center;
+    gap: var(--pm-200);
+    border: 1px solid hsl(var(--clr-grey-300));
+    padding: 10px var(--pm-400);
+    border-radius: var(--r-300);
+    background-color: hsl(var(--clr-white));
+    width: 100%;
+    max-height: var(--fs-600) !important;
+    min-height: var(--fs-600) !important;
+}
+
+.datePicker:focus {
+  border-color: hsl(var(--clr-primary-500));
+  outline: none;
+}

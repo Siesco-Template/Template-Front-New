@@ -1,0 +1,72 @@
+.table th,
+.table td {
+    max-width: 80px;
+}
+
+.cellText {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    overflow: hidden;
+    color: hsl(var(--clr-grey-600));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.table {
+    width: 100%;
+}
+
+.thead th,
+.subHeader th {
+    border: 1px solid hsl(var(--clr-grey-100));
+    background: hsl(var(--clr-white-200));
+    color: hsl(var(--clr-grey-600));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    position: relative;
+}
+
+.subHeader th {
+    writing-mode: sideways-lr;
+    white-space: nowrap;
+}
+
+.table tbody tr {
+    border-top: 1px solid hsl(var(--clr-grey-100));
+    border-bottom: 1px solid hsl(var(--clr-grey-100));
+}
+
+.table th,
+.table td {
+    padding: var(--pm-300);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.actionCell > label > div {
+    margin: auto;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    animation: fadeIn 0.2s ease-in-out;
+    background-color: hsl(var(--clr-primary-900));
+    color: hsl(var(--clr-white-50));
+    padding: var(--pm-100) var(--pm-150);
+    border-radius: var(--r-200);
+    font-size: var(--fs-25);
+    white-space: nowrap;
+    position: absolute;
+    z-index: 1000;
+}

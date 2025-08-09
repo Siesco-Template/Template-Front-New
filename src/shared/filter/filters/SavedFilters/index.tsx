@@ -1,0 +1,345 @@
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
+import { filterService } from '@/services/filter/filter.service';
+
+import { S_Button } from '@/ui';
+
+import { isValidFilterValue } from '../../config/filterHelpers';
+import SearchHeader from '../../layout/searchHeader';
+import ActionsDropdown from '../../shared/actions/Actions';
+import Button from '../../shared/button';
+import { ArrowLeftIcon, DiskIcon, EditIcon, TrashIcon } from '../../shared/icons';
+import Modal from '../../shared/modal';
+import ConfirmModal from '../../shared/modal';
+import { FilterConfig } from '../../types';
+import TextFilter from '../TextFilter';
+import styles from './style.module.css';
+
+interface SavedFiltersProps {
+    renderFilter: (filter: FilterConfig) => React.ReactNode;
+    onApplyFilter: (filters: FilterConfig[]) => void;
+    table_key: string;
+    filters: FilterConfig[];
+}
+
+const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: SavedFiltersProps) => {
+    const [savedFilters, setSavedFilters] = useState<any[]>([]);
+    const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+    const [selectedFilter, setSelectedFilter] = useState<any>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [editing, setEditing] = useState(false);
+    const [selectedFilterSearchText, setSelectedFilterSearchText] = useState<string>('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [filterToDelete, setFilterToDelete] = useState<any>(null);
+
+    // console.log(selectedFilter, 'selectedFilter');
+    const [loading, setLoading] = useState(true);
+
+    // console.log(filters, 'filters');
+
+    const mergedFilterView: FilterConfig[] = filters.map((f: any) => {
+        const matched = selectedFilter?.filterValues?.find((sf: any) => sf.column === f.key || sf.column === f.column);
+        return {
+            ...f,
+            value: matched?.value ?? f.value ?? '',
+            type: matched?.filterKey ?? f.type,
+            // readOnly: !editing,
+            // disabled: !editing,
+            onChange: (key: string, value: any) => handleUpdateSelectedFilter(f.key, value),
+        };
+    });
+
+    useEffect(() => {
+        setLoading(true);
+        filterService
+            .getFiltersByTableId(table_key)
+            .then((response) => {
+                setSavedFilters(response);
+            })
+            .catch((error) => {
+                console.error('Filterlər alınarkən xəta baş verdi:', error);
+            })
+            .finally(() => setLoading(false));
+    }, []);
+
+    // delete metodu
+    const handleDelete = (id: string) => {
+        const filter = savedFilters.find((filter: any) => filter.id == id);
+        setFilterToDelete(filter);
+        setShowDeleteModal(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (filterToDelete) {
+            filterService
+                .deleteFilter(filterToDelete.id) // Using filter.id to delete the filter
+                .then(() => {
+                    const updatedFilters = savedFilters.filter((filter: any) => filter.id !== filterToDelete.id);
+                    setSavedFilters(updatedFilters);
+                    setShowDeleteModal(false);
+                    setFilterToDelete(null);
+                    toast.success('Filter uğurla silindi');
+                })
+                .catch((error) => {
+                    console.error('Filter silinərkən xəta baş verdi:', error);
+                    setShowDeleteModal(false);
+                    setFilterToDelete(null);
+                });
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
+        setFilterToDelete(null);
+    };
+
+    // context menu
+    const handleToggleDropdown = (id: number | null) => {
+        setOpenDropdownId((prev) => (prev === id ? null : id));
+    };
+
+    // view metodu
+    const handleView = (id: string) => {
+        filterService
+            .getFilterById(id)
+            .then((response) => {
+                setSelectedFilter(response);
+                setEditing(false);
+                setOpenDropdownId(null);
+                // console.log(response.data, 'selectedfiltr');
+            })
+            .catch((error) => {
+                console.error('Filter əldə edərkən xəta baş verdi:', error);
+            });
+    };
+
+    // axtaris
+    const handleSearchChange = (value: string) => {
+        setSearchTerm(value);
+    };
+
+    const filteredFilters = savedFilters?.filter((filter: any) =>
+        filter?.filterTitle?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    );
+
+    const highlightMatch = (text: string, search: string) => {
+        if (!search) return text;
+        const regex = new RegExp(`(${search})`, 'gi');
+        return text.replace(regex, (match) => `<span class=${styles.highlight}>${match}</span>`);
+    };
+
+    // resetleme
+    const handleResetSelectedFilter = () => {
+        setSelectedFilterSearchText('');
+
+        if (!selectedFilter) return;
+
+        const currentHash = window.location.hash.split('?')[0];
+        window.location.hash = currentHash;
+    };
+
+    // edit
+
+    const handleEdit = (id: string) => {
+        const selected = savedFilters.find((filter: any) => filter.id === id);
+        setSelectedFilter(selected);
+        setEditing(true);
+        setOpenDropdownId(null);
+    };
+
+    const handleSaveEditedFilter = () => {
+        if (!selectedFilter) return;
+
+        const updatedFilter = {
+            filterTitle: selectedFilter.filterTitle,
+            filterValues: selectedFilter.filterValues.map((f: any) => ({
+                column: f.column,
+                value: f.value.toString(),
+                filterOperation: f.filterOperation,
+                filterKey: f.filterKey,
+            })),
+        };
+
+        filterService
+            .updateFilter(updatedFilter, selectedFilter.id)
+            .then((response) => {
+                const updatedFilters = savedFilters.map((filter: any) =>
+                    filter.id === selectedFilter.id ? { ...filter, ...updatedFilter } : filter
+                );
+                setSavedFilters(updatedFilters);
+                setEditing(false);
+            })
+            .catch((error) => {
+                console.error('Filteri yeniləyərkən xəta baş verdi:', error);
+            });
+    };
+
+    const handleUpdateSelectedFilter = (key: string, value: any) => {
+        setSelectedFilter((prev: any) => {
+            if (!prev) return prev;
+
+            const existingFilter = prev.filterValues.find((f: any) => f.column === key);
+
+            const baseFilter = filters.find((f: any) => f.key === key || f.column === key);
+
+            if (!baseFilter) return prev;
+
+            const updatedFilter = {
+                column: key,
+                value,
+                filterOperation: baseFilter.type ?? 1,
+                filterKey: baseFilter.type ?? 1,
+            };
+
+            let updatedValues;
+
+            if (existingFilter) {
+                updatedValues = prev.filterValues.map((f: any) => (f.column === key ? { ...f, ...updatedFilter } : f));
+            } else {
+                updatedValues = [...prev.filterValues, updatedFilter];
+            }
+
+            return { ...prev, filterValues: updatedValues };
+        });
+    };
+
+    // select filter for view
+    const handleFilterClick = (id?: string) => {
+        const selected = savedFilters.find((filter: any) => filter.id == id);
+        setSelectedFilter(selected);
+        // console.log(selected, 'selected');
+        onApplyFilter(selected?.filterValues);
+    };
+    return (
+        <ul className={styles.savedFilterList}>
+            <>
+                {selectedFilter ? (
+                    <div className={styles.selectedFilterDetails}>
+                        <div className={styles.selectedFilterHeader}>
+                            <button className={styles.selectedFilterInfo} type="button" onClick={handleFilterClick}>
+                                <ArrowLeftIcon />
+                                <span>
+                                    {selectedFilter.filterTitle.charAt(0).toUpperCase() +
+                                        selectedFilter.filterTitle.slice(1)}
+                                </span>
+                            </button>
+                            <div className={styles.btnGroup}>
+                                {editing ? (
+                                    <S_Button
+                                        variant="main-10"
+                                        isIcon
+                                        iconBtnSize="15"
+                                        color="secondary"
+                                        aria-label="Yadda saxla"
+                                        onClick={handleSaveEditedFilter}
+                                    >
+                                        <DiskIcon width={16} height={16} color="hsl(var(--clr-primary-900))" />
+                                    </S_Button>
+                                ) : (
+                                    <S_Button
+                                        variant="main-10"
+                                        isIcon
+                                        iconBtnSize="15"
+                                        color="secondary"
+                                        aria-label="Düzəliş et"
+                                        onClick={() => setEditing(true)}
+                                    >
+                                        <EditIcon width={16} height={16} color="hsl(var(--clr-primary-900))" />
+                                    </S_Button>
+                                )}
+
+                                <S_Button
+                                    variant="main-10"
+                                    isIcon
+                                    aria-label="Sil"
+                                    iconBtnSize="15"
+                                    onClick={() => handleDelete(selectedFilter.id)}
+                                >
+                                    <TrashIcon width={16} height={16} color="#fff" />
+                                </S_Button>
+                            </div>
+                        </div>
+
+                        <SearchHeader
+                            onReset={handleResetSelectedFilter}
+                            onSearchChange={(val) => setSelectedFilterSearchText(val)}
+                            searchText={selectedFilterSearchText}
+                        />
+                        <div className={styles.selectedFilterMain}>
+                            {mergedFilterView
+                                .filter(
+                                    (f) =>
+                                        f?.label?.toLowerCase().includes(selectedFilterSearchText.toLowerCase()) ||
+                                        f?.column?.toLowerCase().includes(selectedFilterSearchText.toLowerCase())
+                                )
+                                .map((f) => (
+                                    <div key={f.key || f.column}>{renderFilter(f)}</div>
+                                ))}
+                        </div>
+
+                        <Button variant="tertiary" onClick={() => onApplyFilter(selectedFilter.filterValues)}>
+                            Tətbiq et
+                        </Button>
+                    </div>
+                ) : (
+                    <>
+                        <div className={styles.savedFilterTop}>
+                            <h3>Filter</h3>
+                            <TextFilter placeholder="Axtar..." value={searchTerm} onChange={handleSearchChange} />
+                        </div>
+
+                        <ul className={styles.savedFilterList}>
+                            {loading ? (
+                                <div className={styles.spinnerWrapper}>
+                                    <div className={styles.spinner}></div>
+                                </div>
+                            ) : filteredFilters?.length > 0 ? (
+                                filteredFilters.map((filter: any) => (
+                                    <React.Fragment key={filter.id}>
+                                        <li
+                                            className={`${styles.savedFilterRow} ${filter.isDefault ? styles.active : ''}`}
+                                            onDoubleClick={() => handleFilterClick(filter.id)}
+                                        >
+                                            <span
+                                                dangerouslySetInnerHTML={{
+                                                    __html: highlightMatch(filter.filterTitle, searchTerm),
+                                                }}
+                                            />
+                                            <ActionsDropdown
+                                                isOpen={openDropdownId == filter.id}
+                                                onToggle={() =>
+                                                    handleToggleDropdown(
+                                                        openDropdownId === filter.id ? null : filter.id
+                                                    )
+                                                }
+                                                onEdit={() => handleEdit(filter.id)}
+                                                onView={() => handleView(filter.id)}
+                                                onDelete={() => handleDelete(filter.id)}
+                                                filter={filter}
+                                                setSavedFilters={setSavedFilters}
+                                            />
+                                        </li>
+                                    </React.Fragment>
+                                ))
+                            ) : searchTerm ? (
+                                <div className={styles.noResults}>Nəticə tapılmadı</div>
+                            ) : null}
+                        </ul>
+                    </>
+                )}
+                <ConfirmModal
+                    open={showDeleteModal}
+                    onOpenChange={setShowDeleteModal} // və ya handleCancelDelete-unuzu istifadə edin
+                    description={`${filterToDelete?.filterTitle} filterini silmək istədiyinizdən əminsiniz mi?`}
+                    confirmText="Təsdiqlə"
+                    cancelText="Ləğv et"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancelDelete}
+                />
+            </>
+        </ul>
+    );
+};
+
+export default SavedFilters;

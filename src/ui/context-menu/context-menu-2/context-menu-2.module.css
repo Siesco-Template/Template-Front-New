@@ -1,0 +1,23 @@
+.contextMenuWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+}
+
+.contextMenu {
+	position: absolute;
+	background: hsl(var(--clr-background));
+	color: hsl(var(--clr-foreground));
+    /* border: 1px solid hsl(var(--clr-grey-300)); */
+    box-shadow: 2px 2px 5px hsl(var(--clr-grey-300) /.2);
+    border-radius: var(--r-200);
+    padding: var(--pm-200) 0;
+    z-index: 1000;
+    box-shadow: 0px 8px 66px 0px rgba(113, 135, 191, 0.15), 0px 2.92px 45.67px 0px rgba(60, 62, 78, 0.02), 0px 1.418px 20.028px 0px rgba(60, 62, 78, 0.02), 0px 0.695px 8.24px 0px rgba(60, 62, 78, 0.02), 0px 0.275px 2.497px 0px rgba(60, 62, 78, 0.01);
+}
+
+.contextMenuItem {
+    padding: var(--pm-200) var(--pm-300);
+    cursor: pointer;
+}

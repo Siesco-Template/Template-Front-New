@@ -1,0 +1,111 @@
+.settingsHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: var(--global-justify-content);
+    gap: var(--pm-100);
+    margin-bottom: var(--pm-600);
+}
+
+.settingsHeader .headerTitle {
+    color: var(--clr-primary-900, #05194a);
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.settingsHeader .headerDescription {
+    color: hsl(var(--clr-grey-400));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.settingsSection {
+    display: flex;
+    padding: var(--pm-400);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--pm-500);
+    border-radius: var(--r-300);
+    background: hsl(var(--clr-white-600));
+    margin-bottom: var(--pm-400);
+}
+
+.settingsSection .settingsHead {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--pm-100);
+}
+
+.settingsSection h3 {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.settingsSection p {
+    color: hsl(var(--clr-grey-400));
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+/* Cursor */
+.cursorGroup {
+    display: flex;
+    gap: var(--pm-200);
+}
+
+.cursorItem {
+    display: flex;
+    width: 158px;
+    padding: var(--pm-500);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--pm-500);
+    border-radius: var(--r-300);
+    border: var(--wh-25) solid #fff;
+    background: hsl(var(--clr-white-800));
+}
+
+.cursorItem.active {
+    border-color: hsl(var(--clr-primary-500));
+}
+
+.cursorItem span {
+    color: hsl(var(--clr-primary-900));
+    text-align: center;
+    font-size: var(--fs-50);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.cursorSizeSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--pm-200);
+    width: 35%;
+}
+
+.cursorSizeSection h4 {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-100);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+}
+
+.cursorSliderContainer {
+    width: 100%;
+}
