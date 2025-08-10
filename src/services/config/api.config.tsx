@@ -4,10 +4,10 @@ const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
     permission: `${BASE_URL}/permission/Permissions`,
     user: `${BASE_URL}/afmis/User`,
-    excel: `${BASE_URL}/afmis/Excel`,
-    fakeEndpoints: `${BASE_URL}/afmis/FakeEndpoints`,
-    config: `${BASE_URL}/afmis/Config`,
-    filter: `${BASE_URL}/afmis/Filter`,
+    excel: `${BASE_URL}/Excel`,
+    fakeEndpoints: `${BASE_URL}/auth/FakeEndpoints`,
+    config: `${BASE_URL}/auth/Config`,
+    filter: `${BASE_URL}/auth/Filter`,
 } as const;
 
 const API_CONTROLLER = {
