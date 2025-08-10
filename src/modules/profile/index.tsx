@@ -22,7 +22,7 @@ const Profile = () => {
     const { logout } = useAuthStore();
     const [isEditing, setIsEditing] = useState(false);
     const [form, setForm] = useState({
-        name: 'AR Hesablama Palatası',
+        name: 'User Username',
         voen: '1234567890',
         code: 'XYZ–2025',
         asanImza: '0551234567',

@@ -153,7 +153,8 @@ const Elave1: React.FC<TablePageMainProps> = ({
         reportService
             .getAllReports('reports', columns, queryParams)
             .then((res: any) => {
-                setData(res.items);
+                console.log(res.datas, 'clg')
+                setData(res?.datas);
                 setTotalItems(res.totalCount);
             })
             .catch(console.error)
@@ -206,7 +207,7 @@ const Elave1: React.FC<TablePageMainProps> = ({
 
     const columns: CustomMRTColumn<BudceTableData>[] = [
         {
-            accessorKey: 'Number',
+            accessorKey: 'number',
             header: 'Unikal nömrə',
             filterVariant: 'text',
             placeholder: 'Unikal nömrə',

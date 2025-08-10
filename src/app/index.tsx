@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
@@ -9,7 +10,11 @@ import Routing from './routing';
 import { AppInitializer } from './routing/routes';
 
 const App = () => {
-    const { config } = useTableConfig();
+    const { config, loadConfigFromApi } = useTableConfig();
+
+    useEffect(() => {
+        loadConfigFromApi();
+    }, []);
     return (
         <Providers>
             <Toaster position="top-right" reverseOrder={false} />

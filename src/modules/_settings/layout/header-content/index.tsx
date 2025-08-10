@@ -6,9 +6,6 @@ import { useAuthStore } from '@/store/authStore';
 import { APP_URLS } from '@/services/config/url.config';
 import { excelService } from '@/services/import/export/excel.service';
 
-import Notification, { INotification } from '@/modules/notifications/components/Notification';
-import { MOCK_NOTIFICATIONS } from '@/modules/notifications/tabs/ReceivedNotifications/mock';
-
 import {
     DownloadIcon,
     DownloadIconn,
@@ -32,7 +29,7 @@ import styles from './header-content.module.css';
 const Header_Content = () => {
     const navigate = useNavigate();
     const [isPanelOpen, setIsPanelOpen] = useState(false);
-    const [notifications, setNotifications] = useState<INotification[]>(MOCK_NOTIFICATIONS);
+    const [notifications, setNotifications] = useState([]);
 
     const [selectedPanel, setSelectedPanel] = useState<'notifications' | 'history' | 'favorites' | 'downloads'>(
         'notifications'
@@ -51,7 +48,7 @@ const Header_Content = () => {
 
     const handleNotificationDelete = useCallback((notificationId: string) => {
         setNotifications((prevNotifications) =>
-            prevNotifications.filter((notification) => notification.id !== notificationId)
+            prevNotifications.filter((notification: any) => notification.id !== notificationId)
         );
     }, []);
 
@@ -203,16 +200,16 @@ const Header_Content = () => {
                 <>
                     {selectedPanel === 'notifications' && (
                         <section className={styles.panel}>
-                            <h2 className={styles.label}>Dünən</h2>
+                            {/* <h2 className={styles.label}>Dünən</h2> */}
 
-                            {notifications.map((notification) => (
+                            {/* {notifications.map((notification) => (
                                 <Notification
                                     key={notification.id}
                                     notification={notification}
                                     onNotificationClick={() => handleNotificationClick(notification.id)}
                                     onDelete={() => handleNotificationDelete(notification.id)}
                                 />
-                            ))}
+                            ))} */}
                         </section>
                     )}
                     {selectedPanel === 'history' && (
@@ -276,7 +273,6 @@ const Header_Content = () => {
                                                 minute: '2-digit',
                                             });
 
-                                            // Report adı avtomatik generasiya edilir
                                             const datePart = createdAt.toLocaleDateString('az-AZ').replace(/\./g, '-');
                                             const timePart = createdAt.toTimeString().slice(0, 5).replace(':', '-');
                                             const generatedFileName = `Hesabat_${datePart}_${timePart}`;
