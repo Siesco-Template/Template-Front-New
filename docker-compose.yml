@@ -1,12 +1,12 @@
 version: '3.8'
 services:
-    ois-front:
+    template-front:
         container_name: template-front
         build:
             context: .
             dockerfile: Dockerfile
         ports:
-            - '3010:80'
+            - 3010:80
         networks:
             - public-network
 networks:

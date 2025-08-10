@@ -78,6 +78,12 @@ const S_Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, I_InputProps>
                     data-size={inputSize}
                     data-icon={!!icon}
                     autoComplete={autoComplete}
+                    onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                    onKeyDown={(e) => {
+                        if (['e', 'E', '+', '-'].includes(e.key) && inputProps.type === 'number') {
+                            e.preventDefault();
+                        }
+                    }}
                     {...inputProps}
                 />
             )}

@@ -205,11 +205,11 @@
 }
 
 .iconContainer[data-position='left'] {
-    left: 16px;
+    left: 8px;
 }
 
 .iconContainer[data-position='right'] {
-    right: 16px;
+    right: 8px;
 }
 
 .input [data-part='input'][data-icon='true']:has(+ .iconContainer[data-position='right']) {
