@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
 import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
 
+import { excelService } from '@/services/import/export/excel.service';
 import { reportService } from '@/services/reports/reports.service';
 
 import { usePermission } from '@/modules/permission/PermissionContext';
@@ -299,6 +301,52 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
+    const handleSimpleExport = async () => {
+        try {
+            const filterData = filterDataForFetch();
+            console.log(filterData, 'ff');
+            const queryParams = buildQueryParamsFromTableRequest(filterData);
+            console.log(queryParams, 'query');
+            const exportPayload = {
+                tableRequest: {
+                    tableId: 'reports',
+                    columns: 'Id,Number,CompileDate,ReportStatus,Term',
+                    filters: Object.entries(queryParams)
+                        .filter(([key]) => key.startsWith('Filters'))
+                        .reduce((acc, [key, value]) => {
+                            const match = key.match(/Filters\[(\d+)]\.(\w+)/);
+                            if (!match) return acc;
+                            const index = +match[1];
+                            const field = match[2];
+                            acc[index] = { ...acc[index], [field]: value };
+                            return acc;
+                        }, [] as any[]),
+                    pagination: {
+                        page: 1,
+                        take: 1000,
+                        isInfiniteScroll: true,
+                    },
+                    sortBy: queryParams.SortBy || '',
+                    sortDirection: queryParams.SortDirection || '',
+                },
+                columns: [
+                    { propertyName: 'Number', header: 'Unikal nömrə' },
+                    { propertyName: 'CompileDate', header: 'Tərtib tarixi' },
+                    { propertyName: 'ShortName', header: 'Təşkilat adı' },
+                    { propertyName: 'StructuralUnit', header: 'Struktur vahidi' },
+                    { propertyName: 'ReportStatus', header: 'Status' },
+                    { propertyName: 'Code', header: 'Təşkilat kodu' },
+                    { propertyName: 'Term', header: 'Rüb' },
+                ],
+            };
+
+            await excelService.startExportManual(exportPayload);
+            toast.success('Fayl uğurla yükləndi');
+        } catch (error: any) {
+            console.error('Export error:', error);
+        }
+    };
+
     return (
         <>
             <Table_Header
@@ -313,6 +361,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 actions={['create', 'exportFile']}
                 table_key="customer_table"
                 notification={isFilterApplied}
+                onClickExport={handleSimpleExport}
             />
 
             <div className={styles.wrapper}>

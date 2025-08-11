@@ -57,7 +57,7 @@
     gap: var(--pm-400);
     cursor: pointer;
     font-size: var(--fs-100);
-    color: hsl(var(--clr-white));
+    /* color: hsl(var(--clr-white));GetAllUsers */
     border-radius: var(--pm-300);
     font-weight: 500;
     transition: 0.3s;
