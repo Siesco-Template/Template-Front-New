@@ -1,5 +1,7 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+console.log(BASE_URL, 'bbb')
+
 const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
     permission: `${BASE_URL}/permission/Permissions`,
