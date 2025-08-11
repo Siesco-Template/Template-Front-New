@@ -26,10 +26,7 @@ import { LazyLoadable } from './routing.helpers';
 const Qeydiyyat = lazy(() => import('@/pages/teskilatlar/qeydiyyat'));
 const UsersPage = lazy(() => import('@/pages/teskilatlar/istifadeciler'));
 const Huquqlar = lazy(() => import('@/pages/teskilatlar/huquqlar'));
-const Budce_hesabatlari_table = lazy(() => import('@/pages/hesabatlar/budce-hesabatlari/budce_hesabatlari_table'));
-const Budce_hesabati_yeni = lazy(() => import('@/pages/hesabatlar/budce-hesabatlari/budce_hesabati_yeni'));
 const HomePage = lazy(() => import('@/pages/ana-sehife'));
-const Budce_hesabatlari = lazy(() => import('@/pages/hesabatlar/budce-hesabatlari'));
 const BlockUser = lazy(() => import('@/modules/auth/pages/BlockUser/BlockUser'));
 const ChangePassword = lazy(() => import('@/modules/auth/pages/ChangePassword/ChangePassword'));
 const ForgotPassword = lazy(() => import('@/modules/auth/pages/ForgotPassword/ForgotPassword'));
@@ -47,14 +44,6 @@ export const routes: Route[] = [
         children: [
             ...Settings_Route,
 
-            {
-                path: APP_URLS.budceHesabatlari(),
-                element: <LazyLoadable page={<Budce_hesabatlari />} />,
-                isAuth: false,
-                roles: [],
-                children: [],
-                permissionKey: ['user/getAll'],
-            },
             {
                 path: APP_URLS.anaSehife(),
                 element: <HomePage />,
