@@ -89,9 +89,9 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         { accessorKey: 'phoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text', placeholder: 'Əlaqə nömrəsi' },
         { accessorKey: 'email', header: 'E-mail', filterVariant: 'text', placeholder: 'E-mail' },
         {
-            id: 'options',
+            id: 'actions',
             header: '',
-            accessorKey: 'options',
+            accessorKey: 'actions',
             enableColumnFilter: false,
             enableColumnDragging: false,
             enableColumnActions: false,
@@ -124,7 +124,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
-    // ⚠️ typo fix: `.column]` → `.column`
     const buildFilterForFetchQuery = (filterData: Record<string, any>) => {
         const filterQuery: Record<string, any> = {
             skip: filterData.skip || 0,
@@ -268,7 +267,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                     <Table_Footer totalItems={totalCount} table_key="customer_table" />
                 </div>
 
-                {/* Filter panel – sağdakı sürüşən panel (reports səhifəsindəki kimi) */}
                 <div
                     className={[
                         styles.panel,
@@ -286,7 +284,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                     />
                 </div>
 
-                {/* Config panel – sağ */}
                 <div
                     className={[
                         styles.panel,
@@ -304,7 +301,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                 </div>
             </div>
 
-            {/* Modal-lar */}
             <>
                 {isCreateModalOpen && (
                     <UserRecordDialog

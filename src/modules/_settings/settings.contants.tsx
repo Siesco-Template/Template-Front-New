@@ -41,14 +41,7 @@ export const NavigationLinks: NavigationItem[] = [
         permissionKey: [],
         show: true,
     },
-    {
-        href: APP_URLS.notifications(),
-        title: 'Bildirişlər',
-        icon: MenuNotificationIcon,
-        roles: [],
-        permissionKey: ['notification/getAll'],
-        show: true,
-    },
+
     {
         href: APP_URLS.teskilatlar(),
         title: 'Təşkilatlar',
@@ -79,8 +72,6 @@ export const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = 
     home: MenuHomeIcon,
     notifications: MenuNotificationIcon,
     reports: MenuReportIcon,
-    'extra-reports': MenuAdditionalReportIcon,
-    'data-analytics': MenuDataAnalyticsIcon,
     organizations: MenuCompanyIcon,
     catalogs: MenuCatalogIcon,
 };

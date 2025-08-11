@@ -93,7 +93,6 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
                                 className={({ isActive }) => cls(styles.pinnedLink, isActive && styles.linkActive)}
                                 onClick={() => {
                                     setSubMenuOpen(null);
-                                    // toggleSubMenu(sublink.href, true);
                                 }}
                             >
                                 {sublink.title}
