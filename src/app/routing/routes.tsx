@@ -1,6 +1,7 @@
 import { lazy, useEffect } from 'react';
 import { Outlet } from 'react-router';
 
+import Folder from '@/pages/folder';
 import Table_Page from '@/pages/table-page';
 
 import { APP_URLS } from '@/services/config/url.config';
@@ -53,6 +54,12 @@ export const routes: Route[] = [
             {
                 path: APP_URLS.table(),
                 element: <Table_Page />,
+                isAuth: false,
+                roles: [],
+            },
+            {
+                path: APP_URLS.folder(),
+                element: <Folder />,
                 isAuth: false,
                 roles: [],
             },

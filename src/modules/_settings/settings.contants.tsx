@@ -41,7 +41,6 @@ export const NavigationLinks: NavigationItem[] = [
         permissionKey: [],
         show: true,
     },
-
     {
         href: APP_URLS.teskilatlar(),
         title: 'Təşkilatlar',
@@ -74,6 +73,7 @@ export const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = 
     reports: MenuReportIcon,
     organizations: MenuCompanyIcon,
     catalogs: MenuCatalogIcon,
+    folder: MenuCatalogIcon,
 };
 
 export const getIconById = (id?: string) => {
