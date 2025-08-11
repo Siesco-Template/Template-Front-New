@@ -34,7 +34,7 @@ const DialogContent = React.forwardRef<
         <DialogPrimitive.Content ref={ref} className={cls(styles.content, className)} {...props}>
             {children}
             <DialogPrimitive.Close className={styles.close}>
-                <S_Button isIcon variant="main-10" color="secondary">
+                <S_Button isIcon variant="main-20" color="secondary" aria-label="close">
                     <X width={16} height={16} />
                 </S_Button>
                 <span className="sr-only">Close</span>

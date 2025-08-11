@@ -13,17 +13,17 @@ import {
     S_Drawer,
     S_Image,
     S_Input,
-    S_InputPassword,
-    S_InputWithIcon,
     S_Pagination,
     S_RadioGroup,
-    S_Select,
     S_SidePanel,
     S_Slider,
     S_Switch,
     S_Textarea,
     S_Tooltip,
 } from '@/ui';
+import CustomDatePicker from '@/ui/datepicker/date-picker';
+import CustomDateRangePicker from '@/ui/datepicker/date-range-picker';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
 import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
 // Sample data for components
@@ -147,6 +147,9 @@ export default function ComponentsPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [switchValue, setSwitchValue] = useState(false);
     const [checkboxValue, setCheckboxValue] = useState(false);
+    const [dateValue, setDateValue] = useState<Date | null>(null);
+    const [rangeValue, setRangeValue] = useState<[Date, Date] | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
         <div className="!min-h-screen !bg-gradient-to-br !from-gray-50 !to-blue-50">
@@ -204,6 +207,167 @@ export default function ComponentsPage() {
     name="John Doe" 
     size="200" 
 />`}
+                    </CodeExample>
+                </ComponentSection>
+
+                {/* DatePicker Component */}
+                <ComponentSection
+                    title="Date Picker"
+                    description="Date selection components with single date and range support. Based on rsuite pickers and localized labels."
+                >
+                    <DemoSection title="Single Date">
+                        <CustomDatePicker
+                            value={dateValue}
+                            onChange={setDateValue}
+                            placeholder="Tarixi seçin"
+                            format="dd.MM.yyyy"
+                            style={{ width: 280 }}
+                            oneTap
+                        />
+                    </DemoSection>
+
+                    <DemoSection title="With Label and Error">
+                        <CustomDatePicker
+                            label="Tarix"
+                            value={dateValue}
+                            onChange={setDateValue}
+                            placeholder="Tarixi seçin"
+                            format="dd.MM.yyyy"
+                            style={{ width: 280 }}
+                            error={dateValue ? '' : 'Tarix seçilməyib'}
+                            oneTap
+                        />
+                    </DemoSection>
+
+                    <DemoSection title="Date Range">
+                        <CustomDateRangePicker
+                            value={rangeValue}
+                            onChange={setRangeValue}
+                            placeholder="Başlanğıc – Son"
+                            format="dd.MM.yyyy"
+                            style={{ width: 320 }}
+                            showHeader={false}
+                            oneTap
+                        />
+                    </DemoSection>
+
+                    <PropsTable
+                        props={[
+                            { name: 'value', type: 'Date | null', description: 'Selected date value (controlled)' },
+                            { name: 'onChange', type: '(date: Date | null) => void', description: 'Change handler' },
+                            { name: 'placeholder', type: 'string', description: 'Input placeholder' },
+                            { name: 'format', type: 'string', description: 'Display format (e.g. dd.MM.yyyy)' },
+                            {
+                                name: 'label',
+                                type: 'string',
+                                description: 'Optional field label (rendered above input)',
+                            },
+                            {
+                                name: 'error',
+                                type: 'string',
+                                description: 'Optional error text to highlight the field',
+                            },
+                            {
+                                name: 'oneTap',
+                                type: 'boolean',
+                                description: 'Select date on single click (rsuite prop)',
+                            },
+                            {
+                                name: 'showHeader (range)',
+                                type: 'boolean',
+                                description: 'Show/hide header in range picker',
+                            },
+                        ]}
+                    />
+
+                    <CodeExample>
+                        {`import CustomDatePicker from '@/ui/datepicker/date-picker';
+
+<CustomDatePicker
+  value={date}
+  onChange={setDate}
+  placeholder="Tarixi seçin"
+  format="dd.MM.yyyy"
+  style={{ width: 280 }}
+  label="Tarix"
+  error={!date ? 'Tarix seçilməyib' : ''}
+  oneTap
+/>`}
+                    </CodeExample>
+
+                    <CodeExample>
+                        {`import CustomDateRangePicker from '@/ui/datepicker/date-range-picker';
+
+<CustomDateRangePicker
+  value={range}
+  onChange={setRange}
+  placeholder="Başlanğıc – Son"
+  format="dd.MM.yyyy"
+  style={{ width: 320 }}
+  showHeader={false}
+  oneTap
+/>`}
+                    </CodeExample>
+                </ComponentSection>
+
+                {/* Dialog Component */}
+                <ComponentSection
+                    title="Dialog"
+                    description="Accessible dialog component (modal) with header, content and footer slots. See users modals for real usage."
+                >
+                    <DemoSection title="Basic Dialog">
+                        <S_Button variant="main-20" color="primary" onClick={() => setIsDialogOpen(true)}>
+                            Open Dialog
+                        </S_Button>
+
+                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                            <DialogContent className="max-w-lg w-full">
+                                <DialogHeader>
+                                    <DialogTitle>Example Dialog</DialogTitle>
+                                </DialogHeader>
+                                <div className="!space-y-3 w-full">
+                                    <p className="text-gray-700">This is a simple dialog body.</p>
+                                    <S_Textarea resize="vertical" style={{ maxHeight: '200px' }} />
+                                </div>
+                                <DialogFooter>
+                                    <S_Button variant="outlined-10" onClick={() => setIsDialogOpen(false)}>
+                                        Cancel
+                                    </S_Button>
+                                    <S_Button variant="main-10" onClick={() => setIsDialogOpen(false)}>
+                                        Confirm
+                                    </S_Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    </DemoSection>
+
+                    <PropsTable
+                        props={[
+                            { name: 'open', type: 'boolean', description: 'Controls visibility (controlled)' },
+                            { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Change handler' },
+                        ]}
+                    />
+
+                    <CodeExample>
+                        {`import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '@/ui/dialog';
+
+const [open, setOpen] = useState(false);
+
+<>
+  <S_Button onClick={() => setOpen(true)}>Open Dialog</S_Button>
+  <Dialog open={open} onOpenChange={setOpen}>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Title</DialogTitle>
+      </DialogHeader>
+      <p>Content...</p>
+      <DialogFooter>
+        <S_Button variant="outlined-10" onClick={() => setOpen(false)}>Cancel</S_Button>
+        <S_Button variant="main-10" onClick={() => setOpen(false)}>Confirm</S_Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+</>`}
                     </CodeExample>
                 </ComponentSection>
 
@@ -804,7 +968,7 @@ export default function ComponentsPage() {
                     </DemoSection>
 
                     <S_SidePanel open={isSidePanelOpen} onOpenChange={setIsSidePanelOpen} title="Side Panel">
-                        <div className="!p-6">
+                        <div>
                             <h3 className="text-lg font-semibold !mb-4 text-gray-900">Side Panel Content</h3>
                             <p className="text-gray-600 !mb-6">
                                 This is the side panel content. You can put any content here including forms,

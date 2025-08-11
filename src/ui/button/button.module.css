@@ -161,8 +161,7 @@
 .main-10-secondary:active,
 .main-20-secondary:active,
 .main-30-secondary:active {
-    background: hsl(var(--clr-secondary-500));
-    color: hsl(var(--clr-white));
+    background: hsl(var(--clr-white-50));
 }
 
 /* .main-10-secondary:focus,
