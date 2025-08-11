@@ -19,7 +19,7 @@ jobs:
             - name: Deploy to Server
               run: |
                   ssh -o StrictHostKeyChecking=no root@65.108.38.170 << 'EOF'
-                      cd /home/projects/Template/Template-front/Template-Front-New && \
+                      cd /home/projects/Template/Template-Front-New && \
                       git pull origin main && \
                       docker-compose -f ./docker-compose.yml down && \
                       docker-compose -f ./docker-compose.yml up -d --build
