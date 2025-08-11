@@ -24,7 +24,7 @@ import {
     S_Textarea,
     S_Tooltip,
 } from '@/ui';
-import S_Select_Simple from '@/ui/select/select-simple';
+import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
 // Sample data for components
 const RADIO_ITEMS = [
@@ -59,7 +59,7 @@ const ComponentSection = ({
         <div className="!bg-gradient-to-r !from-blue-50 !to-indigo-50 !px-8 !py-6 !border-b !border-gray-100">
             <div className="!flex !items-center !gap-3 !mb-2">
                 <div className="!w-2 !h-2 !bg-blue-500 !rounded-full"></div>
-                <h2 className="!text-2xl !font-bold !text-gray-900">{title}</h2>
+                <h2 className="!text-2xl !font-bold !text-gray-900 !mb-0">{title}</h2>
             </div>
             {description && (
                 <div className="!flex !items-start !gap-2">
@@ -140,7 +140,7 @@ const DemoSection = ({ title, children }: { title: string; children: React.React
 
 export default function ComponentsPage() {
     const [selectedRadio, setSelectedRadio] = useState('1');
-    const [selectedItems, setSelectedItems] = useState<any[]>([]);
+    const [selectedItems, setSelectedItems] = useState<Item[]>([]);
     const [sliderValue, setSliderValue] = useState([50]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
@@ -740,7 +740,7 @@ export default function ComponentsPage() {
                             <S_Select_Simple
                                 label="Single Select"
                                 items={SELECT_ITEMS}
-                                value={selectedItems}
+                                value={selectedItems.map((item) => item.value)}
                                 setSelectedItems={(items) => setSelectedItems(items)}
                                 placeholder="Select an option"
                             />
@@ -750,7 +750,7 @@ export default function ComponentsPage() {
                             <S_Select_Simple
                                 label="Searchable Select"
                                 items={SELECT_ITEMS}
-                                value={selectedItems}
+                                value={selectedItems.map((item) => item.value)}
                                 setSelectedItems={(items) => setSelectedItems(items)}
                                 placeholder="Select multiple options"
                                 showSearch
