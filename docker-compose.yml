@@ -6,7 +6,7 @@ services:
             context: .
             dockerfile: Dockerfile
         ports:
-            - 3010:80
+            - 3013:80
         networks:
             - public-network
 networks:
