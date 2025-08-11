@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
 import { FC, ReactNode } from 'react';
-import styles from './drawer.module.css';
 import { createPortal } from 'react-dom';
+
 import { cls } from '@/shared/utils';
+
+import styles from './drawer.module.css';
 
 type I_DrawerProps = {
     children: ReactNode;
@@ -15,12 +17,22 @@ type I_DrawerProps = {
     contentClassName?: string;
 };
 
-const S_Drawer: FC<I_DrawerProps> = ({ children, position = 'left', isOpen, onClose, width = '80%', contentStyle = {}, contentClassName}) => {
-
+const S_Drawer: FC<I_DrawerProps> = ({
+    children,
+    position = 'left',
+    isOpen,
+    onClose,
+    width = '80%',
+    contentStyle = {},
+    contentClassName,
+}) => {
     return createPortal(
         <>
             <div className={cls(styles.overlay, isOpen ? styles.show : '')} onClick={onClose} />
-            <div className={cls(styles.drawer, styles[position], isOpen ? styles.open : '', contentClassName)} style={{width , ...contentStyle}}>
+            <div
+                className={cls(styles.drawer, styles[position], isOpen ? styles.open : '', contentClassName)}
+                style={{ width, ...contentStyle }}
+            >
                 {children}
             </div>
         </>,

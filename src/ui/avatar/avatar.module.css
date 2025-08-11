@@ -1,16 +1,14 @@
 .avatar {
     border-radius: 99999%;
-    position: relative;
-    background: hsl(var(--clr-background));
+    background: #f2f5f7;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .avatar [data-part='fallback'] {
-    background-color: red;
-    /* position: absolute;
-    top: 50%;
-    transform: translateY(-50%); */
+    font-weight: 600;
+    color: hsl(var(--clr-grey-900));
 }

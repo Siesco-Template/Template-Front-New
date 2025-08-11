@@ -83,7 +83,7 @@
     font-size: var(--fs-100);
     background: hsl(var(--clr-primary-500));
     color: hsl(var(--clr-white-50));
-    border: 1px solid transparent;
+    border: 1px solid hsl(var(--clr-primary-200));
 }
 
 .main-30-primary {
@@ -93,31 +93,28 @@
     font-size: var(--fs-200);
     background: hsl(var(--clr-primary-500));
     color: hsl(var(--clr-white-50));
+    border: 1px solid hsl(var(--clr-primary-200));
 }
 
 .main-10-primary:hover,
-.main-15-primary:hover,
 .main-20-primary:hover,
 .main-30-primary:hover {
     background-color: hsl(var(--clr-primary-700));
 }
 
 /* .main-10-primary:focus,
-.main-15-primary:focus,
 .main-20-primary:focus,
 .main-20-primary:focus {
     border: 1px solid hsl(var(--clr-primary-800) / 0.95);
 } */
 
 .main-10-primary:active,
-.main-15-primary:active,
 .main-20-primary:active,
 .main-30-primary:active {
     background: hsl(var(--clr-primary-500));
 }
 
 .btn.main-10-primary.active-btn,
-.btn.main-15-primary.active-btn,
 .btn.main-20-primary.active-btn,
 .btn.main-30-primary.active-btn {
     background: hsl(var(--clr-primary-500));
@@ -155,30 +152,26 @@
 }
 
 .main-10-secondary:hover,
-.main-15-secondary:hover,
 .main-20-secondary:hover,
 .main-30-secondary:hover {
     background: hsl(var(--clr-white-50));
     /* color: hsl(var(--clr-white)); */
 }
 
-/* .main-10-secondary:active,
-.main-15-secondary:active,
+.main-10-secondary:active,
 .main-20-secondary:active,
 .main-30-secondary:active {
     background: hsl(var(--clr-secondary-500));
     color: hsl(var(--clr-white));
 }
 
-.main-10-secondary:focus,
-.main-15-secondary:focus,
+/* .main-10-secondary:focus,
 .main-20-secondary:focus,
 .main-30-secondary:focus {
     border: 1px solid hsl(var(--clr-secondary-400));
 } */
 
 .btn.main-10-secondary.active-btn,
-.btn.main-15-secondary.active-btn,
 .btn.main-20-secondary.active-btn,
 .btn.main-30-secondary.active-btn {
     background: hsl(var(--clr-secondary-500));
@@ -191,16 +184,6 @@
     color: hsl(var(--clr-white));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    /* min-width: var(--wh-500); */
-    font-size: var(--fs-100);
-}
-
-.main-15-red {
-    border: 1px solid hsl(var(--clr-red-500));
-    background: hsl(var(--clr-red-600));
-    color: hsl(var(--clr-white));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     /* min-width: var(--wh-500); */
     font-size: var(--fs-100);
 }
@@ -226,7 +209,6 @@
 }
 
 .main-10-red:hover,
-.main-15-red:hover,
 .main-20-red:hover,
 .main-30-red:hover {
     background: hsl(var(--clr-red-500));
@@ -234,7 +216,6 @@
 }
 
 .main-10-red:active,
-.main-15-red:active,
 .main-20-red:active,
 .main-30-red:active {
     background: hsl(var(--clr-red-700));
@@ -242,14 +223,12 @@
 }
 
 .main-10-red:focus,
-.main-15-red:focus,
 .main-20-red:focus,
 .main-30-red:focus {
     border: 1px solid hsl(var(--clr-red-700));
 }
 
 .btn.main-10-red.active-btn,
-.btn.main-15-red.active-btn,
 .btn.main-20-red.active-btn,
 .btn.main-30-red.active-btn {
     background: hsl(var(--clr-red-700));
@@ -262,15 +241,6 @@
     color: hsl(var(--clr-white));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-    font-size: var(--fs-100);
-}
-
-.main-15-green {
-    background: hsl(var(--clr-green-500));
-    color: hsl(var(--clr-white));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
     font-size: var(--fs-100);
 }
@@ -296,7 +266,6 @@
 }
 
 .main-10-green:hover,
-.main-15-green:hover,
 .main-20-green:hover,
 .main-30-green:hover {
     border: 1px solid hsl(var(--clr-green-500));
@@ -305,7 +274,6 @@
 }
 
 .main-10-green:active,
-.main-15-green:active,
 .main-20-green:active,
 .main-30-green:active {
     border: 1px solid hsl(var(--clr-green-500));
@@ -314,7 +282,6 @@
 }
 
 .main-10-green:focus,
-.main-15-green:focus,
 .main-20-green:focus,
 .main-30-green:focus {
     border: 1px solid hsl(var(--clr-green-400));
@@ -322,7 +289,6 @@
 }
 
 .btn.main-10-green.active-btn,
-.btn.main-15-green.active-btn,
 .btn.main-20-green.active-btn,
 .btn.main-30-green.active-btn {
     border: 1px solid hsl(var(--clr-green-500));
@@ -344,20 +310,6 @@
     font-size: var(--fs-100);
 }
 
-.btn.main-15-disabled,
-.btn.main-15-disabled:hover,
-.btn.main-15-disabled:focus,
-.btn.main-15-disabled:active {
-    background: hsl(var(--clr-grey-500));
-    color: hsl(var(--clr-white));
-    transform: scale(1);
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
-    min-width: var(--wh-500);
-    font-size: var(--fs-100);
-    cursor: not-allowed;
-}
-
 .btn.main-20-disabled,
 .btn.main-20-disabled:hover,
 .btn.main-20-disabled:focus,
@@ -367,9 +319,9 @@
     transform: scale(1);
     pointer-events: none;
     border-radius: var(--r-300);
-    /* padding: var(--pm-250); */
-    /* min-width: var(--wh-500); */
+    padding: var(--pm-150) var(--pm-300);
     cursor: not-allowed;
+    min-width: calc(var(--wh-500));
 }
 
 .btn.main-30-disabled,
@@ -418,7 +370,6 @@
 }
 
 .outlined-10-primary:hover,
-.outlined-15-primary:hover,
 .outlined-20-primary:hover,
 .outlined-30-primary:hover {
     border: 1px solid hsl(var(--clr-primary-700));
@@ -426,7 +377,6 @@
 }
 
 .outlined-10-primary:active,
-.outlined-15-primary:active,
 .outlined-20-primary:active,
 .outlined-30-primary:active {
     border: 1px solid hsl(var(--clr-primary-600));
@@ -435,7 +385,6 @@
 }
 
 .btn.outlined-10-primary.active-btn,
-.btn.outlined-15-primary.active-btn,
 .btn.outlined-20-primary.active-btn,
 .btn.outlined-30-primary.active-btn {
     border: 1px solid hsl(var(--clr-primary-600));
@@ -449,15 +398,6 @@
     color: hsl(var(--clr-secondary-500));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
-.outlined-15-secondary {
-    border: 1px solid hsl(var(--clr-secondary-500));
-    background: transparent;
-    color: hsl(var(--clr-secondary-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
 }
 
@@ -483,7 +423,6 @@
 }
 
 .outlined-10-secondary:hover,
-.outlined-15-secondary:hover,
 .outlined-20-secondary:hover,
 .outlined-30-secondary:hover {
     border: 1px solid hsl(var(--clr-secondary-500));
@@ -492,7 +431,6 @@
 }
 
 .outlined-10-secondary:active,
-.outlined-15-secondary:active,
 .outlined-20-secondary:active,
 .outlined-30-secondary:active {
     border: 1px solid hsl(var(--clr-secondary-600));
@@ -501,7 +439,6 @@
 }
 
 .btn.outlined-10-secondary.active-btn,
-.btn.outlined-15-secondary.active-btn,
 .btn.outlined-20-secondary.active-btn,
 .btn.outlined-30-secondary.active-btn {
     border: 1px solid hsl(var(--clr-secondary-600));
@@ -515,15 +452,6 @@
     color: hsl(var(--clr-red-600));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
-.outlined-15-red {
-    border: 1px solid hsl(var(--clr-red-500));
-    background: transparent;
-    color: hsl(var(--clr-red-600));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
 }
 
@@ -564,7 +492,6 @@
 }
 
 .btn.outlined-10-red.active-btn,
-.btn.outlined-15-red.active-btn,
 .btn.outlined-20-red.active-btn,
 .btn.outlined-30-red.active-btn {
     border: 1px solid hsl(var(--clr-red-500));
@@ -578,15 +505,6 @@
     color: hsl(var(--clr-green-500));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
-.outlined-15-green {
-    border: 1px solid hsl(var(--clr-green-500));
-    background: transparent;
-    color: hsl(var(--clr-green-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
 }
 
@@ -611,7 +529,6 @@
 }
 
 .outlined-10-green:hover,
-.outlined-15-green:hover,
 .outlined-20-green:hover,
 .outlined-30-green:hover {
     border: 1px solid hsl(var(--clr-green-500));
@@ -620,7 +537,6 @@
 }
 
 .outlined-10-green:active,
-.outlined-15-green:active,
 .outlined-20-green:active,
 .outlined-30-green:active {
     border: 1px solid hsl(var(--clr-green-500));
@@ -629,7 +545,6 @@
 }
 
 .btn.outlined-10-green:focus,
-.btn.outlined-15-green:focus,
 .btn.outlined-20-green:focus,
 .btn.outlined-30-green:focus {
     border: 1px solid hsl(var(--clr-green-600));
@@ -638,7 +553,6 @@
 }
 
 .btn.outlined-10-green.active-btn,
-.btn.outlined-15-green.active-btn,
 .btn.outlined-20-green.active-btn,
 .btn.outlined-30-green.active-btn {
     border: 1px solid hsl(var(--clr-green-600));
@@ -655,19 +569,6 @@
     color: hsl(var(--clr-grey-500));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-    transform: scale(1);
-}
-
-.btn.outlined-15-disabled,
-.btn.outlined-15-disabled:hover,
-.btn.outlined-15-disabled:focus,
-.btn.outlined-15-disabled:active {
-    border: 1px solid hsl(var(--clr-grey-500));
-    background: transparent;
-    color: hsl(var(--clr-grey-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
     transform: scale(1);
 }
@@ -709,14 +610,6 @@
     /* min-width: var(--wh-500); */
 }
 
-.ghost-15-primary {
-    background: transparent;
-    color: hsl(var(--clr-primary-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
 .ghost-20-primary {
     background: transparent;
     color: hsl(var(--clr-primary-500));
@@ -736,7 +629,6 @@
 }
 
 .ghost-10-primary:hover,
-.ghost-15-primary:hover,
 .ghost-20-primary:hover,
 .ghost-30-primary:hover {
     /* background: hsl(var(--clr-primary-50));
@@ -745,7 +637,6 @@
 }
 
 .ghost-10-primary:active,
-.ghost-15-primary:active,
 .ghost-20-primary:active,
 .ghost-30-primary:active {
     background: hsl(var(--clr-primary-500));
@@ -753,7 +644,6 @@
 }
 
 .btn.ghost-10-primary.active-btn,
-.btn.ghost-15-primary.active-btn,
 .btn.ghost-20-primary.active-btn,
 .btn.ghost-30-primary.active-btn {
     background: hsl(var(--clr-primary-500));
@@ -765,14 +655,6 @@
     color: hsl(var(--clr-secondary-500));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
-.ghost-15-secondary {
-    background: transparent;
-    color: hsl(var(--clr-secondary-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
 }
 
@@ -795,7 +677,6 @@
 }
 
 .ghost-10-secondary:hover,
-.ghost-15-secondary:hover,
 .ghost-20-secondary:hover,
 .ghost-30-secondary:hover {
     background: hsl(var(--clr-secondary-50));
@@ -803,7 +684,6 @@
 }
 
 .ghost-10-secondary:active,
-.ghost-15-secondary:active,
 .ghost-20-secondary:active,
 .ghost-30-secondary:active {
     background: hsl(var(--clr-secondary-500));
@@ -811,7 +691,6 @@
 }
 
 .btn.ghost-10-secondary.active-btn,
-.btn.ghost-15-secondary.active-btn,
 .btn.ghost-20-secondary.active-btn,
 .btn.ghost-30-secondary.active-btn {
     background: hsl(var(--clr-secondary-500));
@@ -819,7 +698,6 @@
 }
 
 .ghost-10-secondary:focus,
-.ghost-15-secondary:focus,
 .ghost-20-secondary:focus,
 .ghost-30-secondar:focus {
     background: hsl(var(--clr-secondary-50));
@@ -831,14 +709,6 @@
     color: hsl(var(--clr-red-500));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
-.ghost-15-red {
-    background: transparent;
-    color: hsl(var(--clr-red-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
 }
 
@@ -861,7 +731,6 @@
 }
 
 .ghost-10-red:hover,
-.ghost-15-red:hover,
 .ghost-20-red:hover,
 .ghost-30-red:hover {
     background: hsl(var(--clr-red-50));
@@ -869,7 +738,6 @@
 }
 
 .ghost-10-red:active,
-.ghost-15-red:active,
 .ghost-20-red:active,
 .ghost-30-red:active {
     background: hsl(var(--clr-red-500));
@@ -877,7 +745,6 @@
 }
 
 .btn.ghost-10-red.active-btn,
-.btn.ghost-15-red.active-btn,
 .btn.ghost-20-red.active-btn,
 .btn.ghost-30-red.active-btn {
     background: hsl(var(--clr-red-500));
@@ -889,14 +756,6 @@
     color: hsl(var(--clr-green-500));
     border-radius: var(--r-600);
     padding: var(--pm-200) var(--pm-400);
-    min-width: var(--wh-500);
-}
-
-.ghost-15-green {
-    background: transparent;
-    color: hsl(var(--clr-green-500));
-    border-radius: var(--r-600);
-    padding: var(--pm-300) var(--pm-400);
     min-width: var(--wh-500);
 }
 
@@ -919,7 +778,6 @@
 }
 
 .ghost-10-green:hover,
-.ghost-15-green:hover,
 .ghost-20-green:hover,
 .ghost-30-green:hover {
     background: hsl(var(--clr-green-50));
@@ -927,7 +785,6 @@
 }
 
 .ghost-10-green:active,
-.ghost-15-green:active,
 .ghost-20-green:active,
 .ghost-30-green:active {
     background: hsl(var(--clr-green-500));
@@ -935,7 +792,6 @@
 }
 
 .btn.ghost-10-green.active-btn,
-.btn.ghost-15-green.active-btn,
 .btn.ghost-20-green.active-btn,
 .btn.ghost-30-green.active-btn {
     background: hsl(var(--clr-green-500));

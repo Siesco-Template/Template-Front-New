@@ -243,8 +243,8 @@ html {
 /* color(light-mode) */
 :root {
     /* this colors is constant on dark mode too */
-    /* --clr-white: 0 0 100;
-    --clr-black: 0 0 25; */
+    --clr-white: 0 0 100;
+    --clr-black: 0 0 25;
 
     /* this changes on dark mode  */
     --clr-background: 0 0 100;

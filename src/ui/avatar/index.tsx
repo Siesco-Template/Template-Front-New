@@ -52,11 +52,7 @@ const S_Avatar: FC<I_AvatarProps> = ({ image, name, className, size = '200', ...
             className={cls(styles.avatar, className)}
             style={{ width: avatarSize[size], height: avatarSize[size] }}
         >
-            {name && (
-                <Avatar.Fallback style={{ width: avatarSize[size], height: avatarSize[size] }}>
-                    {nameFirstChars}
-                </Avatar.Fallback>
-            )}
+            {name && <Avatar.Fallback>{nameFirstChars}</Avatar.Fallback>}
             {image && (
                 <AvatarNextImage
                     src={image || '...'}

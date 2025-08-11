@@ -21,7 +21,6 @@ interface I_InputProps extends Field.InputProps {
     rows?: number;
     resize?: 'both' | 'horizontal' | 'vertical' | 'none';
     icon?: any;
-    fieldClassName?: string;
     iconPosition?: 'left' | 'right';
 }
 
@@ -36,7 +35,6 @@ const S_Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, I_InputProps>
         descriptionProps,
         errorText,
         className,
-        fieldClassName,
         rootProps,
         autoComplete = 'off',
         textarea = false,
@@ -71,25 +69,27 @@ const S_Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, I_InputProps>
                     style={{ resize: resize }}
                 />
             ) : (
-                <Field.Input
-                    ref={ref as React.Ref<HTMLInputElement>}
-                    className={cls(styles.field, fieldClassName)}
-                    data-error={isError}
-                    data-size={inputSize}
-                    data-icon={!!icon}
-                    autoComplete={autoComplete}
-                    onWheel={(e) => (e.target as HTMLInputElement).blur()}
-                    onKeyDown={(e) => {
-                        if (['e', 'E', '+', '-'].includes(e.key) && inputProps.type === 'number') {
-                            e.preventDefault();
-                        }
-                    }}
-                    {...inputProps}
-                />
-            )}
-            {icon && (
-                <div className={styles.iconContainer} data-position={iconPosition}>
-                    {icon}
+                <div className={styles.inputContainer}>
+                    <Field.Input
+                        ref={ref as React.Ref<HTMLInputElement>}
+                        className={cls(styles.field)}
+                        data-error={isError}
+                        data-size={inputSize}
+                        data-icon={!!icon}
+                        autoComplete={autoComplete}
+                        onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                        onKeyDown={(e) => {
+                            if (['e', 'E', '+', '-'].includes(e.key) && inputProps.type === 'number') {
+                                e.preventDefault();
+                            }
+                        }}
+                        {...inputProps}
+                    />
+                    {icon && (
+                        <button type="button" className={styles.iconContainer} data-position={iconPosition}>
+                            {icon}
+                        </button>
+                    )}
                 </div>
             )}
             {!errorText && description && <Field.HelperText {...descriptionProps}>{description}</Field.HelperText>}
