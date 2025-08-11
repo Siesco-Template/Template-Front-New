@@ -534,7 +534,6 @@ function Table<T extends Record<string, any>>({
             const mergedBorder = rowConfig.border || {};
 
             const getBackgroundColor = () => {
-                // Əgər bu sətrin id-si xüsusi olaraq rənglənmək istənirsə, onu önə al
                 if (props.highlightedRowIds?.includes(row.id)) {
                     return '#E6F0FF';
                 }

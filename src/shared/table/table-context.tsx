@@ -8,7 +8,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -91,7 +91,7 @@ export const TableProvider: FC<TableProviderProps> = ({ tableKey, children }) =>
         };
 
         setFilterDataOnUrl(newData);
-        setFilterDataState(changeFilterDataForTable(newData)); // <-- Əsas hissə
+        setFilterDataState(changeFilterDataForTable(newData));
     };
 
     const onSortChange = (filtering: any) => {

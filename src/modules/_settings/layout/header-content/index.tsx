@@ -56,7 +56,6 @@ const Header_Content = () => {
         try {
             const items = await excelService.getItemsManual();
             setDownloadItems(items);
-            // console.log('Fayllar uğurla gətirildi:', items);
         } catch (error) {
             console.error('Fayllar gətirilərkən xəta baş verdi:', error);
         }

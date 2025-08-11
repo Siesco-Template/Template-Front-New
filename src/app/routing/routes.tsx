@@ -1,6 +1,8 @@
 import { lazy, useEffect } from 'react';
 import { Outlet } from 'react-router';
 
+import Table_Page from '@/pages/table-page';
+
 import { APP_URLS } from '@/services/config/url.config';
 
 import Settings_Route from '@/modules/_settings';
@@ -23,7 +25,6 @@ import { Route } from './index';
 import ProtectedRoute from './protectedRoute';
 import { LazyLoadable } from './routing.helpers';
 
-const Qeydiyyat = lazy(() => import('@/pages/teskilatlar/qeydiyyat'));
 const UsersPage = lazy(() => import('@/pages/teskilatlar/istifadeciler'));
 const Huquqlar = lazy(() => import('@/pages/teskilatlar/huquqlar'));
 const HomePage = lazy(() => import('@/pages/ana-sehife'));
@@ -50,6 +51,12 @@ export const routes: Route[] = [
                 roles: [],
             },
             {
+                path: APP_URLS.table(),
+                element: <Table_Page />,
+                isAuth: false,
+                roles: [],
+            },
+            {
                 path: APP_URLS.notifications(),
                 element: <NotificationPage />,
                 isAuth: false,
@@ -68,13 +75,6 @@ export const routes: Route[] = [
                 isAuth: false,
                 roles: [],
                 children: [
-                    {
-                        path: APP_URLS.qeydiyyat(),
-                        element: <LazyLoadable page={<Qeydiyyat />} />,
-                        isAuth: true,
-                        roles: [],
-                        permissionKey: ['organization/getReyestr'],
-                    },
                     {
                         path: APP_URLS.istifadeciler(),
                         element: <LazyLoadable page={<UsersPage />} />,
@@ -148,7 +148,7 @@ export const routes: Route[] = [
 export const AppInitializer = ({ config }: { config: any }) => {
     useEffect(() => {
         if (config) {
-            console.log(config, 'Config from context');
+            // console.log(config, 'Config from context');
             const layoutState = getLayoutFromContext(config.extraConfig?.interfaceSettings);
             const viewAndContentState = getViewAndContentFromContext(config.extraConfig?.visualSettings);
             const typographyState = getTypographyFromContext(config.extraConfig?.textSettings);
@@ -171,7 +171,6 @@ export const AppInitializer = ({ config }: { config: any }) => {
 
             const themeArray = themeEntries.map(([_, themeObj]) => themeObj);
 
-            // console.log(themeArray, 'Theme List from config');
             const currentThemeId = config.extraConfig?.visualSettings.currentTheme;
             const previousThemeId = config.extraConfig?.visualSettings.previousTheme;
 

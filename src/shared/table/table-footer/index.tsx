@@ -7,12 +7,12 @@ import { useTableConfig } from '../tableConfigContext';
 import styles from './style.module.css';
 
 interface TableFooterProps {
-    totalItems: number;
+    totalItems?: number;
     isInfiniteScroll?: boolean;
-    table_key:string;
+    table_key?: string;
 }
 
-const Table_Footer: React.FC<TableFooterProps> = ({ totalItems, isInfiniteScroll = false, table_key }) => {
+const Table_Footer: React.FC<TableFooterProps> = ({ totalItems, isInfiniteScroll = false, table_key }: any) => {
     const { filterDataState, onPaginationChange, setFilterDataState } = useTableContext();
     const { config } = useTableConfig();
     const defaultTake = config.tables?.[table_key]?.row?.paginationTakeCount ?? filterDataState.take;
@@ -26,9 +26,8 @@ const Table_Footer: React.FC<TableFooterProps> = ({ totalItems, isInfiniteScroll
             take: defaultTake,
             skip: prev.skip ?? 0,
         }));
-    }, []); 
+    }, []);
 
-    
     useEffect(() => {
         if (!hasUserChanged.current) {
             setPageSize(defaultTake);

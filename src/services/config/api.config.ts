@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-console.log(BASE_URL, 'bbb')
+console.log(BASE_URL, 'bbb');
 
 const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
@@ -10,6 +10,7 @@ const GATEWAY = {
     fakeEndpoints: `${BASE_URL}/auth/FakeEndpoints`,
     config: `${BASE_URL}/auth/Config`,
     filter: `${BASE_URL}/auth/Filter`,
+    report: `${BASE_URL}/auth/Report`,
 } as const;
 
 const API_CONTROLLER = {
@@ -20,6 +21,7 @@ const API_CONTROLLER = {
     fakeEndpoints: (url = '') => `${GATEWAY.fakeEndpoints}${url}`,
     config: (url = '') => `${GATEWAY.config}${url}`,
     filter: (url = '') => `${GATEWAY.filter}${url}`,
+    report: (url = '') => `${GATEWAY.report}${url}`,
 };
 
 export default API_CONTROLLER;
