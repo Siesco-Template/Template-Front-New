@@ -48,33 +48,12 @@ export const routes: Route[] = [
             ...Settings_Route,
 
             {
-                path: APP_URLS.hesabatlar(),
-                element: <Outlet />,
+                path: APP_URLS.budceHesabatlari(),
+                element: <LazyLoadable page={<Budce_hesabatlari />} />,
                 isAuth: false,
                 roles: [],
-                children: [
-                    {
-                        path: APP_URLS.budceHesabatlari(),
-                        element: <LazyLoadable page={<Budce_hesabatlari />} />,
-                        isAuth: true,
-                        roles: [],
-                        permissionKey: ['report/getAll'],
-                    },
-                    {
-                        path: APP_URLS.budceHesabatlariEtrafli(':id'),
-                        element: <LazyLoadable page={<Budce_hesabatlari_table />} />,
-                        isAuth: true,
-                        roles: [],
-                        permissionKey: ['report/getAll'],
-                    },
-                    {
-                        path: APP_URLS.budceHesabatlariYeni(':slug'),
-                        element: <LazyLoadable page={<Budce_hesabati_yeni />} />,
-                        isAuth: true,
-                        roles: [],
-                        permissionKey: ['report/getAll', 'report/create'],
-                    },
-                ],
+                children: [],
+                permissionKey: ['user/getAll'],
             },
             {
                 path: APP_URLS.anaSehife(),
