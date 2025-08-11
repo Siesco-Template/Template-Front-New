@@ -1,12 +1,12 @@
 import { CSSProperties, FC, FunctionComponent } from 'react';
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Avatar, AvatarRootProps, useAvatarContext } from '@ark-ui/react';
 
 import { cls } from '@/shared/utils';
 
 import styles from './avatar.module.css';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 type IAvatarSize = '100' | '200' | '300' | '400' | '500' | '600' | '700' | '750' | '800' | '850' | '900';
 interface I_AvatarProps extends AvatarRootProps {
     name?: string;
@@ -49,17 +49,20 @@ const S_Avatar: FC<I_AvatarProps> = ({ image, name, className, size = '200', ...
     return (
         <Avatar.Root
             {...props}
-            className={cls(styles.avatar, styles[`size-${size}`], className)}
+            className={cls(styles.avatar, className)}
             style={{ width: avatarSize[size], height: avatarSize[size] }}
         >
-            {name && <Avatar.Fallback>{nameFirstChars}</Avatar.Fallback>}
+            {name && (
+                <Avatar.Fallback style={{ width: avatarSize[size], height: avatarSize[size] }}>
+                    {nameFirstChars}
+                </Avatar.Fallback>
+            )}
             {image && (
                 <AvatarNextImage
                     src={image || '...'}
                     width={avatarSize[size]}
                     height={avatarSize[size]}
                     alt={name || ''}
-                    
                 />
             )}
         </Avatar.Root>
@@ -74,7 +77,7 @@ type ImageProps = {
     height?: string | number;
     alt?: string;
     hidden?: boolean;
-}
+};
 const AvatarNextImage = (props: ImageProps) => {
     const avatar = useAvatarContext();
     const { hidden, ...imageProps } = avatar.getImageProps() as ImageProps;

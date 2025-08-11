@@ -1,15 +1,16 @@
 .avatar {
-	border-radius: 99999%;
-	position: relative;
-	background: hsl(var(--clr-background));
-	text-align: center;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    border-radius: 99999%;
+    position: relative;
+    background: hsl(var(--clr-background));
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.avatar [data-part="fallback"] {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
+.avatar [data-part='fallback'] {
+    background-color: red;
+    /* position: absolute;
+    top: 50%;
+    transform: translateY(-50%); */
 }

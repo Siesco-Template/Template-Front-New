@@ -18,38 +18,10 @@ export const APP_URLS = {
     budceHesabatlariInfo: (slug = ':slug', reportId = ':reportId', urlParams = {}) =>
         APP_URLS.root(`/hesabatlar/budce-hesabatlari/${slug}/info/${reportId}`, urlParams),
 
-    investisiyaHesabatlari: (url = '', urlParams = {}) =>
-        APP_URLS.root('/hesabatlar/investisiya-hesabatlari' + url, urlParams),
-    maliyyeHesabatlari: (url = '', urlParams = {}) => APP_URLS.root('/hesabatlar/maliyye-hesabatlari' + url, urlParams),
-    maliyyeHesabatlariYeni: (slug = '', urlParams = {}) =>
-        APP_URLS.root(`/hesabatlar/maliyye-hesabatlari/${slug}/yeni`, urlParams),
-    maliyyeHesabatlariEtrafli: (slug = '', urlParams = {}) => APP_URLS.root(`/hesabatlar/maliyye-hesabatlari/${slug}`, urlParams),
-    satinalmaMelumatlari: (url = '', urlParams = {}) =>
-        APP_URLS.root('/hesabatlar/satinalma-melumatlari' + url, urlParams),
-    satinalmaMelumatlariYeni: (slug = '', urlParams = {}) =>
-        APP_URLS.root(`/hesabatlar/satinalma-melumatlari/${slug}/yeni`, urlParams),
-    satinalmaMelumatlariEtrafli: (slug = '', urlParams = {}) => APP_URLS.root(`/hesabatlar/satinalma-melumatlari/${slug}`, urlParams),
-    mn: (url = '', urlParams = {}) => APP_URLS.root('/hesabatlar/mn-hesabatlari' + url, urlParams),
-    mnHesabatlariYeni: (slug = '', urlParams = {}) =>
-        APP_URLS.root(`/hesabatlar/mn-hesabatlari/${slug}/yeni`, urlParams),
-    mnHesabatlariEtrafli: (slug = '', urlParams = {}) => APP_URLS.root(`/hesabatlar/mn-hesabatlari/${slug}`, urlParams),
-
-    elaveHesabatlar: (url = '', urlParams = {}) => APP_URLS.root('/elave-hesabatlar' + url, urlParams),
-    muqayiseHesabatlari: (url = '', urlParams = {}) =>
-        APP_URLS.root('/elave-hesabatlar/muqayise-hesabatlari' + url, urlParams),
-    digerDaxiliHesabatlar: (url = '', urlParams = {}) =>
-        APP_URLS.root('/elave-hesabatlar/diger-daxili-hesabatlar' + url, urlParams),
-
-    dataAnalitika: (url = '', urlParams = {}) => APP_URLS.root('/data-analitika' + url, urlParams),
-    dashboard: (url = '', urlParams = {}) => APP_URLS.root('/data-analitika/dashboard' + url, urlParams),
-    Bİanalitika: (url = '', urlParams = {}) => APP_URLS.root('/data-analitika/BI-analitika' + url, urlParams),
-
     teskilatlar: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar' + url, urlParams),
     qeydiyyat: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar/qeydiyyat' + url, urlParams),
     istifadeciler: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar/istifadeciler' + url, urlParams),
     huquqlar: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar/huquqlar' + url, urlParams),
-
-    kataloqlar: (url = '', urlParams = {}) => APP_URLS.root('/kataloqlar' + url, urlParams),
 
     login: (url = '', urlParams = {}) => APP_URLS.root('/login' + url, urlParams),
     register: (url = '', urlParams = {}) => APP_URLS.root('/register' + url, urlParams),
@@ -68,4 +40,5 @@ export const APP_URLS = {
     notifications: (url = '', urlParams = {}) => APP_URLS.root('/bildirisler' + url, urlParams),
     profile: (url = '', urlParams = {}) => APP_URLS.root('/profil' + url, urlParams),
 
+    components: (url = '', urlParams = {}) => APP_URLS.root('/components' + url, urlParams),
 };

@@ -9,11 +9,13 @@ import S_Image from './image/index';
 import S_Input from './input';
 import S_InputPassword from './input/input-password';
 import S_InputWithIcon from './input/input-with-icon';
+import S_Pagination from './pagination';
 import S_RadioGroup from './radio-group';
 import S_Select from './select';
 import S_SidePanel from './side-panel';
 import S_Slider from './slider/index';
 import S_Switch from './switch';
+import S_Textarea from './textarea';
 import S_Tooltip from './tooltip';
 
 export {
@@ -35,5 +37,7 @@ export {
     S_ContextMenu2,
     S_Slider,
     S_SidePanel,
+    S_Pagination,
+    S_Textarea,
     Dialog,
 };
