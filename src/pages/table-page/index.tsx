@@ -41,12 +41,6 @@ export const ReportStatusColors: Record<ReportStatus, { bg: string; text: string
     [ReportStatus.Sent]: { bg: 'rgba(255, 153, 0, 0.1)', text: '#FF9900' },
 };
 
-const slugToLabel: Record<string, string> = {
-    'elave-1': 'Əlavə №1',
-    'elave-2': 'Əlavə №2',
-    'elave-3': 'Əlavə №3',
-};
-
 interface TablePageMainProps {
     isFilterCollapsed: boolean;
     onToggleCollapse: () => void;
@@ -84,7 +78,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const { permissions } = usePermission();
     const { id } = useParams();
 
-    const label = slugToLabel[id ?? ''] || 'Naməlum hesabat';
     const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState<BudceTableData[]>([]);
@@ -114,11 +107,21 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         const raw: any = filterDataForFetch();
         const queryParams: any = buildQueryParamsFromTableRequest(raw);
 
-        const visibleColumns = Object.entries(columnVisibility)
-            .filter(([_, isVisible]) => isVisible)
-            .map(([colKey]) => colKey);
+        const allowed = new Set(
+            columns.map((c) => c.accessorKey).filter((k): k is string => typeof k === 'string' && k.trim() !== '')
+        );
 
-        queryParams.columns = visibleColumns.join(',');
+        let visibleColumns = Object.entries(columnVisibility)
+            .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key))
+            .map(([key]) => key);
+
+        visibleColumns = Array.from(new Set(visibleColumns));
+
+        if (visibleColumns.length > 0) {
+            queryParams.columns = visibleColumns.join(',');
+        } else {
+            delete queryParams.columns;
+        }
 
         reportService
             .getAllReports('reports', queryParams)
@@ -155,18 +158,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
                 return <div>{formatted}</div>;
             },
-        },
-        {
-            accessorKey: 'StructuralUnit',
-            header: 'Struktur vahidi',
-            filterVariant: 'text',
-            placeholder: 'Təşkilatın struktur vahidi  ',
-        },
-        {
-            accessorKey: 'ShortName',
-            header: 'Təşkilat adı',
-            filterVariant: 'text',
-            placeholder: 'Təşkilat adı',
         },
 
         {
@@ -215,13 +206,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     </span>
                 );
             },
-        },
-
-        {
-            accessorKey: 'Code',
-            header: 'Təşkilat kodu',
-            filterVariant: 'text',
-            placeholder: 'Təşkilat kodu',
         },
     ];
 
@@ -320,7 +304,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             <Table_Header
                 columns={columns}
                 data={data}
-                title={label}
+                title={'Table Demo'}
                 onToggleFilter={onToggleCollapse}
                 onToggleConfig={onToggleConfigCollapse}
                 onRefresh={fetchData}
