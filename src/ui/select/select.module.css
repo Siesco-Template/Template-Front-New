@@ -103,7 +103,7 @@
     flex-shrink: 0;
 }
 .arrowIcon path {
-   fill: #9E9E9E;
+    fill: #9e9e9e;
     /* #9E9E9 */
 }
 
@@ -180,6 +180,7 @@
     box-sizing: border-box;
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid #e4e7ec;
+    width: 100%;
 }
 
 .searchInput::placeholder {

@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef, useState } from 'react';
+import { FC, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 import { Portal, Select, createListCollection } from '@ark-ui/react';
 
@@ -53,6 +53,25 @@ const S_Select_Simple: FC<I_Select_SimpleProps> = ({
     const [filter, setFilter] = useState('');
     const hasResult = useRef(false);
 
+    const triggerRef = useRef<HTMLButtonElement | null>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | undefined>(undefined);
+
+    useLayoutEffect(() => {
+        const el = triggerRef.current;
+        if (!el) return;
+
+        const setWidth = () => setTriggerWidth(el.offsetWidth);
+        setWidth();
+
+        const ro = new ResizeObserver(setWidth);
+        ro.observe(el);
+        window.addEventListener('resize', setWidth);
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', setWidth);
+        };
+    }, []);
+
     const filteredItems = items.map((item) => {
         if (item.label.toLowerCase().includes(filter.toLowerCase())) {
             hasResult.current = true;
@@ -78,7 +97,7 @@ const S_Select_Simple: FC<I_Select_SimpleProps> = ({
             {label && <Select.Label className={styles.label}>{label}</Select.Label>}
 
             <Select.Control className={styles.control}>
-                <Select.Trigger className={styles.trigger} data-invalid={!!error ? 'true' : undefined}>
+                <Select.Trigger ref={triggerRef} className={styles.trigger} data-invalid={!!error ? 'true' : undefined}>
                     <Select.ValueText
                         className={cls(
                             styles.value,
@@ -113,7 +132,7 @@ const S_Select_Simple: FC<I_Select_SimpleProps> = ({
                 <Select.Positioner>
                     <Select.Content
                         className={styles.selectSimpleContent}
-                        style={{ minWidth: itemsContentMinWidth, maxWidth: itemsContentMaxWidth }}
+                        style={{ minWidth: itemsContentMinWidth, maxWidth: itemsContentMaxWidth, width: triggerWidth }}
                     >
                         {showSearch && (
                             <div className={styles.searchContainer}>

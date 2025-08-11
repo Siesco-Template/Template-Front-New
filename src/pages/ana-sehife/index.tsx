@@ -24,7 +24,7 @@ import {
     S_Textarea,
     S_Tooltip,
 } from '@/ui';
-import S_Select_Simple from '@/ui/select/select-simple';
+import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
 // Sample data for components
 const RADIO_ITEMS = [
@@ -46,107 +46,107 @@ const CONTEXT_MENU_ITEMS = [
     { label: 'Delete', onClick: () => console.log('Delete clicked'), value: 'delete', icon: <TrashIcon size={16} /> },
 ];
 
+const ComponentSection = ({
+    title,
+    children,
+    description,
+}: {
+    title: string;
+    children: React.ReactNode;
+    description?: string;
+}) => (
+    <div className="!mb-12 !bg-white !rounded-xl !shadow-sm !border !border-gray-100 !overflow-hidden hover:!shadow-md !transition-shadow !duration-200">
+        <div className="!bg-gradient-to-r !from-blue-50 !to-indigo-50 !px-8 !py-6 !border-b !border-gray-100">
+            <div className="!flex !items-center !gap-3 !mb-2">
+                <div className="!w-2 !h-2 !bg-blue-500 !rounded-full"></div>
+                <h2 className="!text-2xl !font-bold !text-gray-900 !mb-0">{title}</h2>
+            </div>
+            {description && (
+                <div className="!flex !items-start !gap-2">
+                    <InfoIcon className="!w-5 !h-5 !text-blue-500 !mt-0.5 !flex-shrink-0" />
+                    <p className="!text-gray-600 !leading-relaxed">{description}</p>
+                </div>
+            )}
+        </div>
+        <div className="!p-8">
+            <div className="!space-y-6">{children}</div>
+        </div>
+    </div>
+);
+
+const CodeExample = ({ children }: { children: React.ReactNode }) => (
+    <div className="!bg-gray-900 !rounded-lg !p-4 !overflow-x-auto">
+        <div className="!flex !items-center !gap-2 !mb-3">
+            <CodeIcon className="!w-4 !h-4 !text-gray-400" />
+            <span className="!text-gray-400 !text-sm !font-medium">Code Example</span>
+        </div>
+        <pre className="!text-sm !font-mono !text-gray-100 !leading-relaxed !select-text">
+            <code className="!select-text">{children}</code>
+        </pre>
+    </div>
+);
+
+const PropsTable = ({
+    props,
+}: {
+    props: Array<{ name: string; type: string; description: string; required?: boolean }>;
+}) => (
+    <div className="!bg-gray-50 !rounded-lg !p-6">
+        <h4 className="!font-semibold !text-gray-900 !mb-4 !flex !items-center !gap-2">
+            <div className="!w-1.5 !h-1.5 !bg-gray-400 !rounded-full"></div>
+            Props
+        </h4>
+        <div className="!overflow-x-auto">
+            <table className="!w-full !text-sm">
+                <thead>
+                    <tr className="!border-b !border-gray-200">
+                        <th className="!text-left !py-2 !px-3 !font-semibold !text-gray-700">Prop</th>
+                        <th className="!text-left !py-2 !px-3 !font-semibold !text-gray-700">Type</th>
+                        <th className="!text-left !py-2 !px-3 !font-semibold !text-gray-700">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.map((prop, index) => (
+                        <tr key={index} className="!border-b !border-gray-100 hover:!bg-gray-50">
+                            <td className="!py-2 !px-3">
+                                <code className="!bg-blue-100 !text-blue-800 !px-2 !py-1 !rounded !text-xs !font-mono">
+                                    {prop.name}
+                                    {prop.required && <span className="!text-red-500 !ml-1">*</span>}
+                                </code>
+                            </td>
+                            <td className="!py-2 !px-3">
+                                <code className="!bg-gray-100 !text-gray-700 !px-2 !py-1 !rounded !text-xs !font-mono">
+                                    {prop.type}
+                                </code>
+                            </td>
+                            <td className="!py-2 !px-3 !text-gray-600">{prop.description}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+);
+
+const DemoSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <div className="!bg-white !border !border-gray-200 !rounded-lg !p-6">
+        <h5 className="!font-medium !text-gray-900 !mb-4 !flex !items-center !gap-2">
+            <div className="!w-1 !h-1 !bg-gray-400 !rounded-full"></div>
+            {title}
+        </h5>
+        <div className="!flex !flex-wrap !gap-4 !items-center">{children}</div>
+    </div>
+);
+
 export default function ComponentsPage() {
     const [selectedRadio, setSelectedRadio] = useState('1');
-    const [selectedItems, setSelectedItems] = useState<any[]>([]);
+    const [selectedItems, setSelectedItems] = useState<Item[]>([]);
     const [sliderValue, setSliderValue] = useState([50]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [switchValue, setSwitchValue] = useState(false);
     const [checkboxValue, setCheckboxValue] = useState(false);
-
-    const ComponentSection = ({
-        title,
-        children,
-        description,
-    }: {
-        title: string;
-        children: React.ReactNode;
-        description?: string;
-    }) => (
-        <div className="!mb-12 !bg-white !rounded-xl !shadow-sm !border !border-gray-100 !overflow-hidden hover:!shadow-md !transition-shadow !duration-200">
-            <div className="!bg-gradient-to-r !from-blue-50 !to-indigo-50 !px-8 !py-6 !border-b !border-gray-100">
-                <div className="!flex !items-center !gap-3 !mb-2">
-                    <div className="!w-2 !h-2 !bg-blue-500 !rounded-full"></div>
-                    <h2 className="!text-2xl !font-bold !text-gray-900">{title}</h2>
-                </div>
-                {description && (
-                    <div className="!flex !items-start !gap-2">
-                        <InfoIcon className="!w-5 !h-5 !text-blue-500 !mt-0.5 !flex-shrink-0" />
-                        <p className="!text-gray-600 !leading-relaxed">{description}</p>
-                    </div>
-                )}
-            </div>
-            <div className="!p-8">
-                <div className="!space-y-6">{children}</div>
-            </div>
-        </div>
-    );
-
-    const CodeExample = ({ children }: { children: React.ReactNode }) => (
-        <div className="!bg-gray-900 !rounded-lg !p-4 !overflow-x-auto">
-            <div className="!flex !items-center !gap-2 !mb-3">
-                <CodeIcon className="!w-4 !h-4 !text-gray-400" />
-                <span className="!text-gray-400 !text-sm !font-medium">Code Example</span>
-            </div>
-            <pre className="!text-sm !font-mono !text-gray-100 !leading-relaxed !select-text">
-                <code className="!select-text">{children}</code>
-            </pre>
-        </div>
-    );
-
-    const PropsTable = ({
-        props,
-    }: {
-        props: Array<{ name: string; type: string; description: string; required?: boolean }>;
-    }) => (
-        <div className="!bg-gray-50 !rounded-lg !p-6">
-            <h4 className="!font-semibold !text-gray-900 !mb-4 !flex !items-center !gap-2">
-                <div className="!w-1.5 !h-1.5 !bg-gray-400 !rounded-full"></div>
-                Props
-            </h4>
-            <div className="!overflow-x-auto">
-                <table className="!w-full !text-sm">
-                    <thead>
-                        <tr className="!border-b !border-gray-200">
-                            <th className="!text-left !py-2 !px-3 !font-semibold !text-gray-700">Prop</th>
-                            <th className="!text-left !py-2 !px-3 !font-semibold !text-gray-700">Type</th>
-                            <th className="!text-left !py-2 !px-3 !font-semibold !text-gray-700">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {props.map((prop, index) => (
-                            <tr key={index} className="!border-b !border-gray-100 hover:!bg-gray-50">
-                                <td className="!py-2 !px-3">
-                                    <code className="!bg-blue-100 !text-blue-800 !px-2 !py-1 !rounded !text-xs !font-mono">
-                                        {prop.name}
-                                        {prop.required && <span className="!text-red-500 !ml-1">*</span>}
-                                    </code>
-                                </td>
-                                <td className="!py-2 !px-3">
-                                    <code className="!bg-gray-100 !text-gray-700 !px-2 !py-1 !rounded !text-xs !font-mono">
-                                        {prop.type}
-                                    </code>
-                                </td>
-                                <td className="!py-2 !px-3 !text-gray-600">{prop.description}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-
-    const DemoSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
-        <div className="!bg-white !border !border-gray-200 !rounded-lg !p-6">
-            <h5 className="!font-medium !text-gray-900 !mb-4 !flex !items-center !gap-2">
-                <div className="!w-1 !h-1 !bg-gray-400 !rounded-full"></div>
-                {title}
-            </h5>
-            <div className="!flex !flex-wrap !gap-4 !items-center">{children}</div>
-        </div>
-    );
 
     return (
         <div className="!min-h-screen !bg-gradient-to-br !from-gray-50 !to-blue-50">
@@ -629,84 +629,6 @@ export default function ComponentsPage() {
                     </CodeExample>
                 </ComponentSection>
 
-                {/* Input Password Component */}
-                {/* <ComponentSection
-                    title="Input Password"
-                    description="Password input field with show/hide toggle functionality. Includes built-in security features and accessibility support."
-                >
-                    <DemoSection title="Password Input">
-                        <S_InputPassword label="Password" placeholder="Enter password" />
-                    </DemoSection>
-
-                    <PropsTable
-                        props={[
-                            { name: 'label', type: 'string', description: 'Input label text' },
-                            { name: 'description', type: 'string', description: 'Helper text below input' },
-                            { name: 'errorText', type: 'string', description: 'Error message text' },
-                            {
-                                name: 'inputSize',
-                                type: "'default' | 'medium' | 'small'",
-                                description: 'Input field size',
-                            },
-                        ]}
-                    />
-
-                    <CodeExample>
-                        {`<S_InputPassword 
-    label="Password"
-    placeholder="Enter password"
-    description="Must be at least 8 characters"
-    inputSize="medium"
-/>`}
-                    </CodeExample>
-                </ComponentSection> */}
-
-                {/* Input with Icon Component */}
-                {/* <ComponentSection
-                    title="Input with Icon"
-                    description="Input field with integrated icon and click handler support. Perfect for search inputs and interactive form fields."
-                >
-                    <div className="space-y-6 max-w-md">
-                        <DemoSection title="Icon Inputs">
-                            <S_InputWithIcon
-                                label="Search Input"
-                                placeholder="Search..."
-                                icon={<SearchIcon size={16} />}
-                                onClickIcon={() => console.log('Search clicked')}
-                            />
-
-                            <S_InputWithIcon
-                                label="Input with Right Icon"
-                                placeholder="Enter text"
-                                icon={<PlusIcon size={16} />}
-                                onClickIcon={() => console.log('Icon clicked')}
-                            />
-                        </DemoSection>
-                    </div>
-
-                    <PropsTable
-                        props={[
-                            { name: 'label', type: 'string', description: 'Input label text' },
-                            { name: 'icon', type: 'ReactNode', description: 'Icon element to display', required: true },
-                            { name: 'onClickIcon', type: '() => void', description: 'Icon click handler function' },
-                            {
-                                name: 'inputSize',
-                                type: "'default' | 'medium' | 'small'",
-                                description: 'Input field size',
-                            },
-                        ]}
-                    />
-
-                    <CodeExample>
-                        {`<S_InputWithIcon 
-    label="Search"
-    placeholder="Search..."
-    icon={<SearchIcon size={16} />}
-    onClickIcon={() => console.log('Search clicked')}
-/>`}
-                    </CodeExample>
-                </ComponentSection> */}
-
                 {/* Pagination Component */}
                 <ComponentSection
                     title="Pagination"
@@ -818,7 +740,7 @@ export default function ComponentsPage() {
                             <S_Select_Simple
                                 label="Single Select"
                                 items={SELECT_ITEMS}
-                                value={selectedItems}
+                                value={selectedItems.map((item) => item.value)}
                                 setSelectedItems={(items) => setSelectedItems(items)}
                                 placeholder="Select an option"
                             />
@@ -828,7 +750,7 @@ export default function ComponentsPage() {
                             <S_Select_Simple
                                 label="Searchable Select"
                                 items={SELECT_ITEMS}
-                                value={selectedItems}
+                                value={selectedItems.map((item) => item.value)}
                                 setSelectedItems={(items) => setSelectedItems(items)}
                                 placeholder="Select multiple options"
                                 showSearch
@@ -1056,7 +978,7 @@ export default function ComponentsPage() {
                     title="Textarea"
                     description="Multi-line text input with customizable size and resize options. Perfect for longer text content like descriptions or comments."
                 >
-                    <div className="space-y-6 max-w-md">
+                    <div className="!space-y-6 max-w-md">
                         <DemoSection title="Basic Textarea">
                             <S_Textarea
                                 label="Basic Textarea"
