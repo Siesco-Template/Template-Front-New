@@ -3,8 +3,6 @@ import { NavLink, useLocation, useNavigate } from 'react-router';
 
 import { useAuthStore } from '@/store/authStore';
 
-import { APP_URLS } from '@/services/config/url.config';
-
 import { usePermission } from '@/modules/permission/PermissionContext';
 import { hasPermission } from '@/modules/permission/PermissionGuard';
 
@@ -32,8 +30,6 @@ const Sidebar = () => {
     const { user } = useAuthStore();
     const { permissions } = usePermission();
 
-    const alwaysOpenMenus = [APP_URLS.hesabatlar()];
-
     const filterRoutesByRoleAndPermission = (routes: NavigationItem[], userRole: UserRole): NavigationItem[] => {
         const roleFilteredRoutes = routes
             .filter((route) => {
@@ -59,10 +55,6 @@ const Sidebar = () => {
     const filteredNavigationLinks = filterRoutesByRoleAndPermission(navigationLinks, user.userRole);
 
     const toggleSubMenu = (itemHref: string) => {
-        if (alwaysOpenMenus.includes(itemHref)) {
-            setSubMenuOpen(itemHref);
-            return;
-        }
         setSubMenuOpen((prev) => (prev === itemHref ? null : itemHref));
     };
 
@@ -74,18 +66,11 @@ const Sidebar = () => {
 
         let activeParentHref: string | null = null;
 
-        const alwaysOpenItem = filteredNavigationLinks.find(
-            (item) => item.subLinks && alwaysOpenMenus.includes(item.href)
+        const activeParent = filteredNavigationLinks.find((item) =>
+            item.subLinks?.some((subLink) => subLink.href === location.pathname)
         );
-        if (alwaysOpenItem) {
-            activeParentHref = alwaysOpenItem.href;
-        } else {
-            const activeParent = filteredNavigationLinks.find((item) =>
-                item.subLinks?.some((subLink) => subLink.href === location.pathname)
-            );
-            if (activeParent) {
-                activeParentHref = activeParent.href;
-            }
+        if (activeParent) {
+            activeParentHref = activeParent.href;
         }
 
         setSubMenuOpen(activeParentHref);
@@ -95,13 +80,9 @@ const Sidebar = () => {
         if (!pinned) {
             filteredNavigationLinks.forEach((item) => {
                 if (item.subLinks) {
-                    if (alwaysOpenMenus.includes(item.href)) {
+                    const hasActiveChild = item.subLinks.some((subLink) => subLink.href === location.pathname);
+                    if (hasActiveChild) {
                         setSubMenuOpen(item.href);
-                    } else {
-                        const hasActiveChild = item.subLinks.some((subLink) => subLink.href === location.pathname);
-                        if (hasActiveChild) {
-                            setSubMenuOpen(item.href);
-                        }
                     }
                 }
             });

@@ -50,23 +50,6 @@ export const NavigationLinks: NavigationItem[] = [
         show: true,
     },
     {
-        href: APP_URLS.hesabatlar(),
-        title: 'Hesabatlar',
-        icon: MenuReportIcon,
-        roles: [],
-        permissionKey: [],
-        show: true,
-        subLinks: [
-            {
-                title: 'Büdcə hesabatları',
-                href: APP_URLS.budceHesabatlari(),
-                roles: [],
-                permissionKey: ['report/getAll'],
-                show: true,
-            },
-        ],
-    },
-    {
         href: APP_URLS.teskilatlar(),
         title: 'Təşkilatlar',
         icon: MenuCompanyIcon,

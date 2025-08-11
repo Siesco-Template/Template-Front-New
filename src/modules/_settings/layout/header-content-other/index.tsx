@@ -21,7 +21,7 @@ const Header_content_other = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleClose = () => {
         setIsModalOpen(false);
-        onClose?.(); // reset çağırırıq
+        onClose?.(); 
     };
     const navigate = useNavigate();
 

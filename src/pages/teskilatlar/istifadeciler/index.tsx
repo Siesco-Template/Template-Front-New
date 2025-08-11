@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
 
@@ -17,11 +17,11 @@ import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
 import { Table } from '@/shared/table';
-import { TableProvider } from '@/shared/table/table-context';
+import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { FilterTypeEnum, filterDataForFetch } from '@/shared/table/table-helpers';
-import { useTableConfig } from '@/shared/table/tableConfigContext';
+import { TableConfigProvider, useTableConfig } from '@/shared/table/tableConfigContext';
 import TableRowActions from '@/shared/table/tableRowActions';
 
 import { BlockModal } from './BlockModal';
@@ -70,6 +70,7 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
 
     const { loadConfigFromApi } = useTableConfig();
+    const { filterDataState } = useTableContext();
 
     useEffect(() => {
         loadConfigFromApi();
@@ -100,17 +101,11 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
             Cell: ({ row }) => {
                 const onClick = (action: 'edit' | 'delete' | 'block' | 'permissions' | 'resetPassword') => {
                     setSelectedUserId(row.id);
-                    if (action === 'edit') {
-                        setIsEditModalOpen(true);
-                    } else if (action === 'block') {
-                        setIsBlockModalOpen(true);
-                    } else if (action === 'delete') {
-                        setIsDeleteModalOpen(true);
-                    } else if (action === 'permissions') {
-                        navigate(APP_URLS.huquqlar('', { userId: row.id }));
-                    } else if (action === 'resetPassword') {
-                        setIsResetPasswordModalOpen(true);
-                    }
+                    if (action === 'edit') setIsEditModalOpen(true);
+                    else if (action === 'block') setIsBlockModalOpen(true);
+                    else if (action === 'delete') setIsDeleteModalOpen(true);
+                    else if (action === 'permissions') navigate(APP_URLS.huquqlar('', { userId: row.id }));
+                    else if (action === 'resetPassword') setIsResetPasswordModalOpen(true);
                 };
                 return (
                     <TableRowActions
@@ -129,6 +124,7 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
+    // ⚠️ typo fix: `.column]` → `.column`
     const buildFilterForFetchQuery = (filterData: Record<string, any>) => {
         const filterQuery: Record<string, any> = {
             skip: filterData.skip || 0,
@@ -136,7 +132,7 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         };
 
         filterData.filter?.forEach((filter: FilterItem, i: number) => {
-            filterQuery[`Filters[${i}].column]`] = filter.id;
+            filterQuery[`Filters[${i}].column`] = filter.id;
             filterQuery[`Filters[${i}].type`] = filter.type;
 
             if (filter.type === FilterTypeEnum.RangeNumberOrDate && Array.isArray(filter.value)) {
@@ -169,7 +165,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
 
         try {
             const res = await userService.getAllUsers(filterQuery);
-
             if (!res) {
                 toast.error('Işçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.');
                 setTableData([]);
@@ -196,70 +191,120 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     }, [searchParams]);
 
     const filterColumns = [
-        {
-            accessorKey: 'firstName',
-            header: 'Ad',
-            filterVariant: 'text',
-        },
-        {
-            accessorKey: 'lastName',
-            header: 'Soyad',
-            filterVariant: 'text',
-        },
-        {
-            accessorKey: 'appUserRole',
-            header: 'Vəzifə',
-            filterVariant: 'text',
-        },
-        {
-            accessorKey: 'phoneNumber',
-            header: 'Əlaqə nömrəsi',
-            filterVariant: 'text',
-        },
-        {
-            accessorKey: 'email',
-            header: 'E-mail',
-            filterVariant: 'text',
-        },
+        { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text' },
+        { accessorKey: 'lastName', header: 'Soyad', filterVariant: 'text' },
+        { accessorKey: 'appUserRole', header: 'Vəzifə', filterVariant: 'text' },
+        { accessorKey: 'phoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text' },
+        { accessorKey: 'email', header: 'E-mail', filterVariant: 'text' },
     ];
 
     const [filters, setFilters] = useState<FilterConfig[]>([]);
-
     useEffect(() => {
-        const generatedFilters = generateFiltersFromColumns(filterColumns);
-        setFilters(generatedFilters);
+        const generated = generateFiltersFromColumns(filterColumns);
+        setFilters(generated);
     }, []);
 
     const handleCreate = async () => {
         setIsCreateModalOpen(false);
         await fetchUsers();
     };
-
     const handleEdit = async () => {
         setIsEditModalOpen(false);
         setSelectedUserId(null);
         await fetchUsers();
     };
-
     const handleBlock = async () => {
         setIsBlockModalOpen(false);
         setSelectedUserId(null);
         await fetchUsers();
     };
-
     const handleDelete = async () => {
         setIsDeleteModalOpen(false);
         setSelectedUserId(null);
         await fetchUsers();
     };
-
     const handleResetPassword = () => {
         setIsDeleteModalOpen(false);
         setSelectedUserId(null);
     };
 
-    const renderModals = () => {
-        return (
+    const isFilterApplied = !!(filterDataState.filter && filterDataState.filter.length > 0);
+
+    return (
+        <>
+            <Table_Header
+                columns={columns}
+                data={tableData}
+                title="İstifadəçilər"
+                onToggleFilter={onToggleCollapse}
+                onToggleConfig={onToggleConfigCollapse}
+                onClickRightBtn={() => setIsCreateModalOpen(true)}
+                onRefresh={fetchUsers}
+                page="user"
+                actions={['create']}
+                table_key="customer_table"
+                notification={isFilterApplied}
+            />
+
+            <div className={styles.wrapper}>
+                <div
+                    className={styles.tableArea}
+                    style={{
+                        marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px',
+                    }}
+                >
+                    <div className={styles.tableScrollWrapper}>
+                        <Table
+                            columns={columns}
+                            data={tableData}
+                            enableColumnResizing={false}
+                            enableMultiSelect={false}
+                            enableColumnOrdering={false}
+                            isLoading={isLoading}
+                            isConfigCollapsed={isConfigCollapsed}
+                            tableKey="customer_table"
+                        />
+                    </div>
+                    <Table_Footer totalItems={totalCount} table_key="customer_table" />
+                </div>
+
+                {/* Filter panel – sağdakı sürüşən panel (reports səhifəsindəki kimi) */}
+                <div
+                    className={[
+                        styles.panel,
+                        styles.filterPanel,
+                        isFilterCollapsed ? styles.collapsed : styles.expanded,
+                    ].join(' ')}
+                >
+                    <FilterPanel
+                        filters={filters}
+                        storageKey="customer_table"
+                        onChange={() => {}}
+                        isCollapsed={isFilterCollapsed}
+                        onToggleCollapse={onToggleCollapse}
+                        table_key="customer_table"
+                    />
+                </div>
+
+                {/* Config panel – sağ */}
+                <div
+                    className={[
+                        styles.panel,
+                        styles.configPanel,
+                        isConfigCollapsed ? styles.collapsed : styles.expanded,
+                    ].join(' ')}
+                >
+                    <ConfigPanel
+                        isCollapsed={isConfigCollapsed}
+                        onToggleCollapse={onToggleConfigCollapse}
+                        modalTableData={tableData}
+                        table_key="customer_table"
+                        modalTableColumns={columns}
+                    />
+                </div>
+            </div>
+
+            {/* Modal-lar */}
             <>
                 {isCreateModalOpen && (
                     <UserRecordDialog
@@ -303,55 +348,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                     />
                 )}
             </>
-        );
-    };
-
-    return (
-        <>
-            <Table_Header
-                columns={columns}
-                data={tableData}
-                title="İstifadəçilər"
-                onToggleFilter={onToggleCollapse}
-                onToggleConfig={onToggleConfigCollapse}
-                onClickRightBtn={() => setIsCreateModalOpen(true)}
-                onRefresh={fetchUsers}
-                page="user"
-                actions={['create']}
-            />
-            <div className={styles.wrapper}>
-                <div className={styles.tableArea}>
-                    <div className={styles.tableScrollWrapper}>
-                        <Table<IUser>
-                            columns={columns}
-                            data={tableData}
-                            enableColumnResizing={false}
-                            enableMultiSelect={false}
-                            enableColumnOrdering={false}
-                            isLoading={isLoading}
-                            tableKey="customer_table"
-                        />
-                    </div>
-                    <Table_Footer totalItems={totalCount} />
-                </div>
-                <FilterPanel
-                    filters={filters}
-                    storageKey="customer_table"
-                    onChange={() => {}}
-                    isCollapsed={isFilterCollapsed}
-                    onToggleCollapse={onToggleCollapse}
-                    table_key="customer_table"
-                />
-                <ConfigPanel
-                    isCollapsed={isConfigCollapsed}
-                    onToggleCollapse={onToggleConfigCollapse}
-                    modalTableData={[]}
-                    table_key="customer_table"
-                    modalTableColumns={[]}
-                />
-            </div>
-
-            {renderModals()}
         </>
     );
 };
@@ -380,12 +376,12 @@ export default function UsersPage() {
 
     return (
         <TableProvider tableKey="customer_table">
-                <UsersTableContent
-                    isFilterCollapsed={isFilterCollapsed}
-                    onToggleCollapse={handleToggleFilterPanel}
-                    isConfigCollapsed={isConfigCollapsed}
-                    onToggleConfigCollapse={handleToggleConfigPanel}
-                />
+            <UsersTableContent
+                isFilterCollapsed={isFilterCollapsed}
+                onToggleCollapse={handleToggleFilterPanel}
+                isConfigCollapsed={isConfigCollapsed}
+                onToggleConfigCollapse={handleToggleConfigPanel}
+            />
         </TableProvider>
     );
 }

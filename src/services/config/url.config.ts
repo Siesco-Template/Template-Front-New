@@ -9,19 +9,10 @@ export const APP_URLS = {
     root: (url = '', urlParams = {}) => URL_CREATOR(url, urlParams),
 
     anaSehife: (url = '', urlParams = {}) => APP_URLS.root('/' + url, urlParams),
-    hesabatlar: (url = '', urlParams = {}) => APP_URLS.root('/hesabatlar' + url, urlParams),
-    budceHesabatlari: (url = '', urlParams = {}) => APP_URLS.root('/hesabatlar/budce-hesabatlari' + url, urlParams),
-    budceHesabatlariYeni: (slug = '', urlParams = {}) =>
-        APP_URLS.root(`/hesabatlar/budce-hesabatlari/${slug}/yeni`, urlParams),
-    budceHesabatlariEtrafli: (slug = '', urlParams = {}) =>
-        APP_URLS.root(`/hesabatlar/budce-hesabatlari/${slug}`, urlParams),
-    budceHesabatlariInfo: (slug = ':slug', reportId = ':reportId', urlParams = {}) =>
-        APP_URLS.root(`/hesabatlar/budce-hesabatlari/${slug}/info/${reportId}`, urlParams),
 
-    teskilatlar: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar' + url, urlParams),
-    qeydiyyat: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar/qeydiyyat' + url, urlParams),
-    istifadeciler: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar/istifadeciler' + url, urlParams),
-    huquqlar: (url = '', urlParams = {}) => APP_URLS.root('/teskilatlar/huquqlar' + url, urlParams),
+    teskilatlar: (url = '', urlParams = {}) => APP_URLS.root('/organizations' + url, urlParams),
+    istifadeciler: (url = '', urlParams = {}) => APP_URLS.root('/organizations/users' + url, urlParams),
+    huquqlar: (url = '', urlParams = {}) => APP_URLS.root('/organizations/permissions' + url, urlParams),
 
     login: (url = '', urlParams = {}) => APP_URLS.root('/login' + url, urlParams),
     register: (url = '', urlParams = {}) => APP_URLS.root('/register' + url, urlParams),
@@ -41,4 +32,5 @@ export const APP_URLS = {
     profile: (url = '', urlParams = {}) => APP_URLS.root('/profil' + url, urlParams),
 
     components: (url = '', urlParams = {}) => APP_URLS.root('/components' + url, urlParams),
+    table: (url = '', urlParams = {}) => APP_URLS.root('/table' + url, urlParams),
 };
