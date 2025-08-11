@@ -5,59 +5,58 @@ push:
     branches: [main]
 
 jobs:
-build:
-    runs-on: ubuntu-latest
-    steps:
-     - uses: actions/checkout@v4
+   build:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v4
 
-     - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-         node-version: 20
-         cache: 'npm'
+      - name: Use Node.js 20
+         uses: actions/setup-node@v4
+         with:
+            node-version: 20
+            cache: 'npm'
 
-     - name: Install deps
-        run: npm ci
+      - name: Install deps
+         run: npm ci
 
-     - name: Build
-        run: npm run build
+      - name: Build
+         run: npm run build
 
-     - name: Tar build
-        run: tar -czf dist.tgz -C dist .
+      - name: Tar build
+         run: tar -czf dist.tgz -C dist .
 
-     - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-         name: dist-archive
-         path: dist.tgz
+      - name: Upload artifact
+         uses: actions/upload-artifact@v4
+         with:
+            name: dist-archive
+            path: dist.tgz
+   deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+      - name: Download artifact
+         uses: actions/download-artifact@v4
+         with:
+            name: dist-archive
+            path: .
 
-deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-     - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-         name: dist-archive
-         path: .
+      - name: Start SSH agent (use private key from secrets)
+         uses: webfactory/ssh-agent@v0.9.0
+         with:
+            ssh-private-key: ${{ secrets.SSH_KEY }}
 
-     - name: Start SSH agent (use private key from secrets)
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-         ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Copy files to server
+         run: |
+            scp -o StrictHostKeyChecking=no dist.tgz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/dist.tgz
 
-     - name: Copy files to server
-        run: |
-         scp -o StrictHostKeyChecking=no dist.tgz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/dist.tgz
-
-     - name: Unpack & deploy on server
-        run: |
-         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            set -e
-            mkdir -p ${{ secrets.DEPLOY_PATH }}
-            rm -rf ${ { secrets.DEPLOY_PATH } }_prev || true
-            mv ${{ secrets.DEPLOY_PATH }} ${ { secrets.DEPLOY_PATH } }_prev || true
-            mkdir -p ${{ secrets.DEPLOY_PATH }}
-            tar -xzf /tmp/dist.tgz -C ${{ secrets.DEPLOY_PATH }}
-            rm -f /tmp/dist.tgz
-         EOF
+      - name: Unpack & deploy on server
+         run: |
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+               set -e
+               mkdir -p ${{ secrets.DEPLOY_PATH }}
+               rm -rf ${ { secrets.DEPLOY_PATH } }_prev || true
+               mv ${{ secrets.DEPLOY_PATH }} ${ { secrets.DEPLOY_PATH } }_prev || true
+               mkdir -p ${{ secrets.DEPLOY_PATH }}
+               tar -xzf /tmp/dist.tgz -C ${{ secrets.DEPLOY_PATH }}
+               rm -f /tmp/dist.tgz
+            EOF
