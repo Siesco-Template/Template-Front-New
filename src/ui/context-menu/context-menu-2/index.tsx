@@ -31,7 +31,7 @@ const S_ContextMenu2: React.FC<ContextMenuProps> = ({
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef<HTMLDivElement>(null);
 
-    const isVisible = isOpen !== undefined ? isOpen : (controlled ? controlledVisible : autoVisible);
+    const isVisible = isOpen !== undefined ? isOpen : controlled ? controlledVisible : autoVisible;
 
     useEffect(() => {
         const handleClick = (event: MouseEvent) => {

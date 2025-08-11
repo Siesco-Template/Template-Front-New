@@ -43,7 +43,6 @@ export const routes: Route[] = [
         roles: [],
         children: [
             ...Settings_Route,
-
             {
                 path: APP_URLS.anaSehife(),
                 element: <HomePage />,
