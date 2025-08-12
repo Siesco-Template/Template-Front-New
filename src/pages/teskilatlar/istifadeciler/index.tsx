@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
-
 import { IUser } from '@/services/auth/auth.service.types';
 import { APP_URLS } from '@/services/config/url.config';
 import { userService } from '@/services/user/user.service';
@@ -16,12 +14,12 @@ import { userRoleOptions } from '@/shared/constants/enums';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
-import { Table } from '@/shared/table';
+import { CustomMRTColumn, Table } from '@/shared/table';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { FilterTypeEnum, filterDataForFetch } from '@/shared/table/table-helpers';
-import { TableConfigProvider, useTableConfig } from '@/shared/table/tableConfigContext';
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 import TableRowActions from '@/shared/table/tableRowActions';
 
 import { BlockModal } from './BlockModal';
@@ -41,11 +39,6 @@ type FilterItem = {
     id: string;
     value: string;
     type: FilterTypeEnum;
-};
-
-type CustomMRTColumn<T extends MRT_RowData> = MRT_ColumnDef<T> & {
-    enableSummary?: boolean;
-    placeholder?: string;
 };
 
 const UsersTableContent: React.FC<TablePageMainProps> = ({
@@ -253,7 +246,7 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                     }}
                 >
                     <div className={styles.tableScrollWrapper}>
-                        <Table
+                        <Table<IUser>
                             columns={columns}
                             data={tableData}
                             enableColumnResizing={false}

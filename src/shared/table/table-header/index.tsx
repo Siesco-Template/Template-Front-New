@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { PermissionGuard } from '@/modules/permission/PermissionGuard';
 
+import { cls } from '@/shared/utils';
+
 import { S_Button } from '@/ui';
 
 import ExportColumnModal from '../exportColumnModal/exportColumnModal';
@@ -40,6 +42,7 @@ interface TableHeaderProps {
     tableVisibiltyColumn?: boolean;
     table_key?: string;
     notification?: boolean;
+    headerClassName?: string;
 }
 
 const Table_Header: React.FC<TableHeaderProps> = ({
@@ -61,6 +64,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
     actions,
     notification,
     tableVisibiltyColumn = true,
+    headerClassName,
 }) => {
     const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
@@ -90,7 +94,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
     };
 
     return (
-        <section className={styles.table_header}>
+        <section className={cls(styles.table_header, headerClassName)}>
             <div className={styles.table_header_text}>
                 <h1>{renderTitle(title)}</h1>
             </div>
