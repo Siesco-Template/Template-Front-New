@@ -104,7 +104,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ isCollapsed, modalTableData, 
     const doResetConfig = async () => {
         try {
             setIsResetting(true);
-            await configService.resetConfig();
+            await configService.resetConfig(table_key);
+
             toast.success('Konfiqurasiya uğurla sıfırlandı');
             loadConfigFromApi();
         } catch (error) {
