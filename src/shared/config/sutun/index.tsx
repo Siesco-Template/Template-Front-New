@@ -20,7 +20,7 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 import BottomModal from '../modal/bottomModal';
 import styles from '../style.module.css';
 
-const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumns, onSave }: any) => {
+const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumns, onSave, isRowSum }: any) => {
     const { config, updateConfig } = useTableConfig();
     const { selectedColumnKey }: any = useTableContext();
 
@@ -247,31 +247,33 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                 </button>
             </div>
 
-            <div className={styles.sectionSubHeader}>Cəmləmə sətri</div>
+            {isRowSum && <div className={styles.sectionSubHeader}>Cəmləmə sətri</div>}
 
-            <div className={styles.configRow}>
-                <label>Cəmləmə sətri</label>
-                <div className={styles.buttonGroup}>
-                    <button
-                        onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'hidden')}
-                        className={currentSummary === 'hidden' ? styles.isActive : ''}
-                    >
-                        <ViewOffIcon width={18} height={18} color="#28303F" />
-                    </button>
-                    <button
-                        onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'bottom')}
-                        className={currentSummary === 'bottom' ? styles.isActive : ''}
-                    >
-                        <AlignBottomIcon width={18} height={18} color="#28303F" />
-                    </button>
-                    <button
-                        onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'top')}
-                        className={currentSummary === 'top' ? styles.isActive : ''}
-                    >
-                        <AlignTopIcon width={18} height={18} color="#28303F" />
-                    </button>
+            {isRowSum && (
+                <div className={styles.configRow}>
+                    <label>Cəmləmə sətri</label>
+                    <div className={styles.buttonGroup}>
+                        <button
+                            onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'hidden')}
+                            className={currentSummary === 'hidden' ? styles.isActive : ''}
+                        >
+                            <ViewOffIcon width={18} height={18} color="#28303F" />
+                        </button>
+                        <button
+                            onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'bottom')}
+                            className={currentSummary === 'bottom' ? styles.isActive : ''}
+                        >
+                            <AlignBottomIcon width={18} height={18} color="#28303F" />
+                        </button>
+                        <button
+                            onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'top')}
+                            className={currentSummary === 'top' ? styles.isActive : ''}
+                        >
+                            <AlignTopIcon width={18} height={18} color="#28303F" />
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             <BottomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Ümumi reyestr">
                 {modalType && (

@@ -25,6 +25,7 @@ import Profile from '@/modules/profile';
 import { Route } from './index';
 import ProtectedRoute from './protectedRoute';
 import { LazyLoadable } from './routing.helpers';
+import Folder_Table from '@/pages/folder-table';
 
 const UsersPage = lazy(() => import('@/pages/teskilatlar/istifadeciler'));
 const Huquqlar = lazy(() => import('@/pages/teskilatlar/huquqlar'));
@@ -60,6 +61,12 @@ export const routes: Route[] = [
             {
                 path: APP_URLS.folder(),
                 element: <FolderPage />,
+                isAuth: false,
+                roles: [],
+            },
+            {
+                path: APP_URLS.folderAndTable(),
+                element: <Folder_Table />,
                 isAuth: false,
                 roles: [],
             },

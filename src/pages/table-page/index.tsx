@@ -368,6 +368,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         modalTableData={data}
                         table_key="customer_table"
                         modalTableColumns={columns}
+                        isRowSum={false}
                     />
                 </div>
             </div>

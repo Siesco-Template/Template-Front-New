@@ -34,4 +34,5 @@ export const APP_URLS = {
     components: (url = '', urlParams = {}) => APP_URLS.root('/components' + url, urlParams),
     table: (url = '', urlParams = {}) => APP_URLS.root('/table' + url, urlParams),
     folder: (url = '', urlParams = {}) => APP_URLS.root('/folder' + url, urlParams),
+    folderAndTable: (url = '', urlParams = {}) => APP_URLS.root('/folder-and-table' + url, urlParams),
 };
