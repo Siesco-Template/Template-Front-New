@@ -159,7 +159,7 @@ const DemoSection = ({ title, children }: { title: string; children: React.React
 );
 
 export default function ComponentsPage() {
-    const { config, loadConfigFromApi } = useTableConfig();
+    // const { config, loadConfigFromApi } = useTableConfig();
     const [selectedRadio, setSelectedRadio] = useState('1');
     const [selectedItems, setSelectedItems] = useState<Item[]>([]);
     const [sliderValue, setSliderValue] = useState([50]);
@@ -272,10 +272,6 @@ export default function ComponentsPage() {
     // Fetch catalog data on component mount
     useEffect(() => {
         fetchCatalogData();
-    }, []);
-
-    useEffect(() => {
-        loadConfigFromApi();
     }, []);
 
     return (

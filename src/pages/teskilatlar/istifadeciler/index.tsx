@@ -2,6 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
+import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
+
 import { IUser } from '@/services/auth/auth.service.types';
 import { APP_URLS } from '@/services/config/url.config';
 import { userService } from '@/services/user/user.service';
@@ -61,26 +64,19 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
     const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
-
+    const { columnVisibility, filterDataState } = useTableContext();
     const { loadConfigFromApi } = useTableConfig();
-    const { filterDataState } = useTableContext();
 
     useEffect(() => {
         loadConfigFromApi();
     }, []);
 
     const columns: CustomMRTColumn<IUser>[] = [
-        { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text', placeholder: 'Ad ' },
-        { accessorKey: 'lastName', header: 'Soyad', filterVariant: 'text', placeholder: 'Soyad ' },
-        {
-            accessorKey: 'appUserRole',
-            header: 'Vəzifə',
-            filterVariant: 'text',
-            placeholder: 'Vəzifə  ',
-            Cell: ({ cell }) => userRoleOptions.find((option) => option.value == cell.getValue())?.label,
-        },
-        { accessorKey: 'phoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text', placeholder: 'Əlaqə nömrəsi' },
-        { accessorKey: 'email', header: 'E-mail', filterVariant: 'text', placeholder: 'E-mail' },
+        { accessorKey: 'FirstName', header: 'Ad', filterVariant: 'text', placeholder: 'Ad ' },
+        { accessorKey: 'LastName', header: 'Soyad', filterVariant: 'text', placeholder: 'Soyad ' },
+
+        // { accessorKey: 'PhoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text', placeholder: 'Əlaqə nömrəsi' },
+        { accessorKey: 'Email', header: 'E-mail', filterVariant: 'text', placeholder: 'E-mail' },
         {
             id: 'actions',
             header: '',
@@ -117,52 +113,37 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
-    const buildFilterForFetchQuery = (filterData: Record<string, any>) => {
-        const filterQuery: Record<string, any> = {
-            skip: filterData.skip || 0,
-            take: filterData.take || 20,
-        };
+    const fetchUsers = async () => {
+        setIsLoading(true);
+        const filterData: any = filterDataForFetch();
+        const queryParams: any = buildQueryParamsFromTableRequest(filterData);
 
-        filterData.filter?.forEach((filter: FilterItem, i: number) => {
-            filterQuery[`Filters[${i}].column`] = filter.id;
-            filterQuery[`Filters[${i}].type`] = filter.type;
+        console.log(columnVisibility, 'cc');
+        const allowed = new Set(
+            columns.map((c) => c.accessorKey).filter((k): k is string => typeof k === 'string' && k.trim() !== '')
+        );
 
-            if (filter.type === FilterTypeEnum.RangeNumberOrDate && Array.isArray(filter.value)) {
-                const [start, end] = filter.value;
-                if (start && end) {
-                    filterQuery[`Filters[${i}].value`] = `${start},${end}`;
-                }
-            } else {
-                filterQuery[`Filters[${i}].value`] = filter.value;
-            }
-        });
+        let visibleColumns = Object.entries(columnVisibility)
+            .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key) && key !== 'actions')
+            .map(([key]) => key);
 
-        if (filterData.sort && Array.isArray(filterData.sort)) {
-            filterData.sort.forEach((sortItem: any, i: number) => {
-                filterQuery[`Sort[${i}].SortBy`] = sortItem.id;
-                filterQuery[`Sort[${i}].SortDirection`] = sortItem.desc;
-            });
-        } else if (filterData.sortBy && filterData.sortDirection !== undefined) {
-            filterQuery['SortBy'] = filterData.sortBy;
-            filterQuery['SortDirection'] = filterData.sortDirection;
+        console.log(visibleColumns, 'v');
+        visibleColumns = Array.from(new Set(visibleColumns));
+
+        if (visibleColumns.length > 0) {
+            queryParams.columns = visibleColumns.join(',');
+        } else {
+            delete queryParams.columns;
         }
 
-        return filterQuery;
-    };
-
-    const fetchUsers = useCallback(async () => {
-        setIsLoading(true);
-        const filterData = filterDataForFetch();
-        const filterQuery = buildFilterForFetchQuery(filterData);
-
         try {
-            const res = await userService.getAllUsers(filterQuery);
+            const res = await userService.getAllUsers('users', queryParams);
             if (!res) {
                 toast.error('Işçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.');
                 setTableData([]);
                 return;
             }
-            setTableData(res?.datas || []);
+            setTableData(res?.items || []);
             setTotalCount(res?.totalCount || 0);
         } catch (error) {
             // @ts-expect-error
@@ -176,17 +157,16 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    };
 
     useEffect(() => {
-        fetchUsers();
-    }, [searchParams]);
+        if (Object.keys(columnVisibility).length > 0) fetchUsers();
+    }, [searchParams, columnVisibility]);
 
     const filterColumns = [
         { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text' },
         { accessorKey: 'lastName', header: 'Soyad', filterVariant: 'text' },
-        { accessorKey: 'appUserRole', header: 'Vəzifə', filterVariant: 'text' },
-        { accessorKey: 'phoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text' },
+        // { accessorKey: 'phoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text' },
         { accessorKey: 'email', header: 'E-mail', filterVariant: 'text' },
     ];
 

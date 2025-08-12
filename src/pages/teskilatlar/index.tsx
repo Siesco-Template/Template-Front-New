@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 const Teskilatlar = () => {
-  return (
-    <div>Teskilatlar</div>
-  )
-}
+    const { loadConfigFromApi } = useTableConfig();
+    useEffect(() => {
+        loadConfigFromApi();
+    }, []);
+    return <div>Teskilatlar</div>;
+};
 
-export default Teskilatlar
+export default Teskilatlar;
