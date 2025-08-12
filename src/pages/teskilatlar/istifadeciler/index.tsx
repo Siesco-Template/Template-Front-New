@@ -345,14 +345,12 @@ export default function UsersPage() {
 
     return (
         <TableProvider tableKey="customer_table">
-            <TableConfigProvider>
-                <UsersTableContent
-                    isFilterCollapsed={isFilterCollapsed}
-                    onToggleCollapse={handleToggleFilterPanel}
-                    isConfigCollapsed={isConfigCollapsed}
-                    onToggleConfigCollapse={handleToggleConfigPanel}
-                />
-            </TableConfigProvider>
+            <UsersTableContent
+                isFilterCollapsed={isFilterCollapsed}
+                onToggleCollapse={handleToggleFilterPanel}
+                isConfigCollapsed={isConfigCollapsed}
+                onToggleConfigCollapse={handleToggleConfigPanel}
+            />
         </TableProvider>
     );
 }
