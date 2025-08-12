@@ -5,7 +5,7 @@ console.log(BASE_URL, 'bbb');
 const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
     permission: `${BASE_URL}/permission/Permissions`,
-    user: `${BASE_URL}/auth/Tests`,
+    user: `${BASE_URL}/auth/User`,
     excel: `${BASE_URL}/auth/Excel`,
     fakeEndpoints: `${BASE_URL}/auth/FakeEndpoints`,
     config: `${BASE_URL}/auth/Config`,

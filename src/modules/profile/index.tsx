@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useAuthStore } from '@/store/authStore';
+
 import {
     BriefCaseIcon,
     CallingIcon,
@@ -16,7 +18,6 @@ import {
 import { S_Button, S_Input } from '@/ui';
 
 import styles from './style.module.css';
-import { useAuthStore } from '@/store/authStore';
 
 const Profile = () => {
     const { logout } = useAuthStore();
@@ -84,22 +85,6 @@ const Profile = () => {
                         <div>
                             <h1>{form.name}</h1>
                             <p>Təşkilatın adı</p>
-                        </div>
-                    </div>
-
-                    <div className={styles.profileInfo}>
-                        <h1>Təşkilat məlumatları</h1>
-                        <div className={styles.grid}>
-                            <InfoItem icon={<TagIcon />} title={form.voen} subtitle="Təşkilatın VÖEN-i" />
-                            <InfoItem icon={<IdCard />} title={form.code} subtitle="Təşkilat kodu" />
-                            <InfoItem icon={<UserRectangleIcon />} title={form.asanImza} subtitle="Asan imza nömrəsi" />
-                            <InfoItem
-                                icon={<UserCardIcon />}
-                                title={form.person}
-                                subtitle="İmzalayacaq məsul şəxsın S.A.A"
-                            />
-                            <InfoItem icon={<CallingIcon />} title={form.phone} subtitle="Əlaqə nömrəsi" />
-                            <InfoItem icon={<MailIcon />} title={form.email} subtitle="E-mail" />
                         </div>
                     </div>
                 </>

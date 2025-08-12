@@ -4,7 +4,13 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { Folder } from '@/modules/file-explorer';
 import { FolderItem, ViewMode } from '@/modules/file-explorer/types';
 
+import { useTableConfig } from '@/shared/table/tableConfigContext';
+
 function FolderPage() {
+    const { loadConfigFromApi } = useTableConfig();
+    useEffect(() => {
+        loadConfigFromApi();
+    }, []);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 

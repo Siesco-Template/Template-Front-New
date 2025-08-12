@@ -8,6 +8,7 @@ import { hasPermission } from '@/modules/permission/PermissionGuard';
 
 import { UserRole } from '@/shared/constants/enums';
 import { DirectionDownIcon } from '@/shared/icons';
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 import { cls } from '@/shared/utils';
 
 import { NavigationItem, getIconById } from '../../settings.contants';
@@ -23,6 +24,12 @@ const IconComponent = ({ link }: { link: NavigationItem }) => {
 
 const Sidebar = () => {
     const { navigationLinks } = useSettingsStore();
+    const { loadConfigFromApi } = useTableConfig();
+
+    useEffect(() => {
+        loadConfigFromApi();
+    }, []);
+
     const navigate = useNavigate();
     const location = useLocation();
     const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
