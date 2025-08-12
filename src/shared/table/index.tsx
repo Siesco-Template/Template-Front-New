@@ -26,7 +26,7 @@ import './table.css';
 import styles from './table.module.css';
 import { useTableConfig } from './tableConfigContext';
 
-type CustomMRTColumn<T extends MRT_RowData> = MRT_ColumnDef<T> & {
+export type CustomMRTColumn<T extends MRT_RowData> = MRT_ColumnDef<T> & {
     enableSummary?: boolean;
     placeholder?: string;
     filterVariant?: string;
