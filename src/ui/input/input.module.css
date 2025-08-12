@@ -194,6 +194,9 @@
 .inputContainer {
     position: relative;
 }
+.inputContainer .field {
+    width: 100%;
+}
 .iconContainer {
     position: absolute;
     display: flex;
