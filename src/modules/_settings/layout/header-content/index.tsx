@@ -17,7 +17,7 @@ import {
     StarIcon,
     TimeQuarterIconn,
 } from '@/shared/icons';
-import logo_img from '@/shared/icons/afmis-logo.svg?url';
+// import logo_img from '@/shared/icons/afmis-logo.svg?url';
 import companyLogo from '@/shared/images/company.png';
 import { cls } from '@/shared/utils';
 
@@ -35,7 +35,7 @@ const Header_Content = () => {
         'notifications'
     );
 
-    const logoSrc = logo_img as string;
+    // const logoSrc = logo_img as string;
 
     const { user } = useAuthStore();
 
