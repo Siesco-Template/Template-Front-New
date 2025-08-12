@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CodeIcon, InfoIcon, PlusIcon, SearchIcon, TrashIcon } from 'lucide-react';
 
 import { CheckedChangeDetails } from '@ark-ui/react/dist/components/checkbox/checkbox';
+
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import {
     S_Avatar,
@@ -139,6 +141,7 @@ const DemoSection = ({ title, children }: { title: string; children: React.React
 );
 
 export default function ComponentsPage() {
+    const { config, loadConfigFromApi } = useTableConfig();
     const [selectedRadio, setSelectedRadio] = useState('1');
     const [selectedItems, setSelectedItems] = useState<Item[]>([]);
     const [sliderValue, setSliderValue] = useState([50]);
@@ -150,6 +153,10 @@ export default function ComponentsPage() {
     const [dateValue, setDateValue] = useState<Date | null>(null);
     const [rangeValue, setRangeValue] = useState<[Date, Date] | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    useEffect(() => {
+        loadConfigFromApi();
+    }, []);
 
     return (
         <div className="!min-h-screen !bg-gradient-to-br !from-gray-50 !to-blue-50">

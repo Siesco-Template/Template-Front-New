@@ -10,11 +10,8 @@ import Routing from './routing';
 import { AppInitializer } from './routing/routes';
 
 const App = () => {
-    const { config, loadConfigFromApi } = useTableConfig();
+    const { config } = useTableConfig();
 
-    useEffect(() => {
-        loadConfigFromApi();
-    }, []);
     return (
         <Providers>
             <Toaster position="top-right" reverseOrder={false} />
