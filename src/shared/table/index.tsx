@@ -142,7 +142,7 @@ function Table<T extends Record<string, any>>({
             const changedDatas = changeSelect(data);
             setRowCheckboxSelect(
                 // @ts-ignore
-                objectToArray(changedDatas)
+                changedDatas
             );
         }
     };

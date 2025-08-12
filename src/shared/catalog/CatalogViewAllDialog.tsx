@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { MRT_ColumnDef, MRT_RowData, MRT_RowSelectionState } from 'material-react-table';
+import { MRT_RowData } from 'material-react-table';
 
 import { S_Button } from '@/ui';
 
@@ -22,7 +22,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
     open,
     setOpen,
     items,
-    getLabel,
     getRowId,
     value,
     multiple,
@@ -38,7 +37,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
     open: boolean;
     setOpen: (open: boolean) => void;
     items: T[];
-    getLabel: (item: T) => string;
     getRowId: (item: T) => string;
     value: T | T[] | null;
     multiple: boolean;
@@ -139,13 +137,8 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                         }}
                                         enableCheckbox={true}
                                         enableMultiSelect={true}
-                                        // rowCheckboxSelectState={selectedItems.reduce((acc, val) => {
-                                        //     acc[getRowId(val)] = true;
-                                        //     return acc;
-                                        // }, {} as MRT_RowSelectionState)}
                                         rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
                                         setRowCheckboxSelect={(value) => {
-                                            console.log(value);
                                             if (Object.keys(value).length > 2) {
                                                 setSelectedItems([]);
                                                 return;
@@ -271,10 +264,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                     }}
                                     enableCheckbox={true}
                                     enableMultiSelect={multiple}
-                                    // rowCheckboxSelectState={selectedItems.reduce((acc, val) => {
-                                    //     acc[getRowId(val)] = true;
-                                    //     return acc;
-                                    // }, {} as MRT_RowSelectionState)}
                                     rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
                                     setRowCheckboxSelect={(value) => {
                                         setSelectedItems(
