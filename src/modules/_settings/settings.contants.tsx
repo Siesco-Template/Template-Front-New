@@ -74,6 +74,7 @@ export const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = 
     organizations: MenuCompanyIcon,
     catalogs: MenuCatalogIcon,
     folder: MenuCatalogIcon,
+    foldertable: MenuAdditionalReportIcon,
 };
 
 export const getIconById = (id?: string) => {
