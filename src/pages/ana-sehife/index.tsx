@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { CodeIcon, InfoIcon, PlusIcon, SearchIcon, TrashIcon } from 'lucide-react';
-import { MRT_ColumnDef } from 'material-react-table';
 
 import { httpRequest } from '@/services/api/httpsRequest';
 
@@ -10,6 +9,7 @@ import { CheckedChangeDetails } from '@ark-ui/react/dist/components/checkbox/che
 import { Catalog } from '@/shared/catalog';
 import { ExampleModal } from '@/shared/catalog/ExampleModal';
 import { CustomMRTColumn } from '@/shared/table';
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import {
     S_Avatar,
@@ -159,6 +159,7 @@ const DemoSection = ({ title, children }: { title: string; children: React.React
 );
 
 export default function ComponentsPage() {
+    const { config, loadConfigFromApi } = useTableConfig();
     const [selectedRadio, setSelectedRadio] = useState('1');
     const [selectedItems, setSelectedItems] = useState<Item[]>([]);
     const [sliderValue, setSliderValue] = useState([50]);
@@ -271,6 +272,10 @@ export default function ComponentsPage() {
     // Fetch catalog data on component mount
     useEffect(() => {
         fetchCatalogData();
+    }, []);
+
+    useEffect(() => {
+        loadConfigFromApi();
     }, []);
 
     return (

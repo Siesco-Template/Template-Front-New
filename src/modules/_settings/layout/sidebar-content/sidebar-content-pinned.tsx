@@ -30,13 +30,15 @@ const IconComponent = ({ link }: { link: NavigationItem }) => {
 };
 const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen, setSubMenuOpen, toggleSubMenu }) => {
     const { navigationLinks } = useSettingsStore();
+
+    console.log(navigationLinks, 'nvg');
     const { position } = useLayoutStore();
     const { permissions } = usePermission();
     const { user } = useAuthStore();
     const location = useLocation();
 
     const handleClick = (link: NavigationItem) => {
-        toggleSubMenu(link.href, true); // Həm submenu açsın, həm səhifəyə yönləndirsin
+        toggleSubMenu(link.href, true);
     };
 
     const filterRoutesByRoleAndPermission = (routes: NavigationItem[], userRole: UserRole): NavigationItem[] => {
@@ -61,8 +63,8 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
 
     const filteredNavigationLinks = filterRoutesByRoleAndPermission(navigationLinks, user.userRole);
 
-    const sublink = (link: NavigationItem, isOpen: boolean) => {
-        const isSubLinkActive = link.subLinks?.some((sublink) => location.pathname === sublink.href);
+    const sublink = (link: any, isOpen: boolean) => {
+        const isSubLinkActive = link.subLinks?.some((sublink: any) => location.pathname === sublink.href);
 
         return (
             <div className={styles.pinnedSubMenu}>
@@ -85,20 +87,22 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
                         </button>
                     }
                 >
-                    <div className={styles.subLinkItemsContainer}>
-                        {link.subLinks?.map((sublink, idx) => (
-                            <NavLink
-                                to={sublink.href}
-                                key={`${link.href}-${sublink.href}-${idx}`}
-                                className={({ isActive }) => cls(styles.pinnedLink, isActive && styles.linkActive)}
-                                onClick={() => {
-                                    setSubMenuOpen(null);
-                                }}
-                            >
-                                {sublink.title}
-                            </NavLink>
-                        ))}
-                    </div>
+                    {link.subLinks?.length > 0 && (
+                        <div className={styles.subLinkItemsContainer}>
+                            {link.subLinks?.map((sublink: any, idx: any) => (
+                                <NavLink
+                                    to={sublink.href}
+                                    key={`${link.href}-${sublink.href}-${idx}`}
+                                    className={({ isActive }) => cls(styles.pinnedLink, isActive && styles.linkActive)}
+                                    onClick={() => {
+                                        setSubMenuOpen(null);
+                                    }}
+                                >
+                                    {sublink.title}
+                                </NavLink>
+                            ))}
+                        </div>
+                    )}
                 </S_ContextMenu2>
             </div>
         );
@@ -116,7 +120,7 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
                         {link.subLinks ? (
                             sublink(link, isOpen)
                         ) : link.disabled ? (
-                            link.icon && <link.icon color="white" />
+                            link.icon && <link.icon color="currentColor" />
                         ) : (
                             <NavLink
                                 to={link.href}
