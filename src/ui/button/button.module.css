@@ -352,10 +352,9 @@
     background: transparent;
     color: hsl(var(--clr-primary-500));
     border-radius: var(--r-300);
-    padding: var(--pm-250) var(--pm-300);
-    min-width: var(--wh-500);
-    font-size: var(--fs-100);
+    padding: var(--pm-150) var(--pm-300);
     /* min-width: var(--wh-500); */
+    font-size: var(--fs-100);
 }
 
 .outlined-30-primary {
