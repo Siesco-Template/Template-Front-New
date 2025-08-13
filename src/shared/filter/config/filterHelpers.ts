@@ -102,7 +102,8 @@ export const applyFiltersToUrl = (
     take: number = 20,
     sort: any[] = []
 ) => {
-    const validFilters = filters?.filter((f) => {
+    const validFilters = filters
+        ?.filter((f) => {
             if (f.value === null || f.value === undefined) return false;
             if (typeof f.value === 'string' && f.value.trim() === '') return false;
             if (Array.isArray(f.value) && f.value.length === 0) return false;
@@ -138,4 +139,33 @@ export const applyFiltersToUrl = (
     const base = window.location.hash.split('?')[0];
 
     window.location.hash = `${base}?filterData=${JSON.stringify(newFilterData)}`;
+};
+
+export const clearUrlParams = () => {
+    const url = new URL(window.location.href);
+    url.search = '';
+
+    if (url.hash.includes('?')) {
+        url.hash = url.hash.split('?')[0];
+    }
+    window.history.replaceState(null, '', url.toString());
+};
+
+export const toUrlFilterData = (saved: any) => {
+    const raw = saved?.payload ?? saved?.filterData ?? saved?.filters ?? saved?.data ?? saved?.query;
+
+    if (Array.isArray(raw)) {
+        return { filter: raw, skip: 0, take: 20, sort: [] };
+    }
+
+    if (raw?.filter) {
+        return {
+            filter: raw.filter,
+            skip: raw.skip ?? 0,
+            take: raw.take ?? 20,
+            sort: raw.sort ?? [],
+        };
+    }
+
+    return { filter: [], skip: 0, take: 20, sort: [] };
 };

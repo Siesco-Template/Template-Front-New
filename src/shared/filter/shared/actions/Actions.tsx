@@ -1,13 +1,18 @@
 import { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { filterService } from '@/services/filter/filter.service';
 
+import { clearUrlParams, toUrlFilterData } from '../../config/filterHelpers';
 import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon } from '../icons';
 import styles from './style.module.css';
 
 const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, setSavedFilters }: any) => {
+    const [_, setSearchParams] = useSearchParams();
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -27,6 +32,10 @@ const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, s
         };
     }, [isOpen, onToggle]);
 
+    const clearAllQueryParams = () => {
+        setSearchParams({}, { replace: true });
+    };
+
     const handleSetDefaultFilter = () => {
         if (filter) {
             setSavedFilters((prevFilters: any) =>
@@ -41,7 +50,6 @@ const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, s
             filterService
                 .setDefaultFilter(filter.id)
                 .then((response) => {
-                    // console.log('Varsayılan filter uğurla təyin edildi', response);
                     toast.success('Varsayılan filter uğurla təyin edildi');
                 })
                 .catch((error) => {
@@ -61,6 +69,7 @@ const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, s
                     setSavedFilters((prevFilters: any) =>
                         prevFilters.map((f: any) => (f.id === filter.id ? { ...f, isDefault: false } : f))
                     );
+                    clearAllQueryParams();
                 })
                 .catch((error) => {
                     console.error('Varsayılan filter sıfırlanarkən xəta baş verdi', error);
