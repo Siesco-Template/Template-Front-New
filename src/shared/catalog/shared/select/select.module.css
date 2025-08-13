@@ -1,14 +1,24 @@
+.selectLabel {
+    font-size: var(--fs-50);
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: hsl(var(--clr-primary-900));
+}
+
 .selectTrigger {
     display: flex;
     align-items: center;
-    /* height: 42px; */
     padding: 8px;
     gap: 12px;
     border-radius: 12px;
-    border: 1.5px solid hsl(var(--clr-primary-500));
+    border: 1px solid hsl(var(--clr-grey-300));
     background: #fff;
     overflow: hidden;
     width: 100%;
+}
+
+.selectTrigger:focus-within {
+    border-color: hsl(var(--clr-primary-500));
 }
 
 .selectChips {

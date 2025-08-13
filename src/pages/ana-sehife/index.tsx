@@ -1401,6 +1401,7 @@ const [open, setOpen] = useState(false);
                                         }}
                                         isLoading={isCatalogLoading}
                                         showMoreColumns={tableColumns}
+                                        label="Single Product Selection"
                                     />
                                 </DemoSection>
                             </div>
@@ -1427,6 +1428,7 @@ const [open, setOpen] = useState(false);
                                         }}
                                         isLoading={isCatalogLoading}
                                         showMoreColumns={tableColumns}
+                                        label="Multiple Product Selection"
                                     />
                                 </DemoSection>
                             </div>
