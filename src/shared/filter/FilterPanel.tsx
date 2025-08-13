@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 import { filterService } from '@/services/filter/filter.service';
 
+import { S_Input } from '@/ui';
 import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
 import Catalog from '../catalog';
@@ -49,6 +50,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     const selectRef = useRef<HTMLDivElement | null>(null);
     const [mainWidth, setMainWidth] = useState<string>('200px');
 
+    const [defaultSnapshot, setDefaultSnapshot] = useState<FilterConfig[] | null>(null);
+    const [hasDefault, setHasDefault] = useState(false);
+
     const handleResize = () => {
         if (selectRef.current) {
             const width = selectRef.current.offsetWidth - 20;
@@ -88,30 +92,57 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         if (filters.length === 0) return;
 
         const initFilters = async () => {
-            const hasUrl = window.location.hash.includes('filterData=');
+            const qs = window.location.hash.split('?')[1] || '';
+            const params = new URLSearchParams(qs);
+            const hasUrl = params.has('filterData');
 
+            // 1) HƏR HALDA default-u al və snapshot kimi yadda saxla
+            try {
+                const res = await filterService.getDefaultFilter(table_key);
+                const defVals = Array.isArray(res?.filterValues) ? res.filterValues : [];
+
+                const mergedDefault = filters.map((f) => {
+                    const df = defVals.find((d: any) => d.column === (f.key || f.column));
+                    return {
+                        ...f,
+                        value:
+                            df?.value ??
+                            (f.type === 'number-interval'
+                                ? { min: '', max: '' }
+                                : f.type === 'date-interval'
+                                  ? ['', '']
+                                  : f.type === 'multi-select'
+                                    ? []
+                                    : ''),
+                    };
+                });
+
+                // default snapshot + flag
+                setDefaultSnapshot(mergedDefault);
+                setHasDefault(defVals.length > 0);
+            } catch {
+                setDefaultSnapshot(null);
+                setHasDefault(false);
+            }
+
+            // 2) UI/URL doldurma məntiqi
             if (hasUrl) {
-                // 1) Əgər URL-də varsa, orada olanları parse edib set edək
                 const fromUrl = parseFiltersFromUrl(filters);
                 setSavedFilters(fromUrl);
-                // kontekstdəki actual filterDataState də yenilə
                 fromUrl.forEach((f: any) => onChange(f.key, f.value));
             } else {
-                // 2) URL-də yoxdursa, backend-dən default alıb həm state-ə, həm URL-ə yazaq
+                // sənin mövcud default-u UI+URL-ə yazma məntiqin (dəyişmədən qalsın)
                 try {
                     const res = await filterService.getDefaultFilter(table_key);
                     const defVals = Array.isArray(res.filterValues) ? res.filterValues : [];
-                    console.log(defVals, 'defVals');
                     const merged = filters.map((f) => {
                         const df = defVals.find((d: any) => d.column === (f.key || f.column));
                         return { ...f, value: df?.value ?? f.value };
                     });
-                    console.log(merged, 'defVals');
+
                     setSavedFilters(merged);
-                    // kontekstdə update et
                     merged.forEach((f: any) => onChange(f.key, f.value));
 
-                    // URL üçün temizlənmiş massiv
                     const cleaned = merged
                         .filter(
                             (f) =>
@@ -120,7 +151,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                 !(Array.isArray(f.value) && f.value.length === 0)
                         )
                         .map((f) => ({ id: f.key || f.column, value: f.value }));
-                    console.log(cleaned, 'defVals');
+
                     applyFiltersToUrl(cleaned, filterDataState.skip, filterDataState.take, filterDataState.sort);
                 } catch {
                     setSavedFilters(filters);
@@ -129,28 +160,44 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         };
 
         initFilters();
-    }, [filters]);
+    }, [filters, table_key]);
+
+    const isEmpty = (v: any) =>
+        v == null ||
+        (typeof v === 'string' && v.trim() === '') ||
+        (Array.isArray(v) && v.length === 0) ||
+        (typeof v === 'object' && 'min' in v && 'max' in v && v.min === '' && v.max === '');
 
     const handleResetFilters = () => {
         setSearchText('');
 
+        if (hasDefault && defaultSnapshot) {
+            // 1) UI-da yalnız default dəyərləri tətbiq et
+            setSavedFilters(defaultSnapshot);
+            defaultSnapshot.forEach((f: any) => onChange(f.key, f.value));
+
+            // 2) URL-ə də yalnız default dəyərləri yaz
+            const cleanedDefaults = defaultSnapshot
+                .filter((f) => !isEmpty(f.value))
+                .map((f) => ({ id: f.key || f.column, value: f.value }));
+
+            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort);
+            return;
+        }
+
         const resetFilters = filters.map((f) => {
             let resetValue: any = '';
-
-            if (f.type === 'select') {
-                resetValue = '';
-            } else if (f.type === 'number-interval') {
-                resetValue = { min: '', max: '' };
-            }
-
+            if (f.type === 'number-interval') resetValue = { min: '', max: '' };
+            else if (f.type === 'date-interval') resetValue = ['', ''];
+            else if (f.type === 'multi-select') resetValue = [];
             return { ...f, value: resetValue };
         });
 
         setSavedFilters(resetFilters);
         resetFilters.forEach((f: any) => onChange(f.key, f.value));
 
-        const currentHash = window.location.hash.split('?')[0];
-        window.location.hash = currentHash;
+        const base = window.location.hash.split('?')[0];
+        window.location.hash = base;
     };
 
     const handleUpdateFilter = (key: string, value: any) => {
@@ -163,15 +210,20 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
+                const v = typeof filter.value === 'string' ? filter.value : '';
                 return (
-                    <TextFilter
-                        key={filter.key || filter.column}
-                        label={filter.label || filter.column}
-                        value={filter.value || ''}
-                        placeholder={filter.placeholder || filter.column}
-                        onChange={(val) => _onChange(filter.key, val)}
-                        readOnly={filter.readOnly}
-                    />
+                    <div style={{ width: '100%' }}>
+                        <S_Input
+                            key={filter.key || filter.column}
+                            label={filter.label || filter.column}
+                            value={v}
+                            placeholder={filter.placeholder || filter.column}
+                            onChange={(e) => _onChange(filter.key, e.target.value)}
+                            readOnly={filter.readOnly}
+                            inputSize="medium"
+                            style={{ width: '100%' }}
+                        />
+                    </div>
                 );
             case FilterKey.NumberInterval: // 3
                 return (
@@ -213,8 +265,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     <Catalog
                         key={filter.key}
                         items={items}
-                        getLabel={(i: any) => i.label}
-                        getRowId={(i: any) => String(i.value)}
+                        getLabel={(i: any) => i?.label}
+                        getRowId={(i: any) => String(i?.value)}
                         value={selectedObj ? [selectedObj] : []}
                         onChange={(sel) => {
                             const picked = Array.isArray(sel) ? sel[0] : sel;
@@ -228,6 +280,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                         onRefetch={undefined}
                         onClickNew={undefined}
                         isLoading={false}
+                        label={filter.label}
                     />
                 );
 
