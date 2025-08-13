@@ -1,6 +1,9 @@
 import { ColorPicker } from 'antd';
 import { useEffect, useState } from 'react';
 
+import { PRESET_SIZES } from '@/shared/catalog';
+import { Dialog, DialogContent } from '@/shared/catalog/shared/dialog/dialog';
+import { PanelDialog, PanelDialogContent } from '@/shared/catalog/shared/dialog/panel-dialog';
 import {
     AlignBottomIcon,
     AlignCenterIcon,
@@ -20,7 +23,7 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 import BottomModal from '../modal/bottomModal';
 import styles from '../style.module.css';
 
-const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumns, onSave }: any) => {
+const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumns, onSave, isRowSum }: any) => {
     const { config, updateConfig } = useTableConfig();
     const { selectedColumnKey }: any = useTableContext();
 
@@ -112,6 +115,10 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
             setTextColor('#D9D9D9');
         }
     }, [selectedColumnKey, config, tableKey]);
+
+    const sizePreset = 'xxl';
+
+    const paperStyle = PRESET_SIZES[sizePreset];
 
     return (
         <>
@@ -247,70 +254,76 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                 </button>
             </div>
 
-            <div className={styles.sectionSubHeader}>Cəmləmə sətri</div>
+            {isRowSum && <div className={styles.sectionSubHeader}>Cəmləmə sətri</div>}
 
-            <div className={styles.configRow}>
-                <label>Cəmləmə sətri</label>
-                <div className={styles.buttonGroup}>
-                    <button
-                        onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'hidden')}
-                        className={currentSummary === 'hidden' ? styles.isActive : ''}
-                    >
-                        <ViewOffIcon width={18} height={18} color="#28303F" />
-                    </button>
-                    <button
-                        onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'bottom')}
-                        className={currentSummary === 'bottom' ? styles.isActive : ''}
-                    >
-                        <AlignBottomIcon width={18} height={18} color="#28303F" />
-                    </button>
-                    <button
-                        onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'top')}
-                        className={currentSummary === 'top' ? styles.isActive : ''}
-                    >
-                        <AlignTopIcon width={18} height={18} color="#28303F" />
-                    </button>
+            {isRowSum && (
+                <div className={styles.configRow}>
+                    <label>Cəmləmə sətri</label>
+                    <div className={styles.buttonGroup}>
+                        <button
+                            onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'hidden')}
+                            className={currentSummary === 'hidden' ? styles.isActive : ''}
+                        >
+                            <ViewOffIcon width={18} height={18} color="#28303F" />
+                        </button>
+                        <button
+                            onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'bottom')}
+                            className={currentSummary === 'bottom' ? styles.isActive : ''}
+                        >
+                            <AlignBottomIcon width={18} height={18} color="#28303F" />
+                        </button>
+                        <button
+                            onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'top')}
+                            className={currentSummary === 'top' ? styles.isActive : ''}
+                        >
+                            <AlignTopIcon width={18} height={18} color="#28303F" />
+                        </button>
+                    </div>
                 </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <PanelDialog open={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
+                    <PanelDialogContent style={paperStyle}>
+                        {modalType && (
+                            <>
+                                <div className={styles.header}>
+                                    <h3 className={styles.title}>Ümumi reyestr</h3>
+
+                                    <div className={styles.modalBtnGroup}>
+                                        <button
+                                            onClick={async () => {
+                                                try {
+                                                    setIsSaving(true);
+                                                    await modalTypeConfigs[modalType].onSave();
+                                                } finally {
+                                                    setIsSaving(false);
+                                                    setIsModalOpen(false);
+                                                }
+                                            }}
+                                            className={styles.saveBtn}
+                                            disabled={isSaving}
+                                        >
+                                            {isSaving ? <span className={styles.spinner} /> : 'Yadda saxla'}
+                                        </button>
+                                        <button onClick={() => setIsModalOpen(false)} className={styles.cancelBtn}>
+                                            Ləğv et
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style={{ height: '90vh', paddingBottom: '20px' }}>
+                                    <Table
+                                        columns={modalTableColumns}
+                                        data={modalTableData}
+                                        tableKey={tableKey}
+                                        {...modalTypeConfigs[modalType].tableProps}
+                                    />
+                                </div>
+                            </>
+                        )}
+                    </PanelDialogContent>
+                </PanelDialog>
             </div>
-
-            <BottomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Ümumi reyestr">
-                {modalType && (
-                    <>
-                        <div className={styles.header}>
-                            <h3 className={styles.title}>Ümumi reyestr</h3>
-
-                            <div className={styles.modalBtnGroup}>
-                                <button
-                                    onClick={async () => {
-                                        try {
-                                            setIsSaving(true);
-                                            await modalTypeConfigs[modalType].onSave();
-                                        } finally {
-                                            setIsSaving(false);
-                                            setIsModalOpen(false);
-                                        }
-                                    }}
-                                    className={styles.saveBtn}
-                                    disabled={isSaving}
-                                >
-                                    {isSaving ? <span className={styles.spinner} /> : 'Yadda saxla'}
-                                </button>
-                                <button onClick={() => setIsModalOpen(false)} className={styles.cancelBtn}>
-                                    Ləğv et
-                                </button>
-                            </div>
-                        </div>
-                        <div style={{ height: '90vh', paddingBottom: '20px' }}>
-                            <Table
-                                columns={modalTableColumns}
-                                data={modalTableData}
-                                tableKey={tableKey}
-                                {...modalTypeConfigs[modalType].tableProps}
-                            />
-                        </div>
-                    </>
-                )}
-            </BottomModal>
         </>
     );
 };

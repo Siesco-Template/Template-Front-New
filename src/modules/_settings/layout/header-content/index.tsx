@@ -119,56 +119,10 @@ const Header_Content = () => {
                             isIcon
                             iconBtnSize="15"
                             color="secondary"
-                            aria-label="Seçilmişlər"
-                            onClick={() => {
-                                setSelectedPanel('favorites');
-                                setIsPanelOpen(!isPanelOpen);
-                            }}
-                        >
-                            <OutlineStartIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
-                        </S_Button>
-                    </li>
-                    <li>
-                        <S_Button
-                            variant="main-10"
-                            isIcon
-                            iconBtnSize="15"
-                            color="secondary"
-                            aria-label="Tarixçə"
-                            onClick={() => {
-                                setSelectedPanel('history');
-                                setIsPanelOpen(!isPanelOpen);
-                            }}
-                        >
-                            <TimeQuarterIconn color="hsl(var(--clr-primary-900))" width={16} height={16} />
-                        </S_Button>
-                    </li>
-                    <li>
-                        <S_Button
-                            variant="main-10"
-                            isIcon
-                            iconBtnSize="15"
-                            color="secondary"
                             aria-label="Tənzimləmələr"
                             onClick={() => navigate(SETTINGS_URL.interfaceSettings())}
                         >
                             <SettingIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
-                        </S_Button>
-                    </li>
-
-                    <li>
-                        <S_Button
-                            variant="main-10"
-                            isIcon
-                            iconBtnSize="15"
-                            color="secondary"
-                            aria-label="Bildirişlər"
-                            onClick={() => {
-                                setSelectedPanel('notifications');
-                                setIsPanelOpen(!isPanelOpen);
-                            }}
-                        >
-                            <NotifiIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
                         </S_Button>
                     </li>
 

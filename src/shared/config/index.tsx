@@ -21,9 +21,16 @@ interface ConfigPanelProps {
     modalTableData?: any[];
     table_key: string;
     modalTableColumns?: any[];
+    isRowSum: boolean;
 }
 
-const ConfigPanel: React.FC<ConfigPanelProps> = ({ isCollapsed, modalTableData, modalTableColumns, table_key }) => {
+const ConfigPanel: React.FC<ConfigPanelProps> = ({
+    isCollapsed,
+    modalTableData,
+    modalTableColumns,
+    table_key,
+    isRowSum,
+}) => {
     const [openSections, setOpenSections] = React.useState({
         header: false,
         row: false,
@@ -159,6 +166,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ isCollapsed, modalTableData, 
                         modalTableData={modalTableData}
                         initialModalTableColumns={modalTableColumns}
                         onSave={handleSave}
+                        isRowSum={isRowSum}
                     />
                 )}
             </div>

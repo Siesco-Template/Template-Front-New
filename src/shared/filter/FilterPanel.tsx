@@ -99,11 +99,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                 try {
                     const res = await filterService.getDefaultFilter(table_key);
                     const defVals = Array.isArray(res.filterValues) ? res.filterValues : [];
+                    console.log(defVals, 'defVals');
                     const merged = filters.map((f) => {
                         const df = defVals.find((d: any) => d.column === (f.key || f.column));
                         return { ...f, value: df?.value ?? f.value };
                     });
-
+                    console.log(merged, 'defVals');
                     setSavedFilters(merged);
                     // kontekstdə update et
                     merged.forEach((f: any) => onChange(f.key, f.value));
@@ -117,7 +118,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                 !(Array.isArray(f.value) && f.value.length === 0)
                         )
                         .map((f) => ({ id: f.key || f.column, value: f.value }));
-
+                    console.log(cleaned, 'defVals');
                     applyFiltersToUrl(cleaned, filterDataState.skip, filterDataState.take, filterDataState.sort);
                 } catch {
                     setSavedFilters(filters);

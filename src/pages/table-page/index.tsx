@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
@@ -7,19 +7,17 @@ import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
 import { reportService } from '@/services/reports/reports.service';
 
 import { usePermission } from '@/modules/permission/PermissionContext';
-import { hasPermission } from '@/modules/permission/PermissionGuard';
 
 import ConfigPanel from '@/shared/config';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
 import { Table } from '@/shared/table';
-import { InformationIcon } from '@/shared/table/icons';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
-import { TableConfigProvider, useTableConfig } from '@/shared/table/tableConfigContext';
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import styles from './style.module.css';
 
@@ -209,55 +207,20 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
-    if (permissions && hasPermission(permissions, 'report/getById')) {
-        columns.push({
-            id: 'actions',
-            header: '',
-            size: 50,
-            enableSorting: false,
-            enableColumnFilter: false,
-            enableResizing: false,
-            Cell: ({ row }: any) => {
-                return (
-                    <button
-                        onClick={() => navigate(`/hesabatlar/budce-hesabatlari/${id}/info/${row.original.reportId}`)}
-                        style={{
-                            background: 'transparent',
-                            border: 'none',
-                            cursor: 'pointer',
-                            padding: 4,
-                        }}
-                    >
-                        <InformationIcon width={16} height={16} color="#909DAD" />
-                    </button>
-                );
-            },
-        });
-    }
-
     const filterColumns = [
         {
-            accessorKey: 'number',
+            accessorKey: 'Number',
             header: 'Unikal nömrə',
             filterVariant: 'text',
         },
         {
-            accessorKey: 'compileDate',
+            accessorKey: 'CompileDate',
             header: 'Tərtib tarixi',
             filterVariant: 'date-interval',
         },
+
         {
-            accessorKey: 'structuralUnit',
-            header: 'Struktur vahidi',
-            filterVariant: 'text',
-        },
-        {
-            accessorKey: 'organizationName',
-            header: 'Təşkilat adı',
-            filterVariant: 'text',
-        },
-        {
-            accessorKey: 'reportStatus',
+            accessorKey: 'ReportStatus',
             header: 'Status',
             filterVariant: 'select',
             filterSelectOptions: [
@@ -267,7 +230,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
         },
         {
-            accessorKey: 'term',
+            accessorKey: 'Term',
             header: 'Rüb',
             filterVariant: 'select',
             filterSelectOptions: [
@@ -276,11 +239,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 { label: '3', value: 3 },
                 { label: '4', value: 4 },
             ],
-        },
-        {
-            accessorKey: 'organizationCode',
-            header: 'Təşkilat kodu',
-            filterVariant: 'text',
         },
     ];
 
@@ -368,6 +326,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         modalTableData={data}
                         table_key="customer_table"
                         modalTableColumns={columns}
+                        isRowSum={false}
                     />
                 </div>
             </div>
@@ -415,14 +374,12 @@ const Table_Page = () => {
     };
     return (
         <TableProvider tableKey="customer_table">
-            <TableConfigProvider>
-                <Table_PageContent
-                    isConfigCollapsed={isConfigCollapsed}
-                    isFilterCollapsed={isFilterCollapsed}
-                    onToggleCollapse={handleToggleFilterPanel}
-                    onToggleConfigCollapse={handleToggleConfigPanel}
-                />
-            </TableConfigProvider>
+            <Table_PageContent
+                isConfigCollapsed={isConfigCollapsed}
+                isFilterCollapsed={isFilterCollapsed}
+                onToggleCollapse={handleToggleFilterPanel}
+                onToggleConfigCollapse={handleToggleConfigPanel}
+            />
         </TableProvider>
     );
 };
