@@ -8,6 +8,8 @@ import { filterService } from '@/services/filter/filter.service';
 
 import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
+import Catalog from '../catalog';
+import { CatalogSelect } from '../catalog/shared/select';
 import { useTableContext } from '../table/table-context';
 import { useDebounce } from '../table/useDebounce';
 import { applyFiltersToUrl, parseFiltersFromUrl } from './config/filterHelpers';
@@ -195,25 +197,37 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     />
                 );
             case FilterKey.Select: // 4
+                const items = (filter.options || []).map((opt: any) => ({
+                    value: opt.value,
+                    label: opt.label,
+                    disabled: !!opt.disabled,
+                }));
+
+                const selectedObj =
+                    filter.value != null && filter.value !== ''
+                        ? (items.find((i: any) => i.value === filter.value) ?? null)
+                        : null;
+
+                console.log(items, 'it');
                 return (
-                    <S_Select_Simple
+                    <Catalog
                         key={filter.key}
-                        items={
-                            (filter.options || []).map((opt: any) => ({
-                                label: opt.label,
-                                value: opt.value,
-                                disabled: !!opt.disabled,
-                            })) as Item[]
-                        }
-                        value={filter.value ? [filter.value] : []}
-                        setSelectedItems={(selectedItems) => {
-                            const newVal = selectedItems.length > 0 ? selectedItems[0].value : '';
+                        items={items}
+                        getLabel={(i: any) => i.label}
+                        getRowId={(i: any) => String(i.value)}
+                        value={selectedObj ? [selectedObj] : []}
+                        onChange={(sel) => {
+                            const picked = Array.isArray(sel) ? sel[0] : sel;
+                            const newVal = picked ? (picked as any).value : '';
                             _onChange(filter.key, newVal);
                         }}
-                        placeholder={filter.placeholder || 'Seçin'}
-                        label={filter.label}
-                        disabled={filter.readOnly}
-                        itemsContentMinWidth={mainWidth}
+                        multiple={false}
+                        enableModal={true}
+                        sizePreset="md-lg"
+                        totalItemCount={items.length}
+                        onRefetch={undefined}
+                        onClickNew={undefined}
+                        isLoading={false}
                     />
                 );
 

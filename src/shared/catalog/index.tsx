@@ -70,7 +70,6 @@ export function Catalog<T extends MRT_RowData>({
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-            {/* Compact select-like Autocomplete */}
             <CatalogSelect
                 items={items}
                 getKey={(p) => getRowId(p)}
