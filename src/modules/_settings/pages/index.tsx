@@ -142,9 +142,9 @@ const SettingsPageLayout = () => {
             />
             <div className={styles.settingsContainer}>
                 <div className={styles.navbarContainer}>
-                    <div style={{ maxHeight: '38px' }}>
+                    {/* <div style={{ maxHeight: '38px' }}>
                         <S_Input placeholder="Axtar" iconPosition="left" icon={<SearchIcon />} />
-                    </div>
+                    </div> */}
                     <SettingsPageNavigation />
                 </div>
                 <div className={styles.main}>

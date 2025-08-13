@@ -7,7 +7,7 @@ import CatalogViewAllDialog from './CatalogViewAllDialog';
 import { CatalogSelect } from './shared/select';
 
 // Preset modal sizes matching design tokens
-const PRESET_SIZES = {
+export const PRESET_SIZES = {
     'md-lg': { maxWidth: 900, height: 700 }, // Balanced standard – ideal for tables
     lg: { maxWidth: 960, height: 600 }, // Wider but a bit shorter – light content
     xl: { maxWidth: 1200, height: 720 }, // Rich content, multi-column tables

@@ -19,7 +19,7 @@ import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
-import { TableConfigProvider, useTableConfig } from '@/shared/table/tableConfigContext';
+import {  useTableConfig } from '@/shared/table/tableConfigContext';
 
 import styles from './style.module.css';
 
@@ -209,32 +209,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
-    if (permissions && hasPermission(permissions, 'report/getById')) {
-        columns.push({
-            id: 'actions',
-            header: '',
-            size: 50,
-            enableSorting: false,
-            enableColumnFilter: false,
-            enableResizing: false,
-            Cell: ({ row }: any) => {
-                return (
-                    <button
-                        onClick={() => navigate(`/hesabatlar/budce-hesabatlari/${id}/info/${row.original.reportId}`)}
-                        style={{
-                            background: 'transparent',
-                            border: 'none',
-                            cursor: 'pointer',
-                            padding: 4,
-                        }}
-                    >
-                        <InformationIcon width={16} height={16} color="#909DAD" />
-                    </button>
-                );
-            },
-        });
-    }
-
     const filterColumns = [
         {
             accessorKey: 'number',
@@ -416,14 +390,12 @@ const Table_Page = () => {
     };
     return (
         <TableProvider tableKey="customer_table">
-            <TableConfigProvider>
                 <Table_PageContent
                     isConfigCollapsed={isConfigCollapsed}
                     isFilterCollapsed={isFilterCollapsed}
                     onToggleCollapse={handleToggleFilterPanel}
                     onToggleConfigCollapse={handleToggleConfigPanel}
                 />
-            </TableConfigProvider>
         </TableProvider>
     );
 };

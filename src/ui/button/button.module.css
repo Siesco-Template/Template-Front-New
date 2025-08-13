@@ -320,7 +320,7 @@
     border-radius: var(--r-300);
     padding: var(--pm-150) var(--pm-300);
     cursor: not-allowed;
-    min-width: calc(var(--wh-500));
+    /* min-width: calc(var(--wh-500)); */
 }
 
 .btn.main-30-disabled,

@@ -13,7 +13,6 @@ import { CustomMRTColumn, Table } from '../table';
 import { TableProvider } from '../table/table-context';
 import Table_Footer from '../table/table-footer';
 import Table_Header from '../table/table-header';
-import { TableConfigProvider } from '../table/tableConfigContext';
 import styles from './CatalogViewAllDialog.module.css';
 import { Dialog, DialogClose, DialogContent, DialogFooter } from './shared/dialog/dialog';
 import { PanelDialog, PanelDialogContent, PanelDialogFooter } from './shared/dialog/panel-dialog';
@@ -95,7 +94,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                 <DialogContent style={paperStyle}>
                     {/* Body */}
                     <TableProvider tableKey="customer_table">
-                        <TableConfigProvider>
                             <div style={{ paddingRight: '44px' }}>
                                 <Table_Header
                                     columns={showMoreColumns ?? []}
@@ -187,7 +185,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                     />
                                 </div>
                             </div>
-                        </TableConfigProvider>
                     </TableProvider>
 
                     {/* Footer */}
@@ -225,7 +222,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
             <PanelDialogContent style={paperStyle}>
                 {/* Body */}
                 <TableProvider tableKey="customer_table">
-                    <TableConfigProvider>
                         <Table_Header
                             columns={showMoreColumns ?? []}
                             data={items}
@@ -312,7 +308,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                 />
                             </div>
                         </div>
-                    </TableConfigProvider>
                 </TableProvider>
                 {/* Footer */}
                 <PanelDialogFooter>
