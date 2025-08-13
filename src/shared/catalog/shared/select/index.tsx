@@ -41,7 +41,7 @@ export function CatalogSelect<T>({
     const [visibleCount, setVisibleCount] = useState(selectedArray.length || 1);
     const overflowCount = multiple ? selectedArray.length - visibleCount : 0;
 
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLButtonElement>(null);
     const measureRefs = useRef<Array<HTMLDivElement | null>>([]);
 
     // Filter items based on search
@@ -122,7 +122,11 @@ export function CatalogSelect<T>({
             </div>
             <Popover.Root open={open} onOpenChange={setOpen}>
                 <Popover.Trigger asChild>
-                    <div ref={containerRef} className={styles.selectTrigger}>
+                    <button
+                        ref={containerRef}
+                        className={styles.selectTrigger}
+                        style={{ borderColor: open ? 'hsl(var(--clr-primary-500))' : 'hsl(var(--clr-grey-300))' }}
+                    >
                         <div className={styles.selectChips}>
                             {multiple ? (
                                 selectedArray.length > 0 ? (
@@ -171,7 +175,7 @@ export function CatalogSelect<T>({
                             )}
                             {open ? <DirectionUpIcon /> : <DirectionDownIcon />}
                         </div>
-                    </div>
+                    </button>
                 </Popover.Trigger>
 
                 <Popover.Content
