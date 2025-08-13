@@ -43,6 +43,8 @@ export interface CatalogProps<T extends MRT_RowData> {
     onClickNew?: () => void;
     /** Loading state for the catalog */
     isLoading?: boolean;
+    /** Label for the catalog */
+    label?: string;
 }
 
 export function Catalog<T extends MRT_RowData>({
@@ -59,6 +61,7 @@ export function Catalog<T extends MRT_RowData>({
     onRefetch,
     onClickNew,
     isLoading,
+    label,
 }: CatalogProps<T>) {
     const [open, setOpen] = useState(false);
 
@@ -81,6 +84,7 @@ export function Catalog<T extends MRT_RowData>({
                 placeholder="Seçin məhsul"
                 onViewAll={() => setOpen(true)}
                 showMore={enableModal}
+                label={label}
             />
 
             {enableModal && (

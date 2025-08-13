@@ -14,10 +14,8 @@ type IButtonVariant =
     | 'outlined-20'
     | 'outlined-30'
     | 'ghost-10'
-    | 'ghost-15'
     | 'ghost-20'
     | 'ghost-30'
-    | 'main-20-red'
     | 'none';
 
 type IconButtonSize = '0' | '5' | '10' | '15' | '20' | '30';
@@ -43,7 +41,7 @@ type I_ButtonComponentProps = (ButtonProps & ButtonElementProps) | (ButtonProps 
 
 const S_Button: FC<I_ButtonComponentProps> = ({
     as = 'button',
-    variant = 'primary-20',
+    variant = 'main-20',
     color = 'primary',
     disableAnimation = false,
     children,

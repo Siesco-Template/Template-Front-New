@@ -1,7 +1,13 @@
+.selectLabel {
+    font-size: var(--fs-50);
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: hsl(var(--clr-primary-900));
+}
+
 .selectTrigger {
     display: flex;
     align-items: center;
-    /* height: 42px; */
     padding: 8px;
     gap: 12px;
     border-radius: 12px;

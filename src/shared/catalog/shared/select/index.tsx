@@ -18,6 +18,7 @@ export type CatalogSelectProps<T> = {
     onChange: (selection: T[] | T | null) => void;
     onViewAll?: () => void;
     showMore?: boolean;
+    label?: string;
 };
 
 export function CatalogSelect<T>({
@@ -30,6 +31,7 @@ export function CatalogSelect<T>({
     onChange,
     onViewAll,
     showMore = false,
+    label,
 }: CatalogSelectProps<T>) {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState('');
@@ -107,6 +109,9 @@ export function CatalogSelect<T>({
 
     return (
         <>
+            {/* label */}
+            {label && <label className={styles.selectLabel}>{label}</label>}
+
             {/* Offscreen measurement */}
             <div style={{ position: 'absolute', visibility: 'hidden', height: 0, overflow: 'hidden' }}>
                 {selectedArray.map((item, idx) => (
@@ -115,7 +120,6 @@ export function CatalogSelect<T>({
                     </div>
                 ))}
             </div>
-
             <Popover.Root open={open} onOpenChange={setOpen}>
                 <Popover.Trigger asChild>
                     <div ref={containerRef} className={styles.selectTrigger}>
