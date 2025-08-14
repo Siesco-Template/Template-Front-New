@@ -260,7 +260,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                         ? (items.find((i: any) => i.value === filter.value) ?? null)
                         : null;
 
-                console.log(items, 'it');
+                console.log(items, 'it', filter?.options);
                 return (
                     <Catalog
                         key={filter.key}
@@ -281,6 +281,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                         onClickNew={undefined}
                         isLoading={false}
                         label={filter.label}
+                        showMoreColumns={[]}
                     />
                 );
 

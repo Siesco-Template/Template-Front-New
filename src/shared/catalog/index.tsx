@@ -79,7 +79,7 @@ export function Catalog<T extends MRT_RowData>({
                 items={items}
                 getKey={(p) => getRowId(p)}
                 getLabel={(p) => getLabel(p)}
-                multiple={multiple} // or false for single-select
+                multiple={multiple}
                 selected={multiple ? value : value[0]}
                 onChange={handleSelect}
                 placeholder={title || 'Seçin'}

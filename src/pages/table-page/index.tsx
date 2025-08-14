@@ -213,11 +213,11 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             header: 'Unikal nömrə',
             filterVariant: 'text',
         },
-        {
-            accessorKey: 'CompileDate',
-            header: 'Tərtib tarixi',
-            filterVariant: 'date-interval',
-        },
+        // {
+        //     accessorKey: 'CompileDate',
+        //     header: 'Tərtib tarixi',
+        //     filterVariant: 'date-interval',
+        // },
 
         {
             accessorKey: 'ReportStatus',

@@ -21,7 +21,7 @@ interface ConfigPanelProps {
     modalTableData?: any[];
     table_key: string;
     modalTableColumns?: any[];
-    isRowSum: boolean;
+    isRowSum?: boolean;
 }
 
 const ConfigPanel: React.FC<ConfigPanelProps> = ({

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--pm-100);
+    width: 100%;
 }
 
 .input [data-part='input-header-wrapper'] {

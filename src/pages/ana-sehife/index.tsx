@@ -247,7 +247,6 @@ export default function ComponentsPage() {
         },
     ];
 
-    // API function to fetch catalog data
     const fetchCatalogData = async () => {
         setIsCatalogLoading(true);
         try {

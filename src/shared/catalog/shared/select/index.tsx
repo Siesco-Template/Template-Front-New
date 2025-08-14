@@ -109,10 +109,8 @@ export function CatalogSelect<T>({
 
     return (
         <>
-            {/* label */}
             {label && <label className={styles.selectLabel}>{label}</label>}
 
-            {/* Offscreen measurement */}
             <div style={{ position: 'absolute', visibility: 'hidden', height: 0, overflow: 'hidden' }}>
                 {selectedArray.map((item, idx) => (
                     <div key={getKey(item)} ref={(el) => (measureRefs.current[idx] = el)} className={styles.selectChip}>

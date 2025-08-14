@@ -5,12 +5,12 @@ console.log(BASE_URL, 'bbb');
 const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
     permission: `${BASE_URL}/permission/Permissions`,
-    user: `${BASE_URL}/auth/User`,
-    excel: `${BASE_URL}/auth/Excel`,
-    fakeEndpoints: `${BASE_URL}/auth/FakeEndpoints`,
-    config: `${BASE_URL}/auth/Config`,
-    filter: `${BASE_URL}/auth/Filter`,
-    report: `${BASE_URL}/auth/Report`,
+    user: `${BASE_URL}/template/User`,
+    excel: `${BASE_URL}/template/Excel`,
+    fakeEndpoints: `${BASE_URL}/template/FakeEndpoints`,
+    config: `${BASE_URL}/template/Config`,
+    filter: `${BASE_URL}/template/Filter`,
+    report: `${BASE_URL}/template/Report`,
 } as const;
 
 const API_CONTROLLER = {

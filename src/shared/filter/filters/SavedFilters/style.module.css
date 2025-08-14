@@ -94,6 +94,7 @@
     flex-direction: column;
     margin-bottom: 10px;
     gap: 10px;
+    width: 100%;
 }
 .savedFilterTop h3 {
     color: var(--Black, #000);

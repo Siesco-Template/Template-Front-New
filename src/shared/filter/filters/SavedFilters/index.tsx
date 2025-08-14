@@ -3,7 +3,9 @@ import toast from 'react-hot-toast';
 
 import { filterService } from '@/services/filter/filter.service';
 
-import { S_Button } from '@/ui';
+import { SearchIcon } from '@/shared/icons';
+
+import { S_Button, S_Input } from '@/ui';
 
 import { isValidFilterValue } from '../../config/filterHelpers';
 import SearchHeader from '../../layout/searchHeader';
@@ -286,7 +288,15 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                     <>
                         <div className={styles.savedFilterTop}>
                             <h3>Filter</h3>
-                            <TextFilter placeholder="Axtar..." value={searchTerm} onChange={handleSearchChange} />
+                            <S_Input
+                                placeholder="Axtar..."
+                                value={searchTerm}
+                                onChange={(e) => handleSearchChange(e.target.value)}
+                                inputSize="medium"
+                                style={{ width: '100%' }}
+                                icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
+                                iconPosition="right"
+                            />
                         </div>
 
                         <ul className={styles.savedFilterList}>

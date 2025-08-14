@@ -92,147 +92,20 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
         return (
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent style={paperStyle}>
-                    {/* Body */}
                     <TableProvider tableKey="customer_table">
-                            <div style={{ paddingRight: '44px' }}>
-                                <Table_Header
-                                    columns={showMoreColumns ?? []}
-                                    data={items}
-                                    title="Catalog"
-                                    onToggleFilter={handleToggleFilterPanel}
-                                    onToggleConfig={handleToggleConfigPanel}
-                                    onClickRightBtn={onClickNew}
-                                    tableVisibiltyColumn={false}
-                                    headerClassName={styles.modalHeader}
-                                    onRefresh={onRefetch}
-                                />
-                            </div>
-
-                            <div className={styles.wrapper}>
-                                <div
-                                    className={styles.tableArea}
-                                    style={{
-                                        marginRight:
-                                            (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px',
-                                    }}
-                                >
-                                    <Table<T>
-                                        tableKey="customer_table" // TODO: make it unique and dynamic
-                                        columns={
-                                            showMoreColumns?.map((col) => {
-                                                return {
-                                                    ...col,
-                                                    accessorFn: (row) =>
-                                                        col.accessorKey
-                                                            ? row[col.accessorKey as keyof typeof row]
-                                                            : undefined,
-                                                };
-                                            }) ?? []
-                                        }
-                                        data={items as any}
-                                        getRowId={(row) => {
-                                            return getRowId(row.original);
-                                        }}
-                                        enableCheckbox={true}
-                                        enableMultiSelect={true}
-                                        rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
-                                        setRowCheckboxSelect={(value) => {
-                                            if (Object.keys(value).length > 2) {
-                                                setSelectedItems([]);
-                                                return;
-                                            }
-                                            const selectedId = Object.keys(value).at(-1);
-                                            const newItems = items.filter((item) => item.id === selectedId);
-                                            setSelectedItems(newItems);
-                                        }}
-                                        enableRowNumbers={false}
-                                        isLoading={isLoading}
-                                    />
-                                    <div className={styles.modalFooter}>
-                                        <Table_Footer totalItems={totalItemCount} />
-                                    </div>
-                                </div>
-                                <div
-                                    className={[
-                                        styles.panel,
-                                        styles.filterPanel,
-                                        isFilterCollapsed ? styles.collapsed : styles.expanded,
-                                    ].join(' ')}
-                                >
-                                    <FilterPanel
-                                        filters={filters}
-                                        storageKey="customer_table"
-                                        onChange={() => {}}
-                                        isCollapsed={isFilterCollapsed}
-                                        onToggleCollapse={handleToggleFilterPanel}
-                                        table_key="customer_table"
-                                    />
-                                </div>
-
-                                <div
-                                    className={[
-                                        styles.panel,
-                                        styles.configPanel,
-                                        isConfigCollapsed ? styles.collapsed : styles.expanded,
-                                    ].join(' ')}
-                                >
-                                    <ConfigPanel
-                                        isCollapsed={isConfigCollapsed}
-                                        onToggleCollapse={handleToggleConfigPanel}
-                                        modalTableData={[]}
-                                        table_key="customer_table"
-                                        modalTableColumns={[]}
-                                    />
-                                </div>
-                            </div>
-                    </TableProvider>
-
-                    {/* Footer */}
-                    <DialogFooter>
-                        {/* Cancel */}
-                        <DialogClose asChild>
-                            <S_Button
-                                variant="outlined-10"
-                                onClick={() => {
-                                    setSelectedItems(value as T[]);
-                                    setOpen(false);
-                                }}
-                            >
-                                Cancel
-                            </S_Button>
-                        </DialogClose>
-
-                        <S_Button
-                            onClick={() => {
-                                handleSelect(multiple ? selectedItems : (selectedItems[0] ?? null));
-                                setOpen(false);
-                            }}
-                            variant="main-10"
-                        >
-                            Done
-                        </S_Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        );
-    }
-
-    return (
-        <PanelDialog open={open} onOpenChange={setOpen}>
-            <PanelDialogContent style={paperStyle}>
-                {/* Body */}
-                <TableProvider tableKey="customer_table">
-                        <Table_Header
-                            columns={showMoreColumns ?? []}
-                            data={items}
-                            title="Catalog"
-                            onToggleFilter={handleToggleFilterPanel}
-                            onToggleConfig={handleToggleConfigPanel}
-                            onClickRightBtn={onClickNew}
-                            tableVisibiltyColumn={false}
-                            headerClassName={styles.modalHeader}
-                            onRefresh={onRefetch}
-                        />
+                        <div style={{ paddingRight: '44px' }}>
+                            <Table_Header
+                                columns={showMoreColumns ?? []}
+                                data={items}
+                                title="Catalog"
+                                onToggleFilter={handleToggleFilterPanel}
+                                onToggleConfig={handleToggleConfigPanel}
+                                onClickRightBtn={onClickNew}
+                                tableVisibiltyColumn={false}
+                                headerClassName={styles.modalHeader}
+                                onRefresh={onRefetch}
+                            />
+                        </div>
 
                         <div className={styles.wrapper}>
                             <div
@@ -242,7 +115,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                 }}
                             >
                                 <Table<T>
-                                    tableKey="customer_table" // TODO: make it unique and dynamic
+                                    tableKey="customer_table"
                                     columns={
                                         showMoreColumns?.map((col) => {
                                             return {
@@ -259,22 +132,24 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                         return getRowId(row.original);
                                     }}
                                     enableCheckbox={true}
-                                    enableMultiSelect={multiple}
+                                    enableMultiSelect={true}
                                     rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
                                     setRowCheckboxSelect={(value) => {
-                                        setSelectedItems(
-                                            Object.keys(value).map((key) => items.find((item) => item.id === key) as T)
-                                        );
+                                        if (Object.keys(value).length > 2) {
+                                            setSelectedItems([]);
+                                            return;
+                                        }
+                                        const selectedId = Object.keys(value).at(-1);
+                                        const newItems = items.filter((item) => item.id === selectedId);
+                                        setSelectedItems(newItems);
                                     }}
                                     enableRowNumbers={false}
                                     isLoading={isLoading}
                                 />
-
                                 <div className={styles.modalFooter}>
                                     <Table_Footer totalItems={totalItemCount} />
                                 </div>
                             </div>
-
                             <div
                                 className={[
                                     styles.panel,
@@ -308,6 +183,125 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                 />
                             </div>
                         </div>
+                    </TableProvider>
+
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <S_Button
+                                variant="outlined-10"
+                                onClick={() => {
+                                    setSelectedItems(value as T[]);
+                                    setOpen(false);
+                                }}
+                            >
+                                Cancel
+                            </S_Button>
+                        </DialogClose>
+
+                        <S_Button
+                            onClick={() => {
+                                handleSelect(multiple ? selectedItems : (selectedItems[0] ?? null));
+                                setOpen(false);
+                            }}
+                            variant="main-10"
+                        >
+                            Done
+                        </S_Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        );
+    }
+
+    return (
+        <PanelDialog open={open} onOpenChange={setOpen}>
+            <PanelDialogContent style={paperStyle}>
+                {/* Body */}
+                <TableProvider tableKey="customer_table">
+                    <Table_Header
+                        columns={showMoreColumns ?? []}
+                        data={items}
+                        title="Catalog"
+                        onToggleFilter={handleToggleFilterPanel}
+                        onToggleConfig={handleToggleConfigPanel}
+                        onClickRightBtn={onClickNew}
+                        tableVisibiltyColumn={false}
+                        headerClassName={styles.modalHeader}
+                        onRefresh={onRefetch}
+                    />
+
+                    <div className={styles.wrapper}>
+                        <div
+                            className={styles.tableArea}
+                            style={{
+                                marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px',
+                            }}
+                        >
+                            <Table<T>
+                                tableKey="customer_table" // TODO: make it unique and dynamic
+                                columns={
+                                    showMoreColumns?.map((col) => {
+                                        return {
+                                            ...col,
+                                            accessorFn: (row) =>
+                                                col.accessorKey ? row[col.accessorKey as keyof typeof row] : undefined,
+                                        };
+                                    }) ?? []
+                                }
+                                data={items as any}
+                                getRowId={(row) => {
+                                    return getRowId(row.original);
+                                }}
+                                enableCheckbox={true}
+                                enableMultiSelect={multiple}
+                                rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
+                                setRowCheckboxSelect={(value) => {
+                                    setSelectedItems(
+                                        Object.keys(value).map((key) => items.find((item) => item.id === key) as T)
+                                    );
+                                }}
+                                enableRowNumbers={false}
+                                isLoading={isLoading}
+                            />
+
+                            <div className={styles.modalFooter}>
+                                <Table_Footer totalItems={totalItemCount} />
+                            </div>
+                        </div>
+
+                        <div
+                            className={[
+                                styles.panel,
+                                styles.filterPanel,
+                                isFilterCollapsed ? styles.collapsed : styles.expanded,
+                            ].join(' ')}
+                        >
+                            <FilterPanel
+                                filters={filters}
+                                storageKey="customer_table"
+                                onChange={() => {}}
+                                isCollapsed={isFilterCollapsed}
+                                onToggleCollapse={handleToggleFilterPanel}
+                                table_key="customer_table"
+                            />
+                        </div>
+
+                        <div
+                            className={[
+                                styles.panel,
+                                styles.configPanel,
+                                isConfigCollapsed ? styles.collapsed : styles.expanded,
+                            ].join(' ')}
+                        >
+                            <ConfigPanel
+                                isCollapsed={isConfigCollapsed}
+                                onToggleCollapse={handleToggleConfigPanel}
+                                modalTableData={[]}
+                                table_key="customer_table"
+                                modalTableColumns={[]}
+                            />
+                        </div>
+                    </div>
                 </TableProvider>
                 {/* Footer */}
                 <PanelDialogFooter>
