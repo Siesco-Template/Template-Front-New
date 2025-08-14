@@ -72,11 +72,11 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     }, []);
 
     const columns: CustomMRTColumn<IUser>[] = [
-        { accessorKey: 'FirstName', header: 'Ad', filterVariant: 'text', placeholder: 'Ad ' },
-        { accessorKey: 'LastName', header: 'Soyad', filterVariant: 'text', placeholder: 'Soyad ' },
+        { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text', placeholder: 'Ad ' },
+        { accessorKey: 'lastName', header: 'Soyad', filterVariant: 'text', placeholder: 'Soyad ' },
 
         // { accessorKey: 'PhoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text', placeholder: 'Əlaqə nömrəsi' },
-        { accessorKey: 'Email', header: 'E-mail', filterVariant: 'text', placeholder: 'E-mail' },
+        { accessorKey: 'email', header: 'E-mail', filterVariant: 'text', placeholder: 'E-mail' },
         {
             id: 'actions',
             header: '',
@@ -137,7 +137,7 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         }
 
         try {
-            const res = await userService.getAllUsers('users', queryParams);
+            const res = await userService.getAllUsers('appusers', queryParams);
             if (!res) {
                 toast.error('Işçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.');
                 setTableData([]);
