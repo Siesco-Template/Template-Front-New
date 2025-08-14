@@ -23,7 +23,7 @@ export function NewFileDialog({ open, onOpenChange, onSubmit, itemToCopy }: NewF
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Users/${itemToCopy.id}`);
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/Users/${itemToCopy.id}`);
             const data = await res.json();
             setFormData({
                 name: data.firstName,

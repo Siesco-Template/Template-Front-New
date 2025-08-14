@@ -93,7 +93,7 @@ function useFolderOperations({ items, setItems, currentPath }: FolderOperationsP
 
     const searchItems = async (query: string) => {
         const items = await fetch(
-            `${import.meta.env.VITE_BASE_URL}/auth/UserFolders/SearchInFolder?path=${currentPath}&keyword=${query}`
+            `${import.meta.env.VITE_BASE_URL}/template/UserFolders/SearchInFolder?path=${currentPath}&keyword=${query}`
         );
         const data = await items.json();
         const itemsList = [

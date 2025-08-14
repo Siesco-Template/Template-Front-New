@@ -20,7 +20,7 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
     useEffect(() => {
         const fetchItem = async () => {
             const res = await fetch(
-                `${import.meta.env.VITE_BASE_URL}/auth/UserFolders/GetFolderDetail?path=${item?.path}`
+                `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFolderDetail?path=${item?.path}`
             );
             const data = await res.json();
             setValue(data?.comment || '');

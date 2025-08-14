@@ -22,7 +22,7 @@ function FolderPage() {
         async (path: string) => {
             try {
                 const res = await fetch(
-                    `${import.meta.env.VITE_BASE_URL}/auth/UserFolders/GetFoldersAndFiles?path=${path}`
+                    `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFoldersAndFiles?path=${path}`
                 );
                 const data = await res.json();
                 const itemsList = [

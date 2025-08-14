@@ -6,7 +6,6 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { S_Button } from '@/ui';
 
 import { ViewMode, ViewStyleSelectorProps } from '../../types';
-import { Button } from '../shared/Button';
 
 const viewModeLabels: Record<ViewMode, string> = {
     list: 'Siyahı',

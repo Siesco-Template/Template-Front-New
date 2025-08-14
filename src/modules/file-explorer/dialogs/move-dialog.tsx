@@ -20,7 +20,9 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
     const [isLoading, setIsLoading] = useState(false);
     const fetchItems = useCallback(async () => {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFolders/GetOnlyFolders?path=${currentPath}`);
+        const res = await fetch(
+            `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetOnlyFolders?path=${currentPath}`
+        );
         const items = await res.json();
         const itemsList = items.map((folder: any) => ({
             id: crypto.randomUUID(),

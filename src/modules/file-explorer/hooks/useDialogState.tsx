@@ -189,7 +189,7 @@ function useDialogState({
             if (itemToRename) {
                 try {
                     if (itemToRename.type === 'folder') {
-                        var res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFolders/RenameFolder`, {
+                        var res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/RenameFolder`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ function useDialogState({
                             body: JSON.stringify({ currentPath: itemToRename.path, newName }),
                         });
                     } else {
-                        var res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFiles/RenameFile`, {
+                        var res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/RenameFile`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -261,7 +261,7 @@ function useDialogState({
         const filesToDelete = selectedItems.filter((item) => item.type === 'file');
 
         if (viewMode === 'tree' || searchQuery) {
-            await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFiles/DeleteFromMultipleSources`, {
+            await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/DeleteFromMultipleSources`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -277,7 +277,7 @@ function useDialogState({
                 }),
             });
         } else {
-            await fetch(`${import.meta.env.VITE_BASE_URL}/api/UserFiles/BulkDeleteFoldersAndFiles`, {
+            await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/BulkDeleteFoldersAndFiles`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -308,7 +308,7 @@ function useDialogState({
     const handleNewFolderSubmit = useCallback(
         async (name: string, icon: string) => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFolders/CreateFolder`, {
+                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/CreateFolder`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -356,7 +356,7 @@ function useDialogState({
     const handleNewFileSubmit = useCallback(
         async (formData: { name: string; surname: string; email: string }) => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFiles/CreateUser`, {
+                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/CreateUser`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -418,7 +418,7 @@ function useDialogState({
     const handleCommentSubmit = useCallback(
         async (comment: string) => {
             if (itemToComment) {
-                await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFolders/AddComment`, {
+                await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/AddComment`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -433,7 +433,7 @@ function useDialogState({
     const handleChangeIconSubmit = useCallback(
         async (color: string) => {
             if (itemToChangeIcon) {
-                await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFolders/ChangeIcon`, {
+                await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/ChangeIcon`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -466,33 +466,36 @@ function useDialogState({
         async (destinationPath: string) => {
             try {
                 if (searchQuery || viewMode === 'tree') {
-                    var res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFiles/MoveFromMultipleSources`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            targetPath: destinationPath,
-                            foldersToCopy: itemsToMove
-                                .filter((item) => item.type === 'folder')
-                                .map((item) => {
-                                    return {
-                                        sourcePath: item.path.split('/').slice(0, -1).join('/'),
-                                        folderName: item.name,
-                                    };
-                                }),
-                            filesToCopy: itemsToMove
-                                .filter((item) => item.type === 'file')
-                                .map((item) => {
-                                    return {
-                                        sourcePath: item.path,
-                                        fileId: item.id,
-                                    };
-                                }),
-                        }),
-                    });
+                    var res = await fetch(
+                        `${import.meta.env.VITE_BASE_URL}/template/UserFiles/MoveFromMultipleSources`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                targetPath: destinationPath,
+                                foldersToCopy: itemsToMove
+                                    .filter((item) => item.type === 'folder')
+                                    .map((item) => {
+                                        return {
+                                            sourcePath: item.path.split('/').slice(0, -1).join('/'),
+                                            folderName: item.name,
+                                        };
+                                    }),
+                                filesToCopy: itemsToMove
+                                    .filter((item) => item.type === 'file')
+                                    .map((item) => {
+                                        return {
+                                            sourcePath: item.path,
+                                            fileId: item.id,
+                                        };
+                                    }),
+                            }),
+                        }
+                    );
                 } else {
-                    var res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/UserFiles/MoveFoldersAndFiles`, {
+                    var res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/MoveFoldersAndFiles`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
         const fetchFolderDetails = async () => {
             setIsLoading(true);
             const res = await fetch(
-                `${import.meta.env.VITE_BASE_URL}/auth/UserFolders/GetFolderDetail?path=${item?.path}`
+                `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFolderDetail?path=${item?.path}`
             );
             const data = await res.json();
             setItemDetails(data);
@@ -36,7 +36,7 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
         };
         const fetchFileDetails = async () => {
             setIsLoading(true);
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Users/${item?.id}`);
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/Users/${item?.id}`);
             const data = await res.json();
             setItemDetails(data);
             setIsLoading(false);
