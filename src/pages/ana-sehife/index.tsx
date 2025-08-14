@@ -251,7 +251,7 @@ export default function ComponentsPage() {
         setIsCatalogLoading(true);
         try {
             const res = await httpRequest<{ data: Product[]; totalCount: number }>(
-                `${import.meta.env.VITE_BASE_URL}/auth/Sales/GetAllSales`,
+                `${import.meta.env.VITE_BASE_URL}/template/Sales/GetAllSales`,
                 {
                     method: 'GET',
                     queryParams: { skip: 0, take: 20 },
@@ -268,7 +268,6 @@ export default function ComponentsPage() {
         }
     };
 
-    // Fetch catalog data on component mount
     useEffect(() => {
         fetchCatalogData();
     }, []);
