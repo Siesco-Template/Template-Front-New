@@ -26,6 +26,9 @@ export function NewFileDialog({ open, onOpenChange, onSubmit, itemToCopy }: NewF
         const fetchData = async () => {
             try {
                 const data = await folderService.getUserDetail(itemToCopy.id || '');
+                if (!data) {
+                    return;
+                }
                 setFormData({
                     name: data.firstName,
                     surname: data.lastName,

@@ -22,10 +22,13 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
     const [isLoading, setIsLoading] = useState(false);
     const fetchItems = useCallback(async () => {
         const items = await folderService.getOnlyFolders(currentPath);
+        if (!items) {
+            return [];
+        }
         const itemsList = items.map((folder: any) => ({
             id: crypto.randomUUID(),
             name: folder.name,
-            type: 'folder',
+            type: 'folder' as FolderItem['type'],
             path: folder.path,
             icon: folder.icon,
             permissions: {

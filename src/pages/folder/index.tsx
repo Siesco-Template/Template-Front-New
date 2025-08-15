@@ -23,11 +23,15 @@ function FolderPage() {
         async (path: string) => {
             try {
                 const data = await folderService.getFoldersAndFiles(path);
+                if (!data) {
+                    return [];
+                }
+
                 const itemsList = [
                     ...data.folders.map((folder: any) => ({
                         id: crypto.randomUUID(),
                         name: folder.name,
-                        type: 'folder',
+                        type: 'folder' as FolderItem['type'],
                         path: folder.path,
                         icon: folder.icon,
                         permissions: {
@@ -46,7 +50,7 @@ function FolderPage() {
                     ...data.files.map((file: any) => ({
                         id: file.id,
                         name: file.fileName,
-                        type: 'file',
+                        type: 'file' as FolderItem['type'],
                         path: path,
                         permissions: {
                             canView: true,
@@ -107,7 +111,6 @@ function FolderPage() {
                         const updatedItems = updateItemChildren(prevItems, path, isAppend);
                         return updatedItems;
                     });
-
                     return;
                 }
                 const newItems = await fetchItems(path);

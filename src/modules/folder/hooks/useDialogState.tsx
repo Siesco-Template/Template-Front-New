@@ -291,14 +291,14 @@ function useDialogState({
             }
 
             if (viewMode === 'tree') {
-                console.log(data);
+                if (!data) return;
                 const newItem = {
                     id: crypto.randomUUID(),
                     name: data.name,
                     type: 'folder',
                     path: data.path,
                     icon: data.icon,
-                    createDate: data.createDate,
+                    createDate: new Date(data.createDate),
                     children: [],
                     permissions: {
                         canView: true,
@@ -335,27 +335,28 @@ function useDialogState({
                 return;
             }
 
-            const newItem = {
-                id: data.id,
-                name: data.fileName,
-                type: 'file',
-                path: newFilePath,
-                createDate: data.createDate,
-                updateDate: new Date(),
-                children: [],
-                permissions: {
-                    canView: true,
-                    canEdit: true,
-                    canDelete: true,
-                    canMove: true,
-                    canCopy: true,
-                    canDownload: true,
-                    canComment: true,
-                    canChangeIcon: true,
-                },
-            };
-
             if (viewMode === 'tree') {
+                if (!data) return;
+                const newItem = {
+                    id: data.id,
+                    name: data.fileName,
+                    type: 'file',
+                    path: newFilePath,
+                    createDate: data.createDate,
+                    updateDate: new Date(),
+                    children: [],
+                    permissions: {
+                        canView: true,
+                        canEdit: true,
+                        canDelete: true,
+                        canMove: true,
+                        canCopy: true,
+                        canDownload: true,
+                        canComment: true,
+                        canChangeIcon: true,
+                    },
+                };
+
                 if (currentPath !== newFilePath) {
                     const newItems = moveItems(items, [newItem as unknown as FolderItem], newFilePath, 'Copy');
                     setItems(newItems);
