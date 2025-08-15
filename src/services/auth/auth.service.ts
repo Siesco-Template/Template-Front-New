@@ -1,18 +1,8 @@
-import { useAuthStore } from '@/store/authStore';
-import { IUser as UserResponse } from '@/store/authStore';
-
-import { UserRole } from '@/shared/constants/enums';
+import { IUser as UserResponse, useAuthStore } from '@/store/authStore';
 
 import { httpRequest } from '../api/httpsRequest';
 import API_CONTROLLER from '../config/api.config';
-import {
-    IBlockUserFormData,
-    ICreateUserBody,
-    IUpdateUserBody,
-    IUsersFilter,
-    UserForPermission,
-} from './auth.service.types';
-import { IUser } from './auth.service.types';
+import { IBlockUserFormData, ICreateUserBody, IUpdateUserBody, IUser } from './auth.service.types';
 
 class AuthService {
     authUrl = (endpoint = '') => API_CONTROLLER.auth(endpoint);

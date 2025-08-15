@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
+import toast from 'react-hot-toast';
 
+import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
 
 interface FolderOperationsProps {
@@ -92,49 +94,51 @@ function useFolderOperations({ items, setItems, currentPath }: FolderOperationsP
     );
 
     const searchItems = async (query: string) => {
-        const items = await fetch(
-            `${import.meta.env.VITE_BASE_URL}/template/UserFolders/SearchInFolder?path=${currentPath}&keyword=${query}`
-        );
-        const data = await items.json();
-        const itemsList = [
-            ...data.folders.map((folder: any) => ({
-                id: crypto.randomUUID(),
-                name: folder.name,
-                type: 'folder',
-                path: folder.path,
-                icon: folder.icon,
-                permissions: {
-                    canView: true,
-                    canEdit: true,
-                    canDelete: true,
-                    canMove: true,
-                    canCopy: true,
-                    canDownload: true,
-                    canComment: true,
-                    canChangeIcon: true,
-                },
-                children: [],
-                createDate: folder.createDate,
-            })),
-            ...data.files.map((file: any) => ({
-                id: file.id,
-                name: file.fileName,
-                type: 'file',
-                path: file.folderPath,
-                permissions: {
-                    canView: true,
-                    canEdit: true,
-                    canDelete: true,
-                    canMove: true,
-                    canCopy: true,
-                    canDownload: true,
-                    canComment: true,
-                    canChangeIcon: true,
-                },
-                createDate: file.createDate,
-            })),
-        ];
-        setItems(itemsList);
+        try {
+            const data = await folderService.searchInFolder({ path: currentPath, keyword: query });
+            const itemsList = [
+                ...data.folders.map((folder: any) => ({
+                    id: crypto.randomUUID(),
+                    name: folder.name,
+                    type: 'folder',
+                    path: folder.path,
+                    icon: folder.icon,
+                    permissions: {
+                        canView: true,
+                        canEdit: true,
+                        canDelete: true,
+                        canMove: true,
+                        canCopy: true,
+                        canDownload: true,
+                        canComment: true,
+                        canChangeIcon: true,
+                    },
+                    children: [],
+                    createDate: folder.createDate,
+                })),
+                ...data.files.map((file: any) => ({
+                    id: file.id,
+                    name: file.fileName,
+                    type: 'file',
+                    path: file.folderPath,
+                    permissions: {
+                        canView: true,
+                        canEdit: true,
+                        canDelete: true,
+                        canMove: true,
+                        canCopy: true,
+                        canDownload: true,
+                        canComment: true,
+                        canChangeIcon: true,
+                    },
+                    createDate: file.createDate,
+                })),
+            ];
+            setItems(itemsList);
+        } catch (error) {
+            // @ts-expect-error
+            toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+        }
     };
 
     return { deleteItems, updateItem, moveItems, searchItems };

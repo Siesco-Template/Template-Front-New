@@ -23,7 +23,6 @@ export async function httpRequest<T>(
     }
 
     const isFormData = options.body instanceof FormData;
-    // const fullFetchUrl = url + '?' + (queryString ? queryString : '') + (queryString ? '&' : '') + filterParamString;
     const queryString = options.queryParams && new URLSearchParams(queryData).toString();
     const fullFetchUrl = queryString && queryString.length > 0 ? `${url}?${queryString}` : url;
 

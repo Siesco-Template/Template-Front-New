@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { S_Button, S_Textarea } from '@/ui';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
 
+import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
 
 interface CommentDialogProps {
@@ -19,11 +21,13 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
 
     useEffect(() => {
         const fetchItem = async () => {
-            const res = await fetch(
-                `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFolderDetail?path=${item?.path}`
-            );
-            const data = await res.json();
-            setValue(data?.comment || '');
+            try {
+                const data = await folderService.getFolderDetail(item?.path || '');
+                setValue(data?.comment || '');
+            } catch (error) {
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            }
         };
         fetchItem();
     }, [item, open]);

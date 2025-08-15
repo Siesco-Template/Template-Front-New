@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/az';
@@ -7,6 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { S_Button } from '@/ui';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
 
+import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
 
 interface DetailsDialogProps {
@@ -26,20 +28,29 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
 
     useEffect(() => {
         const fetchFolderDetails = async () => {
-            setIsLoading(true);
-            const res = await fetch(
-                `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFolderDetail?path=${item?.path}`
-            );
-            const data = await res.json();
-            setItemDetails(data);
-            setIsLoading(false);
+            try {
+                setIsLoading(true);
+                const data = await folderService.getFolderDetail(item?.path || '');
+                setItemDetails(data);
+            } catch (error) {
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } finally {
+                setIsLoading(false);
+            }
         };
+
         const fetchFileDetails = async () => {
-            setIsLoading(true);
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/Users/${item?.id}`);
-            const data = await res.json();
-            setItemDetails(data);
-            setIsLoading(false);
+            try {
+                setIsLoading(true);
+                const data = await folderService.getUserDetail(item?.path || '');
+                setItemDetails(data);
+            } catch (error) {
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } finally {
+                setIsLoading(false);
+            }
         };
 
         if (item?.type === 'folder') {

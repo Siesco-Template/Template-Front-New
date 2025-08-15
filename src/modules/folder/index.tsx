@@ -20,6 +20,7 @@ import { NotFoundDialog } from './dialogs/not-found-dialog';
 import { RenameDialog } from './dialogs/rename-dialog';
 import useDialogState from './hooks/useDialogState';
 import useFolderOperations from './hooks/useFolderOperations';
+import { folderService } from './services/folder.service';
 import { FolderItem, SelectionAction, ViewMode } from './types';
 
 interface FolderProps {
@@ -200,13 +201,7 @@ export function Folder({
 
     const validatePath = async (path: string) => {
         try {
-            const res = await fetch(
-                `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFoldersAndFiles?path=${path}`
-            );
-
-            if (!res.ok) {
-                return false;
-            }
+            await folderService.getFoldersAndFiles(path);
             return true;
         } catch (error) {
             return false;

@@ -4,6 +4,7 @@ import { S_Input } from '@/ui';
 import S_Button from '@/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
 
+import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
 
 interface NewFileDialogProps {
@@ -23,13 +24,17 @@ export function NewFileDialog({ open, onOpenChange, onSubmit, itemToCopy }: NewF
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/Users/${itemToCopy.id}`);
-            const data = await res.json();
-            setFormData({
-                name: data.firstName,
-                surname: data.lastName,
-                email: data.email,
-            });
+            try {
+                const data = await folderService.getUserDetail(itemToCopy.id || '');
+                setFormData({
+                    name: data.firstName,
+                    surname: data.lastName,
+                    email: data.email,
+                });
+            } catch (error) {
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            }
         };
 
         if (itemToCopy) {

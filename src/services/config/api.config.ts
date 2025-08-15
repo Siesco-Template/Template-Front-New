@@ -1,7 +1,5 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-console.log(BASE_URL, 'bbb');
-
 const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
     permission: `${BASE_URL}/permission/Permissions`,
@@ -11,6 +9,9 @@ const GATEWAY = {
     config: `${BASE_URL}/template/Config`,
     filter: `${BASE_URL}/template/Filter`,
     report: `${BASE_URL}/template/Report`,
+    userFiles: `${BASE_URL}/template/UserFiles`,
+    userFolders: `${BASE_URL}/template/UserFolders`,
+    users: `${BASE_URL}/template/Users`,
 } as const;
 
 const API_CONTROLLER = {
@@ -22,6 +23,9 @@ const API_CONTROLLER = {
     config: (url = '') => `${GATEWAY.config}${url}`,
     filter: (url = '') => `${GATEWAY.filter}${url}`,
     report: (url = '') => `${GATEWAY.report}${url}`,
+    userFiles: (url = '') => `${GATEWAY.userFiles}${url}`,
+    userFolders: (url = '') => `${GATEWAY.userFolders}${url}`,
+    users: (url = '') => `${GATEWAY.users}${url}`,
 };
 
 export default API_CONTROLLER;

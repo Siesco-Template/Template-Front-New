@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { S_Button } from '@/ui';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
 
-import { Folder } from '../';
+import { Folder } from '..';
+import { folderService } from '../services/folder.service';
 import { FolderItem, ViewMode } from '../types';
 
 interface MoveDialogProps {
@@ -20,10 +21,7 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
     const [isLoading, setIsLoading] = useState(false);
     const fetchItems = useCallback(async () => {
-        const res = await fetch(
-            `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetOnlyFolders?path=${currentPath}`
-        );
-        const items = await res.json();
+        const items = await folderService.getOnlyFolders(currentPath);
         const itemsList = items.map((folder: any) => ({
             id: crypto.randomUUID(),
             name: folder.name,

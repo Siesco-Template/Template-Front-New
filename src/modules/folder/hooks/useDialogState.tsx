@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { folderService } from '../services/folder.service';
 import { FolderItem, ViewMode } from '../types';
 
 interface IUseDialogStateProps {
@@ -20,7 +21,7 @@ interface IUseDialogStateProps {
         destinationPath: string,
         action: 'Move' | 'Copy'
     ) => FolderItem[];
-    searchItems: (query: string) => void;
+    searchItems: (query: string) => Promise<void>;
 }
 
 function useDialogState({
@@ -189,33 +190,17 @@ function useDialogState({
             if (itemToRename) {
                 try {
                     if (itemToRename.type === 'folder') {
-                        var res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/RenameFolder`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ currentPath: itemToRename.path, newName }),
-                        });
+                        await folderService.renameFolder({ currentPath: itemToRename.path, newName });
                     } else {
-                        var res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/RenameFile`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                folderPath: itemToRename.path,
-                                fileId: itemToRename.id,
-                                newFileName: newName,
-                            }),
+                        await folderService.renameFile({
+                            folderPath: itemToRename.path,
+                            fileId: itemToRename.id,
+                            newFileName: newName,
                         });
-                    }
-
-                    if (!res.ok) {
-                        const error = await res.json();
-                        throw new Error(error.message);
                     }
                 } catch (error) {
-                    toast.error((error as Error).message);
+                    // @ts-expect-error
+                    toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
                     return;
                 }
 
@@ -261,32 +246,18 @@ function useDialogState({
         const filesToDelete = selectedItems.filter((item) => item.type === 'file');
 
         if (viewMode === 'tree' || searchQuery) {
-            await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/DeleteFromMultipleSources`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    folderPathsToDelete: foldersToDelete.map((folder) => folder.path),
-                    filesToDelete: filesToDelete.map((file) => {
-                        return {
-                            fileId: file.id,
-                            folderPath: file.path,
-                        };
-                    }),
-                }),
+            await folderService.deleteFromMultipleSources({
+                folderPathsToDelete: foldersToDelete.map((folder) => folder.path),
+                filesToDelete: filesToDelete.map((file) => ({
+                    fileId: file.id,
+                    folderPath: file.path,
+                })),
             });
         } else {
-            await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/BulkDeleteFoldersAndFiles`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    folderPaths: foldersToDelete.map((folder) => folder.path),
-                    fileIds: filesToDelete.map((file) => file.id),
-                    folderPathForFiles: currentPath,
-                }),
+            await folderService.bulkDeleteFoldersAndFiles({
+                folderPaths: foldersToDelete.map((folder) => folder.path),
+                fileIds: filesToDelete.map((file) => file.id),
+                folderPathForFiles: currentPath,
             });
         }
 
@@ -308,24 +279,19 @@ function useDialogState({
     const handleNewFolderSubmit = useCallback(
         async (name: string, icon: string) => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/CreateFolder`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ name, icon, parentPath: currentPath }),
+                var data = await folderService.createFolder({
+                    name,
+                    icon,
+                    parentPath: currentPath,
                 });
-                var data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data.message);
-                }
             } catch (error) {
-                toast.error((error as Error).message);
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
                 return;
             }
 
             if (viewMode === 'tree') {
+                console.log(data);
                 const newItem = {
                     id: crypto.randomUUID(),
                     name: data.name,
@@ -356,25 +322,16 @@ function useDialogState({
     const handleNewFileSubmit = useCallback(
         async (formData: { name: string; surname: string; email: string }) => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/CreateUser`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        firstName: formData.name,
-                        lastName: formData.surname,
-                        email: formData.email,
-                        folderPath: newFilePath,
-                    }),
+                var data = await folderService.createUser({
+                    firstName: formData.name,
+                    lastName: formData.surname,
+                    email: formData.email,
+                    folderPath: newFilePath,
+                    phoneNumber: '',
                 });
-                var data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data.message);
-                }
             } catch (error) {
-                toast.error((error as Error).message);
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
                 return;
             }
 
@@ -418,12 +375,9 @@ function useDialogState({
     const handleCommentSubmit = useCallback(
         async (comment: string) => {
             if (itemToComment) {
-                await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/AddComment`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ path: itemToComment.path, comment }),
+                await folderService.addComment({
+                    path: itemToComment.path,
+                    comment,
                 });
             }
         },
@@ -433,12 +387,9 @@ function useDialogState({
     const handleChangeIconSubmit = useCallback(
         async (color: string) => {
             if (itemToChangeIcon) {
-                await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFolders/ChangeIcon`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ path: itemToChangeIcon.path, icon: color }),
+                await folderService.changeIcon({
+                    path: itemToChangeIcon.path,
+                    icon: color,
                 });
 
                 if (viewMode === 'tree') {
@@ -466,58 +417,41 @@ function useDialogState({
         async (destinationPath: string) => {
             try {
                 if (searchQuery || viewMode === 'tree') {
-                    var res = await fetch(
-                        `${import.meta.env.VITE_BASE_URL}/template/UserFiles/MoveFromMultipleSources`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                targetPath: destinationPath,
-                                foldersToCopy: itemsToMove
-                                    .filter((item) => item.type === 'folder')
-                                    .map((item) => {
-                                        return {
-                                            sourcePath: item.path.split('/').slice(0, -1).join('/'),
-                                            folderName: item.name,
-                                        };
-                                    }),
-                                filesToCopy: itemsToMove
-                                    .filter((item) => item.type === 'file')
-                                    .map((item) => {
-                                        return {
-                                            sourcePath: item.path,
-                                            fileId: item.id,
-                                        };
-                                    }),
+                    const requestBody = {
+                        targetPath: destinationPath,
+                        foldersToCopy: itemsToMove
+                            .filter((item) => item.type === 'folder')
+                            .map((item) => {
+                                return {
+                                    sourcePath: item.path.split('/').slice(0, -1).join('/'),
+                                    folderName: item.name,
+                                };
                             }),
-                        }
-                    );
+                        filesToCopy: itemsToMove
+                            .filter((item) => item.type === 'file')
+                            .map((item) => {
+                                return {
+                                    sourcePath: item.path,
+                                    fileId: item.id,
+                                };
+                            }),
+                    };
+                    await folderService.moveFromMultipleSources(requestBody);
                 } else {
-                    var res = await fetch(`${import.meta.env.VITE_BASE_URL}/template/UserFiles/MoveFoldersAndFiles`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            sourcePath:
-                                itemsToMove[0].type === 'folder'
-                                    ? itemsToMove[0].path.split('/').slice(0, -1).join('/')
-                                    : itemsToMove[0].path,
-                            targetPath: destinationPath,
-                            fileIds: itemsToMove.filter((item) => item.type === 'file').map((item) => item.id),
-                            folderNames: itemsToMove.filter((item) => item.type === 'folder').map((item) => item.name),
-                        }),
-                    });
-                }
-
-                if (!res.ok) {
-                    const error = await res.json();
-                    throw new Error(error.message);
+                    const requestBody = {
+                        sourcePath:
+                            itemsToMove[0].type === 'folder'
+                                ? itemsToMove[0].path.split('/').slice(0, -1).join('/')
+                                : itemsToMove[0].path,
+                        targetPath: destinationPath,
+                        fileIds: itemsToMove.filter((item) => item.type === 'file').map((item) => item.id),
+                        folderNames: itemsToMove.filter((item) => item.type === 'folder').map((item) => item.name),
+                    };
+                    await folderService.moveFoldersAndFiles(requestBody);
                 }
             } catch (error) {
-                toast.error((error as Error).message);
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
             }
 
             if (viewMode === 'tree') {

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-import { Folder } from '@/modules/file-explorer';
-import { FolderItem, ViewMode } from '@/modules/file-explorer/types';
+import { Folder } from '@/modules/folder';
+import { folderService } from '@/modules/folder/services/folder.service';
+import { FolderItem, ViewMode } from '@/modules/folder/types';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
@@ -21,10 +22,7 @@ function FolderPage() {
     const fetchItems = useCallback(
         async (path: string) => {
             try {
-                const res = await fetch(
-                    `${import.meta.env.VITE_BASE_URL}/template/UserFolders/GetFoldersAndFiles?path=${path}`
-                );
-                const data = await res.json();
+                const data = await folderService.getFoldersAndFiles(path);
                 const itemsList = [
                     ...data.folders.map((folder: any) => ({
                         id: crypto.randomUUID(),
