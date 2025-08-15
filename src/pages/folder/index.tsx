@@ -63,7 +63,8 @@ function FolderPage() {
                 ];
                 return itemsList;
             } catch (error) {
-                console.error('Failed to fetch items:', error);
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
                 return [];
             }
         },
