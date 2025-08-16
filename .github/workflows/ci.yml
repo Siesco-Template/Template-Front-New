@@ -18,9 +18,6 @@ jobs:
               with:
                   node-version: 20
 
-            - name: Remove node_modules and package-lock.json
-              run: rm -rf node_modules package-lock.json
-
             - name: Install dependencies
               run: npm i
 
