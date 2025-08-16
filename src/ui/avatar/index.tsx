@@ -1,4 +1,4 @@
-import { CSSProperties, FC, FunctionComponent } from 'react';
+import { FC } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Avatar, AvatarRootProps, useAvatarContext } from '@ark-ui/react';

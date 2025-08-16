@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-
 import { TinyColor } from '@ctrl/tinycolor';
+
+import { cls } from '@/shared/utils';
 
 import ChevronDownIcon from '../../shared/icons/chevron-down.svg?react';
 import ChevronRightIcon from '../../shared/icons/chevron-right.svg?react';
@@ -92,7 +92,7 @@ function TreeItem({
             canMove={allSelectedHavePermission('canMove')}
         >
             <div
-                className={cn(
+                className={cls(
                     'flex items-center !gap-1 !py-4 !cursor-pointer !select-none !bg-transparent',
                     '!hover:bg-[#F5F7F9] !rounded-sm',
                     isSelected && '!bg-[#F3F3F3]'
@@ -205,7 +205,7 @@ export function FolderGrid({
                         }
                     }}
                     data-item-id={item.id}
-                    className={cn(
+                    className={cls(
                         viewModeToItemClass[viewMode],
                         '!rounded-[4px] !hover:bg-[#F5F7F9] !cursor-pointer !select-none !h-fit',
                         selectedItems.includes(item) && '!bg-[#F3F3F3]'
@@ -216,7 +216,7 @@ export function FolderGrid({
                     role="button"
                     aria-selected={selectedItems.includes(item)}
                 >
-                    <IconComponent className={cn(viewModeToIconSize[viewMode])} style={style as React.CSSProperties} />
+                    <IconComponent className={cls(viewModeToIconSize[viewMode])} style={style as React.CSSProperties} />
                     <span className="!text-[14px] !text-center !text-[#546881] !break-all">{item.name}</span>
                     {viewMode === 'list' && (
                         <>
@@ -278,7 +278,7 @@ export function FolderGrid({
 
         return (
             <div
-                className={cn('!min-w-full !overflow-auto !pr-4', className)}
+                className={cls('!min-w-full !overflow-auto !pr-4', className)}
                 style={{ maxHeight: 'calc(100vh - 260px)' }}
                 onClick={(e) => {
                     // If clicking directly on the grid (not on items), clear selection
@@ -305,7 +305,7 @@ export function FolderGrid({
 
     return (
         <div
-            className={cn(
+            className={cls(
                 'flex !gap-4 !relative !overflow-auto flex-wrap',
                 className,
                 viewMode === 'list' && 'flex-col'

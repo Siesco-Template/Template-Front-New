@@ -1,7 +1,8 @@
-import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';
 
@@ -34,7 +35,7 @@ export function ViewStyleSelector({ currentMode, onChange, className }: ViewStyl
                         return (
                             <DropdownMenu.Item
                                 key={mode}
-                                className={cn(
+                                className={cls(
                                     '!px-5 !py-2 !text-[14px] !text-[#21201C] cursor-pointer transition-all duration-300 outline-none',
                                     '!focus:outline-none !focus:bg-[#EDF2FA]',
                                     mode === currentMode && '!bg-[#EDF2FA]'

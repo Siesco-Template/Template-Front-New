@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
-import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
 
 import { reportService } from '@/services/reports/reports.service';
-
-import { usePermission } from '@/modules/permission/PermissionContext';
 
 import ConfigPanel from '@/shared/config';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
-import { Table } from '@/shared/table';
+import { CustomMRTColumn, Table } from '@/shared/table';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
@@ -60,11 +57,6 @@ type BudceTableData = {
     condition: string;
 };
 
-type CustomMRTColumn<T extends MRT_RowData> = MRT_ColumnDef<T> & {
-    enableSummary?: boolean;
-    placeholder?: string;
-};
-
 const Table_PageContent: React.FC<TablePageMainProps> = ({
     isFilterCollapsed,
     onToggleCollapse,
@@ -73,19 +65,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 }) => {
     const { columnVisibility, filterDataState } = useTableContext();
     const { loadConfigFromApi } = useTableConfig();
-    const { permissions } = usePermission();
-    const { id } = useParams();
 
     const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState<BudceTableData[]>([]);
     const [totalItems, setTotalItems] = useState(0);
     const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
-
-    const handleCloseModal = () => {
-        setIsExcelModalOpen(false);
-    };
 
     const handleCustomExport = () => {
         setIsExcelModalOpen(true);
@@ -95,8 +80,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     useEffect(() => {
         loadConfigFromApi();
     }, []);
-
-    const navigate = useNavigate();
 
     const fetchData = (isLoadMore = false) => {
         if (loading) return;

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { createContext, useContext, useState } from 'react';
 
 import { configService } from '@/services/configuration/configuration.service';

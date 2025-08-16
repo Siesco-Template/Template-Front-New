@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
-import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
 
 import { IUser } from '@/services/auth/auth.service.types';
 import { APP_URLS } from '@/services/config/url.config';
@@ -13,7 +12,6 @@ import { usePermission } from '@/modules/permission/PermissionContext';
 import { hasPermission } from '@/modules/permission/PermissionGuard';
 
 import ConfigPanel from '@/shared/config';
-import { userRoleOptions } from '@/shared/constants/enums';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';

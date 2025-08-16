@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { cn } from '@/lib/utils';
+import { cls } from '@/shared/utils';
 
 import { S_Input } from '@/ui';
 
@@ -22,7 +22,7 @@ export function SearchBar({ onSearch, className }: SearchBarProps) {
     }, [searchParams]);
 
     return (
-        <form onSubmit={handleSubmit} className={cn('relative', className)}>
+        <form onSubmit={handleSubmit} className={cls('relative', className)}>
             <S_Input
                 icon={<SearchIcon className="!text-[#919DA8]" width={20} height={20} />}
                 iconPosition="left"

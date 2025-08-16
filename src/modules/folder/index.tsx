@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { cn } from '@/lib/utils';
-
 import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';

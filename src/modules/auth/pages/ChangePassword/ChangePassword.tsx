@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
@@ -9,14 +9,12 @@ import { APP_URLS } from '@/services/config/url.config';
 
 import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
-import Input from '../../components/input/input';
 import InputPassword from '../../components/input/input.password';
-import { inputDescriptionStyles } from '../../components/input/input.styles';
 import IconDefault from '../../shared/icons/validation default.svg?react';
 import IconError from '../../shared/icons/validation error.svg?react';
 import IconSuccess from '../../shared/icons/validation success.svg?react';
 import { UserData } from '../../types';
-import styles from './style.module.css'
+import styles from './style.module.css';
 
 interface IInputs {
     oldPassword: string;
@@ -143,7 +141,6 @@ const ChangePassword = () => {
         );
     };
 
-
     if (isFinish) {
         return <SuccessSection description="Şifrə dəyişikliyi uğurla tamamlandı, sistemə daxil ola bilərsiniz" />;
     }
@@ -187,7 +184,10 @@ const ChangePassword = () => {
                                     handlePasswordValidation('number', hasNumber ? 'success' : 'error');
                                     handlePasswordValidation('symbol', hasSymbol ? 'success' : 'error');
 
-                                    return (isMinLength && hasUppercase && hasNumber && hasSymbol) || 'Düzgün format daxil edin';
+                                    return (
+                                        (isMinLength && hasUppercase && hasNumber && hasSymbol) ||
+                                        'Düzgün format daxil edin'
+                                    );
                                 },
                             })}
                         />

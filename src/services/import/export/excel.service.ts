@@ -1,7 +1,9 @@
-import Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 
 import { httpRequest } from '@/services/api/httpsRequest';
 import API_CONTROLLER from '@/services/config/api.config';
+
+const cookies = new Cookies();
 
 class ExcelService {
     private excelUrl = (endpoint = '') => API_CONTROLLER.excel(endpoint);
@@ -64,7 +66,7 @@ class ExcelService {
         });
     }
     async getItemsManual() {
-        const userCookie = Cookies.get('user');
+        const userCookie = cookies.get('user');
         const token = userCookie ? JSON.parse(userCookie).accessToken : null;
 
         return fetch(this.excelUrl('/GetItems'), {

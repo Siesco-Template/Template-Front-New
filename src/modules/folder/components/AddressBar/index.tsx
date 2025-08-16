@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cls } from '@/shared/utils';
 
 import ChevronRightIcon from '../../shared/icons/chevron-right.svg?react';
 import FolderOutlineIcon from '../../shared/icons/folder-outline.svg?react';
@@ -59,7 +59,7 @@ export function AddressBar({ path, onPathChange, className, onPathNotFound, vali
 
     return (
         <div
-            className={cn(
+            className={cls(
                 'flex items-center !gap-2 !mx-2 !my-0.5 !px-2 !py-0.5 !bg-[#F5F5F5] !rounded-[4px] !border-[0.5px] !border-[#B2BBC6]',
                 className
             )}

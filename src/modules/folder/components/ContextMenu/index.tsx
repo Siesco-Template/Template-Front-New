@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu';
+
+import { cls } from '@/shared/utils';
 
 import AlignCenterIcon from '../../shared/icons/align-center.svg?react';
 import AppsAddIcon from '../../shared/icons/apps-add.svg?react';
@@ -46,7 +46,7 @@ const ContextMenuItem = ({
 } & React.ComponentProps<typeof ContextMenuPrimitive.Item>) => {
     return (
         <ContextMenuPrimitive.Item
-            className={cn(
+            className={cls(
                 '!relative !mb-[2px] flex !cursor-pointer !select-none !items-center !gap-[6px] !py-2 !px-6 !text-[14px] !focus:!bg-[#E6F0FE] !transition-colors !outline-none !data-[disabled]:pointer-events-none !data-[disabled]:opacity-50',
                 className
             )}

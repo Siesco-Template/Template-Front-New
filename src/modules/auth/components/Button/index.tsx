@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
 import { Slot } from '@radix-ui/react-slot';
 
-// Define button variants without using class-variance-authority
+import { cls } from '@/shared/utils';
+
 type ButtonVariant = 'primary' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
 type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 
@@ -13,7 +13,7 @@ type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 const getVariantClasses = (variant: ButtonVariant = 'primary'): string => {
     switch (variant) {
         case 'primary':
-                return '!bg-[hsl(var(--clr-primary-500))] border-[hsl(var(--clr-primary-200))] text-white hover:bg-[hsl(var(--clr-primary-700))] duration-300 focus:outline-ring';
+            return '!bg-[hsl(var(--clr-primary-500))] border-[hsl(var(--clr-primary-200))] text-white hover:bg-[hsl(var(--clr-primary-700))] duration-300 focus:outline-ring';
 
         case 'secondary':
             return '!bg-[#F5F7F9] !border-white !text-[#002C68] hover:!bg-white hover:!text-[#0068F7] duration-300 focus:!outline-ring';
@@ -60,7 +60,7 @@ function Button({
     return (
         <Comp
             data-slot="button"
-            className={cn(
+            className={cls(
                 baseClasses,
                 getVariantClasses(variant),
                 getSizeClasses(size),
