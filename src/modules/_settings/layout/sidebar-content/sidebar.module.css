@@ -1,3 +1,20 @@
+/* Wrapper */
+.sidebarWrapper {
+    overflow: hidden;
+    opacity: 1;
+    transition: all var(--animation-2);
+    height: 100%;
+}
+.sidebarWrapper.disable {
+    transform: translateX(-100%);
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+/* Main Content */
 .sidebar {
     width: 100%;
     display: flex;
@@ -8,10 +25,16 @@
 
 .sidebarItem {
     width: 100%;
-    color: hsl(var(--clr-grey-700));
+    color: hsl(var(--clr-primary-900));
     margin-bottom: var(--pm-100);
 }
 
+.sidebarItem a,
+.sidebarItem span {
+    font-size: var(--fs-100);
+}
+
+/* Submenu */
 .subMenu {
     width: 100%;
 }
@@ -19,6 +42,56 @@
     display: flex;
     flex-direction: column;
     gap: var(--pm-200);
+}
+
+.subMenuBtn {
+    padding: var(--pm-300) var(--pm-400);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    gap: var(--pm-300);
+    font-size: var(--fs-100);
+    color: hsl(var(--clr-primary-900));
+    border-radius: var(--r-300);
+    max-height: 44px;
+    transition: 0.3s;
+}
+
+.subMenuBtn.parentActive {
+    color: hsl(var(--clr-primary-500));
+    background-color: hsl(var(--clr-white-50));
+    box-shadow:
+        0 100px 180px 0 rgba(146, 156, 184, 0.09),
+        0 42.672px 75.2px 0 rgba(146, 156, 184, 0.06),
+        0 21.795px 40.205px 0 rgba(146, 156, 184, 0.05),
+        0 11.085px 22.539px 0 rgba(146, 156, 184, 0.05),
+        0 5.088px 11.97px 0 rgba(146, 156, 184, 0.04),
+        0 1.727px 4.981px 0 rgba(146, 156, 184, 0.03);
+}
+.subMenuBtn.parentActive svg g rect,
+.subMenuBtn.parentActive svg g path {
+    stroke: hsl(var(--clr-blue-500));
+}
+
+.subMenuBtn .subMenuTitle {
+    transition: 0.3s;
+}
+.subMenuBtn:hover {
+    background-color: hsl(var(--clr-white-50));
+}
+.subMenuBtn:hover .subMenuTitle {
+    padding-left: var(--pm-150);
+}
+.subMenuBtn > span {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: var(--pm-400);
+    font-size: var(--fs-100);
 }
 
 .subMenuItems {
@@ -42,7 +115,6 @@
 .subMenuItem {
     display: flex;
     gap: var(--pm-100);
-    /* padding-left: var(--pm-700); */
     font-size: var(--fs-100);
 }
 
@@ -54,12 +126,10 @@
     overflow: hidden;
     white-space: nowrap;
     padding: var(--pm-300) var(--pm-400);
-    gap: var(--pm-400);
+    gap: var(--pm-300);
     cursor: pointer;
     font-size: var(--fs-100);
-    /* color: hsl(var(--clr-black)); */
     border-radius: var(--pm-300);
-    font-weight: 500;
     transition: 0.3s;
 }
 .sidebarLink:hover {
@@ -79,14 +149,11 @@
     font-weight: 500;
 }
 
-.sidebarLink.linkActive svg ellipse {
-    /* fill: hsl(var(--clr-primary-500)) !important; */
-    stroke: hsl(var(--clr-primary-900)) !important;
-}
-.sidebarLink.linkActive svg path {
-    stroke: hsl(var(--clr-white-50));
-    /* fill: red !important; */
-    /* fill: hsl(var(--clr-primary-500)); */
+.sidebarLink.linkActive svg ellipse,
+.sidebarLink.linkActive svg path,
+.sidebarLink.linkActive svg g path,
+.sidebarLink.linkActive svg rect {
+    stroke: hsl(var(--clr-white-50)) !important;
 }
 .sidebarSubLink {
     width: 100%;
@@ -110,63 +177,11 @@
     gap: var(--pm-200);
     padding: 0 var(--pm-200);
     border-radius: var(--r-100);
-    /* min-height: var(--wh-300); */
-    /* min-width: var(--wh-550); */
 }
 .sidebarSubLink.subLinkActive > span {
-    /* background: hsl(var(--clr-primary-100)); */
     color: hsl(var(--clr-blue-500));
 }
-.subMenuBtn {
-    padding: var(--pm-300) var(--pm-400);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100%;
-    gap: var(--pm-200);
-    /* color: hsl(var(--clr-foreground)); */
-    font-size: var(--fs-100);
-    color: hsl(var(--clr-grey-700));
-    font-weight: 500;
-    border-radius: var(--r-300);
-    max-height: 45px;
-    transition: 0.3s;
-    /* min-height: 45px; */
-}
-.subMenuBtn .subMenuTitle {
-    transition: 0.3s;
-}
-.subMenuBtn:hover {
-    background-color: hsl(var(--clr-white-50));
-}
-.subMenuBtn:hover .subMenuTitle {
-    padding-left: var(--pm-150);
-}
-.subMenuBtn > span {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    gap: var(--pm-400);
-    font-size: var(--fs-100);
-}
-.subMenuBtn.parentActive {
-    color: hsl(var(--clr-blue-500));
-    background-color: hsl(var(--clr-white-50));
-    box-shadow:
-        0px 100px 180px 0px rgba(146, 156, 184, 0.09),
-        0px 42.672px 75.2px 0px rgba(146, 156, 184, 0.06),
-        0px 21.795px 40.205px 0px rgba(146, 156, 184, 0.05),
-        0px 11.085px 22.539px 0px rgba(146, 156, 184, 0.05),
-        0px 5.088px 11.97px 0px rgba(146, 156, 184, 0.04),
-        0px 1.727px 4.981px 0px rgba(146, 156, 184, 0.03);
-}
-.subMenuBtn.parentActive svg g rect,
-.subMenuBtn.parentActive svg g path {
-    stroke: hsl(var(--clr-blue-500));
-}
+
 .subMenuArrow {
     transition: all var(--animation);
     display: flex;
@@ -176,21 +191,7 @@
     transform: rotate(0deg);
 }
 
-.sidebarWrapper {
-    overflow: hidden;
-    opacity: 1;
-    transition: all var(--animation-2);
-}
-.sidebarWrapper.disable {
-    transform: translateX(-100%);
-    opacity: 0;
-    user-select: none;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-}
 .sidebarPinnedWrapper {
-    /* overflow: hidden; */
     opacity: 1;
     transition: all var(--animation-2);
 }
@@ -216,7 +217,6 @@
     flex: 1;
     display: flex;
     justify-content: center;
-    /* padding: var(--pm-400) 0; */
     gap: var(--pm-200);
     border-radius: 50%;
 }
@@ -225,7 +225,6 @@
 }
 .pinned .linkTitle {
     overflow: hidden;
-    /* display: none; */
     opacity: 0;
     width: 0;
 }
@@ -236,13 +235,11 @@
     border-radius: 50%;
     transition: 0.3s;
     position: relative;
-    pointer-events: none;
-    /* padding: var(--pm-200) 0; */
 }
 .pinned .pinnedLink > * {
     pointer-events: auto;
 }
-.pinned .pinnedLink:hover {
+.pinned .pinnedLink:not(.pinnedParentActive):not(.linkActive):hover {
     background-color: hsl(var(--clr-white-50));
 }
 
@@ -262,11 +259,7 @@
     top: 50%;
     transform: translateY(-50%);
     margin-left: 10px;
-    /* animation: fadeIn 0.2s ease-in-out; */
     position: absolute;
-    /* bottom: -23px;
-    left: 50%; */
-    /* transform: translateX(-50%); */
     background-color: hsl(var(--clr-primary-900));
     color: hsl(var(--clr-white-50));
     padding: var(--pm-100) var(--pm-150);
@@ -291,8 +284,6 @@
 .subLinkItemsContainer {
     display: flex;
     flex-direction: column;
-    /* min-width: var(--wh-550); */
-    /* align-items: center; */
     padding: 0 var(--pm-200);
 }
 .subLinkItemsContainer .pinnedLink {
@@ -301,10 +292,6 @@
 }
 .subLinkItemsContainer .pinnedLink:hover {
     background-color: hsl(var(--clr-white-200));
-}
-.sidebar a,
-.sidebar span {
-    font-size: var(--fs-100);
 }
 
 .sublinkTimeline {

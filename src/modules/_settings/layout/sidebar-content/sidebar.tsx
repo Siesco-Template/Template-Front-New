@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
 
 import { useAuthStore } from '@/store/authStore';
@@ -22,7 +22,12 @@ const IconComponent = ({ link }: { link: NavigationItem }) => {
     return <div>{Icon && <Icon />}</div>;
 };
 
-const Sidebar = () => {
+interface Props {
+    subMenuOpen: string | null;
+    setSubMenuOpen: Dispatch<SetStateAction<string | null>>;
+}
+
+const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
     const { navigationLinks } = useSettingsStore();
     const { loadConfigFromApi } = useTableConfig();
 
@@ -32,7 +37,7 @@ const Sidebar = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
+    // const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
     const { pinned, alwaysOpen } = useLayoutStore();
     const { user } = useAuthStore();
     const { permissions } = usePermission();
@@ -98,9 +103,7 @@ const Sidebar = () => {
 
     const subMenu = (item: NavigationItem) => {
         const isOpen = subMenuOpen === item.href;
-
         const hasActiveChild = item.subLinks?.some((subLink) => subLink.href === location.pathname);
-        const isActive = isOpen || hasActiveChild;
 
         return (
             <div className={cls(styles.subMenu, isOpen && styles.open)}>

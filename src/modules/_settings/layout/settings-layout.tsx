@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 
 import { useWidthViewport } from '@/shared/hooks';
@@ -10,12 +10,6 @@ import { useLayoutStore } from './layout.store';
 import Navbar_Content from './navbar-content';
 import Sidebar from './sidebar-content/sidebar';
 
-const sizeMap: Record<'small' | 'normal' | 'large', number> = {
-    small: 220,
-    normal: 250,
-    large: 300,
-};
-
 const navbarSizeMap: Record<'small' | 'normal' | 'large', number> = {
     small: 40,
     normal: 60,
@@ -24,44 +18,39 @@ const navbarSizeMap: Record<'small' | 'normal' | 'large', number> = {
 
 const Layout_Sidebar: FC = () => {
     const { pinned, position, togglePinned, alwaysOpen, openWithButton, openWithHover, zoom } = useLayoutStore();
-
-    const widthPx = sizeMap[zoom];
+    const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
 
     const changePinnOnSidebarBtn = (
         <button
             className={cls(styles.sidebarToggleBtn, pinned && styles.pinned, styles[position])}
-            onClick={() => togglePinned(!pinned)}
+            onClick={() => {
+                setSubMenuOpen(null);
+                togglePinned(!pinned);
+            }}
         >
-            <DirectionLeft01 />
+            <DirectionLeft01 width={20} height={20} />
         </button>
     );
 
-    const sidebarStyle: React.CSSProperties = {
-        width: alwaysOpen || !pinned ? `${widthPx}px` : undefined,
-    };
-
     const handleHover = () => {
         if (openWithHover && pinned && !alwaysOpen) {
-            // console.log('Sidebar hovered');
             togglePinned(false);
         }
     };
 
     const handleMouseLeave = () => {
         if (openWithHover && !pinned && !alwaysOpen) {
-            // console.log('Sidebar mouse left');
             togglePinned(true);
         }
     };
 
     return (
         <nav
-            style={sidebarStyle}
-            className={cls(styles.layoutSidebar, pinned ? styles.pinned : styles.unpinned)}
+            className={cls(styles.layoutSidebar, styles[zoom], !pinned || alwaysOpen ? styles.unpinned : styles.pinned)}
             onMouseEnter={handleHover}
             onMouseLeave={handleMouseLeave}
         >
-            <Sidebar />
+            <Sidebar subMenuOpen={subMenuOpen} setSubMenuOpen={setSubMenuOpen} />
             {!alwaysOpen ? (openWithButton ? changePinnOnSidebarBtn : null) : null}
         </nav>
     );

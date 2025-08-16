@@ -2,6 +2,7 @@ import { lazy, useEffect } from 'react';
 import { Outlet } from 'react-router';
 
 import FolderPage from '@/pages/folder';
+import Folder_Table from '@/pages/folder-table';
 import Table_Page from '@/pages/table-page';
 
 import { APP_URLS } from '@/services/config/url.config';
@@ -25,7 +26,6 @@ import Profile from '@/modules/profile';
 import { Route } from './index';
 import ProtectedRoute from './protectedRoute';
 import { LazyLoadable } from './routing.helpers';
-import Folder_Table from '@/pages/folder-table';
 
 const UsersPage = lazy(() => import('@/pages/teskilatlar/istifadeciler'));
 const Huquqlar = lazy(() => import('@/pages/teskilatlar/huquqlar'));
@@ -48,38 +48,38 @@ export const routes: Route[] = [
             ...Settings_Route,
             {
                 path: APP_URLS.anaSehife(),
-                element: <HomePage />,
+                element: <LazyLoadable page={<HomePage />} />,
                 isAuth: false,
                 roles: [],
             },
             {
                 path: APP_URLS.table(),
-                element: <Table_Page />,
+                element: <LazyLoadable page={<Table_Page />} />,
                 isAuth: false,
                 roles: [],
             },
             {
                 path: APP_URLS.folder(),
-                element: <FolderPage />,
+                element: <LazyLoadable page={<FolderPage />} />,
                 isAuth: false,
                 roles: [],
             },
             {
                 path: APP_URLS.folderAndTable(),
-                element: <Folder_Table />,
+                element: <LazyLoadable page={<Folder_Table />} />,
                 isAuth: false,
                 roles: [],
             },
             {
                 path: APP_URLS.notifications(),
-                element: <NotificationPage />,
+                element: <LazyLoadable page={<NotificationPage />} />,
                 isAuth: false,
                 roles: [],
                 permissionKey: ['notification/getAll'],
             },
             {
                 path: APP_URLS.profile(),
-                element: <Profile />,
+                element: <LazyLoadable page={<Profile />} />,
                 isAuth: false,
                 roles: [],
             },

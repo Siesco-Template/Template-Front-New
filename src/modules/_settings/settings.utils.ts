@@ -20,16 +20,18 @@ export function convertPersonalizationToNavigation(data?: PersonalizationItem[])
             href: item.href || '',
             show: item.visible,
             subLinks:
-                item.children
-                    ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-                    .map((child) => ({
-                        id: child.id,
-                        title: child.label,
-                        href: child.href || '',
-                        show: child.visible,
-                        roles: [],
-                        permissionKey: [],
-                    })) || [],
+                item.children && Array.isArray(item.children) && item.children.length > 0
+                    ? item.children
+                          ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+                          .map((child) => ({
+                              id: child.id,
+                              title: child.label,
+                              href: child.href || '',
+                              show: child.visible,
+                              roles: [],
+                              permissionKey: [],
+                          }))
+                    : undefined,
             roles: [],
             permissionKey: [],
         }));

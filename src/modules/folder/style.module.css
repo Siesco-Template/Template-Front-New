@@ -1,0 +1,54 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-400);
+    height: 100%;
+}
+
+/* Top bar */
+.topBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--pm-400);
+}
+
+/* Right side controls (Search + buttons) */
+.controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--pm-200);
+}
+
+/* Group for view selector + files-only button */
+.controlsInline {
+    display: flex;
+}
+
+/* Forces right margin like "!mr-2" */
+.mr2Important {
+    margin-right: var(--pm-200) !important;
+}
+
+/* Grid area container (replaces: h-full flex-1 !py-5 !px-3) */
+.gridArea {
+    height: 100%;
+    flex: 1 1 auto;
+    padding-top: 1.25rem !important; /* py-5 */
+    padding-bottom: 1.25rem !important;
+    padding-left: 0.75rem !important; /* px-3 */
+    padding-right: 0.75rem !important;
+    position: relative; /* needed for absolute selection box */
+}
+
+/* Selection rectangle (replaces the Tailwind block) */
+.selectionBox {
+    position: absolute;
+    border: 1.5px solid hsl(var(--clr-primary-500)) !important;
+    background: hsl(var(--clr-primary-100));
+    opacity: 0.5;
+    pointer-events: none !important;
+    z-index: 10 !important;
+}

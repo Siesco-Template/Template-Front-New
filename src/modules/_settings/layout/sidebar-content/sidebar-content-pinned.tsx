@@ -1,8 +1,6 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { NavLink } from 'react-router';
-import { useLocation } from 'react-router';
+import { Dispatch, FC, SetStateAction } from 'react';
+import { NavLink, useLocation } from 'react-router';
 
-import { Route } from '@/app/routing';
 import { useAuthStore } from '@/store/authStore';
 
 import { usePermission } from '@/modules/permission/PermissionContext';
@@ -31,15 +29,10 @@ const IconComponent = ({ link }: { link: NavigationItem }) => {
 const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen, setSubMenuOpen, toggleSubMenu }) => {
     const { navigationLinks } = useSettingsStore();
 
-    console.log(navigationLinks, 'nvg');
     const { position } = useLayoutStore();
     const { permissions } = usePermission();
     const { user } = useAuthStore();
     const location = useLocation();
-
-    const handleClick = (link: NavigationItem) => {
-        toggleSubMenu(link.href, true);
-    };
 
     const filterRoutesByRoleAndPermission = (routes: NavigationItem[], userRole: UserRole): NavigationItem[] => {
         const roleFilteredRoutes = routes
@@ -62,6 +55,8 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
     };
 
     const filteredNavigationLinks = filterRoutesByRoleAndPermission(navigationLinks, user.userRole);
+
+    console.log(subMenuOpen);
 
     const sublink = (link: any, isOpen: boolean) => {
         const isSubLinkActive = link.subLinks?.some((sublink: any) => location.pathname === sublink.href);
@@ -112,8 +107,6 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
         <ul className={styles.pinned}>
             {filteredNavigationLinks.map((link: any, idx) => {
                 const isOpen = subMenuOpen === link.href;
-                const isActive = location.pathname === link.href;
-                const hasActiveSubLink = link.subLinks?.some((sublink: any) => location.pathname === sublink.href);
 
                 return (
                     <li className={styles.pinnedItem} key={`${link.href}-${idx}`}>

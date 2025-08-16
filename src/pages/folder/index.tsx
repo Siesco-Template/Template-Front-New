@@ -7,6 +7,8 @@ import { FolderItem, ViewMode } from '@/modules/folder/types';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import styles from './style.module.css';
+
 function FolderPage() {
     const { loadConfigFromApi } = useTableConfig();
     useEffect(() => {
@@ -149,7 +151,7 @@ function FolderPage() {
             currentPath={currentPath}
             setCurrentPath={setCurrentPath}
             onItemsChange={handleItemsChange}
-            className="bg-white h-full flex flex-col !p-4 !rounded-4"
+            className={styles.folder}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
         />

@@ -1,0 +1,6 @@
+.folder {
+    background: #fff;
+    height: 100%;
+    padding: var(--pm-400);
+    border-radius: var(--r-400);
+}

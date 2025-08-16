@@ -208,7 +208,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     const renderFilter = (filter: any) => {
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
-        console.log(filter, 'fi')
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
                 const v = typeof filter.value === 'string' ? filter.value : '';
@@ -261,7 +260,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                         ? (items.find((i: any) => i.value === filter.value) ?? null)
                         : null;
 
-                console.log(items, 'it', filter?.options);
                 return (
                     <Catalog
                         key={filter.key}

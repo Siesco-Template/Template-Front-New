@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import { cls } from '@/shared/utils';
+
 import { S_Button } from '@/ui';
 
 import { AddressBar } from './components/AddressBar';
@@ -21,6 +23,7 @@ import { RenameDialog } from './dialogs/rename-dialog';
 import useDialogState from './hooks/useDialogState';
 import useFolderOperations from './hooks/useFolderOperations';
 import { folderService } from './services/folder.service';
+import styles from './style.module.css';
 import { FolderItem, SelectionAction, ViewMode } from './types';
 
 interface FolderProps {
@@ -310,22 +313,22 @@ export function Folder({
     }, [filteredItems]);
 
     return (
-        <div className={cn('!space-y-4 p-4 h-full', className)}>
-            <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className={cls(styles.wrapper, className)}>
+            <div className={styles.topBar}>
                 <AddressBar
                     path={currentPath}
                     onPathChange={(path: string) => handlePathChange(path)}
                     validatePath={validatePath}
                     onPathNotFound={handlePathNotFound}
                 />
-                <div className="flex items-center flex-wrap gap-2">
+                <div className={styles.controls}>
                     <SearchBar onSearch={(query: string) => handleSearch(query)} />
-                    <div className="flex">
+                    <div className={styles.controlsInline}>
                         {showViewModeSelector && !searchQuery && (
                             <ViewStyleSelector
                                 currentMode={viewMode}
                                 onChange={handleViewModeChange}
-                                className="!mr-2"
+                                className={styles.mr2Important}
                             />
                         )}
                         {showFilesOnlyButton && (
@@ -333,7 +336,6 @@ export function Folder({
                                 variant="main-20"
                                 color="secondary"
                                 onClick={() => setShowFilesOnly(!showFilesOnly)}
-                                className={cn(showFilesOnly && '!text-[#004AAF] !border-[#004AAF]')}
                             >
                                 Yalnız faylları göstər
                             </S_Button>
@@ -349,10 +351,9 @@ export function Folder({
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleMouseUp}
                     onClick={handleBackgroundClick}
-                    className="h-full flex-1 !py-5 !px-3"
+                    className={styles.gridArea}
                     ref={gridRef}
                 >
-                    <p className="!text-[#002C68] !text-[20px] !font-bold !mb-4">Qovluq</p>
                     <FolderGrid
                         items={filteredItems}
                         viewMode={viewMode}
@@ -376,7 +377,7 @@ export function Folder({
                     />
                     {isDragging && selectionBox && selectionBox.width > 0 && selectionBox.height > 0 && (
                         <div
-                            className="absolute border-[1.5px] !border-[hsl(var(--clr-primary-500))] bg-[hsl(var(--clr-primary-100))] opacity-50 !pointer-events-none !z-10"
+                            className={styles.selectionBox}
                             style={{
                                 left: selectionBox.left,
                                 top: selectionBox.top,
@@ -446,6 +447,7 @@ export function Folder({
                     itemToCopy={itemsToMove[0] || null}
                 />
             )}
+
             {moveDialogOpen && (
                 <MoveDialog
                     open={moveDialogOpen}

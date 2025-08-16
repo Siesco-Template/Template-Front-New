@@ -1,5 +1,3 @@
-import { APP_URLS } from '@/services/config/url.config';
-
 import { UserRole } from '@/shared/constants/enums';
 import {
     FilterIcon1,
@@ -8,9 +6,7 @@ import {
     MenuAdditionalReportIcon,
     MenuCatalogIcon,
     MenuCompanyIcon,
-    MenuDataAnalyticsIcon,
     MenuHomeIcon,
-    MenuNotificationIcon,
     MenuReportIcon,
     PaintBucketIcon,
 } from '@/shared/icons';
@@ -32,49 +28,47 @@ export type NavigationItem = {
     show: boolean;
 };
 
-export const NavigationLinks: NavigationItem[] = [
-    {
-        href: APP_URLS.anaSehife(),
-        title: 'Ana səhifə',
-        icon: MenuHomeIcon,
-        roles: [],
-        permissionKey: [],
-        show: true,
-    },
-    {
-        href: APP_URLS.teskilatlar(),
-        title: 'Təşkilatlar',
-        icon: MenuCompanyIcon,
-        roles: [],
-        permissionKey: [],
-        show: true,
-        subLinks: [
-            {
-                title: 'İstifadəçilər',
-                href: APP_URLS.istifadeciler(),
-                roles: [],
-                permissionKey: ['user/getAll'],
-                show: true,
-            },
-            {
-                title: 'Hüquqlar',
-                href: APP_URLS.huquqlar(),
-                roles: [],
-                permissionKey: ['permission/getAll'],
-                show: true,
-            },
-        ],
-    },
-];
+// export const NavigationLinks: NavigationItem[] = [
+//     {
+//         href: APP_URLS.anaSehife(),
+//         title: 'Ana səhifə',
+//         icon: MenuHomeIcon,
+//         roles: [],
+//         permissionKey: [],
+//         show: true,
+//     },
+//     {
+//         href: APP_URLS.teskilatlar(),
+//         title: 'Təşkilatlar',
+//         icon: MenuCompanyIcon,
+//         roles: [],
+//         permissionKey: [],
+//         show: true,
+//         subLinks: [
+//             {
+//                 title: 'İstifadəçilər',
+//                 href: APP_URLS.istifadeciler(),
+//                 roles: [],
+//                 permissionKey: ['user/getAll'],
+//                 show: true,
+//             },
+//             {
+//                 title: 'Hüquqlar',
+//                 href: APP_URLS.huquqlar(),
+//                 roles: [],
+//                 permissionKey: ['permission/getAll'],
+//                 show: true,
+//             },
+//         ],
+//     },
+// ];
 
 export const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
     home: MenuHomeIcon,
-    notifications: MenuNotificationIcon,
     reports: MenuReportIcon,
-    organizations: MenuCompanyIcon,
-    catalogs: MenuCatalogIcon,
     folder: MenuCatalogIcon,
     foldertable: MenuAdditionalReportIcon,
+    organizations: MenuCompanyIcon,
 };
 
 export const getIconById = (id?: string) => {

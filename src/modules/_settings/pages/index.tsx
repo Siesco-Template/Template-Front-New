@@ -2,14 +2,10 @@ import React, { MouseEventHandler, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { NavLink, Outlet, useLocation } from 'react-router';
 
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-
-import { CloseIcon } from '@/shared/icons';
-import { SearchIcon } from '@/shared/icons';
 import { getFullConfigDiff, useTableConfig } from '@/shared/table/tableConfigContext';
 import { cls } from '@/shared/utils';
 
-import { S_Button, S_Drawer, S_Input } from '@/ui';
+import { S_Button } from '@/ui';
 
 import SectionHeader from '../components/section-header';
 import { useLayoutStore } from '../layout/layout.store';
