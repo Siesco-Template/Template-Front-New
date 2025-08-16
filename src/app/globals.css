@@ -181,8 +181,8 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'DM Sans';
-    /* font-family: 'Poppins'; */
+    /* font-family: 'DM Sans'; */
+    font-family: 'Poppins';
 }
 
 *:not(html) {
@@ -543,7 +543,3 @@ html {
     border-color: hsl(var(--clr-primary-500)) !important;
     box-shadow: none !important;
 }
-
-/* .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
-  background-color: rgba(76, 175, 80, 0.2) !important;
-} */

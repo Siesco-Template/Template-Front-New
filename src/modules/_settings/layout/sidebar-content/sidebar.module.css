@@ -134,7 +134,6 @@
 }
 .sidebarLink:hover {
     background-color: hsl(var(--clr-white-50));
-    font-weight: 500;
 }
 .sidebarLink span {
     line-height: 20px;
@@ -146,7 +145,6 @@
 .sidebarLink.linkActive {
     background-color: hsl(var(--clr-blue-500));
     color: hsl(var(--clr-white-50));
-    font-weight: 500;
 }
 
 .sidebarLink.linkActive svg ellipse,
@@ -161,7 +159,6 @@
     align-items: center;
     padding: var(--pm-300) var(--pm-400);
     color: hsl(var(--clr-primary-900));
-    font-weight: 500;
     transition: 0.3s;
     padding-left: var(--pm-650);
     border-radius: var(--r-300);
