@@ -1,0 +1,248 @@
+/* —— shared utils —— */
+.flex1 {
+    flex: 1 1 auto;
+}
+.textTruncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* —— tree: row container —— */
+.treeRow {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    background: hsl(var(--clr-white-50));
+    height: var(--wh-400);
+}
+
+.treeRow:hover:not(.treeRowSelected) {
+    background: hsl(var(--clr-white-200));
+}
+
+.treeRowSelected {
+    background: hsl(var(--clr-white-200));
+}
+
+/* tree: toggle button (chevron) */
+.toggleBtn {
+    width: var(--wh-200);
+    height: var(--wh-200);
+    margin-right: var(--pm-150);
+}
+.chevronIcon {
+    color: hsl(var(--clr-grey-400));
+}
+
+/* tree: icon size */
+.iconTree {
+    width: var(--wh-200);
+    height: var(--wh-200);
+}
+
+/* tree: title + columns */
+.treeName {
+    color: hsl(var(--clr-primary-900));
+    font-size: var(--fs-50);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: var(--pm-150);
+}
+.treeType {
+    font-size: var(--fs-50);
+    color: hsl(var(--clr-primary-900));
+    text-align: center;
+    width: var(--wh-500);
+    padding: 0 var(--pm-200);
+}
+.treeDate {
+    font-size: var(--fs-50);
+    color: hsl(var(--clr-primary-900));
+    text-align: center;
+    width: var(--wh-550);
+    padding: 0 var(--pm-200);
+}
+
+/* —— list/small/medium/large item shells —— */
+.itemList {
+    display: flex;
+    align-items: center;
+    padding: var(--pm-300) 0;
+    height: 54px !important;
+    padding: 0 var(--pm-200);
+    border-bottom: 1px solid hsl(var(--clr-white-800));
+}
+.itemSmall,
+.itemMedium,
+.itemLarge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pm-200);
+    padding: 6px;
+}
+.itemSmall {
+    width: 68px;
+}
+.itemMedium {
+    width: 82px;
+}
+.itemLarge {
+    width: 82px;
+}
+
+/* tree mode item shell (for non-tree component mapping usage) */
+.itemTree {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-100);
+    padding: var(--pm-100) var(--pm-200);
+}
+
+/* icon sizes by mode */
+.iconList {
+    width: var(--wh-200);
+    height: var(--wh-200);
+    margin-right: 6px;
+}
+
+.iconSmall {
+    width: var(--wh-350);
+    height: var(--wh-350);
+}
+.iconMedium {
+    width: var(--wh-400);
+    height: var(--wh-400);
+}
+.iconLarge {
+    width: var(--wh-500);
+    height: var(--wh-500);
+}
+
+/* common grid item container */
+.gridItem {
+    border-radius: var(--r-100);
+    cursor: pointer;
+    user-select: none;
+    height: fit-content;
+}
+.gridItem:hover {
+    background: hsl(var(--clr-white-200));
+}
+.gridItemSelected {
+    background: hsl(var(--clr-white-200));
+}
+
+/* item name (grid) */
+.itemName {
+    font-size: var(--fs-100);
+    text-align: center;
+    color: hsl(var(--clr-grey-600));
+    word-break: break-all;
+}
+
+/* list row extra cells */
+.typeLabel {
+    font-size: var(--fs-100);
+    color: hsl(var(--clr-grey-500));
+    text-align: left;
+    width: var(--wh-500);
+    padding: 0 var(--pm-200);
+    margin-right: 6px;
+}
+
+.pathLabel {
+    font-size: var(--fs-100);
+    color: hsl(var(--clr-grey-500));
+    text-align: left;
+    padding: 0 var(--pm-200);
+    display: block;
+    width: fit-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 6px;
+}
+@media (min-width: 1024px) {
+    /* lg: */
+    .pathLabel {
+        width: 150px !important;
+        margin-right: 0 !important;
+    }
+}
+
+.dateLabel {
+    font-size: var(--fs-100);
+    color: hsl(var(--clr-grey-500));
+    text-align: left;
+    width: fit-content;
+    padding: 0 var(--pm-200);
+    margin-right: 6px;
+}
+@media (min-width: 1024px) {
+    /* lg: */
+    .dateLabel {
+        width: 100px !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* —— tree header row —— */
+.treeWrap {
+    min-width: 100%;
+    overflow: auto;
+    padding-right: var(--pm-400);
+}
+.treeHeader {
+    display: flex;
+    align-items: center;
+    padding: var(--pm-200) 0;
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    background: hsl(var(--clr-white-50));
+}
+
+.treeHeaderName {
+    font-size: var(--fs-50);
+    font-weight: 500;
+    color: hsl(var(--clr-grey-600));
+    padding: var(--pm-200);
+    display: block;
+}
+.treeHeaderNameFlex {
+    flex: 1 1 auto;
+}
+.treeHeaderType {
+    font-size: var(--fs-50);
+    font-weight: 500;
+    color: hsl(var(--clr-grey-600));
+    padding: var(--pm-200);
+    width: var(--wh-500);
+    display: block;
+}
+.treeHeaderDate {
+    font-size: var(--fs-50);
+    font-weight: 500;
+    color: hsl(var(--clr-grey-600));
+    padding: var(--pm-200);
+    width: var(--wh-550);
+    display: block;
+}
+
+/* —— non-tree grid wrapper —— */
+.gridWrap {
+    display: flex;
+    gap: var(--pm-300);
+    position: relative;
+    overflow: auto;
+    flex-wrap: wrap;
+}
+.gridWrapList {
+    flex-direction: column;
+    gap: 0;
+}

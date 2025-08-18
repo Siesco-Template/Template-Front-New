@@ -357,8 +357,6 @@ export function Folder({
                         onItemClick={handleItemClick}
                         onItemDoubleClick={handleItemDoubleClick}
                         selectedItems={selectedItems}
-                        isDragging={isDragging}
-                        dragStartPoint={dragStartPoint}
                         onRename={handleRename}
                         onDelete={handleDelete}
                         onCopy={handleCopy}
