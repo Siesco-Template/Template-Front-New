@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import toast from 'react-hot-toast';
 import { NavLink, Outlet, useLocation } from 'react-router';
 
@@ -87,13 +87,9 @@ const SettingsPageLayout = () => {
     const { saveSizes, discardSizes } = useTypographyStore();
     const { discardViewAndContent, saveViewAndContent } = useViewAndContentStore();
 
-    const { saveConfigToApi, defaultConfig, config, loadConfigFromApi } = useTableConfig();
+    const { saveConfigToApi, defaultConfig, config } = useTableConfig();
 
     const { saveChangesOnLayout, discardChangesOnLayout } = useLayoutStore();
-
-    useEffect(() => {
-        loadConfigFromApi();
-    }, []);
 
     return (
         <div className={styles.settingsPageLayout}>

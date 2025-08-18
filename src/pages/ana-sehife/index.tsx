@@ -159,7 +159,6 @@ const DemoSection = ({ title, children }: { title: string; children: React.React
 );
 
 export default function ComponentsPage() {
-    // const { config, loadConfigFromApi } = useTableConfig();
     const [selectedRadio, setSelectedRadio] = useState('1');
     const [selectedItems, setSelectedItems] = useState<Item[]>([]);
     const [sliderValue, setSliderValue] = useState([50]);

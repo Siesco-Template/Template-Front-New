@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
@@ -10,7 +10,11 @@ import Routing from './routing';
 import { AppInitializer } from './routing/routes';
 
 const App = () => {
-    const { config } = useTableConfig();
+    const { config, loadConfigFromApi } = useTableConfig();
+
+    useLayoutEffect(() => {
+        loadConfigFromApi();
+    }, []);
 
     return (
         <Providers>

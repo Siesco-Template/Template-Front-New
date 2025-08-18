@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
 
 import { useAuthStore } from '@/store/authStore';
@@ -8,7 +8,6 @@ import { hasPermission } from '@/modules/permission/PermissionGuard';
 
 import { UserRole } from '@/shared/constants/enums';
 import { DirectionDownIcon } from '@/shared/icons';
-import { useTableConfig } from '@/shared/table/tableConfigContext';
 import { cls } from '@/shared/utils';
 
 import { NavigationItem, getIconById } from '../../settings.contants';
@@ -29,11 +28,6 @@ interface Props {
 
 const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
     const { navigationLinks } = useSettingsStore();
-    const { loadConfigFromApi } = useTableConfig();
-
-    useEffect(() => {
-        loadConfigFromApi();
-    }, []);
 
     const navigate = useNavigate();
     const location = useLocation();

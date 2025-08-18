@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 
 import { useAuthStore } from '@/store/authStore';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import largeLogo from '../shared/images/ar-logo.png';
-import chart from '../shared/images/charts.png';
 import mainLogo from '../shared/images/logo.svg?url';
 import authLayoutImg from '../shared/images/right.png';
 import './layout.css';
