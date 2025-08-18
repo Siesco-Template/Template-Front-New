@@ -1,7 +1,7 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--pm-400);
+    gap: var(--pm-500);
     height: 100%;
 }
 
@@ -12,6 +12,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--pm-400);
+    max-height: var(--wh-375);
 }
 
 /* Right side controls (Search + buttons) */
@@ -32,21 +33,18 @@
     margin-right: var(--pm-200) !important;
 }
 
-/* Grid area container (replaces: h-full flex-1 !py-5 !px-3) */
+/* Grid area container */
 .gridArea {
     height: 100%;
     flex: 1 1 auto;
-    padding-top: 1.25rem !important; /* py-5 */
-    padding-bottom: 1.25rem !important;
-    padding-left: 0.75rem !important; /* px-3 */
-    padding-right: 0.75rem !important;
-    position: relative; /* needed for absolute selection box */
+    position: relative;
+    padding: 0 var(--pm-400);
 }
 
-/* Selection rectangle (replaces the Tailwind block) */
+/* Selection rectangle */
 .selectionBox {
     position: absolute;
-    border: 1.5px solid hsl(var(--clr-primary-500)) !important;
+    border: 1.5px solid hsl(var(--clr-primary-300)) !important;
     background: hsl(var(--clr-primary-100));
     opacity: 0.5;
     pointer-events: none !important;

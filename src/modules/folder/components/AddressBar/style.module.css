@@ -1,0 +1,104 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-200);
+    padding: var(--pm-50) var(--pm-200);
+    background: hsl(var(--clr-white-700));
+    border-radius: var(--r-300);
+    height: var(--wh-375);
+}
+
+/* Home button + icon (group hover) */
+.homeBtn {
+    padding: var(--pm-100);
+}
+.homeIcon {
+    color: hsl(var(--clr-grey-400));
+    transition: color var(--animation) ease;
+}
+
+.homeBtn:hover .homeIcon {
+    color: hsl(var(--clr-primary-900));
+}
+
+/* Edit input */
+.input {
+    flex: 1 1 auto;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: hsl(var(--clr-grey-400)); /* !text-[#8E8E93] */
+    font-size: var(--fs-100); /* !text-[14px] */
+    line-height: var(--wh-200); /* !leading-5 */
+}
+
+/* Read-only path view */
+.path {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-200);
+    user-select: none;
+}
+
+/* Segment group with hover effects */
+.segmentGroup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pm-200);
+}
+
+/* Chevron in segments */
+.chevron {
+    color: hsl(var(--clr-grey-400));
+    transition: color var(--animation) ease;
+}
+.segmentGroup:hover .chevron {
+    color: hsl(var(--clr-primary-900));
+}
+
+/* Segment button */
+.segmentBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pm-200);
+    font-size: var(--fs-100);
+    line-height: var(--wh-200);
+    color: hsl(var(--clr-grey-400));
+    padding: var(--pm-100) var(--pm-200);
+    transition: color var(--animation) ease;
+}
+.segmentGroup:hover .segmentBtn {
+    color: hsl(var(--clr-primary-900));
+}
+
+/* Folder icon in segment */
+.folderIcon {
+    color: hsl(var(--clr-grey-400));
+    transition: color var(--animation) ease;
+}
+.segmentGroup:hover .folderIcon {
+    color: hsl(var(--clr-primary-900));
+}
+
+/* Tail bar ("Type...") group */
+.tailGroup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pm-200);
+}
+.tailChevron {
+    color: hsl(var(--clr-grey-400));
+}
+.tailBtn {
+    font-size: var(--fs-100);
+    line-height: var(--wh-200);
+    color: #8e8e93;
+    transition: color var(--animation) ease;
+    padding: var(--pm-100) var(--pm-200);
+}
+.tailGroup:hover .tailBtn {
+    color: hsl(var(--clr-primary-900));
+}

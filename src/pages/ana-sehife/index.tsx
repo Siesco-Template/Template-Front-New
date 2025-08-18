@@ -9,7 +9,6 @@ import { CheckedChangeDetails } from '@ark-ui/react/dist/components/checkbox/che
 import { Catalog } from '@/shared/catalog';
 import { ExampleModal } from '@/shared/catalog/ExampleModal';
 import { CustomMRTColumn } from '@/shared/table';
-import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import {
     S_Avatar,

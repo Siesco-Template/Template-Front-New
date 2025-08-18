@@ -69,8 +69,6 @@ export interface FolderGridProps {
     onItemClick: (item: FolderItem | null, event: React.MouseEvent, action?: SelectionAction) => void;
     onItemDoubleClick?: (item: FolderItem) => void;
     selectedItems: FolderItem[];
-    isDragging?: boolean;
-    dragStartPoint?: { x: number; y: number } | null;
     className?: string;
     onRename?: () => void;
     onDelete?: () => void;

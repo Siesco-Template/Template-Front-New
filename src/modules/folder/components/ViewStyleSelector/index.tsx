@@ -1,12 +1,12 @@
-import { ChevronDown } from 'lucide-react';
-
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';
 
+import DirectionDownIcon from '../../shared/icons/direction-down.svg?react';
 import { ViewMode, ViewStyleSelectorProps } from '../../types';
+import styles from './style.module.css';
 
 const viewModeLabels: Record<ViewMode, string> = {
     list: 'Siyahı',
@@ -20,26 +20,19 @@ export function ViewStyleSelector({ currentMode, onChange, className }: ViewStyl
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
-                <S_Button variant="main-20" color="secondary" className={className}>
+                <S_Button variant="main-10" color="secondary" className={className}>
                     Görünüş
-                    <ChevronDown width={14} height={14} />
+                    <DirectionDownIcon />
                 </S_Button>
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Portal>
-                <DropdownMenu.Content
-                    className="!min-w-[170px] !bg-[#F5F7F9] !text-[#21201C] !rounded-[12px] !py-3"
-                    sideOffset={5}
-                >
+                <DropdownMenu.Content className={styles.content} sideOffset={5}>
                     {(Object.keys(viewModeLabels) as ViewMode[]).map((mode) => {
                         return (
                             <DropdownMenu.Item
                                 key={mode}
-                                className={cls(
-                                    '!px-5 !py-2 !text-[14px] !text-[#21201C] cursor-pointer transition-all duration-300 outline-none',
-                                    '!focus:outline-none !focus:bg-[#EDF2FA]',
-                                    mode === currentMode && '!bg-[#EDF2FA]'
-                                )}
+                                className={cls(styles.item, mode === currentMode && styles.itemSelected)}
                                 onClick={() => onChange(mode)}
                             >
                                 {viewModeLabels[mode]}

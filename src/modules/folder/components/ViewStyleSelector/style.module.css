@@ -1,0 +1,31 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--pm-200);
+    border-radius: var(--r-300);
+    background: hsl(var(--clr-white-50));
+    color: hsl(var(--clr-grey-600));
+    box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
+}
+
+.item {
+    cursor: pointer;
+    outline: none;
+    border-radius: var(--r-200);
+    padding: var(--pm-200);
+    color: hsl(var(--clr-grey-600));
+    font-size: var(--fs-100);
+    font-weight: 500;
+    transition: all var(--animation);
+}
+
+/* :focus utilities */
+.item:focus:not(.itemSelected) {
+    background: hsl(var(--clr-primary-50));
+}
+
+/* Selected state (mode === currentMode) */
+.itemSelected {
+    background: hsl(var(--clr-primary-50));
+}

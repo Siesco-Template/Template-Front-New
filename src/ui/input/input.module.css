@@ -215,11 +215,11 @@
 }
 
 .input [data-part='input'][data-icon='true']:has(+ .iconContainer[data-position='right']) {
-    padding-right: 40px;
+    padding-right: 32px;
 }
 
 .input [data-part='input'][data-icon='true']:has(+ .iconContainer[data-position='left']) {
-    padding-left: 40px;
+    padding-left: 32px;
 }
 
 .inputWithIconWrapper {

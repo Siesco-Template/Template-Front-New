@@ -56,8 +56,6 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
 
     const filteredNavigationLinks = filterRoutesByRoleAndPermission(navigationLinks, user.userRole);
 
-    console.log(subMenuOpen);
-
     const sublink = (link: any, isOpen: boolean) => {
         const isSubLinkActive = link.subLinks?.some((sublink: any) => location.pathname === sublink.href);
 
