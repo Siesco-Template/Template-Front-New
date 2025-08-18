@@ -8,21 +8,22 @@ import FileIcon from '../../shared/icons/file 04.svg?react';
 import FolderIcon from '../../shared/icons/folders.svg?react';
 import { FolderGridProps, FolderItem } from '../../types';
 import { FolderContextMenu } from '../ContextMenu';
+import styles from './style.module.css';
 
 const viewModeToItemClass = {
-    list: 'flex items-center !gap-2 !pl-1 !pr-14 !py-2',
-    small: 'flex flex-col items-center justify-center !gap-2 !p-[6px] w-[68px]',
-    medium: 'flex flex-col items-center justify-center !gap-2 !p-[6px] w-[82px]',
-    large: 'flex flex-col items-center justify-center !gap-2 !p-[6px] w-[82px]',
-    tree: 'flex items-center !gap-1 !py-1 !px-2',
+    list: styles.itemList,
+    small: styles.itemSmall,
+    medium: styles.itemMedium,
+    large: styles.itemLarge,
+    tree: styles.itemTree,
 };
 
 const viewModeToIconSize = {
-    list: '!w-8 !h-8',
-    small: '!w-8 !h-8',
-    medium: '!w-10 !h-10',
-    large: '!w-16 !h-16',
-    tree: '!w-6 !h-6',
+    list: styles.iconList,
+    small: styles.iconSmall,
+    medium: styles.iconMedium,
+    large: styles.iconLarge,
+    tree: styles.iconTree,
 };
 
 interface TreeItemProps {
@@ -92,12 +93,8 @@ function TreeItem({
             canMove={allSelectedHavePermission('canMove')}
         >
             <div
-                className={cls(
-                    'flex items-center !gap-1 !py-4 !cursor-pointer !select-none !bg-transparent',
-                    '!hover:bg-[#F5F7F9] !rounded-sm',
-                    isSelected && '!bg-[#F3F3F3]'
-                )}
-                style={{ paddingLeft: `${(level + 1) * 16}px` }}
+                className={cls(styles.treeRow, isSelected && styles.treeRowSelected)}
+                style={{ paddingLeft: level * 16 }}
                 onClick={(e) => {
                     return onItemClick(item, e);
                 }}
@@ -110,30 +107,26 @@ function TreeItem({
             >
                 {item.type === 'folder' ? (
                     <button
-                        className="!w-6 !h-6"
+                        className={styles.toggleBtn}
                         onClick={(e) => {
                             e.stopPropagation();
                             onToggle();
                         }}
                     >
                         {isExpanded ? (
-                            <ChevronDownIcon className="!text-black" />
+                            <ChevronDownIcon className={styles.chevronIcon} />
                         ) : (
-                            <ChevronRightIcon className="!text-black" />
+                            <ChevronRightIcon className={styles.chevronIcon} />
                         )}
                     </button>
                 ) : (
-                    <span className="w-6" /> // Spacer for files
+                    <span className={styles.toggleBtn} /> // spacer for files (same width/height)
                 )}
                 <IconComponent className={viewModeToIconSize['tree']} style={style as React.CSSProperties} />
-                <span className="!text-sm !truncate !text-[#3D4C5E]">{item.name}</span>
-                <div className="!flex-1" />
-                <span className="!text-sm !text-[#3D4C5E] text-center !w-12 !mr-4">
-                    {item.type === 'folder' ? 'Qovluq' : 'Fayl'}
-                </span>
-                <span className="!text-sm !text-[#3D4C5E] !w-24 !text-center">
-                    {new Date(item?.createDate!).toLocaleDateString('tr-TR')}
-                </span>
+                <span className={cls(styles.treeName, styles.textTruncate)}>{item.name}</span>
+                <div className={styles.flex1} />
+                <span className={styles.treeType}>{item.type === 'folder' ? 'Qovluq' : 'Fayl'}</span>
+                <span className={styles.treeDate}>{new Date(item?.createDate!).toLocaleDateString('tr-TR')}</span>
             </div>
         </FolderContextMenu>
     );
@@ -205,8 +198,8 @@ export function FolderGrid({
                     data-item-id={item.id}
                     className={cls(
                         viewModeToItemClass[viewMode],
-                        '!rounded-[4px] !hover:bg-[#F5F7F9] !cursor-pointer !select-none !h-fit',
-                        selectedItems.includes(item) && '!bg-[#F3F3F3]'
+                        styles.gridItem,
+                        selectedItems.includes(item) && styles.gridItemSelected
                     )}
                     onClick={(e) => onItemClick(item, e)}
                     onDoubleClick={() => onItemDoubleClick?.(item)}
@@ -215,21 +208,15 @@ export function FolderGrid({
                     aria-selected={selectedItems.includes(item)}
                 >
                     <IconComponent className={cls(viewModeToIconSize[viewMode])} style={style as React.CSSProperties} />
-                    <span className="!text-[14px] !text-center !text-[#546881] !break-all">{item.name}</span>
+                    <span className={styles.itemName}>{item.name}</span>
                     {viewMode === 'list' && (
                         <>
-                            <div className="flex-1" />
-                            <span className="!text-[14px] !text-[#47586E] !text-left !w-16 !mr-4">
-                                {item.type === 'folder' ? 'Qovluq' : 'Fayl'}
-                            </span>
+                            <div className={styles.flex1} />
+                            <span className={styles.typeLabel}>{item.type === 'folder' ? 'Qovluq' : 'Fayl'}</span>
 
-                            {isSearchMode && (
-                                <span className="!text-[14px] !text-[#47586E] lg:!w-[150px] !w-fit lg:!mr-0 !mr-4 !text-left !text-truncate block">
-                                    {item.path}
-                                </span>
-                            )}
+                            {isSearchMode && <span className={styles.pathLabel}>{item.path}</span>}
 
-                            <span className="!text-[14px] !text-[#47586E] inline-block lg:!w-[100px] !w-fit lg:!mr-0 !mr-4 !text-right">
+                            <span className={styles.dateLabel}>
                                 {new Date(item?.createDate!).toLocaleDateString('tr-TR')}
                             </span>
                         </>
@@ -276,46 +263,38 @@ export function FolderGrid({
 
         return (
             <div
-                className={cls('!min-w-full !overflow-auto !pr-4', className)}
+                className={cls(styles.treeWrap, className)}
                 style={{ maxHeight: 'calc(100vh - 260px)' }}
                 onClick={(e) => {
-                    // If clicking directly on the grid (not on items), clear selection
                     if (e.currentTarget === e.target) {
                         onItemClick(null, e, 'clear');
                     }
                 }}
                 onContextMenu={(e) => {
-                    // If right-clicking directly on the grid (not on items), clear selection
                     if (e.currentTarget === e.target) {
                         onItemClick(null, e, 'clear');
                     }
                 }}
             >
-                <div className="!flex items-center !gap-1 !py-2 !px-4 !border-b !text-sm !font-medium !sticky !top-0 !z-0">
-                    <span className="flex-1 !text-[#3D4C5E]">Ad</span>
-                    <span className="!text-center !w-12 !mr-4 !text-[#3D4C5E]">Tipi</span>
-                    <span className="!text-center !text-nowrap !text-[#3D4C5E]">Yaradılma tarixi</span>
+                <div className={styles.treeHeader}>
+                    <span className={cls(styles.treeHeaderName, styles.treeHeaderNameFlex)}>Ad</span>
+                    <span className={styles.treeHeaderType}>Tipi</span>
+                    <span className={styles.treeHeaderDate}>Yaradılma tarixi</span>
                 </div>
-                <div className="!py-1">{renderTreeItems(items)}</div>
+                <div className={styles.treeBody}>{renderTreeItems(items)}</div>
             </div>
         );
     }
 
     return (
         <div
-            className={cls(
-                'flex !gap-4 !relative !overflow-auto flex-wrap',
-                className,
-                viewMode === 'list' && 'flex-col'
-            )}
+            className={cls(styles.gridWrap, className, viewMode === 'list' && styles.gridWrapList)}
             onClick={(e) => {
-                // If clicking directly on the grid (not on items), clear selection
                 if (e.currentTarget === e.target && !e.ctrlKey) {
                     onItemClick(null, e, 'clear');
                 }
             }}
             onContextMenu={(e) => {
-                // If right-clicking directly on the grid (not on items), clear selection
                 if (e.currentTarget === e.target) {
                     onItemClick(null, e, 'clear');
                 }
@@ -325,3 +304,5 @@ export function FolderGrid({
         </div>
     );
 }
+
+export default FolderGrid;
