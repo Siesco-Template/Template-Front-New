@@ -63,11 +63,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
     const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
     const { columnVisibility, filterDataState } = useTableContext();
-    const { loadConfigFromApi } = useTableConfig();
-
-    useEffect(() => {
-        loadConfigFromApi();
-    }, []);
 
     const columns: CustomMRTColumn<IUser>[] = [
         { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text', placeholder: 'Ad ' },

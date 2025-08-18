@@ -162,7 +162,6 @@ export const routes: Route[] = [
 export const AppInitializer = ({ config }: { config: any }) => {
     useEffect(() => {
         if (config) {
-            // console.log(config, 'Config from context');
             const layoutState = getLayoutFromContext(config.extraConfig?.interfaceSettings);
             const viewAndContentState = getViewAndContentFromContext(config.extraConfig?.visualSettings);
             const typographyState = getTypographyFromContext(config.extraConfig?.textSettings);

@@ -64,7 +64,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     onToggleConfigCollapse,
 }) => {
     const { columnVisibility, filterDataState } = useTableContext();
-    const { loadConfigFromApi } = useTableConfig();
 
     const [loading, setLoading] = useState(false);
 
@@ -76,10 +75,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         setIsExcelModalOpen(true);
     };
     const location = useLocation();
-
-    useEffect(() => {
-        loadConfigFromApi();
-    }, []);
 
     const fetchData = (isLoadMore = false) => {
         if (loading) return;

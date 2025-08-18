@@ -10,10 +10,6 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 import styles from './style.module.css';
 
 function FolderPage() {
-    const { loadConfigFromApi } = useTableConfig();
-    useEffect(() => {
-        loadConfigFromApi();
-    }, []);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
