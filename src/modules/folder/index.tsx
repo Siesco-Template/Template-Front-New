@@ -247,10 +247,10 @@ export function Folder({
                 const height = Math.abs(currentY - startY);
 
                 setSelectionBox({
-                    left: Math.min(dragStartPoint.x, event.pageX),
-                    top: Math.min(dragStartPoint.y, event.pageY),
-                    width: Math.abs(event.pageX - dragStartPoint.x),
-                    height: Math.abs(event.pageY - dragStartPoint.y),
+                    left,
+                    top,
+                    width,
+                    height,
                 });
 
                 if (event.ctrlKey) {
@@ -300,8 +300,7 @@ export function Folder({
     // Filter items if showFilesOnly is enabled
     const filteredItems = showFilesOnly ? items.filter((item) => item.type === 'file') : items;
 
-    // Context menu action handlers
-
+    // Context menu - select all action
     const handleSelectAll = useCallback(() => {
         const event = new MouseEvent('click', {
             bubbles: true,
@@ -331,7 +330,7 @@ export function Folder({
                         )}
                         {showFilesOnlyButton && (
                             <S_Button
-                                variant="main-20"
+                                variant="main-10"
                                 color="secondary"
                                 onClick={() => setShowFilesOnly(!showFilesOnly)}
                             >

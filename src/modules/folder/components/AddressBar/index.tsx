@@ -6,6 +6,7 @@ import ChevronRightIcon from '../../shared/icons/chevron-right.svg?react';
 import FolderOutlineIcon from '../../shared/icons/folder-outline.svg?react';
 import HomeIcon from '../../shared/icons/home.svg?react';
 import { AddressBarProps } from '../../types';
+import styles from './style.module.css';
 
 interface AddressBarExtendedProps extends AddressBarProps {
     onPathNotFound?: (path: string) => void;
@@ -58,23 +59,15 @@ export function AddressBar({ path, onPathChange, className, onPathNotFound, vali
     };
 
     return (
-        <div
-            className={cls(
-                'flex items-center !gap-2 !mx-2 !my-0.5 !px-2 !py-0.5 !bg-[#F5F5F5] !rounded-[4px] !border-[0.5px] !border-[#B2BBC6]',
-                className
-            )}
-        >
-            <button onClick={handleHomeClick} className="!p-1 group" title="Go home" tabIndex={editMode ? -1 : 0}>
-                <HomeIcon
-                    width={20}
-                    height={20}
-                    className="!text-[#767676] !group-hover:text-[#1E1E1E] transition-colors"
-                />
+        <div className={cls(styles.container, className)}>
+            <button onClick={handleHomeClick} className={styles.homeBtn} title="Go home" tabIndex={editMode ? -1 : 0}>
+                <HomeIcon width={16} height={16} className={styles.homeIcon} />
             </button>
+
             {editMode ? (
                 <input
                     ref={inputRef}
-                    className="flex-1 !border-none !outline-none !bg-transparent !text-[#8E8E93] !text-[14px] !leading-5"
+                    className={styles.input}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onBlur={handleInputBlur}
@@ -82,31 +75,23 @@ export function AddressBar({ path, onPathChange, className, onPathNotFound, vali
                     autoFocus
                 />
             ) : (
-                <div className="flex items-center !gap-2 select-none">
+                <div className={styles.path}>
                     {pathSegments.map((segment, index) => (
-                        <div key={index} className="flex items-center justify-center !gap-2 !group">
-                            <ChevronRightIcon className="!text-[#667085] !group-hover:!text-[#1E1E1E]" />
+                        <div key={index} className={styles.segmentGroup}>
+                            <ChevronRightIcon className={styles.chevron} />
                             <button
                                 onClick={() => handleSegmentClick(index)}
-                                className="flex items-center justify-center !gap-1 !text-[14px] leading-5 !text-[#8E8E93] !px-2 !py-1 !group-hover:text-[#1E1E1E]"
+                                className={styles.segmentBtn}
                                 tabIndex={0}
                             >
-                                <FolderOutlineIcon
-                                    width={20}
-                                    height={20}
-                                    className="!text-[#8E8E93] !group-hover:!text-[#1E1E1E] transition-colors"
-                                />
+                                <FolderOutlineIcon width={16} height={16} className={styles.folderIcon} />
                                 {segment}
                             </button>
                         </div>
                     ))}
-                    <div className="flex items-center justify-center !gap-2 !group">
-                        <ChevronRightIcon className="!text-[#667085]" />
-                        <button
-                            onClick={handleBarClick}
-                            className="!text-[14px] leading-5 !text-[#8E8E93] !group-hover:text-[#1E1E1E]"
-                            tabIndex={0}
-                        >
+                    <div className={styles.tailGroup}>
+                        <ChevronRightIcon className={styles.tailChevron} />
+                        <button onClick={handleBarClick} className={styles.tailBtn} tabIndex={0}>
                             Type...
                         </button>
                     </div>

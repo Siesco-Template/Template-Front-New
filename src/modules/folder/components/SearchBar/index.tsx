@@ -22,13 +22,14 @@ export function SearchBar({ onSearch, className }: SearchBarProps) {
     }, [searchParams]);
 
     return (
-        <form onSubmit={handleSubmit} className={cls('relative', className)}>
+        <form onSubmit={handleSubmit} className={className}>
             <S_Input
-                icon={<SearchIcon className="!text-[#919DA8]" width={20} height={20} />}
+                icon={<SearchIcon />}
                 iconPosition="left"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Axtar"
+                inputSize="default"
             />
         </form>
     );

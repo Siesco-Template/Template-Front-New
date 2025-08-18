@@ -157,8 +157,6 @@ export function FolderGrid({
     itemRefs,
     onItemsChange,
     isSearchMode,
-    isDragging,
-    dragStartPoint,
 }: FolderGridProps) {
     const allSelectedHavePermission = (permission: keyof NonNullable<FolderItem['permissions']>) => {
         return selectedItems.every((item) => item.permissions?.[permission]);

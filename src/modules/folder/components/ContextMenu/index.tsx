@@ -12,6 +12,7 @@ import FontSizeIcon from '../../shared/icons/font-size.svg?react';
 import ImageCircleIcon from '../../shared/icons/image-circle.svg?react';
 import TrashIcon from '../../shared/icons/trash.svg?react';
 import { FolderItem } from '../../types';
+import styles from './style.module.css';
 
 interface FolderContextMenuProps {
     children: React.ReactNode;
@@ -45,13 +46,7 @@ const ContextMenuItem = ({
     icon?: React.ComponentType<{ className?: string }>;
 } & React.ComponentProps<typeof ContextMenuPrimitive.Item>) => {
     return (
-        <ContextMenuPrimitive.Item
-            className={cls(
-                '!relative !mb-[2px] flex !cursor-pointer !select-none !items-center !gap-[6px] !py-2 !px-6 !text-[14px] !focus:!bg-[#E6F0FE] !transition-colors !outline-none !data-[disabled]:pointer-events-none !data-[disabled]:opacity-50',
-                className
-            )}
-            {...props}
-        >
+        <ContextMenuPrimitive.Item className={cls(styles.item)} {...props}>
             {Icon && <Icon />}
             {children}
         </ContextMenuPrimitive.Item>
@@ -109,7 +104,7 @@ export function FolderContextMenu({
         >
             <ContextMenuPrimitive.Trigger asChild>{children}</ContextMenuPrimitive.Trigger>
             <ContextMenuPrimitive.Portal>
-                <ContextMenuPrimitive.Content className="!min-w-[220px] !overflow-hidden !rounded-[12px] !border-1 !border-[#1F180013] !bg-[#FDFDFC] !py-6 !text-[#21201C] !shadow-md !animate-in !fade-in-80 !data-[side=bottom]:slide-in-from-top-2 !data-[side=left]:slide-in-from-right-2 !data-[side=right]:slide-in-from-left-2 !data-[side=top]:slide-in-from-bottom-2">
+                <ContextMenuPrimitive.Content className={styles.content}>
                     {isEmpty && (
                         <>
                             <ContextMenuItem icon={AppsAddIcon} onClick={onNewFolder}>
@@ -118,7 +113,7 @@ export function FolderContextMenu({
                             <ContextMenuItem icon={DescriptionIcon} onClick={onNewFile}>
                                 Yeni fayl
                             </ContextMenuItem>
-                            <ContextMenuItem icon={AppsAddIcon} onClick={onSelectAll} className="!mb-0">
+                            <ContextMenuItem icon={AppsAddIcon} onClick={onSelectAll}>
                                 Hamısını seç
                             </ContextMenuItem>
                         </>
@@ -137,7 +132,7 @@ export function FolderContextMenu({
                                 </ContextMenuItem>
                             )} */}
                             {canMove && (
-                                <ContextMenuItem icon={ArrowMoveIcon} onClick={onMove} className="!mb-0">
+                                <ContextMenuItem icon={ArrowMoveIcon} onClick={onMove}>
                                     Yerini dəyiş ({selectedItems.length})
                                 </ContextMenuItem>
                             )}
@@ -177,13 +172,13 @@ export function FolderContextMenu({
                                     <ContextMenuItem icon={CopyIcon} onClick={() => onCopyPath?.(item)}>
                                         Yolu kopyala
                                     </ContextMenuItem>
-                                    <ContextMenuSeparator className="my-1 h-px bg-border" />
+                                    <ContextMenuSeparator className={styles.seperator} />
                                     {item.permissions?.canComment && (
                                         <ContextMenuItem icon={DownloadIcon} onClick={onComment}>
                                             Şərh
                                         </ContextMenuItem>
                                     )}
-                                    <ContextMenuItem icon={AlignCenterIcon} onClick={onDetails} className="!mb-0">
+                                    <ContextMenuItem icon={AlignCenterIcon} onClick={onDetails}>
                                         Detallı bax
                                     </ContextMenuItem>
                                 </>
@@ -215,8 +210,8 @@ export function FolderContextMenu({
                                     <ContextMenuItem icon={CopyIcon} onClick={() => onCopyPath?.(item)}>
                                         Yolu kopyala
                                     </ContextMenuItem>
-                                    <ContextMenuSeparator className="my-1 h-px bg-border" />
-                                    <ContextMenuItem icon={AlignCenterIcon} onClick={onDetails} className="!mb-0">
+                                    <ContextMenuSeparator className={styles.seperator} />
+                                    <ContextMenuItem icon={AlignCenterIcon} onClick={onDetails}>
                                         Detallı bax
                                     </ContextMenuItem>
                                 </>
