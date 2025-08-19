@@ -2,8 +2,8 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const GATEWAY = {
     auth: `${BASE_URL}/auth/Auth`,
-    permission: `${BASE_URL}/permission/Permissions`,
     user: `${BASE_URL}/auth/User`,
+    permission: `${BASE_URL}/permission/Permissions`,
     excel: `${BASE_URL}/template/Excel`,
     fakeEndpoints: `${BASE_URL}/template/FakeEndpoints`,
     config: `${BASE_URL}/template/Config`,
@@ -16,8 +16,8 @@ const GATEWAY = {
 
 const API_CONTROLLER = {
     auth: (url = '') => `${GATEWAY.auth}${url}`,
-    permission: (url = '') => `${GATEWAY.permission}${url}`,
     user: (url = '') => `${GATEWAY.user}${url}`,
+    permission: (url = '') => `${GATEWAY.permission}${url}`,
     excel: (url = '') => `${GATEWAY.excel}${url}`,
     fakeEndpoints: (url = '') => `${GATEWAY.fakeEndpoints}${url}`,
     config: (url = '') => `${GATEWAY.config}${url}`,

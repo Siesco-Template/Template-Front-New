@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { authService } from '@/services/auth/auth.service';
+import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button, S_Input } from '@/ui';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
-import S_Textarea from '@/ui/textarea';
 
 import styles from './style.module.css';
 
@@ -36,7 +35,7 @@ export function ResetPasswordModal({ open, onOpenChange, onSubmit, selectedUserI
         setIsLoading(true);
 
         try {
-            await authService.resetPassword(id, newPassword);
+            await authService.resetPassword({ userId: id, newPassword });
         } catch (error) {
             toast.error(
                 // @ts-expect-error

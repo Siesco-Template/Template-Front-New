@@ -4,10 +4,12 @@ import API_CONTROLLER from '@/services/config/api.config';
 import { FileDetail, FolderDetail, GetFoldersAndFilesResponse } from './folder.service.types';
 
 class FolderService {
-    folderUrl = (endpoint = '') => API_CONTROLLER.user(endpoint);
+    foldersUrl = (endpoint = '') => API_CONTROLLER.userFolders(endpoint);
+    filesUrl = (endpoint = '') => API_CONTROLLER.userFiles(endpoint);
+    usersUrl = (endpoint = '') => API_CONTROLLER.users(endpoint);
 
     async getFoldersAndFiles(path: string) {
-        return httpRequest<GetFoldersAndFilesResponse>(API_CONTROLLER.userFolders('/GetFoldersAndFiles'), {
+        return httpRequest<GetFoldersAndFilesResponse>(this.foldersUrl('/GetFoldersAndFiles'), {
             method: 'GET',
             queryParams: {
                 path,
@@ -16,7 +18,7 @@ class FolderService {
     }
 
     async getFolderDetail(path: string) {
-        return httpRequest<FolderDetail>(API_CONTROLLER.userFolders('/getFolderDetail'), {
+        return httpRequest<FolderDetail>(this.foldersUrl('/getFolderDetail'), {
             method: 'GET',
             queryParams: {
                 path,
@@ -25,13 +27,13 @@ class FolderService {
     }
 
     async getUserDetail(id: string) {
-        return httpRequest<FileDetail>(API_CONTROLLER.users(`/${id}`), {
+        return httpRequest<FileDetail>(this.usersUrl(`/${id}`), {
             method: 'GET',
         });
     }
 
     async getOnlyFolders(path: string) {
-        return httpRequest<GetFoldersAndFilesResponse['folders']>(API_CONTROLLER.userFolders('/GetOnlyFolders'), {
+        return httpRequest<GetFoldersAndFilesResponse['folders']>(this.foldersUrl('/GetOnlyFolders'), {
             method: 'GET',
             queryParams: {
                 path,
@@ -40,14 +42,14 @@ class FolderService {
     }
 
     async renameFolder(body: { currentPath: string; newName: string }) {
-        return httpRequest(API_CONTROLLER.userFolders('/RenameFolder'), {
+        return httpRequest(this.foldersUrl('/RenameFolder'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
     async renameFile(body: { folderPath: string; fileId: string; newFileName: string }) {
-        return httpRequest(API_CONTROLLER.userFiles('/RenameFile'), {
+        return httpRequest(this.filesUrl('/RenameFile'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
@@ -60,21 +62,21 @@ class FolderService {
             fileId: string;
         }[];
     }) {
-        return httpRequest(API_CONTROLLER.userFiles('/DeleteFromMultipleSources'), {
+        return httpRequest(this.filesUrl('/DeleteFromMultipleSources'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
     async bulkDeleteFoldersAndFiles(body: { folderPaths: string[]; folderPathForFiles: string; fileIds: string[] }) {
-        return httpRequest(API_CONTROLLER.userFiles('/BulkDeleteFoldersAndFiles'), {
+        return httpRequest(this.filesUrl('/BulkDeleteFoldersAndFiles'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
     async createFolder(body: { name: string; parentPath: string; icon: string }) {
-        return httpRequest<GetFoldersAndFilesResponse['folders'][0]>(API_CONTROLLER.userFolders('/CreateFolder'), {
+        return httpRequest<GetFoldersAndFilesResponse['folders'][0]>(this.foldersUrl('/CreateFolder'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
@@ -87,21 +89,21 @@ class FolderService {
         phoneNumber: string;
         folderPath: string;
     }) {
-        return httpRequest<GetFoldersAndFilesResponse['files'][0]>(API_CONTROLLER.userFiles('/CreateUser'), {
+        return httpRequest<GetFoldersAndFilesResponse['files'][0]>(this.filesUrl('/CreateUser'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
     async addComment(body: { path: string; comment: string }) {
-        return httpRequest(API_CONTROLLER.userFolders('/AddComment'), {
+        return httpRequest(this.foldersUrl('/AddComment'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
     async changeIcon(body: { path: string; icon: string }) {
-        return httpRequest(API_CONTROLLER.userFolders('/ChangeIcon'), {
+        return httpRequest(this.foldersUrl('/ChangeIcon'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
@@ -118,7 +120,7 @@ class FolderService {
             fileId: string;
         }[];
     }) {
-        return httpRequest(API_CONTROLLER.userFiles('/MoveFromMultipleSources'), {
+        return httpRequest(this.filesUrl('/MoveFromMultipleSources'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
@@ -130,14 +132,14 @@ class FolderService {
         folderNames: string[];
         fileIds: string[];
     }) {
-        return httpRequest(API_CONTROLLER.userFiles('/MoveFoldersAndFiles'), {
+        return httpRequest(this.filesUrl('/MoveFoldersAndFiles'), {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
     async searchInFolder(queryParams: { path: string; keyword: string }) {
-        return httpRequest<GetFoldersAndFilesResponse>(API_CONTROLLER.userFolders('/SearchInFolder'), {
+        return httpRequest<GetFoldersAndFilesResponse>(this.foldersUrl('/SearchInFolder'), {
             method: 'GET',
             queryParams,
         });

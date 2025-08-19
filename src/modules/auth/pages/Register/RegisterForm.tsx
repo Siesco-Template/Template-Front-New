@@ -7,6 +7,7 @@ import { APP_URLS } from '@/services/config/url.config';
 
 import { Button } from '../../components/Button';
 import Input from '../../components/input/input';
+import { authService } from '../../services/auth.service';
 
 interface IRegisterInputs {
     firstName: string;
@@ -16,8 +17,8 @@ interface IRegisterInputs {
 }
 
 interface RegisterFormProps {
-    onNextStep: (data: IRegisterInputs | null) => void;
-    initialData: IRegisterInputs | null;
+    onNextStep: (data: IRegisterInputs) => void;
+    initialData: IRegisterInputs;
 }
 
 const RegisterForm = ({ onNextStep, initialData }: RegisterFormProps) => {
@@ -26,9 +27,6 @@ const RegisterForm = ({ onNextStep, initialData }: RegisterFormProps) => {
     const {
         register,
         handleSubmit,
-        reset,
-        setError,
-        clearErrors,
         formState: { errors },
     } = useForm<IRegisterInputs>({
         mode: 'onChange',
@@ -44,17 +42,15 @@ const RegisterForm = ({ onNextStep, initialData }: RegisterFormProps) => {
         setLoading(true);
 
         try {
-            const res = await fetch(
-                `${import.meta.env.VITE_BASE_URL}/auth/Auth/CheckUserExist?email=${data.email}&phoneNumber=${data.phoneNumber}`
-            );
-            if (!res.ok) {
-                throw new Error('Qeydiyyat uğursuz oldu');
-            }
+            await authService.checkUserExist({
+                email: data.email,
+                phoneNumber: data.phoneNumber,
+            });
 
             onNextStep(data);
         } catch (error) {
-            toast.error('Qeydiyyat uğursuz oldu');
-            console.error(error);
+            // @ts-expect-error
+            toast.error(error?.data?.message || 'Qeydiyyat uğursuz oldu');
         } finally {
             setLoading(false);
         }

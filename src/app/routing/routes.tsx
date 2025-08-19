@@ -20,6 +20,7 @@ import { getTypographyFromContext } from '@/modules/_settings/typography/typogra
 import { useViewAndContentStore } from '@/modules/_settings/view-and-content/view-and-content.store';
 import { getViewAndContentFromContext } from '@/modules/_settings/view-and-content/view-and-content.utils';
 import AuthLayout from '@/modules/auth/layout/authLayout';
+import Register from '@/modules/auth/pages/Register/Register';
 import NotificationPage from '@/modules/notifications';
 import Profile from '@/modules/profile';
 
@@ -152,6 +153,12 @@ export const routes: Route[] = [
             {
                 path: APP_URLS.block_user(),
                 element: <LazyLoadable page={<BlockUser />} />,
+                isAuth: false,
+                roles: [],
+            },
+            {
+                path: APP_URLS.register(),
+                element: <LazyLoadable page={<Register />} />,
                 isAuth: false,
                 roles: [],
             },
