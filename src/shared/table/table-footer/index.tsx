@@ -133,7 +133,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
         <div className={styles.paginationWrapper}>
             <div className={styles.leftSide}>
                 <span className={styles.label}>Səhifədə göstər:</span>
-                <div style={{ width: '60px' }}>
+                <div style={{ width: '70px' }}>
                     <S_Select_Simple
                         value={[pageSize === -1 ? 'infinite' : pageSize.toString()]}
                         items={[
