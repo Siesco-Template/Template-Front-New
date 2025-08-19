@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { authService } from '@/services/auth/auth.service';
-import { ICreateUserBody, IUpdateUserBody } from '@/services/auth/auth.service.types';
+import { authService } from '@/modules/auth/services/auth.service';
+import { CreateUserBody, UpdateUserBody } from '@/modules/auth/services/auth.service.types';
 
 import { UserRole, userRoleOptions } from '@/shared/constants/enums';
 import { cls } from '@/shared/utils';
@@ -59,16 +59,19 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
 
             try {
                 const userData = await authService.getUserDetail(selectedUserId);
+                if (!userData) throw { data: { message: 'İşçi məlumatları tapılmadı' } };
+
                 reset(userData);
             } catch (error) {
-                console.error('Error fetching corpus data:', error);
+                // @ts-expect-error
+                toast.error(error?.data?.message || 'İşçi məlumatları alınarkən xəta baş verdi');
             }
         };
 
         fetchData();
     }, [selectedUserId]);
 
-    const updateUser = async (data: IUpdateUserBody) => {
+    const updateUser = async (data: UpdateUserBody) => {
         setIsProcessing(true);
         try {
             await authService.updateUser(data);
@@ -81,13 +84,12 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
         }
     };
 
-    const createUser = async (data: ICreateUserBody) => {
+    const createUser = async (data: CreateUserBody) => {
         setIsProcessing(true);
         try {
             await authService.createUser(data);
             onSubmit?.();
         } catch (error) {
-            console.log(error);
             // @ts-expect-error
             toast.error(error?.data?.message || 'Işçi yaradılarkən xəta baş verdi');
         } finally {

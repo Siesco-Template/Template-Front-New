@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
 
-import { authService } from '../auth/auth.service';
+import { authService } from '@/modules/auth/services/auth.service';
 
 export type Error = {
     status: number;
@@ -37,8 +37,7 @@ export async function httpRequest<T>(
         });
 
         if (response.status === 401) {
-            console.warn('Token müddəti bitdi və ya etibarsızdır.');
-            const newToken = await authService.refreshToken();
+            const newToken = await authService.loginWithRefreshToken();
 
             if (newToken) {
                 return fetchData(newToken);

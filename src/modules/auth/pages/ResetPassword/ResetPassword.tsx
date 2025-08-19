@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
@@ -9,6 +9,7 @@ import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
 import { inputDescriptionStyles } from '../../components/input/input.styles';
+import { authService } from '../../services/auth.service';
 import IconDefault from '../../shared/icons/validation default.svg?react';
 import IconError from '../../shared/icons/validation error.svg?react';
 import IconSuccess from '../../shared/icons/validation success.svg?react';
@@ -31,9 +32,7 @@ const ResetPassword = () => {
     const {
         register,
         handleSubmit,
-        reset,
         setError,
-        clearErrors,
         formState: { errors },
     } = useForm<IInputs>({
         mode: 'onChange',
@@ -79,27 +78,19 @@ const ResetPassword = () => {
         setLoading(true);
 
         try {
-            if (!token) throw new Error('Token tapılmadı!');
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Auth/SetPassword`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    token: token,
-                    newPassword: data.password,
-                    confirmNewPassword: data.confirmPassword,
-                }),
+            if (!token) throw { data: { message: 'Token tapılmadı!' } };
+
+            await authService.setPassword({
+                token: token,
+                newPassword: data.password,
+                confirmNewPassword: data.confirmPassword,
             });
-            if (!res.ok) {
-                throw new Error('Əməliyyat uğursuz oldu');
-            }
 
             toast.success('Şifrə uğurla yeniləndi');
             setIsFinish(true);
         } catch (error) {
-            toast.error('Əməliyyat uğursuz oldu');
-            console.error(error);
+            // @ts-expect-error
+            toast.error(error?.data?.message || 'Əməliyyat uğursuz oldu');
         } finally {
             setLoading(false);
         }

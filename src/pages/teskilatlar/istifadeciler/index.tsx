@@ -3,11 +3,11 @@ import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
+import { IUser } from '@/store/authStore';
 
-import { IUser } from '@/services/auth/auth.service.types';
 import { APP_URLS } from '@/services/config/url.config';
-import { userService } from '@/services/user/user.service';
 
+import { authService } from '@/modules/auth/services/auth.service';
 import { usePermission } from '@/modules/permission/PermissionContext';
 import { hasPermission } from '@/modules/permission/PermissionGuard';
 
@@ -20,7 +20,6 @@ import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { FilterTypeEnum, filterDataForFetch } from '@/shared/table/table-helpers';
-import { useTableConfig } from '@/shared/table/tableConfigContext';
 import TableRowActions from '@/shared/table/tableRowActions';
 
 import { BlockModal } from './BlockModal';
@@ -111,7 +110,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         const filterData: any = filterDataForFetch();
         const queryParams: any = buildQueryParamsFromTableRequest(filterData);
 
-        console.log(columnVisibility, 'cc');
         const allowed = new Set(
             columns.map((c) => c.accessorKey).filter((k): k is string => typeof k === 'string' && k.trim() !== '')
         );
@@ -120,7 +118,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
             .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key) && key !== 'actions')
             .map(([key]) => key);
 
-        console.log(visibleColumns, 'v');
         visibleColumns = Array.from(new Set(visibleColumns));
 
         if (visibleColumns.length > 0) {
@@ -130,11 +127,15 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
         }
 
         try {
-            const res = await userService.getAllUsers('appusers', queryParams);
+            const res = await authService.getAllUsers<IUser>({
+                tableId: 'appusers',
+                ...queryParams,
+            });
             if (!res) {
-                toast.error('Işçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.');
-                setTableData([]);
-                return;
+                throw {
+                    data: { message: 'İşçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.' },
+                    status: 500,
+                };
             }
             setTableData(res?.items || []);
             setTotalCount(res?.totalCount || 0);

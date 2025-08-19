@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import toast from 'react-hot-toast';
-
-import { authService } from '@/services/auth/auth.service';
 
 import { S_Button } from '@/ui';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';

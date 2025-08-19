@@ -10,6 +10,7 @@ import { APP_URLS } from '@/services/config/url.config';
 import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
+import { authService } from '../../services/auth.service';
 import IconDefault from '../../shared/icons/validation default.svg?react';
 import IconError from '../../shared/icons/validation error.svg?react';
 import IconSuccess from '../../shared/icons/validation success.svg?react';
@@ -80,25 +81,17 @@ const ChangePassword = () => {
         setLoading(true);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Auth/ChangePassword`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${userData.accessToken}`,
-                },
-                body: JSON.stringify({
-                    ...data,
-                }),
+            await authService.changePassword({
+                oldPassword: data.oldPassword,
+                newPassword: data.newPassword,
+                newConfirmPassword: data.newConfirmPassword,
             });
-            if (!res.ok) {
-                throw new Error('Giriş uğursuz oldu');
-            }
 
             toast.success('Şifrə uğurla dəyişdirildi');
             setIsFinish(true);
         } catch (error) {
-            toast.error('Şifrə dəyişdirmək uğursuz oldu');
-            console.error(error);
+            // @ts-expect-error
+            toast.error(res?.data?.message || 'Şifrə dəyişdirmək uğursuz oldu');
         } finally {
             setLoading(false);
         }

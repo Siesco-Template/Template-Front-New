@@ -1,15 +1,8 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router';
 
-import Cookies from 'universal-cookie';
-
-import { APP_URLS } from '@/services/config/url.config';
-
-import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
-import Input from '../../components/input/input';
+import { authService } from '../../services/auth.service';
 import RegisterForm from './RegisterForm';
 import RegisterPassword from './RegisterPassword';
 
@@ -30,18 +23,21 @@ enum RegisterStep {
     Password = 2,
 }
 
-const cookies = new Cookies();
-
 const Register = () => {
     const [isFinish, setIsFinish] = useState<boolean>(false);
 
     const [registerStep, setRegisterStep] = useState<RegisterStep>(RegisterStep.Form);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [formData, setFormData] = useState<IRegisterInputs | null>(null);
+    const [formData, setFormData] = useState<IRegisterInputs>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+    });
     const [passwordData, setPasswordData] = useState<IPasswordInputs | null>(null);
 
-    function handleNextStep(data: IRegisterInputs | null) {
+    function handleNextStep(data: IRegisterInputs) {
         setFormData(data);
         setRegisterStep(RegisterStep.Password);
     }
@@ -55,25 +51,16 @@ const Register = () => {
         setLoading(true);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Auth/Register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ...formData,
-                    ...data,
-                }),
+            await authService.register({
+                ...formData,
+                ...data,
             });
-            if (!res.ok) {
-                throw new Error('Qeydiyyat uğursuz oldu');
-            }
 
             toast.success('Uğurla qeydiyyatdan keçdiniz');
             setIsFinish(true);
         } catch (error) {
-            toast.error('Qeydiyyat uğursuz oldu');
-            console.error(error);
+            // @ts-expect-error
+            toast.error(error?.data?.message || 'Qeydiyyat uğursuz oldu');
         } finally {
             setLoading(false);
         }

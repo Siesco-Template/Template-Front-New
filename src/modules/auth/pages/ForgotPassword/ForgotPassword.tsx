@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+
 import ResendMail from '../../components/ResendMail/ResendMail';
 import Input from '../../components/input/input';
-import InputPassword from '../../components/input/input.password';
-import styles from './style.module.css'
-import { S_Button } from '@/ui';
+import { authService } from '../../services/auth.service';
+import styles from './style.module.css';
 
 enum RequestType {
     Email = 1,
@@ -32,9 +32,6 @@ const ForgotPassword = () => {
         register,
         handleSubmit,
         getValues,
-        reset,
-        setError,
-        clearErrors,
         formState: { errors },
     } = useForm<IRequestInputs>({
         mode: 'onChange',
@@ -82,22 +79,13 @@ const ForgotPassword = () => {
         setLoading(true);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Auth/ForgetPassword?email=${data.login}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: null,
-            });
-            if (!res.ok) {
-                throw new Error('Əməliyyat uğursuz oldu');
-            }
+            await authService.forgetPassword(data.login);
 
             toast.success('E-mail ünvanınıza məlumatlar göndərildi');
             !mailSent && handleNavigate();
         } catch (error) {
-            toast.error('Əməliyyat uğursuz oldu');
-            console.error(error);
+            // @ts-expect-error
+            toast.error(error?.data?.message || 'Əməliyyat uğursuz oldu');
         } finally {
             setLoading(false);
         }
@@ -114,8 +102,8 @@ const ForgotPassword = () => {
                 {requestType == RequestType.Email
                     ? 'Narahat olmayın! Aşağıdakı sahəyə e-poçt ünvanınızı daxil edin və sizə şifrəni sıfırlamaq üçün təlimat göndərək.'
                     : requestType == RequestType.PhoneNumber
-                        ? 'Narahat olmayın! Aşağıdakı sahəyə əlaqə nömrənizi daxil edin və sizə şifrəni sıfırlamaq üçün OTP kod göndərək.'
-                        : requestType == RequestType.Both &&
+                      ? 'Narahat olmayın! Aşağıdakı sahəyə əlaqə nömrənizi daxil edin və sizə şifrəni sıfırlamaq üçün OTP kod göndərək.'
+                      : requestType == RequestType.Both &&
                         'Narahat olmayın! Aşağıdakı sahəyə e-poçt ünvanınızı və ya əlaqə nömrənizi daxil edin və sizə şifrəni sıfırlamaq üçün OTP kod göndərək.'}
             </p>
 
@@ -127,10 +115,10 @@ const ForgotPassword = () => {
                             requestType == RequestType.Email
                                 ? 'Email'
                                 : requestType == RequestType.PhoneNumber
-                                    ? 'Nömrə'
-                                    : requestType == RequestType.Both
-                                        ? 'Email və ya nömrə'
-                                        : ''
+                                  ? 'Nömrə'
+                                  : requestType == RequestType.Both
+                                    ? 'Email və ya nömrə'
+                                    : ''
                         }
                         placeholder=""
                         {...register('login', {
@@ -158,7 +146,7 @@ const ForgotPassword = () => {
 
                 <div className={styles.buttonGroup}>
                     <Link to={APP_URLS.login()} className={styles.button}>
-                        <S_Button type="button" variant="main-20" color='secondary' className={styles.button}>
+                        <S_Button type="button" variant="main-20" color="secondary" className={styles.button}>
                             Giriş səhifəsinə qayıt
                         </S_Button>
                     </Link>

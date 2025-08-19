@@ -8,11 +8,12 @@ import Cookies from 'universal-cookie';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+
 import Input from '../../components/input/input';
 import InputPassword from '../../components/input/input.password';
-import styles from './login.module.css'
-import { S_Button } from '@/ui';
+import { authService } from '../../services/auth.service';
+import styles from './login.module.css';
 
 const allowRegister = true; // Qeydiyyat butonu olsun?
 
@@ -53,35 +54,29 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/Auth/Login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-            if (!res.ok) {
-                throw new Error('Giriş uğursuz oldu');
-            }
-            const resData: UserData = await res.json();
+            const resData = await authService.login(data);
+
+            if (!resData) throw { data: { message: 'Giriş məlumatları düzgün deyil. Yenidən yoxlayın.' } };
+
             login(resData);
 
             toast.success('Hesaba uğurla giriş olundu');
             navigate(APP_URLS.anaSehife());
         } catch (error) {
-            toast.error('Giriş uğursuz oldu');
-            console.error(error);
+            // @ts-expect-error
+            toast.error(error?.data?.message || 'Giriş uğursuz oldu');
         } finally {
             setLoading(false);
         }
     }
 
-
     return (
         <div className={styles.wrapper}>
             <h2 className={styles.title}>Xoş gəlmişsiniz!</h2>
             <p className={styles.subtitle}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam nulla adipisci incidunt et ratione possimus repellat ipsum reiciendis dolor at suscipit iure, facere sunt temporibus sequi sint ex accusantium culpa?
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam nulla adipisci incidunt et ratione
+                possimus repellat ipsum reiciendis dolor at suscipit iure, facere sunt temporibus sequi sint ex
+                accusantium culpa?
             </p>
             <form className={styles.form} onSubmit={handleSubmit(handleLogin)}>
                 <div className={styles.inputs}>
@@ -117,7 +112,7 @@ const Login = () => {
 
                 <div className={styles.forgotPassword}>
                     <Link to={APP_URLS.forgot_password()}>
-                        <S_Button variant="none" color='none' type="button">
+                        <S_Button variant="none" color="none" type="button">
                             Şifrəmi unutdum
                         </S_Button>
                     </Link>
