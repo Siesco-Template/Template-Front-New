@@ -1,4 +1,3 @@
-
 interface FilterItem {
     id: string;
     type: number;
@@ -29,16 +28,14 @@ export function buildQueryParamsFromTableRequest(
     data: TableQueryPayload,
     options?: {
         isInfiniteScroll?: boolean;
-        page?: number; 
+        page?: number;
     }
 ): Record<string, any> {
     const params: Record<string, any> = {};
     const isInfiniteScroll = options?.isInfiniteScroll ?? false;
 
     const take = data.take ?? 10;
-    const page = isInfiniteScroll
-        ? options?.page ?? 1
-        : (data.skip ?? 0) + 1;
+    const page = isInfiniteScroll ? (options?.page ?? 1) : (data.skip ?? 0) + 1;
 
     // Filters
     if (Array.isArray(data.filter)) {

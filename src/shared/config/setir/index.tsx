@@ -32,7 +32,7 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
         if (rowConfig?.paginationTakeCount) {
             setSelectedValue(rowConfig.paginationTakeCount.toString());
         }
-    }, [rowConfig.cell?.paginationTakeCount]);
+    }, [rowConfig.paginationTakeCount]);
 
     const handleSelectChange = (items: Item[]) => {
         const value = items[0]?.value || '20';

@@ -13,13 +13,13 @@
     background: var(--Foundation-surface-White, #fff);
     height: 100%;
     transition: all 0.3s ease;
-    overflow-x: auto;
     padding: 16px 16px 0 16px;
+    overflow: hidden;
 }
 
 .tableScrollWrapper {
     flex-grow: 1;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .panel {

@@ -7,19 +7,16 @@ import { cls } from '@/shared/utils';
 import { S_Button } from '@/ui';
 
 import ExportColumnModal from '../exportColumnModal/exportColumnModal';
-import { exportToExcel } from '../exportToExcel';
 import {
     DownIcon,
-    ExcelIcon,
     ExcelIconImport,
     FilterIcon,
     FilterIconn,
-    LayoutIcon,
     NewItemIcon,
     QuestionIcon,
     RefreshIcon,
+    XlsIcon,
 } from '../icons';
-import { useTableContext } from '../table-context';
 import { TableVisibilityChangeMenu } from '../table-visibility-change-menu';
 import styles from './style.module.css';
 
@@ -140,91 +137,49 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                     </S_Button>
                 )}
 
-                {onClickCustomExport || onClickExport ? (
-                    page && actions?.includes('exportFile') ? (
-                        <PermissionGuard permissionKey={`${page}/exportFile`}>
-                            <div className={styles.downloadButtonGroup} ref={dropdownRef}>
-                                <S_Button variant="main-10" color="secondary" onClick={() => setOpen(!open)}>
-                                    Endir <DownIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
-                                </S_Button>
+                <div className={styles.downloadButtonGroup} ref={dropdownRef}>
+                    <button
+                        className={styles.downloadMain}
+                        onClick={() => {
+                            setOpen(false);
+                            onClickExport?.();
+                        }}
+                    >
+                        <XlsIcon width={14} height={14} color="hsl(var(--clr-primary-900))" /> Endir
+                    </button>
 
-                                {open && (
-                                    <div className={styles.dropdownMenu}>
-                                        <button
-                                            className={styles.dropdownItem}
-                                            onClick={() => {
-                                                setOpen(false);
-                                                onClickExport?.();
-                                            }}
-                                        >
-                                            Endir
-                                        </button>
-                                        <button
-                                            className={styles.dropdownItem}
-                                            onClick={() => {
-                                                setOpen(false);
-                                                onClickCustomExport?.();
-                                            }}
-                                        >
-                                            Özəlləşdir
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        </PermissionGuard>
-                    ) : (
-                        <div className={styles.downloadButtonGroup} ref={dropdownRef}>
-                            <S_Button variant="main-10" color="secondary" onClick={() => setOpen(!open)}>
-                                Endir <DownIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
-                            </S_Button>
+                    <button
+                        className={styles.downloadArrow}
+                        aria-haspopup="menu"
+                        aria-expanded={open}
+                        onClick={() => setOpen(!open)}
+                    >
+                        <DownIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                    </button>
 
-                            {open && (
-                                <div className={styles.dropdownMenu}>
-                                    <button
-                                        className={styles.dropdownItem}
-                                        onClick={() => {
-                                            setOpen(false);
-                                            onClickExport?.();
-                                        }}
-                                    >
-                                        Endir
-                                    </button>
-                                    <button
-                                        className={styles.dropdownItem}
-                                        onClick={() => {
-                                            setOpen(false);
-                                            onClickCustomExport?.();
-                                        }}
-                                    >
-                                        Özəlləşdir
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    )
-                ) : null}
-
-                {/* {page ? (
-                    <PermissionGuard permissionKey={`${page}/exportFile`}>
-                        <div className={styles.downloadButtonGroup}>
-                            <button onClick={() => exportToExcel(visibleColumns, db)} className={styles.downloadButton}>
-                                <ExcelIcon width={14} height={14} color="hsl(var(--clr-primary-900))" /> Endir
+                    {open && (
+                        <div className={styles.dropdownMenu}>
+                            <button
+                                className={styles.dropdownItem}
+                                onClick={() => {
+                                    setOpen(false);
+                                    onClickExport?.();
+                                }}
+                            >
+                                Endir
                             </button>
-                            <button onClick={() => setIsExportModalOpen(true)} className={styles.downloadButton}>
-                                <DownIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                            <button
+                                className={styles.dropdownItem}
+                                onClick={() => {
+                                    setOpen(false);
+                                    onClickCustomExport?.();
+                                }}
+                            >
+                                Özəlləşdir
                             </button>
                         </div>
-                    </PermissionGuard>
-                ) : (
-                    <div className={styles.downloadButtonGroup}>
-                        <button onClick={() => exportToExcel(visibleColumns, db)} className={styles.downloadButton}>
-                            <ExcelIcon width={14} height={14} color="hsl(var(--clr-primary-900))" /> Endir
-                        </button>
-                        <button onClick={() => setIsExportModalOpen(true)} className={styles.downloadButton}>
-                            <DownIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
-                        </button>
-                    </div>
-                )} */}
+                    )}
+                </div>
 
                 {importFromExcel ? (
                     page && actions?.includes('uploadFile') ? (

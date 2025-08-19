@@ -167,6 +167,7 @@ export const routes: Route[] = [
 ];
 
 export const AppInitializer = ({ config }: { config: any }) => {
+    
     useEffect(() => {
         if (typeof config === 'object' && config !== null) {
             const layoutState = getLayoutFromContext(config.extraConfig?.interfaceSettings);

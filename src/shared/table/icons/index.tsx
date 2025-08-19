@@ -28,6 +28,7 @@ import RotateLockIcon from './rotate-lock.svg?react';
 import TrashIcon from './trash.svg?react';
 import UserBlockIcon from './user-block.svg?react';
 import VisibilityIcon from './visibility.svg?react';
+import XlsIcon from './xls.svg?react';
 
 export {
     FilterIcon,
@@ -39,6 +40,7 @@ export {
     LayoutIcon,
     FilterIconn,
     ThreeDotIcon,
+    XlsIcon,
     ExcelIcon,
     DownIcon,
     AlignCenterIcon,
