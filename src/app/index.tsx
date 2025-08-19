@@ -1,6 +1,8 @@
 import { useLayoutEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
+import { useAuthStore } from '@/store/authStore';
+
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import './globals.css';
@@ -11,10 +13,11 @@ import { AppInitializer } from './routing/routes';
 
 const App = () => {
     const { config, loadConfigFromApi } = useTableConfig();
+    const { user } = useAuthStore();
 
     useLayoutEffect(() => {
         loadConfigFromApi();
-    }, []);
+    }, [user]);
 
     return (
         <Providers>
