@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
@@ -65,11 +65,42 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 }) => {
     const { columnVisibility, filterDataState } = useTableContext();
 
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+
     const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState<BudceTableData[]>([]);
     const [totalItems, setTotalItems] = useState(0);
     const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
+
+    const [isInfinite, setIsInfinite] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+        if (!isInfinite) return;
+
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !loading && data.length < totalItems) {
+                    fetchData(true);
+                }
+            },
+            {
+                root: document.querySelector(`.${styles.tableScrollWrapper}`),
+                rootMargin: '0px',
+                threshold: 1.0,
+            }
+        );
+
+        observer.observe(sentinel);
+
+        return () => {
+            if (sentinel) observer.unobserve(sentinel);
+        };
+    }, [isInfinite, loading, data.length, totalItems]);
 
     const handleCustomExport = () => {
         setIsExcelModalOpen(true);
@@ -81,7 +112,15 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         setLoading(true);
 
         const raw: any = filterDataForFetch();
-        const queryParams: any = buildQueryParamsFromTableRequest(raw);
+
+        const nextPage = isLoadMore ? currentPage + 1 : 1;
+
+        const queryParams = isInfinite
+            ? buildQueryParamsFromTableRequest(raw, {
+                  isInfiniteScroll: true,
+                  page: nextPage,
+              })
+            : buildQueryParamsFromTableRequest(raw);
 
         const allowed = new Set(
             columns.map((c) => c.accessorKey).filter((k): k is string => typeof k === 'string' && k.trim() !== '')
@@ -102,13 +141,21 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         reportService
             .getAllReports('reports', queryParams)
             .then((res: any) => {
-                setData(res.items);
+                if (isInfinite) {
+                    if (isLoadMore) {
+                        setData((prev) => [...prev, ...res.items]);
+                        setCurrentPage(nextPage);
+                    } else {
+                        setData(res.items);
+                        setCurrentPage(1);
+                    }
+                } else {
+                    setData(res.items);
+                }
                 setTotalItems(res.totalCount);
             })
             .catch(console.error)
-            .finally(() => {
-                setLoading(false);
-            });
+            .finally(() => setLoading(false));
     };
 
     const columns: CustomMRTColumn<BudceTableData>[] = [
@@ -191,12 +238,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             header: 'Unikal nömrə',
             filterVariant: 'text',
         },
-        // {
-        //     accessorKey: 'CompileDate',
-        //     header: 'Tərtib tarixi',
-        //     filterVariant: 'date-interval',
-        // },
-
         {
             accessorKey: 'ReportStatus',
             header: 'Status',
@@ -231,7 +272,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         if (Object.keys(columnVisibility).length > 0) {
             fetchData();
         }
-    }, [columnVisibility, location.search]);
+    }, [columnVisibility, location.search, isInfinite]);
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
@@ -249,7 +290,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 actions={['create', 'exportFile']}
                 table_key="customer_table"
                 notification={isFilterApplied}
-                // onClickExport={handleSimpleExport}
+                // onClickExport={() => {}}
             />
 
             <div className={styles.wrapper}>
@@ -270,8 +311,14 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             isConfigCollapsed={isConfigCollapsed}
                             tableKey="customer_table"
                         />
+                        {isInfinite && <div ref={sentinelRef} style={{ height: 1 }} />}
                     </div>
-                    <Table_Footer totalItems={totalItems} table_key="customer_table" />
+                    <Table_Footer
+                        totalItems={totalItems}
+                        table_key="customer_table"
+                        isInfiniteScroll={isInfinite}
+                        onInfiniteChange={setIsInfinite}
+                    />
                 </div>
 
                 <div
@@ -308,23 +355,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     />
                 </div>
             </div>
-
-            {/* <BottomModal isOpen={isExcelModalOpen} onClose={handleCloseModal} title="Məlumatları seç və endir">
-                <div className={styles.modalContent}>
-                    <h1>Sənəd.xlsx</h1>
-                    <div style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-                        <ExcelTableModal columns={columns} data={data} onExportConfigChange={setExportConfig} />
-                    </div>
-                    <div className={styles.btnGroup}>
-                        <S_Button variant="outlined-20" onClick={handleCloseModal}>
-                            Ləğv et
-                        </S_Button>
-                        <S_Button variant="main-20" onClick={handleCustomExportConfirm}>
-                            {isUploading ? <span className={styles.spinner} /> : 'Təsdiqlə'}
-                        </S_Button>
-                    </div>
-                </div>
-            </BottomModal> */}
         </>
     );
 };

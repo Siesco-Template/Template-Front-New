@@ -67,8 +67,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     const columns: CustomMRTColumn<IUser>[] = [
         { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text', placeholder: 'Ad ' },
         { accessorKey: 'lastName', header: 'Soyad', filterVariant: 'text', placeholder: 'Soyad ' },
-
-        // { accessorKey: 'PhoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text', placeholder: 'Əlaqə nömrəsi' },
         { accessorKey: 'email', header: 'E-mail', filterVariant: 'text', placeholder: 'E-mail' },
         {
             id: 'actions',
@@ -159,7 +157,6 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
     const filterColumns = [
         { accessorKey: 'firstName', header: 'Ad', filterVariant: 'text' },
         { accessorKey: 'lastName', header: 'Soyad', filterVariant: 'text' },
-        // { accessorKey: 'phoneNumber', header: 'Əlaqə nömrəsi', filterVariant: 'text' },
         { accessorKey: 'email', header: 'E-mail', filterVariant: 'text' },
     ];
 

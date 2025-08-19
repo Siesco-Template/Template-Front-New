@@ -67,7 +67,6 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
 
         try {
             await saveConfigToApi(diff);
-
             const elapsed = Date.now() - start;
             const delay = Math.max(0, 1000 - elapsed);
             if (delay > 0) {
@@ -75,6 +74,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
             }
 
             toast.success('Konfiqurasiya uğurla tətbiq olundu');
+            await loadConfigFromApi();
         } catch (error) {
             console.error('Config göndərilərkən xəta:', error);
             toast.error('Xəta baş verdi!');

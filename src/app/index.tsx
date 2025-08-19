@@ -16,6 +16,8 @@ const App = () => {
         loadConfigFromApi();
     }, []);
 
+    console.log(config, 'config');
+
     return (
         <Providers>
             <Toaster position="top-right" reverseOrder={false} />

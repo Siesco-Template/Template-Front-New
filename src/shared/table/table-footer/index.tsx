@@ -1,5 +1,7 @@
-import { Select } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router';
+
+import S_Select_Simple from '@/ui/select/select-simple';
 
 import { LeftIcon, RightIcon } from '../icons';
 import { useTableContext } from '../table-context';
@@ -10,15 +12,23 @@ interface TableFooterProps {
     totalItems?: number;
     isInfiniteScroll?: boolean;
     table_key?: string;
+    onInfiniteChange?: (val: boolean) => void;
 }
 
-const Table_Footer: React.FC<TableFooterProps> = ({ totalItems, isInfiniteScroll = false, table_key }: any) => {
+const Table_Footer: React.FC<TableFooterProps> = ({
+    totalItems,
+    isInfiniteScroll = false,
+    table_key,
+    onInfiniteChange,
+}: any) => {
     const { filterDataState, onPaginationChange, setFilterDataState } = useTableContext();
     const { config } = useTableConfig();
     const defaultTake = config.tables?.[table_key]?.row?.paginationTakeCount ?? filterDataState.take;
 
     const [pageSize, setPageSize] = useState<number>(defaultTake);
     const hasUserChanged = useRef(false);
+
+    const selectRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         setFilterDataState((prev: any) => ({
@@ -38,19 +48,53 @@ const Table_Footer: React.FC<TableFooterProps> = ({ totalItems, isInfiniteScroll
         }
     }, [defaultTake, setFilterDataState]);
 
-    // Cari səhifə indeksi
+    useEffect(() => {
+        if (isInfiniteScroll) {
+            setPageSize(-1);
+        } else if (pageSize === -1) {
+            setPageSize(defaultTake);
+        }
+    }, [isInfiniteScroll, defaultTake]);
+
     const currentPage = filterDataState.skip ?? 0;
     const totalPages = Math.ceil(totalItems / pageSize);
 
-    // Görünən start–end aralığı
     const start = totalItems === 0 ? 0 : currentPage * pageSize + 1;
     const end = Math.min((currentPage + 1) * pageSize, totalItems);
 
-    // İstifadəçi pageSize-i dəyişəndə çağırılır
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (!table_key) return;
+
+        const filterDataParam = searchParams.get('filterData');
+        let parsed: any;
+
+        try {
+            parsed = filterDataParam ? JSON.parse(filterDataParam) : {};
+        } catch {
+            parsed = {};
+        }
+
+        const currentUrlTake = parsed?.take;
+        const defaultTakeFromConfig = config.tables?.[table_key]?.row?.paginationTakeCount;
+
+        if (defaultTakeFromConfig && currentUrlTake !== defaultTakeFromConfig) {
+            const updated = {
+                ...parsed,
+                take: defaultTakeFromConfig,
+                skip: 0,
+            };
+
+            const stringified = JSON.stringify(updated);
+            const base = window.location.origin + window.location.pathname + window.location.hash.split('?')[0];
+            window.location.replace(`${base}?filterData=${stringified}`);
+        }
+    }, [config.tables?.[table_key]?.row?.paginationTakeCount, table_key]);
+
     const handlePageSizeChange = (val: number) => {
         hasUserChanged.current = true;
         setPageSize(val);
-        // Context-də də yeniləyirik və birbaşa sorğuya göndəririk
         setFilterDataState((prev: any) => ({
             ...prev,
             take: val,
@@ -89,16 +133,35 @@ const Table_Footer: React.FC<TableFooterProps> = ({ totalItems, isInfiniteScroll
         <div className={styles.paginationWrapper}>
             <div className={styles.leftSide}>
                 <span className={styles.label}>Səhifədə göstər:</span>
-                <Select
-                    value={pageSize}
-                    onChange={handlePageSizeChange}
-                    options={[10, 20, 50, 100].map((val) => ({
-                        label: String(val),
-                        value: val,
-                    }))}
-                    className={styles.select}
-                    popupMatchSelectWidth={false}
-                />
+                <div style={{ width: '60px' }}>
+                    <S_Select_Simple
+                        value={[pageSize === -1 ? 'infinite' : pageSize.toString()]}
+                        items={[
+                            { label: '10', value: '10' },
+                            { label: '20', value: '20' },
+                            { label: '50', value: '50' },
+                            { label: '100', value: '100' },
+                            { label: 'Auto', value: 'infinite' },
+                        ]}
+                        setSelectedItems={(items: any) => {
+                            const val = items[0].value;
+                            if (val === 'infinite') {
+                                hasUserChanged.current = true;
+                                setPageSize(-1);
+                                onInfiniteChange?.(true);
+                                setFilterDataState((prev: any) => ({
+                                    ...prev,
+                                    take: 20,
+                                    skip: 0,
+                                }));
+                            } else {
+                                const parsed = parseInt(val, 10);
+                                onInfiniteChange?.(false);
+                                handlePageSizeChange(parsed);
+                            }
+                        }}
+                    />
+                </div>
             </div>
 
             {!isInfiniteScroll && totalPages > 1 && (
