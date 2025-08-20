@@ -5,10 +5,23 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+            target: runtime-app
         ports:
             - 3013:80
         networks:
             - public-network
+
+    template-front-storybook:
+        container_name: template-front-storybook
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: runtime-storybook
+        ports:
+            - 3014:80
+        networks:
+            - public-network
+
 networks:
     public-network:
         external: true
