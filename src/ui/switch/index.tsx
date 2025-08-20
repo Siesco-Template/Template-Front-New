@@ -1,6 +1,12 @@
 import { FC } from 'react';
 
-import { Switch as S, SwitchControlProps, SwitchLabelProps, SwitchRootProps, SwitchThumbProps } from '@ark-ui/react';
+import {
+    Switch as S,
+    SwitchControlProps,
+    SwitchLabelProps,
+    SwitchRootProps,
+    SwitchThumbProps,
+} from '@ark-ui/react/switch';
 
 import { cls } from '@/shared/utils';
 

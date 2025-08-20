@@ -1,6 +1,9 @@
 # Template
 
+# Requirements
 
+- Use TypeScript ≥ 5.2.
+- Use Node.js ≥ 20.
 
 # Services
 
@@ -17,13 +20,13 @@ To maintain clean and reusable code, define API endpoints in a central configura
 ```ts
 const GATEWAY = {
     auth: '/auth',
-    myTruck: '/mayTruck'
+    myTruck: '/mayTruck',
 } as const;
 
 const API_CONTROLLER = {
     auth: (url = '') => `${GATEWAY.auth}/Auth${url}`,
     cargos: (url = '') => `${GATEWAY.myTruck}/Cargos${url}`,
-    truck: (url = '') => `${GATEWAY.myTruck}/Truck${url}`
+    truck: (url = '') => `${GATEWAY.myTruck}/Truck${url}`,
 };
 
 export default API_CONTROLLER;
@@ -39,10 +42,12 @@ A service class encapsulates API calls related to a specific domain, such as aut
 ### Example: `AuthService`
 
 ```ts
-import API_CONTROLLER from '@/services/config/api.config';
-import type { ITokens, ILoginBody, ILoginResponse, IRegisterBody } from './auth.service.types';
-import { httpRequest } from '@/services/api';
 import { IRegisterResponse } from '@/pages/(auth)/register/register-form';
+
+import { httpRequest } from '@/services/api';
+import API_CONTROLLER from '@/services/config/api.config';
+
+import type { ILoginBody, ILoginResponse, IRegisterBody, ITokens } from './auth.service.types';
 
 export default class AuthService {
     authUrl = (endpoint = '') => API_CONTROLLER.auth(endpoint);
@@ -50,27 +55,28 @@ export default class AuthService {
     async login(bodyData?: ILoginBody) {
         return httpRequest<ILoginResponse>(this.authUrl('/Login'), {
             method: 'POST',
-            body: bodyData
+            body: bodyData,
         });
     }
 
     async register(bodyData: IRegisterBody) {
         return httpRequest<IRegisterResponse>(this.authUrl('/Register'), {
             method: 'POST',
-            body: bodyData
+            body: bodyData,
         });
     }
 
     async refreshToken(refreshToken: string) {
         return httpRequest<ITokens>(this.authUrl('/LoginWithRefreshToken'), {
             method: 'POST',
-            queryParams: { refreshToken }
+            queryParams: { refreshToken },
         });
     }
 }
 ```
 
 ### Breakdown:
+
 - **`authUrl(endpoint)`**: Constructs API URLs dynamically.
 - **`login(bodyData)`**: Sends a POST request to authenticate a user.
 - **`register(bodyData)`**: Sends a POST request to register a new user.
@@ -83,16 +89,18 @@ export default class AuthService {
 `httpRequest` is a wrapper around `fetch` or another HTTP client, ensuring consistent error handling and request processing.
 
 ```ts
-export async function httpRequest<T>(url: string, options: RequestInit & { queryParams?: Record<string, any> }): Promise<T> {
-    const queryString = options.queryParams ?
-        '?' + new URLSearchParams(options.queryParams).toString() : '';
-    
+export async function httpRequest<T>(
+    url: string,
+    options: RequestInit & { queryParams?: Record<string, any> }
+): Promise<T> {
+    const queryString = options.queryParams ? '?' + new URLSearchParams(options.queryParams).toString() : '';
+
     const response = await fetch(url + queryString, {
         ...options,
         headers: {
             'Content-Type': 'application/json',
-            ...options.headers
-        }
+            ...options.headers,
+        },
     });
 
     if (!response.ok) {
@@ -108,26 +116,27 @@ export async function httpRequest<T>(url: string, options: RequestInit & { query
 const authService = new AuthService();
 
 // Logging in
-authService.login({ username: 'testUser', password: 'securePassword' })
-    .then(response => console.log('Login successful:', response))
-    .catch(error => console.error('Login failed:', error));
+authService
+    .login({ username: 'testUser', password: 'securePassword' })
+    .then((response) => console.log('Login successful:', response))
+    .catch((error) => console.error('Login failed:', error));
 
 // Registering a user
-authService.register({ username: 'newUser', email: 'test@example.com', password: 'securePassword' })
-    .then(response => console.log('Registration successful:', response))
-    .catch(error => console.error('Registration failed:', error));
+authService
+    .register({ username: 'newUser', email: 'test@example.com', password: 'securePassword' })
+    .then((response) => console.log('Registration successful:', response))
+    .catch((error) => console.error('Registration failed:', error));
 
 // Refreshing token
-authService.refreshToken('existing-refresh-token')
-    .then(tokens => console.log('Token refreshed:', tokens))
-    .catch(error => console.error('Token refresh failed:', error));
+authService
+    .refreshToken('existing-refresh-token')
+    .then((tokens) => console.log('Token refreshed:', tokens))
+    .catch((error) => console.error('Token refresh failed:', error));
 ```
-
 
 # Permission
 
 This module manages user permissions and access control across the application. It includes services for fetching user permissions, a context for managing permission state, and a guard component to conditionally render UI elements based on user permissions.
-
 
 ## PermissionService
 
@@ -135,10 +144,10 @@ This module manages user permissions and access control across the application. 
 
 **Methods:**
 
-* `getCurrentUserPermissions()`
+- `getCurrentUserPermissions()`
 
-  * Makes a `GET` request to `/Permissions/GetCurrentUserPermissions` to retrieve the current user's permissions.
-  * Returns a `Promise<PermissionData>`.
+    - Makes a `GET` request to `/Permissions/GetCurrentUserPermissions` to retrieve the current user's permissions.
+    - Returns a `Promise<PermissionData>`.
 
 **Example Usage:**
 
@@ -146,12 +155,12 @@ This module manages user permissions and access control across the application. 
 import { PermissionService } from './permission.service';
 
 async function fetchPermissions() {
-  try {
-    const permissions = await PermissionService.getCurrentUserPermissions();
-    console.log(permissions);
-  } catch (error) {
-    console.error('Error fetching permissions', error);
-  }
+    try {
+        const permissions = await PermissionService.getCurrentUserPermissions();
+        console.log(permissions);
+    } catch (error) {
+        console.error('Error fetching permissions', error);
+    }
 }
 ```
 
@@ -163,8 +172,8 @@ Provides a context for managing permission state throughout the application.
 
 **Context Value:**
 
-* `isLoading: boolean` – Indicates whether permissions are being fetched.
-* `permissions: Permission[] | null` – The user's permissions.
+- `isLoading: boolean` – Indicates whether permissions are being fetched.
+- `permissions: Permission[] | null` – The user's permissions.
 
 **Example Usage:**
 
@@ -172,10 +181,10 @@ Provides a context for managing permission state throughout the application.
 import { usePermission } from './PermissionContext';
 
 const MyComponent = () => {
-  const { isLoading, permissions } = usePermission();
+    const { isLoading, permissions } = usePermission();
 
-  if (isLoading) return <div>Loading permissions...</div>;
-  return <div>{JSON.stringify(permissions)}</div>;
+    if (isLoading) return <div>Loading permissions...</div>;
+    return <div>{JSON.stringify(permissions)}</div>;
 };
 ```
 
@@ -187,7 +196,7 @@ const MyComponent = () => {
 
 **Props:**
 
-* `permissionKey: string` – The key representing the required permission in the format `Entity/Action` (e.g., `User/getAll`).
+- `permissionKey: string` – The key representing the required permission in the format `Entity/Action` (e.g., `User/getAll`).
 
 **Example Usage:**
 
@@ -195,9 +204,9 @@ const MyComponent = () => {
 import { PermissionGuard } from './PermissionGuard';
 
 const MyProtectedComponent = () => (
-  <PermissionGuard permissionKey="User/getAll">
-    <div>Only visible to users with 'User/getAll' permission</div>
-  </PermissionGuard>
+    <PermissionGuard permissionKey="User/getAll">
+        <div>Only visible to users with 'User/getAll' permission</div>
+    </PermissionGuard>
 );
 ```
 
@@ -209,12 +218,12 @@ A utility function that checks if a specific permission key is present in the us
 
 **Parameters:**
 
-* `permissions: Permission[] | undefined` – The list of user permissions.
-* `permissionKey: string` – The key representing the required permission.
+- `permissions: Permission[] | undefined` – The list of user permissions.
+- `permissionKey: string` – The key representing the required permission.
 
 **Returns:**
 
-* `boolean` – Whether the user has the required permission.
+- `boolean` – Whether the user has the required permission.
 
 **Example Usage:**
 
@@ -236,8 +245,8 @@ The `useQuery` hook is used to fetch data from an API and manage its loading, er
 #### Usage:
 
 ```tsx
-import { useQuery } from './path-to-hooks';
 import AuthService from './path-to-auth-service';
+import { useQuery } from './path-to-hooks';
 
 const MyComponent = () => {
     const { data, error, loading, refetch } = useQuery({
@@ -263,6 +272,7 @@ const MyComponent = () => {
 ```
 
 #### Props:
+
 - `key`: Unique identifier for the query.
 - `fn`: The function that fetches data.
 - `initial`: Initial state for `data` and `loading`.
@@ -308,43 +318,45 @@ const LoginComponent = () => {
 ```
 
 #### Props:
+
 - `fn`: The function that performs the mutation (e.g., login request).
 - `transform`: Function to transform response data before setting state.
 - `onSuccess`: Callback executed when mutation is successful.
 - `onError`: Callback executed when mutation fails.
 - `retry`: Number of retry attempts in case of failure.
 
-
 # Components
+
 Components in @/shared/ui
 
 ## Image
 
 ### Basic Image Usage
-```tsx
-import { S_Image } from '@/ui'
 
-<S_Image src="path-to-image" alt="Image description" width="50px" height="50px"/>
+```tsx
+import { S_Image } from '@/ui';
+
+<S_Image src="path-to-image" alt="Image description" width="50px" height="50px" />;
 ```
+
 #### Props
 
-| Prop | Type | Default | Description |
-|:---|:---|:---|:---|
-| onLoad | `Function` |  | Function called when the image has been loaded. This is the same function as the `onLoad` of an `<img>` which contains an event object. |
-| afterLoad | `Function` |  | Deprecated, use `onLoad` instead. This prop is only for backward compatibility. |
-| beforeLoad | `Function` |  | Function called right before the placeholder is replaced with the image element. |
-| delayMethod | `String` | `throttle` | Method from lodash to use to delay the scroll/resize events. It can be `throttle` or `debounce`. |
-| delayTime | `Number` | 300 | Time in ms sent to the delayMethod. |
-| effect | `String` |  | Name of the effect to use. Please, read next section with an explanation on how to use them. |
-| placeholder | `ReactClass` | `<span>` | React element to use as a placeholder. |
-| placeholderSrc | `String` | | Image src to display while the image is not visible or loaded. |
-| threshold | `Number` | 100 | Threshold in pixels. So the image starts loading before it appears in the viewport. |
-| useIntersectionObserver | `Boolean` | true | Whether to use browser's IntersectionObserver when available. |
-| visibleByDefault | `Boolean` | false | Whether the image must be visible from the beginning. |
-| wrapperClassName | `String` |  | In some occasions (for example, when using a placeholderSrc) a wrapper span tag is rendered. This prop allows setting a class to that element. |
-| wrapperProps | `Object` | null | Props that should be passed to the wrapper span when it is rendered (for example, when using placeholderSrc or effect) |
-| ... |  |  | Any other image attribute |
-
+| Prop                    | Type         | Default    | Description                                                                                                                                    |
+| :---------------------- | :----------- | :--------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| onLoad                  | `Function`   |            | Function called when the image has been loaded. This is the same function as the `onLoad` of an `<img>` which contains an event object.        |
+| afterLoad               | `Function`   |            | Deprecated, use `onLoad` instead. This prop is only for backward compatibility.                                                                |
+| beforeLoad              | `Function`   |            | Function called right before the placeholder is replaced with the image element.                                                               |
+| delayMethod             | `String`     | `throttle` | Method from lodash to use to delay the scroll/resize events. It can be `throttle` or `debounce`.                                               |
+| delayTime               | `Number`     | 300        | Time in ms sent to the delayMethod.                                                                                                            |
+| effect                  | `String`     |            | Name of the effect to use. Please, read next section with an explanation on how to use them.                                                   |
+| placeholder             | `ReactClass` | `<span>`   | React element to use as a placeholder.                                                                                                         |
+| placeholderSrc          | `String`     |            | Image src to display while the image is not visible or loaded.                                                                                 |
+| threshold               | `Number`     | 100        | Threshold in pixels. So the image starts loading before it appears in the viewport.                                                            |
+| useIntersectionObserver | `Boolean`    | true       | Whether to use browser's IntersectionObserver when available.                                                                                  |
+| visibleByDefault        | `Boolean`    | false      | Whether the image must be visible from the beginning.                                                                                          |
+| wrapperClassName        | `String`     |            | In some occasions (for example, when using a placeholderSrc) a wrapper span tag is rendered. This prop allows setting a class to that element. |
+| wrapperProps            | `Object`     | null       | Props that should be passed to the wrapper span when it is rendered (for example, when using placeholderSrc or effect)                         |
+| ...                     |              |            | Any other image attribute                                                                                                                      |
 
 ### Using effects
 
@@ -358,28 +370,29 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const MyImage = ({ image }) => (
-  <LazyLoadImage
-    alt={image.alt}
-    effect="blur"
-    wrapperProps={{
-        // If you need to, you can tweak the effect transition using the wrapper style.
-        style: {transitionDelay: "1s"},
-    }}
-    src={image.src} />
+    <LazyLoadImage
+        alt={image.alt}
+        effect="blur"
+        wrapperProps={{
+            // If you need to, you can tweak the effect transition using the wrapper style.
+            style: { transitionDelay: '1s' },
+        }}
+        src={image.src}
+    />
 );
 ```
 
 The current available effects are:
 
-* `blur`: renders a blurred image based on `placeholderSrc` and transitions to a non-blurred one when the image specified in the src is loaded.
+- `blur`: renders a blurred image based on `placeholderSrc` and transitions to a non-blurred one when the image specified in the src is loaded.
 
 ![Screenshot of the blur effect](https://user-images.githubusercontent.com/3616980/37790728-9f95529a-2e07-11e8-8ac3-5066c065e0af.gif)
 
-* `black-and-white`: renders a black and white image based on `placeholderSrc` and transitions to a colorful image when the image specified in the src is loaded.
+- `black-and-white`: renders a black and white image based on `placeholderSrc` and transitions to a colorful image when the image specified in the src is loaded.
 
 ![Screenshot of the black-and-white effect](https://user-images.githubusercontent.com/3616980/37790682-864e58d6-2e07-11e8-8984-ad5d7b056d9f.gif)
 
-* `opacity`: renders a blank space and transitions to full opacity when the image is loaded.
+- `opacity`: renders a blank space and transitions to full opacity when the image is loaded.
 
 ![Screenshot of the opacity effect](https://user-images.githubusercontent.com/3616980/37790755-b48a704a-2e07-11e8-91c3-fcd43a91e7b1.gif)
 
@@ -583,7 +596,11 @@ import { S_RadioGroup } from '@/ui';
 
 const App = () => {
     return (
-        <S_RadioGroup label="Select an option" groupData={['Option 1', 'Option 2', 'Option 3']} defaultValue="Option 2" />
+        <S_RadioGroup
+            label="Select an option"
+            groupData={['Option 1', 'Option 2', 'Option 3']}
+            defaultValue="Option 2"
+        />
     );
 };
 export default App;
@@ -690,7 +707,6 @@ Then, use it:
 
 ## Switch
 
-
 ### Props
 
 | Prop Name      | Type                     | Default     | Description                                    |
@@ -708,7 +724,7 @@ Then, use it:
 #### Basic Usage
 
 ```tsx
-import {S_Switch} from '@/ui';
+import { S_Switch } from '@/ui';
 
 function App() {
     return <S_Switch label="Enable notifications" />;
@@ -751,25 +767,25 @@ The switch component uses CSS variables and utility classes to control its appea
 ## Select
 
 ### Features
+
 - Supports single and multiple selections.
 - Customizable with different variants (`default` and `checkbox`).
 - Supports async data loading (`pending`, `success`, `error` states).
 - Allows filtering of items.
 
-
 ### Props
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `items` | `I_CollectionItem[]` | List of items to display in the select dropdown. |
-| `loadingStatus` | `'pending' \| 'success' \| 'error'` | Determines loading state of the select options. |
-| `label` | `string` | Label for the select field. |
-| `selectItemsLabel` | `string` | Label for the dropdown list. |
-| `variant` | `'default' \| 'checkbox'` | Determines whether selection uses checkboxes or default behavior. |
-| `onChange` | `(selectedItems: I_CollectionItem[]) => void` | Callback fired when selection changes. |
-| `selectedItems` | `I_CollectionItem[]` | Pre-selected items. |
-| `multiple` | `boolean` | Enables multi-selection mode. |
-| `onInputValueChange` | `(value: string) => void` | Callback fired when input value changes. |
+| Prop                 | Type                                          | Description                                                       |
+| -------------------- | --------------------------------------------- | ----------------------------------------------------------------- |
+| `items`              | `I_CollectionItem[]`                          | List of items to display in the select dropdown.                  |
+| `loadingStatus`      | `'pending' \| 'success' \| 'error'`           | Determines loading state of the select options.                   |
+| `label`              | `string`                                      | Label for the select field.                                       |
+| `selectItemsLabel`   | `string`                                      | Label for the dropdown list.                                      |
+| `variant`            | `'default' \| 'checkbox'`                     | Determines whether selection uses checkboxes or default behavior. |
+| `onChange`           | `(selectedItems: I_CollectionItem[]) => void` | Callback fired when selection changes.                            |
+| `selectedItems`      | `I_CollectionItem[]`                          | Pre-selected items.                                               |
+| `multiple`           | `boolean`                                     | Enables multi-selection mode.                                     |
+| `onInputValueChange` | `(value: string) => void`                     | Callback fired when input value changes.                          |
 
 ## Usage
 
@@ -789,37 +805,20 @@ export default function Example() {
         console.log('Selected items:', selectedItems);
     };
 
-    return (
-        <S_Select
-            label="Select an option"
-            items={items}
-            loadingStatus="success"
-            onChange={handleChange}
-        />
-    );
+    return <S_Select label="Select an option" items={items} loadingStatus="success" onChange={handleChange} />;
 }
 ```
 
 #### Multi-Select with Checkboxes
 
 ```tsx
-<S_Select
-    label="Choose Options"
-    items={items}
-    multiple
-    variant="checkbox"
-    onChange={handleChange}
-/>
+<S_Select label="Choose Options" items={items} multiple variant="checkbox" onChange={handleChange} />
 ```
 
 #### Handling Input Filtering
 
 ```tsx
-<S_Select
-    label="Search Options"
-    items={items}
-    onInputValueChange={(value) => console.log('Input value:', value)}
-/>
+<S_Select label="Search Options" items={items} onInputValueChange={(value) => console.log('Input value:', value)} />
 ```
 
 ### Customization
@@ -834,9 +833,7 @@ You can style the component using CSS modules. The `styles.select` class can be 
 }
 ```
 
-
-
-# Icons 
+# Icons
 
 https://drive.google.com/drive/folders/1i3aQkku1bozTvhTAlsR_37JL5ldChFZm?usp=sharing
 

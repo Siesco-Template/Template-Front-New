@@ -1,12 +1,11 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Dialog, Portal } from '@ark-ui/react';
+import { Dialog } from '@ark-ui/react/dialog';
 
 import { CloseIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
-import Modal, { ModalProps } from '.';
 import S_Button from '../button';
 import { ModalSize } from './index';
 import styles from './modal.module.css';

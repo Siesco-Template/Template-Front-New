@@ -16,15 +16,15 @@ export const APP_URLS = {
 
     login: (url = '', urlParams = {}) => APP_URLS.root('/login' + url, urlParams),
     register: (url = '', urlParams = {}) => APP_URLS.root('/register' + url, urlParams),
-    set_password: (url = '', urlParams = {}) => APP_URLS.root('/set_password' + url, urlParams),
-    reset_password: (url = '', urlParams = {}) => APP_URLS.root('/reset_password/:token' + url, urlParams),
-    change_password: (url = '', urlParams = {}) => APP_URLS.root('/change_password' + url, urlParams),
-    forgot_password: (url = '', urlParams = {}) => APP_URLS.root('/forgot_password' + url, urlParams),
-    block_user: (url = '', urlParams = {}) => APP_URLS.root('/block_user' + url, urlParams),
+    set_password: (url = '', urlParams = {}) => APP_URLS.root('/set-password' + url, urlParams),
+    reset_password: (url = '', urlParams = {}) => APP_URLS.root('/reset-password' + url, urlParams),
+    change_password: (url = '', urlParams = {}) => APP_URLS.root('/change-password' + url, urlParams),
+    forgot_password: (url = '', urlParams = {}) => APP_URLS.root('/forgot-password' + url, urlParams),
+    block_user: (url = '', urlParams = {}) => APP_URLS.root('/block-user' + url, urlParams),
     usersAdmin: (url = '', urlParams = {}) => APP_URLS.root('/usersAdmin' + url, urlParams),
 
     changePassword: (url = '', urlParams = {}) => APP_URLS.root('/change-password' + url, urlParams),
-    forgotPassword: (url = '', urlParams = {}) => APP_URLS.root('/forgotPassword' + url, urlParams),
+    forgotPassword: (url = '', urlParams = {}) => APP_URLS.root('/forgot-password' + url, urlParams),
     newPassword: (url = '', urlParams = {}) => APP_URLS.root('/newPassword' + url, urlParams),
     otp: (url = '', urlParams = {}) => APP_URLS.root('/otp' + url, urlParams),
 

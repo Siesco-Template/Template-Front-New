@@ -1,6 +1,6 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 
-import { Slider as ArkSlider, useSlider, type UseSliderProps } from '@ark-ui/react';
+import { Slider as ArkSlider, type UseSliderProps, useSlider } from '@ark-ui/react/slider';
 
 import { cls } from '@/shared/utils';
 
@@ -53,19 +53,20 @@ const S_Slider: FC<SliderProps> = ({
 }) => {
     const slider = useSlider({
         defaultValue: defaultValue || initialValue,
-        min, max,
+        min,
+        max,
         step,
         disabled,
-        "aria-label": ariaLabel,
+        'aria-label': ariaLabel,
         onValueChange(details) {
             onChange?.(details.value);
         },
-        ...props
-    })
+        ...props,
+    });
 
     useEffect(() => {
         if (defaultValue) {
-            slider.setValue(defaultValue)
+            slider.setValue(defaultValue);
         }
     }, []);
 
@@ -78,15 +79,14 @@ const S_Slider: FC<SliderProps> = ({
     };
 
     return (
-        <ArkSlider.RootProvider
-            className={cls(styles.slider, styles[`size-${size}`])}
-            value={slider}
-        >
+        <ArkSlider.RootProvider className={cls(styles.slider, styles[`size-${size}`])} value={slider}>
             {showLabel && (
                 <div className={styles.labelContainer}>
                     <ArkSlider.Label className={styles.label}>{label}</ArkSlider.Label>
                     {showValue && (
-                        <ArkSlider.ValueText className={styles.valueText}>{formatValue(slider.value)}</ArkSlider.ValueText>
+                        <ArkSlider.ValueText className={styles.valueText}>
+                            {formatValue(slider.value)}
+                        </ArkSlider.ValueText>
                     )}
                 </div>
             )}

@@ -1,5 +1,3 @@
-import React, { JSX } from 'react';
-
 import styles from './style.module.css';
 
 type Props = {

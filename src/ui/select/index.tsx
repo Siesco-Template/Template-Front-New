@@ -1,6 +1,7 @@
 import { FC, FormEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 
-import { Combobox, ComboboxRootProps, Portal, createListCollection, useCombobox } from '@ark-ui/react';
+import { Combobox, ComboboxRootProps, createListCollection, useCombobox } from '@ark-ui/react/combobox';
+import { Portal } from '@ark-ui/react/portal';
 
 import { DirectionDownIcon, FilterXmarkIcon, RemoveIcon } from '@/shared/icons';
 

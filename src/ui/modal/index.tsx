@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react';
 
-import { Dialog, DialogRootProps, Portal } from '@ark-ui/react';
+import { Dialog, DialogRootProps } from '@ark-ui/react/dialog';
+import { Portal } from '@ark-ui/react/portal';
 
 import { CloseIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';

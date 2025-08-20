@@ -1,6 +1,7 @@
 import { FC, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
-import { Portal, Select, createListCollection } from '@ark-ui/react';
+import { Portal } from '@ark-ui/react/portal';
+import { Select, createListCollection } from '@ark-ui/react/select';
 
 import { DirectionDownIcon, FilterXmarkIcon, SearchIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';

@@ -1,4 +1,5 @@
-import { CustomProvider, DatePicker, DatePickerProps } from 'rsuite';
+import CustomProvider from 'rsuite/CustomProvider';
+import DatePicker, { DatePickerProps } from 'rsuite/DatePicker';
 import 'rsuite/DatePicker/styles/index.css';
 
 import formatPickerLang from './locales/az_AZ';

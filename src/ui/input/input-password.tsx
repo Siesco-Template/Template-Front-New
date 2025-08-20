@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, JSX, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { EyeDisableIcon, EyeIcon } from '@/shared/icons';
 

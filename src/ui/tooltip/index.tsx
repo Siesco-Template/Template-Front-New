@@ -1,6 +1,6 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { Tooltip, TooltipRootProps } from '@ark-ui/react';
+import { Tooltip, TooltipRootProps } from '@ark-ui/react/tooltip';
 
 import styles from './tooltip.module.css';
 

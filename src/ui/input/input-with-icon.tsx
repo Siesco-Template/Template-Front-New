@@ -1,6 +1,6 @@
 import { FC, KeyboardEvent, ReactNode } from 'react';
 
-import { Field } from '@ark-ui/react';
+import { Field } from '@ark-ui/react/field';
 
 import { cls } from '@/shared/utils';
 
