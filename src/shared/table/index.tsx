@@ -59,6 +59,8 @@ type TableProps<T extends Record<string, any>> = {
     enableColumnFilter?: boolean;
     highlightedRowIds?: string[];
     isConfigCollapsed?: boolean;
+    onSelectedRowsChange?: (ids: string[], rows: T[]) => void;
+    selectedRowIds?: string[];
 };
 
 const customLocalization = {
@@ -89,13 +91,43 @@ function Table<T extends Record<string, any>>({
     enableColumnFilter = true,
     onColumnSizingChange,
     tableKey,
+    onSelectedRowsChange,
     onColumnOrderChange,
+    selectedRowIds,
     ...props
 }: TableProps<T>) {
     const [onMount, setOnMount] = useState(false);
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [activeMenuColumn, setActiveMenuColumn] = useState<any>(null);
     const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
+
+    const [selectedRows, setSelectedRows] = useState<string[]>(selectedRowIds ?? []);
+
+    useEffect(() => {
+        if (selectedRowIds) setSelectedRows(selectedRowIds);
+    }, [selectedRowIds]);
+
+    const getRowById = (id: string) => {
+        const r = table.getRow(id);
+        return r?.original as T | undefined;
+    };
+
+    const handleRowClick = (rowId: string) => {
+        setSelectedRows((prev) => {
+            const next = enableMultiSelect
+                ? prev.includes(rowId)
+                    ? prev.filter((id) => id !== rowId)
+                    : [...prev, rowId]
+                : prev.includes(rowId)
+                  ? []
+                  : [rowId];
+
+            if (onSelectedRowsChange) {
+                const rows = next.map((id) => getRowById(id)).filter(Boolean) as T[];
+                onSelectedRowsChange(next, rows);
+            }
+            return next;
+        });
+    };
 
     const {
         onColumnFiltersChange,
@@ -500,6 +532,8 @@ function Table<T extends Record<string, any>>({
         enablePagination: true,
         enableBottomToolbar: false,
         paginationDisplayMode: 'pages',
+        onSelectedRowsChange,
+        selectedRowIds,
         muiTableHeadProps: {
             className: styles.thead,
             sx: {
@@ -518,76 +552,73 @@ function Table<T extends Record<string, any>>({
         muiTableBodyCellProps: ({ cell, row, column }) => {
             const columnId = cell.column.columnDef.accessorKey || cell.column.id;
             const isSummaryRow = row.original?.isSummaryRow;
-            const isSelected = selectedColumnKey === column?.id;
+            const isColSelected = selectedColumnKey === column?.id;
 
-            const rowId = row.id;
-            const isHighlighted = props.highlightedRowIds?.includes?.(rowId);
+            const isRowSelected = selectedRows.includes(row.id); // <-- YENİ
+            const allLeaf = table.getAllLeafColumns();
+            const colIdx = allLeaf.findIndex((c) => c.id === column.id);
+            const isFirst = colIdx === 0;
+            const isLast = colIdx === allLeaf.length - 1;
 
             const tableColumnConfig = config.tables?.[tableKey]?.columns?.[columnId];
             const styleConfig = tableColumnConfig?.config?.style || {};
 
-            const rowConfig = config.tables?.[tableKey]?.row || {};
-            const stripeStyle = rowConfig?.stripeStyle ?? 'plain';
+            const rowCfg = config.tables?.[tableKey]?.row || {};
+            const stripeStyle = rowCfg?.stripeStyle ?? 'plain';
 
-            const mergedText = rowConfig.text || {};
-            const mergedCell = rowConfig.cell || {};
-            const mergedBorder = rowConfig.border || {};
+            const mergedText = rowCfg.text || {};
+            const mergedCell = rowCfg.cell || {};
+            const mergedBorder = rowCfg.border || {};
+
+            const selectedBg = rowCfg?.selected?.backgroundColor ?? '#E6F0FF'; // <-- YENİ
 
             const getBackgroundColor = () => {
-                if (props.highlightedRowIds?.includes(row.id)) {
-                    return '#E6F0FF';
-                }
+                // 1) SEÇİLMİŞ SƏTİR
+                if (isRowSelected) return selectedBg; // <-- YENİ
+
+                // 2) Highlight
+                if (props.highlightedRowIds?.includes(row.id)) return '#E6F0FF';
 
                 const baseColor = mergedCell.backgroundColor ?? '#ffffff';
                 const altColor = mergedCell.alternateBackgroundColor ?? lightenColor(baseColor, 20);
 
                 if (hoveredRowId === row.id) {
-                    if (stripeStyle === 'plain') {
-                        return altColor;
-                    } else if (stripeStyle === 'striped') {
-                        const isOdd = row.index % 2 === 1;
-                        return isOdd ? altColor : baseColor;
-                    }
+                    if (stripeStyle === 'plain') return altColor;
+                    const isOdd = row.index % 2 === 1;
+                    return isOdd ? altColor : baseColor;
                 }
 
                 if (styleConfig.backgroundColor) return styleConfig.backgroundColor;
-
-                if (stripeStyle === 'striped') {
-                    return row.index % 2 === 1 ? baseColor : altColor;
-                }
+                if (stripeStyle === 'striped') return row.index % 2 === 1 ? baseColor : altColor;
 
                 return baseColor;
             };
 
-            const getTextColor = () => {
-                if (props.highlightedRowIds?.includes(row.id)) {
-                    return styleConfig.color ?? mergedText.highlightedColor ?? '#003366'; // xüsusi rəng
-                }
-
-                return styleConfig.color ?? mergedText.color ?? '#000';
-            };
-
             const style: React.CSSProperties = {
                 backgroundColor: getBackgroundColor(),
-
-                color: getTextColor(),
+                color: styleConfig.color ?? mergedText.color ?? '#000',
                 fontSize: styleConfig.fontSize ?? mergedText.fontSize,
-                fontStyle: (styleConfig.italic ?? rowConfig?.text?.italic) ? 'italic' : undefined,
-                fontWeight: (styleConfig.bold ?? rowConfig?.text?.bold) ? 'bold' : undefined,
-
+                fontStyle: (styleConfig.italic ?? rowCfg?.text?.italic) ? 'italic' : undefined,
+                fontWeight: (styleConfig.bold ?? rowCfg?.text?.bold) ? 'bold' : undefined,
                 textAlign: styleConfig.alignment ?? mergedText.alignment ?? 'left',
                 borderBottomStyle: mergedBorder.style || 'solid',
                 borderBottomColor: mergedBorder.color || 'transparent',
                 borderBottomWidth: mergedBorder.thickness ? `${mergedBorder.thickness}px` : '1px',
-
-                transform: isSelected ? 'scale(1.05)' : 'scale(1)',
-                opacity: selectedColumnKey ? (isSelected ? 1 : 0.5) : 1,
+                transform: isColSelected ? 'scale(1.05)' : 'scale(1)',
+                opacity: selectedColumnKey ? (isColSelected ? 1 : 0.5) : 1,
                 transition: 'all 0.2s ease-in-out',
                 justifyContent: styleConfig.alignment,
-
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+
+                ...(isRowSelected && {
+                    borderLeftColor: ' #0068F7',
+                    ...(isFirst && { borderLeft: '1px solid #0068F7' }),
+                    ...(isLast && { borderRight: '1px solid #0068F7' }),
+                    zIndex: 1,
+                    position: 'relative',
+                }),
             };
 
             if (columnId === 'mrt-row-numbers') {
@@ -599,6 +630,7 @@ function Table<T extends Record<string, any>>({
 
             return { style };
         },
+
         muiTableHeadCellProps: ({ column }) => {
             const isPinned = column.id === 'mrt-row-numbers' || column.getIsPinned?.() === 'left';
 
@@ -720,18 +752,8 @@ function Table<T extends Record<string, any>>({
 
             const isHighlighted = props.highlightedRowIds?.includes?.(rowId);
 
-            const handleClick = () => {
-                if (enableMultiSelect) {
-                    setSelectedRows((prev) =>
-                        prev.includes(rowId) ? prev.filter((id) => id !== rowId) : [...prev, rowId]
-                    );
-                } else {
-                    setSelectedRows((prev) => (prev.includes(rowId) ? [] : [rowId]));
-                }
-            };
-
             const defaultProps = {
-                onClick: handleClick,
+                onClick: () => handleRowClick(rowId),
                 onDoubleClick: () => {
                     onRowDoubleClick?.(row.original);
                 },
@@ -739,7 +761,6 @@ function Table<T extends Record<string, any>>({
                 onMouseLeave: () => setHoveredRowId(null),
                 style: {
                     cursor: 'pointer',
-                    boxShadow: isSelected ? '0 0 0 2px #0068F7 inset' : 'none',
                     backgroundColor: isHighlighted ? '#E6F0FF' : undefined,
                     height: rowHeight ? `${rowHeight}px` : '45px',
                 },
@@ -793,11 +814,15 @@ function Table<T extends Record<string, any>>({
             baseBackgroundColor: `hsl(var(--clr-background))`,
             draggingBorderColor: `hsl(var(--clr-secondary-500))`,
         },
-        getRowId: (row) => {
-            if (row.id) return row.id;
-            if (row.isSummaryRow && row.position === 'top') return '__summary_top__';
-            if (row.isSummaryRow && row.position === 'bottom') return '__summary_bottom__';
-            return row.id;
+        getRowId: (originalRow, index, parentRow) => {
+            if ((originalRow as any)?.isSummaryRow) {
+                return (originalRow as any)?.position === 'top' ? '__summary_top__' : '__summary_bottom__';
+            }
+            if (typeof getRowId === 'function') {
+                return getRowId(originalRow as T, index, parentRow as any);
+            }
+            const r: any = originalRow;
+            return String(r?.id ?? r?.Number ?? r?.uniqueNumber ?? index);
         },
         ...props,
     });

@@ -249,9 +249,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     />
                 );
             case FilterKey.Select: // 4
+            console.log(filter.options, 'items in renderFilter');
                 const items = (filter.options || []).map((opt: any) => ({
-                    value: opt.value,
-                    label: opt.label,
+                    value: opt.accessorKey,
+                    label: opt.accessorKey,
                     disabled: !!opt.disabled,
                 }));
 

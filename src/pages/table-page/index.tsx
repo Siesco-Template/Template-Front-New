@@ -164,6 +164,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             header: 'Unikal nömrə',
             filterVariant: 'text',
             placeholder: 'Unikal nömrə',
+            enableSummary: true,
         },
         {
             accessorKey: 'CompileDate',
@@ -206,12 +207,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
             placeholder: 'Status',
             Cell: ({ cell }) => {
-                const status = cell.getValue<ReportStatus>();
-                const label = ReportStatusLabels[status] || 'Naməlum';
-                const { bg, text } = ReportStatusColors[status] || {
-                    bg: '#eee',
-                    text: '#333',
-                };
+                const status = cell.getValue<ReportStatus | null>();
+                const label = status != null ? ReportStatusLabels[status] : undefined;
+
+                if (!label) return null;
+
+                const { bg, text } = ReportStatusColors[status!] ?? { bg: '#eee', text: '#333' };
 
                 return (
                     <span
@@ -285,6 +286,9 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
+    const [selectedRows, setSelectedRows] = useState<any>([]);
+
+    console.log(selectedRowIds, selectedRows, 'selectedRowIds, selectedRows');
     return (
         <>
             <Table_Header
@@ -314,21 +318,17 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             columns={columns}
                             data={data}
                             enableColumnResizing={false}
-                            enableMultiSelect={false}
+                            enableMultiSelect={true}
                             enableColumnOrdering={false}
                             isLoading={loading}
                             isConfigCollapsed={isConfigCollapsed}
+                            selectedRowIds={selectedRowIds}
+                            onSelectedRowsChange={(ids, rows) => {
+                                setSelectedRowIds(ids);
+                                setSelectedRows(rows);
+                            }}
                             tableKey="customer_table"
-                            // enableCheckbox
-                            // getRowId={(row) => {
-                            //     console.log('getRowId:', row.uniqueNumber);
-                            //     return row.uniqueNumber;
-                            // }}
-                            // rowCheckboxSelectState={useMemo(() => {
-                            //     const map = arrayToObject(selectedRowIds);
-                            //     console.log('rowCheckboxSelectState:', map);
-                            //     return map;
-                            // }, [selectedRowIds])}
+                            getRowId={(r) => String((r as any).Number)}
                         />
                         {isInfinite && <div ref={sentinelRef} style={{ height: 1 }} />}
                     </div>
@@ -370,7 +370,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         modalTableData={data}
                         table_key="customer_table"
                         modalTableColumns={columns}
-                        isRowSum={false}
+                        isRowSum={true}
                     />
                 </div>
             </div>
