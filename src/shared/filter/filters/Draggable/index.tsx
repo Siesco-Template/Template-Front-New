@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
+import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 import { DragIcon, EyeIcon, EyeOffIcon } from '../../shared/icons';
 import { FilterConfig } from '../../types';
@@ -13,103 +15,112 @@ interface DraggableProps {
     storageKey: string;
 }
 
+const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const highlightMatch = (text: string, search?: string) => {
+    if (!search) return text;
+    const regex = new RegExp(`(${escapeRegex(search)})`, 'gi');
+    return text.replace(regex, (m) => `<span class="${styles.highlight}">${m}</span>`);
+};
+
+const SortableItem: React.FC<{
+    item: FilterConfig;
+    id: string;
+    searchText?: string;
+    onToggleVisibility: (key: string) => void;
+}> = ({ item, id, searchText, onToggleVisibility }) => {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+
+    const style: React.CSSProperties = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        zIndex: isDragging ? 1000 : 'auto',
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            className={`${styles.savedFilterRow} ${isDragging ? styles.draggingItem : ''}`}
+            style={style}
+        >
+            {/* Drag handle yalnız ikon zonası olsun */}
+            <div className={styles.dragIcon} {...attributes} {...listeners}>
+                <DragIcon color="#546881" />
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: highlightMatch(String(item.label ?? item.column), searchText),
+                    }}
+                />
+            </div>
+
+            <div
+                className={styles.visibilityToggle}
+                style={{ cursor: 'pointer' }}
+                onClick={() => onToggleVisibility(item.key)}
+            >
+                {item.visible !== false ? (
+                    <EyeIcon color="#909DAD" width={18} height={18} />
+                ) : (
+                    <EyeOffIcon color="#909DAD" width={18} height={18} />
+                )}
+            </div>
+        </div>
+    );
+};
+
 const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilters, searchText, storageKey }) => {
     const orderKey = `filter_order_${storageKey}`;
     const visibilityKey = `filter_visibility_${storageKey}`;
 
-    const handleDragEnd = (result: DropResult) => {
-        if (!result.destination) return;
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+        useSensor(KeyboardSensor)
+    );
 
-        const items = Array.from(savedFilters);
-        const [reorderedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedItem);
+    const ids = savedFilters.map((f) => String(f.key ?? f.column));
 
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = ids.indexOf(String(active.id));
+        const newIndex = ids.indexOf(String(over.id));
+        if (oldIndex === -1 || newIndex === -1) return;
+
+        const items = arrayMove(savedFilters, oldIndex, newIndex);
         setSavedFilters(items);
-
-        const newOrder = items.map((item) => item.key);
-        localStorage.setItem(orderKey, JSON.stringify(newOrder));
-    };
-
-    const highlightMatch = (text: string, search: string) => {
-        if (!search) return text;
-        const regex = new RegExp(`(${search})`, 'gi');
-        return text.replace(regex, (match) => `<span class=${styles.highlight}>${match}</span>`);
+        localStorage.setItem(orderKey, JSON.stringify(items.map((i) => i.key)));
     };
 
     const toggleVisibility = (key: string) => {
-        const updatedFilters = savedFilters.map((filter) =>
-            filter.key === key ? { ...filter, visible: filter.visible === false ? true : false } : filter
+        const updated = savedFilters.map((f) =>
+            f.key === key ? { ...f, visible: f.visible === false ? true : false } : f
         );
+        setSavedFilters(updated);
 
-        setSavedFilters(updatedFilters);
-
-        const visibilityMap = updatedFilters.reduce(
-            (acc, curr) => {
-                acc[curr.key] = curr.visible !== false;
-                return acc;
-            },
-            {} as Record<string, boolean>
-        );
+        const visibilityMap = updated.reduce<Record<string, boolean>>((acc, curr) => {
+            acc[curr.key] = curr.visible !== false;
+            return acc;
+        }, {});
         localStorage.setItem(visibilityKey, JSON.stringify(visibilityMap));
     };
 
     return (
-        <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="savedFilters">
-                {(provided) => (
-                    <div
-                        className={styles.savesavedFilterRowContainer}
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                    >
-                        {savedFilters.map((filter, index) => {
-                            return (
-                                <Draggable
-                                    key={filter.key}
-                                    draggableId={filter?.key?.toString() || filter?.column?.toString()}
-                                    index={index}
-                                >
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            className={`${styles.savedFilterRow} ${snapshot.isDragging ? styles.draggingItem : ''}`}
-                                            style={{ ...provided.draggableProps.style }}
-                                        >
-                                            <div className={styles.dragIcon}>
-                                                <DragIcon color="#546881" />
-                                                <span
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: highlightMatch(
-                                                            filter.label || filter.column,
-                                                            searchText || ''
-                                                        ),
-                                                    }}
-                                                />
-                                            </div>
-
-                                            <div
-                                                className={styles.visibilityToggle}
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() => toggleVisibility(filter.key)}
-                                            >
-                                                {filter.visible !== false ? (
-                                                    <EyeIcon color="#909DAD" width={18} height={18} />
-                                                ) : (
-                                                    <EyeOffIcon color="#909DAD" width={18} height={18} />
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-                                </Draggable>
-                            );
-                        })}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+            <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+                <div className={styles.savesavedFilterRowContainer}>
+                    {savedFilters.map((filter) => (
+                        <SortableItem
+                            key={String(filter.key)}
+                            id={String(filter.key ?? filter.column)}
+                            item={filter}
+                            searchText={searchText}
+                            onToggleVisibility={toggleVisibility}
+                        />
+                    ))}
+                </div>
+            </SortableContext>
+        </DndContext>
     );
 };
+
 export default DraggableItems;

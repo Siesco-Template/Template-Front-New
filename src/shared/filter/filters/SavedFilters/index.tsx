@@ -340,7 +340,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 )}
                 <ConfirmModal
                     open={showDeleteModal}
-                    onOpenChange={setShowDeleteModal} // və ya handleCancelDelete-unuzu istifadə edin
+                    onOpenChange={setShowDeleteModal} 
                     description={`${filterToDelete?.filterTitle} filterini silmək istədiyinizdən əminsiniz mi?`}
                     confirmText="Təsdiqlə"
                     cancelText="Ləğv et"

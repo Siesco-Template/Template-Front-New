@@ -93,7 +93,8 @@
     gap: 8px;
     border-radius: 12px;
     background: #fff;
-
+    position: relative;
+    z-index: 2;
     box-shadow:
         0px 8px 66px 0px rgba(113, 135, 191, 0.15),
         0px 2.92px 45.67px 0px rgba(60, 62, 78, 0.02),

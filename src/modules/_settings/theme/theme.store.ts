@@ -164,11 +164,11 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
         },
 
         getThemes: () => {
-            return [...DefaultThemes, ...get().themes];
+            return [...DefaultThemes, ...get()?.themes];
         },
 
         getThemeForCss: () => {
-            const themes = [...DefaultThemes, ...get().themes];
+            const themes = [...DefaultThemes, ...get()?.themes];
             const currentTheme = get().currentTheme;
             const previousTheme = get().previousTheme;
 

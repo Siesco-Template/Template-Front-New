@@ -258,6 +258,14 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 { label: '3', value: 3 },
                 { label: '4', value: 4 },
             ],
+            showMoreColumns: [
+                {
+                    accessorKey: 'Number',
+                    header: 'Unikal nömrə',
+                    filterVariant: 'text',
+                    placeholder: 'Unikal nömrə',
+                },
+            ],
         },
     ];
 
@@ -276,6 +284,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
+    const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     return (
         <>
             <Table_Header
@@ -310,6 +319,16 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             isLoading={loading}
                             isConfigCollapsed={isConfigCollapsed}
                             tableKey="customer_table"
+                            // enableCheckbox
+                            // getRowId={(row) => {
+                            //     console.log('getRowId:', row.uniqueNumber);
+                            //     return row.uniqueNumber;
+                            // }}
+                            // rowCheckboxSelectState={useMemo(() => {
+                            //     const map = arrayToObject(selectedRowIds);
+                            //     console.log('rowCheckboxSelectState:', map);
+                            //     return map;
+                            // }, [selectedRowIds])}
                         />
                         {isInfinite && <div ref={sentinelRef} style={{ height: 1 }} />}
                     </div>
