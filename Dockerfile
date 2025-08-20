@@ -20,14 +20,12 @@ RUN npm run build-storybook
 
 # ---- runtime: app ----
 FROM nginx:alpine AS runtime-app
-COPY nginx.app.conf /etc/nginx/conf.d/default.conf
 COPY --from=build_app /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # ---- runtime: storybook ----
 FROM nginx:alpine AS runtime-storybook
-COPY nginx.storybook.conf /etc/nginx/conf.d/default.conf
 COPY --from=build_storybook /app/storybook-static /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
