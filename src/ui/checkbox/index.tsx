@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 
-import { Checkbox, CheckboxLabelProps, CheckboxRootProps } from '@ark-ui/react';
+import { Checkbox, CheckboxLabelProps, CheckboxRootProps } from '@ark-ui/react/checkbox';
 import { Remove } from '@mui/icons-material';
 
 import { TickIcon } from '@/shared/icons';

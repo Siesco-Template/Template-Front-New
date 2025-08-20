@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 
-import { Pagination, PaginationRootProps } from '@ark-ui/react';
+import { Pagination, PaginationRootProps } from '@ark-ui/react/pagination';
 
 import { useWidthViewport } from '@/shared/hooks';
 import { DirectionLeft01, DirectionRight01 } from '@/shared/icons';

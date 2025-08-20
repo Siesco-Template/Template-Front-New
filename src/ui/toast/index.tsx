@@ -1,6 +1,6 @@
-import { PropsWithChildren, useRef } from 'react';
+import { PropsWithChildren } from 'react';
 
-import { Toast, Toaster, createToaster } from '@ark-ui/react';
+import { Toast, Toaster, createToaster } from '@ark-ui/react/toast';
 
 export const toaster = createToaster({
     placement: 'bottom-end',

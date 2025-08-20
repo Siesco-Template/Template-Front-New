@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode, useEffect, useState } from 'react';
 
 import { S_Link } from '@/shared/routing';
 import { I_Link } from '@/shared/routing/S_Link';

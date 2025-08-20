@@ -4,7 +4,7 @@ import { CodeIcon, InfoIcon, PlusIcon, SearchIcon, TrashIcon } from 'lucide-reac
 
 import { httpRequest } from '@/services/api/httpsRequest';
 
-import { CheckedChangeDetails } from '@ark-ui/react/dist/components/checkbox/checkbox';
+import { CheckboxCheckedChangeDetails } from '@ark-ui/react';
 
 import { Catalog } from '@/shared/catalog';
 import { ExampleModal } from '@/shared/catalog/ExampleModal';
@@ -602,7 +602,7 @@ const [open, setOpen] = useState(false);
                                 color="primary"
                                 size="200"
                                 checked={checkboxValue}
-                                onCheckedChange={(details: CheckedChangeDetails) =>
+                                onCheckedChange={(details: CheckboxCheckedChangeDetails) =>
                                     setCheckboxValue(details.checked === true)
                                 }
                                 indeterminate={false}
@@ -613,7 +613,7 @@ const [open, setOpen] = useState(false);
                                 color="primary"
                                 size="300"
                                 checked={checkboxValue}
-                                onCheckedChange={(details: CheckedChangeDetails) =>
+                                onCheckedChange={(details: CheckboxCheckedChangeDetails) =>
                                     setCheckboxValue(details.checked === true)
                                 }
                             />

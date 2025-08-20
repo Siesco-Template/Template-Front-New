@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import formatDate from '@/shared/hooks/useFormatDate';
-import { DotActive, DotDeactive, DotIcon, DotSolidIcon, UserIcon3 } from '@/shared/icons';
+import { DotActive, DotDeactive, DotSolidIcon, UserIcon3 } from '@/shared/icons';
 
 import styles from './table.module.css';
 

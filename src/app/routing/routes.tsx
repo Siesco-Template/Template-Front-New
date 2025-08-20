@@ -127,7 +127,7 @@ export const routes: Route[] = [
                 roles: [],
             },
             {
-                path: APP_URLS.reset_password(),
+                path: APP_URLS.reset_password('/:token'),
                 element: <LazyLoadable page={<ResetPassword />} />,
                 isAuth: false,
                 roles: [],
@@ -167,7 +167,6 @@ export const routes: Route[] = [
 ];
 
 export const AppInitializer = ({ config }: { config: any }) => {
-    
     useEffect(() => {
         if (typeof config === 'object' && config !== null) {
             const layoutState = getLayoutFromContext(config.extraConfig?.interfaceSettings);

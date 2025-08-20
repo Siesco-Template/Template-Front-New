@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { Avatar, AvatarRootProps, useAvatarContext } from '@ark-ui/react';
+import { Avatar, AvatarRootProps, useAvatarContext } from '@ark-ui/react/avatar';
 
 import { cls } from '@/shared/utils';
 

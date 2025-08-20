@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { RadioGroup as RGroup, RadioGroupRootProps } from '@ark-ui/react';
+import { RadioGroup as RGroup, RadioGroupRootProps } from '@ark-ui/react/radio-group';
 
 import { cls } from '@/shared/utils';
 
@@ -20,12 +20,19 @@ interface IRadioGroupItemLabel {
 interface I_RadioGroupProps extends RadioGroupRootProps {
     groupData: Array<string | IRadioGroupItemValue | IRadioGroupItemLabel>;
     label?: string;
-    color?: 'primary' |  'secondary';
+    color?: 'primary' | 'secondary';
     variant?: 'default' | 'primary';
-    className?: string,
+    className?: string;
 }
 
-const S_RadioGroup: FC<I_RadioGroupProps> = ({ label, groupData, color = 'secondary', variant = 'default', className, ...props }) => {
+const S_RadioGroup: FC<I_RadioGroupProps> = ({
+    label,
+    groupData,
+    color = 'secondary',
+    variant = 'default',
+    className,
+    ...props
+}) => {
     return (
         <RGroup.Root
             className={cls(styles['radioGroup'], styles[`variant-${variant}`], className)}

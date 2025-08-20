@@ -1,7 +1,9 @@
 'use client';
 
-import { Menu } from '@ark-ui/react';
-import { MenuIcon, MoreIcon } from '@/shared/icons';
+import { Menu } from '@ark-ui/react/menu';
+
+import { MoreIcon } from '@/shared/icons';
+
 import styles from './context-menu.module.css';
 
 interface ContextMenuProps {
@@ -18,12 +20,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ id, items }) => {
             <Menu.Content className={styles.contextMenu}>
                 {items.map((item, index) => (
                     <Menu.Item
-                    key={index}
-                    value={item.value}
-                    onClick={() => item.onClick(id)}
-                    className={styles.contextMenuItem}
+                        key={index}
+                        value={item.value}
+                        onClick={() => item.onClick(id)}
+                        className={styles.contextMenuItem}
                     >
-                        <span>{item.icon}</span> 
+                        <span>{item.icon}</span>
                         {item.label}
                     </Menu.Item>
                 ))}

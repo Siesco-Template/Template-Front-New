@@ -1,9 +1,7 @@
 import type { SVGProps } from 'react';
 import { FC } from 'react';
 
-import { TreeCollection, TreeView, UseTreeViewReturn, useTreeView } from '@ark-ui/react';
-
-import { DirectionDownIcon } from '@/shared/icons';
+import { TreeCollection, TreeView, UseTreeViewReturn } from '@ark-ui/react/tree-view';
 
 import './tree-view.css';
 
@@ -46,7 +44,7 @@ export const S_Tree = ({ className, label, treeView, collection, onClickItem }: 
             {label && <TreeView.Label>{label}</TreeView.Label>}
             <TreeView.Tree>
                 {collection.rootNode.children?.map((node, index) => (
-                    <TreeNode key={node.id} node={node} indexPath={[index]} onClickItem={onClickItem}/>
+                    <TreeNode key={node.id} node={node} indexPath={[index]} onClickItem={onClickItem} />
                 ))}
             </TreeView.Tree>
         </TreeView.RootProvider>
@@ -76,7 +74,9 @@ const TreeNode = (props: TreeView.NodeProviderProps<I_TreeNode> & Pick<I_TreePro
                     </TreeView.BranchContent>
                 </TreeView.Branch>
             ) : (
-                <TreeView.Item onClick={() => props?.onClickItem && props?.onClickItem({ id: node.id, name: node.name})}>
+                <TreeView.Item
+                    onClick={() => props?.onClickItem && props?.onClickItem({ id: node.id, name: node.name })}
+                >
                     <TreeView.ItemText>
                         {node?.icon && <node.icon width={20} height={20} />}
                         {node.name}

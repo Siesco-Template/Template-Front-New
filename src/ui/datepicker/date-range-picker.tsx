@@ -1,5 +1,5 @@
-import { CustomProvider, DateRangePicker } from 'rsuite';
-import type { DateRangePickerProps } from 'rsuite';
+import CustomProvider from 'rsuite/CustomProvider';
+import DateRangePicker, { DateRangePickerProps } from 'rsuite/DateRangePicker';
 import 'rsuite/DateRangePicker/styles/index.css';
 
 import formatPickerLang from './locales/az_AZ';
