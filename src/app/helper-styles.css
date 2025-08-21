@@ -1,6 +1,19 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+*:not(html) {
+    font-size: var(--fs-100);
+}
+
 html {
+    overflow: hidden;
     scroll-behavior: smooth;
 }
+
 body {
     height: 100dvh;
     color: hsl(var(--clr-foreground));
@@ -150,6 +163,9 @@ li {
     }
 }
 
+/*------------------------------------- LIBRARY OVERRIDES -------------------------------------*/
+
+/* Select (Ant design) */
 .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
     border-radius: var(--s, 8px);
     border: 1px solid var(--Secondary-secondary-50, #fef5e7);
@@ -198,8 +214,32 @@ li {
     box-shadow: 0 0 0 2px rgba(18, 105, 181, 0.2);
 }
 
-/* React Quill */
+/* Date Picker (Ant design) */
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+    background-color: hsl(var(--clr-primary-900)) !important;
+}
 
+.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(
+        .ant-picker-cell-range-end
+    )
+    .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(
+        .ant-picker-cell-range-start
+    )
+    .ant-picker-cell-inner {
+    background-color: hsl(var(--clr-primary-900)) !important;
+}
+.ant-picker:hover {
+    border-color: hsl(var(--clr-grey-300)) !important;
+    box-shadow: none !important;
+}
+
+.ant-picker-range-focused {
+    border-color: hsl(var(--clr-primary-500)) !important;
+    box-shadow: none !important;
+}
+
+/* React Quill */
 .ql-container {
     color: hsl(var(--clr-grey-300)) !important;
     font-size: 14px !important;
@@ -235,8 +275,7 @@ li {
     height: 1em !important;
 }
 
-/* Date Picker */
-
+/* Date Picker (RSuit) */
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
     background-color: hsl(var(--clr-primary-300)) !important;
     color: hsl(var(--clr-white-50)) !important;
