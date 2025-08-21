@@ -13,6 +13,7 @@ import {
 } from '@/shared/config/icons';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
 
 const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
@@ -26,6 +27,8 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
     const [textColor, setTextColor] = useState('#D9D9D9');
     const [borderColor, setBorderColor] = useState('#D9D9D9');
     const [backgroundColor, setBackgroundColor] = useState('#D9D9D9');
+
+    const [fontSizeError, setFontSizeError] = useState(false);
 
     useEffect(() => {
         if (text.color) setTextColor(text.color);
@@ -47,19 +50,17 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
             <div className={styles.sectionSubHeader}>Xana</div>
             <div className={styles.configRow}>
                 <label>Xana hündürlüyü</label>
-                <input
-                    type="number"
-                    min={0}
-                    value={cell.padding !== undefined ? String(cell.padding) : ''}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        const parsed = Number(val);
-                        if (val === '') {
-                            updateConfig(tableKey, 'header.cell.padding', undefined);
-                        } else if (!isNaN(parsed) && parsed <= 40) {
-                            updateConfig(tableKey, 'header.cell.padding', parsed);
-                        }
-                    }}
+                <ValidatedNumberInput
+                    value={cell.padding}
+                    min={30}
+                    max={50}
+                    step={1}
+                    defaultValue={34}
+                    className={styles.numberInput}
+                    invalidClass={styles.invalid}
+                    shakeClass={styles.shake}
+                    tooltipText="30-50 px aralığında olmalıdır"
+                    onValidChange={(v) => updateConfig(tableKey, 'header.cell.padding', v)}
                 />
                 <span>px</span>
             </div>
@@ -79,25 +80,17 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
             <div className={styles.sectionSubHeader}>Mətn</div>
             <div className={styles.configRow}>
                 <label>Ölçüsü</label>
-                <input
-                    type="number"
-                    className={styles.numberInput}
+                <ValidatedNumberInput
+                    value={text.fontSize}
                     min={1}
                     max={24}
-                    value={text.fontSize !== undefined ? text.fontSize : ''}
-                    onChange={(e) => {
-                        const val = e.target.value;
-
-                        if (val === '') {
-                            updateConfig(tableKey, 'header.text.fontSize', undefined);
-                            return;
-                        }
-
-                        const parsed = parseInt(val);
-                        if (!isNaN(parsed) && parsed >= 1 && parsed <= 24) {
-                            updateConfig(tableKey, 'header.text.fontSize', parsed);
-                        }
-                    }}
+                    step={1}
+                    defaultValue={16}
+                    className={styles.numberInput}
+                    invalidClass={styles.invalid}
+                    shakeClass={styles.shake}
+                    tooltipText="1–24 px aralığında olmalıdır"
+                    onValidChange={(v) => updateConfig(tableKey, 'header.text.fontSize', v)}
                 />
                 <span>px</span>
             </div>
@@ -129,7 +122,7 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
                 </div>
             </div>
 
-           <div className={`${styles.configRow} ${styles.bottomBorder}`}>
+            <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Rəng</label>
                 <ColorPicker
                     value={textColor}
@@ -162,25 +155,17 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
             </div>
             <div className={styles.configRow}>
                 <label>Qalınlığı</label>
-                <input
-                    type="number"
-                    className={styles.numberInput}
+                <ValidatedNumberInput
+                    value={border.thickness}
                     min={0}
                     max={10}
-                    value={border.thickness === undefined || border.thickness === null ? '' : border.thickness}
-                    onChange={(e) => {
-                        const val = e.target.value;
-
-                        if (val === '') {
-                            updateConfig(tableKey, 'header.border.thickness', undefined);
-                            return;
-                        }
-
-                        const parsed = parseInt(val);
-                        if (!isNaN(parsed) && parsed >= 0 && parsed <= 10) {
-                            updateConfig(tableKey, 'header.border.thickness', parsed);
-                        }
-                    }}
+                    step={1}
+                    defaultValue={1}
+                    className={styles.numberInput}
+                    invalidClass={styles.invalid}
+                    shakeClass={styles.shake}
+                    tooltipText="0–10 px aralığında olmalıdır"
+                    onValidChange={(v) => updateConfig(tableKey, 'header.border.thickness', v)}
                 />
                 <span>px</span>
             </div>
