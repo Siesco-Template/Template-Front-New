@@ -42,7 +42,7 @@ const TableRowActions: React.FC<Props> = ({
     onExport,
     onPermissions,
     onResetPassword,
-    variant = 'menu', // 👈 default olaraq menyu
+    variant = 'menu', 
 }) => {
     const renderItems = () => (
         <>

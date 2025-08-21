@@ -1,4 +1,5 @@
 import '@/app/globals.css';
+import '@/app/helper-styles.css';
 
 import type { Preview } from '@storybook/react-vite';
 
