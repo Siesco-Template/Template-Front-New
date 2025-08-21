@@ -6,7 +6,7 @@
 }
 
 *:not(html) {
-    font-size: var(--fs-100);
+    font-size: var(--fs-14);
 }
 
 html {
