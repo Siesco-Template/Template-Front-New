@@ -333,7 +333,7 @@
 .highlight-titles h6 {
     padding: 0px var(--pm-50) !important;
     border-radius: var(--r-100) !important;
-    background: hsl(var(--clr-grey-600)) !important;
+    background: var(--clr-grey-600) !important;
     color: #fff !important;
     font-size: var(--fs-100) !important;
     font-style: normal !important;
@@ -348,8 +348,8 @@
 [data-theme='dark'].highlight-titles h4,
 [data-theme='dark'].highlight-titles h5,
 [data-theme='dark'].highlight-titles h6 {
-    background: hsl(var(--clr-white-400)) !important;
-    color: hsl(var(--clr-grey-100)) !important;
+    background: var(--clr-white-400) !important;
+    color: var(--clr-grey-100) !important;
 }
 
 .highlight-links a {
@@ -365,4 +365,77 @@
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+}
+
+/*----------------------------------------------- Utilities (global) -----------------------------------------------*/
+
+/* Font sizes */
+.fs-8 {
+    font-size: var(--fs-8) !important;
+    line-height: var(--lh-10) !important;
+}
+
+.fs-10 {
+    font-size: var(--fs-10) !important;
+    line-height: var(--lh-12) !important;
+}
+
+.fs-12 {
+    font-size: var(--fs-12) !important;
+    line-height: var(--lh-14) !important;
+}
+
+.fs-14 {
+    font-size: var(--fs-14) !important;
+    line-height: var(--lh-16) !important;
+}
+
+.fs-16 {
+    font-size: var(--fs-16) !important;
+    line-height: var(--lh-20) !important;
+}
+
+.fs-18 {
+    font-size: var(--fs-18) !important;
+    line-height: var(--lh-24) !important;
+}
+
+.fs-20 {
+    font-size: var(--fs-20) !important;
+    line-height: var(--lh-28) !important;
+}
+
+.fs-24 {
+    font-size: var(--fs-24) !important;
+    line-height: var(--lh-32) !important;
+}
+
+.fs-32 {
+    font-size: var(--fs-32) !important;
+    line-height: var(--lh-40) !important;
+}
+
+.fs-40 {
+    font-size: var(--fs-40) !important;
+    line-height: var(--lh-48) !important;
+}
+
+.fs-48 {
+    font-size: var(--fs-48) !important;
+    line-height: var(--lh-64) !important;
+}
+
+.fs-64 {
+    font-size: var(--fs-64) !important;
+    line-height: var(--lh-72) !important;
+}
+
+.fs-72 {
+    font-size: var(--fs-72) !important;
+    line-height: var(--lh-80) !important;
+}
+
+.fs-96 {
+    font-size: var(--fs-96) !important;
+    line-height: var(--lh-120) !important;
 }
