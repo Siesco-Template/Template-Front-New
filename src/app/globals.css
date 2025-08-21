@@ -82,18 +82,18 @@
 
     /* Border radius */
     --br-base: 1rem;
-    --br-xs: calc(var(--r-base) - 15px); /* 2px */
-    --br-sm: calc(var(--r-base) - 14px); /* 2px */
-    --br-md: calc(var(--r-base) - 12px); /* 4px */
-    --br-lg: calc(var(--r-base) - 10px); /* 6px */
-    --br-xl: calc(var(--r-base) - 8px); /* 8px */
-    --br-2xl: calc(var(--r-base) - 4px); /* 12px */
-    --br-3xl: var(--r-base); /* 16px */
-    --br-4xl: calc(var(--r-base) - 2px); /* 18px */
-    --br-5xl: calc(var(--r-base) - 4px); /* 20px */
-    --br-6xl: calc(var(--r-base) - 6px); /* 22px */
-    --br-7xl: calc(var(--r-base) - 8px); /* 24px */
-    --br-8xl: calc(var(--r-base) - 16px); /* 32px */
+    --br-xs: calc(var(--br-base) - 15px); /* 1px */
+    --br-sm: calc(var(--br-base) - 14px); /* 2px */
+    --br-md: calc(var(--br-base) - 12px); /* 4px */
+    --br-lg: calc(var(--br-base) - 10px); /* 6px */
+    --br-xl: calc(var(--br-base) - 8px); /* 8px */
+    --br-2xl: calc(var(--br-base) - 4px); /* 12px */
+    --br-3xl: var(--br-base); /* 16px */
+    --br-4xl: calc(var(--br-base) + 2px); /* 18px */
+    --br-5xl: calc(var(--br-base) + 4px); /* 20px */
+    --br-6xl: calc(var(--br-base) + 6px); /* 22px */
+    --br-7xl: calc(var(--br-base) + 8px); /* 24px */
+    --br-8xl: calc(var(--br-base) + 16px); /* 32px */
     --br-pill: 9999;
 
     /** PRIMITIVE COLORS  */
