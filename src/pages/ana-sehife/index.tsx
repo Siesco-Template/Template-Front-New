@@ -983,7 +983,6 @@ const [open, setOpen] = useState(false);
                         </CodeExample>
                     </ComponentSection>
 
-                    {/* Radio Group Component */}
                     <ComponentSection
                         title="Radio Group"
                         description="Radio button group with support for different variants and colors. Ideal for single-choice selections in forms."
@@ -1042,8 +1041,6 @@ const [open, setOpen] = useState(false);
 />`}
                         </CodeExample>
                     </ComponentSection>
-
-                    {/* Select Component */}
                     <ComponentSection
                         title="Select"
                         description="Dropdown select component with single/multiple selection and search functionality. Supports async data loading and custom filtering."

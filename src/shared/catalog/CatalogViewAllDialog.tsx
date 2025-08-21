@@ -88,6 +88,8 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
         setFilters(generatedFilters);
     }, []);
 
+    console.log(showMoreColumns, 'showMoreColumns');
+
     if (['md-lg', 'lg', 'xl'].includes(sizePreset)) {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
@@ -131,7 +133,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                     getRowId={(row) => {
                                         return getRowId(row.original);
                                     }}
-                                    enableCheckbox={true}
+                                    // enableCheckbox={true}
                                     enableMultiSelect={true}
                                     rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
                                     setRowCheckboxSelect={(value) => {
