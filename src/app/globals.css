@@ -94,7 +94,7 @@
     --br-6xl: calc(var(--br-base) + 6px); /* 22px */
     --br-7xl: calc(var(--br-base) + 8px); /* 24px */
     --br-8xl: calc(var(--br-base) + 16px); /* 32px */
-    --br-pill: 9999;
+    --br-pill: 9999px;
 
     /** PRIMITIVE COLORS  */
 
