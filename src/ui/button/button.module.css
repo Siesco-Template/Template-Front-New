@@ -5,6 +5,7 @@
     user-select: none;
     transform: scale(1);
     text-decoration: none;
+    border: none;
 }
 
 .btn.animation {
