@@ -328,6 +328,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                                 onDelete={() => handleDelete(filter.id)}
                                                 filter={filter}
                                                 setSavedFilters={setSavedFilters}
+                                                onApplyFilter={onApplyFilter}
                                             />
                                         </li>
                                     </React.Fragment>

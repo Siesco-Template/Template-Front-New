@@ -97,7 +97,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
             const params = new URLSearchParams(qs);
             const hasUrl = params.has('filterData');
 
-            // 1) HƏR HALDA default-u al və snapshot kimi yadda saxla
             try {
                 const res = await filterService.getDefaultFilter(table_key);
                 const defVals = Array.isArray(res?.filterValues) ? res.filterValues : [];
@@ -118,7 +117,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     };
                 });
 
-                // default snapshot + flag
                 setDefaultSnapshot(mergedDefault);
                 setHasDefault(defVals.length > 0);
             } catch {
@@ -126,13 +124,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                 setHasDefault(false);
             }
 
-            // 2) UI/URL doldurma məntiqi
             if (hasUrl) {
                 const fromUrl = parseFiltersFromUrl(filters);
                 setSavedFilters(fromUrl);
                 fromUrl.forEach((f: any) => onChange(f.key, f.value));
             } else {
-                // sənin mövcud default-u UI+URL-ə yazma məntiqin (dəyişmədən qalsın)
                 try {
                     const res = await filterService.getDefaultFilter(table_key);
                     const defVals = Array.isArray(res.filterValues) ? res.filterValues : [];
@@ -173,11 +169,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         setSearchText('');
 
         if (hasDefault && defaultSnapshot) {
-            // 1) UI-da yalnız default dəyərləri tətbiq et
             setSavedFilters(defaultSnapshot);
             defaultSnapshot.forEach((f: any) => onChange(f.key, f.value));
 
-            // 2) URL-ə də yalnız default dəyərləri yaz
             const cleanedDefaults = defaultSnapshot
                 .filter((f) => !isEmpty(f.value))
                 .map((f) => ({ id: f.key || f.column, value: f.value }));
@@ -487,11 +481,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                     ) : (
                                         <>
                                             {filteredSavedFilters.map(renderFilter)}
-                                            <Button
-                                                variant="tertiary"
-                                                onClick={handleApplyFilters}
-                                                // disabled={!isAnyFilterFilled}
-                                            >
+                                            <Button variant="tertiary" onClick={handleApplyFilters}>
                                                 Tətbiq et
                                             </Button>
                                         </>

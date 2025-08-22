@@ -8,7 +8,16 @@ import { clearUrlParams, toUrlFilterData } from '../../config/filterHelpers';
 import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon } from '../icons';
 import styles from './style.module.css';
 
-const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, setSavedFilters }: any) => {
+const ActionsDropdown = ({
+    onView,
+    onEdit,
+    onDelete,
+    isOpen,
+    onToggle,
+    filter,
+    setSavedFilters,
+    onApplyFilter,
+}: any) => {
     const [_, setSearchParams] = useSearchParams();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,25 +45,27 @@ const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, s
         setSearchParams({}, { replace: true });
     };
 
-    const handleSetDefaultFilter = () => {
-        if (filter) {
-            setSavedFilters((prevFilters: any) =>
-                prevFilters.map((f: any) => ({
-                    ...f,
-                    isDefault: f.id === filter.id ? true : false,
-                }))
-            );
+    const handleSetDefaultFilter = async (filter: any) => {
+        if (!filter) return;
 
-            onToggle(null);
+        setSavedFilters((prev: any) => prev.map((f: any) => ({ ...f, isDefault: f.id === filter.id })));
+        onToggle(null);
 
-            filterService
-                .setDefaultFilter(filter.id)
-                .then((response) => {
-                    toast.success('Varsayılan filter uğurla təyin edildi');
-                })
-                .catch((error) => {
-                    console.error('Varsayılan filter təyin edilərkən xəta baş verdi', error);
-                });
+        if (filter?.filterValues?.length) {
+            onApplyFilter?.(filter.filterValues);
+        } else {
+            try {
+                const resp = await filterService.getFilterById(filter.id);
+                onApplyFilter?.(resp?.filterValues ?? []);
+            } catch {}
+        }
+
+        try {
+            await filterService.setDefaultFilter(filter.id);
+            toast.success('Varsayılan filter uğurla təyin edildi');
+        } catch (e) {
+            console.error(e);
+            toast.error('Varsayılan filter serverdə saxlanmadı');
         }
     };
 
@@ -76,6 +87,13 @@ const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, s
                 });
         }
     };
+    const handleDefaultToggle = () => {
+        if (filter.isDefault) {
+            handleRemoveDefaultFilter();
+        } else {
+            handleSetDefaultFilter(filter);
+        }
+    };
 
     return (
         <div className={styles.actionsDropdown} ref={dropdownRef}>
@@ -93,10 +111,7 @@ const ActionsDropdown = ({ onView, onEdit, onDelete, isOpen, onToggle, filter, s
                     <li onClick={onDelete} className={styles.dropdownItem}>
                         <TrashIcon /> Sil
                     </li>
-                    <li
-                        onClick={filter.isDefault ? handleRemoveDefaultFilter : handleSetDefaultFilter}
-                        className={styles.dropdownItem}
-                    >
+                    <li onClick={handleDefaultToggle} className={styles.dropdownItem}>
                         {filter.isDefault ? (
                             <>
                                 <ReloadIcon /> Varsayılanı sıfırla
