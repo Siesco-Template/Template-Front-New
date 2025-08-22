@@ -24,5 +24,7 @@ jobs:
                       git fetch origin storybook && \
                       git checkout storybook && \
                       git pull origin storybook && \
+                      
+                      docker compose -f ./docker-compose.yml rm -sf template-front-storybook
                       docker compose -f ./docker-compose.yml up -d --build template-front-storybook
                   EOF
