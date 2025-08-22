@@ -10,7 +10,9 @@
 }
 
 .btn.animation {
-    transition: 0.1s ease-in-out;
+    transition:
+        all 0.25s ease-in-out,
+        border-width 0.1s ease-in-out;
 }
 
 /* Primary button */
@@ -281,7 +283,6 @@
 .primary-size-52 {
     padding: var(--pm-350, 16px);
     height: 52px;
-    min-width: 128px;
     border-radius: var(--br-5xl, 20px);
     gap: var(--gap-200, 4px);
     font-size: var(--fs-16, 16px);
@@ -291,7 +292,6 @@
 .secondary-size-52 {
     padding: var(--pm-350, 16px);
     height: 52px;
-    min-width: 128px;
     border-radius: var(--br-5xl, 20px);
     gap: var(--gap-200, 4px);
     font-size: var(--fs-16, 16px);
@@ -311,7 +311,6 @@
 .primary-size-48 {
     padding: var(--pm-250, 12px) var(--pm-350, 16px);
     height: 48px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
@@ -321,7 +320,6 @@
 .secondary-size-48 {
     padding: var(--pm-250, 12px) var(--pm-350, 16px);
     height: 48px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
@@ -369,7 +367,6 @@
 .primary-size-36 {
     padding: var(--pm-200, 8px) var(--pm-350, 16px);
     height: 36px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
@@ -379,7 +376,6 @@
 .secondary-size-36 {
     padding: var(--pm-200, 8px) var(--pm-350, 16px);
     height: 36px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
@@ -429,13 +425,6 @@
 }
 
 /* ---------------------------------------------------------------------------- */
-
-/* is unstyled button */
-.unstyled {
-    border: 1px solid transparent;
-    background: transparent;
-    color: hsl(var(--clr-grey-700));
-}
 
 /* Loading */
 .loader {
@@ -503,3 +492,38 @@
         opacity: 1;
     }
 }
+
+/* --------------------------------------------------------------------------------------------- */
+
+/* .loader {
+    width: 8px;
+    aspect-ratio: 1;
+    position: relative;
+}
+.loader::before,
+.loader::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #000;
+}
+.loader::before {
+    box-shadow: -10px 0;
+    animation: l8-1 1s infinite linear;
+}
+.loader::after {
+    transform: rotate(0deg) translateX(10px);
+    animation: l8-2 1s infinite linear;
+}
+
+@keyframes l8-1 {
+    100% {
+        transform: translateX(10px);
+    }
+}
+@keyframes l8-2 {
+    100% {
+        transform: rotate(-180deg) translateX(10px);
+    }
+} */

@@ -17,31 +17,29 @@ const meta: Meta<typeof S_Button> = {
         size: '36',
         children: 'Click me',
         disabled: false,
-        isIcon: false,
         disableAnimation: false,
-        active: false,
         isLaoding: false,
         notification: false,
+        showTooltip: false,
     },
     argTypes: {
         as: { control: 'inline-radio', options: ['button', 'link'] },
         variant: { control: 'select', options: variants },
         color: { control: 'select', options: colors },
         size: { control: 'select', options: sizes },
-        isIcon: { control: 'boolean' },
         disabled: { control: 'boolean' },
         disableAnimation: { control: 'boolean' },
-        active: { control: 'boolean' },
         isLaoding: { control: 'boolean', name: 'isLoading' },
         notification: { control: 'boolean' },
+        showTooltip: { control: 'boolean' },
         className: { control: false },
         onClick: { action: 'clicked' },
     },
     parameters: {
         backgrounds: {
             options: {
-                grey: { name: 'Grey', value: '#333' },
-                blue: { name: 'Bluish', value: '#F5F5F5' },
+                black: { name: 'Black', value: '#333' },
+                white: { name: 'White', value: '#F5F5F5' },
             },
         },
     },
@@ -68,7 +66,6 @@ export const Secondary: Story = {
 
 export const GhostIcon: Story = {
     args: {
-        isIcon: true,
         'aria-label': 'Settings',
         children: '⚙️',
         variant: 'ghost',
@@ -106,7 +103,6 @@ export const Disabled: Story = {
 export const ActiveState: Story = {
     args: {
         children: 'Active',
-        active: true,
         variant: 'secondary',
         color: 'green',
     },

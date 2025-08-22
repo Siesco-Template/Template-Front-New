@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import '@/app/globals.css';
 
@@ -18,6 +19,12 @@ const withTheme: Decorator = (Story, context) => {
 
     return <Story />;
 };
+
+const withRouter: Decorator = (Story) => (
+    <MemoryRouter initialEntries={['/']}>
+        <Story />
+    </MemoryRouter>
+);
 
 const preview: Preview = {
     parameters: {
@@ -43,7 +50,7 @@ const preview: Preview = {
             },
         },
     },
-    decorators: [withTheme],
+    decorators: [withTheme, withRouter],
 };
 
 export default preview;
