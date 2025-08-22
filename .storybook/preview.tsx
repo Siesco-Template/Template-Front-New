@@ -24,6 +24,9 @@ const preview: Preview = {
         controls: {
             matchers: { color: /(background|color)$/i, date: /Date$/i },
         },
+        docs: {
+            autodocs: true,
+        },
     },
     globalTypes: {
         theme: {
