@@ -239,6 +239,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 );
             },
         },
+
         {
             id: 'actions',
             header: '',
@@ -317,6 +318,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     placeholder: 'Unikal nömrə',
                 },
             ],
+        },
+        {
+            accessorKey: 'compileDate',
+            header: 'Tərtib tarixi',
+            filterVariant: 'date-interval',
+            placeholder: 'Tərtib tarixi',
         },
     ];
 

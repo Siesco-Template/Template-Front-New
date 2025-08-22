@@ -18,6 +18,7 @@ export default function CustomDatePicker(props: CustomDatePickerProps) {
                 <DatePicker
                     {...rest}
                     menuClassName="z-[100]"
+                    placement="auto"
                     style={{
                         ...(style || {}),
                         ...(error ? { borderColor: 'var(--color-red-400)' } : {}),

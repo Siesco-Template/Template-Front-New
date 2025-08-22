@@ -201,6 +201,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     };
 
     const handleUpdateFilter = (key: string, value: any) => {
+        console.log(key, value, 'handleUpdateFilter');
         const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
         setSavedFilters(updatedFilters);
         onChange(key, value);
@@ -249,10 +250,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     />
                 );
             case FilterKey.Select: // 4
-            console.log(filter.options, 'items in renderFilter');
+                console.log(filter.options, 'items in renderFilter');
                 const items = (filter.options || []).map((opt: any) => ({
-                    value: opt.accessorKey,
-                    label: opt.accessorKey,
+                    value: opt.value,
+                    label: opt.label,
                     disabled: !!opt.disabled,
                 }));
 
@@ -276,7 +277,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                             _onChange(filter.key, newVal);
                         }}
                         multiple={false}
-                        enableModal={true}
+                        enableModal={false}
                         sizePreset="md-lg"
                         totalItemCount={items.length}
                         onRefetch={undefined}

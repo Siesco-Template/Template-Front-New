@@ -1,14 +1,11 @@
-import { DatePicker } from 'antd';
-import 'antd/dist/reset.css';
-import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
-import React, { useEffect, useState } from 'react';
+import { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
+import React, { useState } from 'react';
 
-import dayjs, { Dayjs } from 'dayjs';
+import CustomDatePicker from '@/ui/datepicker/date-picker';
+import CustomDateRangePicker from '@/ui/datepicker/date-range-picker';
 
 import { ArrowTransferIcon } from '../../shared/icons';
 import styles from './style.module.css';
-
-const { RangePicker } = DatePicker;
 
 interface DateIntervalFilterProps {
     label?: string;
@@ -29,56 +26,16 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
     rangePlaceholders = ['Başlanğıc tarix', 'Bitmə tarixi'],
     inline = false,
 }) => {
-    const [isRangeMode, setIsRangeMode] = useState(false);
-
-    const [singleDate, setSingleDate] = useState<string | undefined>(undefined);
-    const [rangeDate, setRangeDate] = useState<[string | undefined, string | undefined]>([undefined, undefined]);
-
-    useEffect(() => {
-        if (isRangeMode) {
-            if (Array.isArray(value)) {
-                setRangeDate(value as [string, string]);
-            } else {
-                setRangeDate([undefined, undefined]);
-            }
-        } else {
-            if (Array.isArray(value) && typeof value[0] === 'string') {
-                setSingleDate(value[0]);
-            } else if (typeof value === 'string') {
-                setSingleDate(value);
-            } else {
-                setSingleDate(undefined);
-            }
-        }
-    }, [value, isRangeMode]);
-
-    const handleSingleChange: DatePickerProps['onChange'] = (date, dateString: any) => {
-        if (readOnly) return;
-        if (dateString) {
-            setSingleDate(dateString);
-            onChange(dateString);
-        } else {
-            setSingleDate(undefined);
-            onChange('');
-        }
-    };
-
-    const handleRangeChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
-        if (readOnly) return;
-        if (dateStrings && dateStrings[0] && dateStrings[1]) {
-            setRangeDate(dateStrings as [string, string]);
-            onChange(dateStrings as [string, string]);
-        } else {
-            setRangeDate([undefined, undefined]);
-            onChange(['', '']);
-        }
-    };
+    const [isRangeMode, setIsRangeMode] = useState(Array.isArray(value));
 
     const toggleMode = () => {
         if (readOnly) return;
-        setIsRangeMode((prev) => !prev);
-        onChange('');
+        const next = !isRangeMode;
+        setIsRangeMode(next);
+        onChange(next ? ['', ''] : '');
     };
+
+    const [date, setDate] = useState(value || (isRangeMode ? ['', ''] : ''));
 
     return (
         <div className={`${styles.container} ${inline ? styles.inlineContainer : ''}`}>
@@ -90,28 +47,25 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
                     </button>
                 )}
             </div>
+
             <div className={styles.inputWrapper}>
                 {isRangeMode ? (
-                    <RangePicker
-                        format="DD.MM.YYYY"
-                        value={
-                            rangeDate[0] && rangeDate[1]
-                                ? [dayjs(rangeDate[0], 'DD.MM.YYYY'), dayjs(rangeDate[1], 'DD.MM.YYYY')]
-                                : undefined
-                        }
-                        onChange={handleRangeChange}
-                        placeholder={rangePlaceholders}
-                        className={styles.datePicker}
-                        disabled={readOnly}
+                    <CustomDateRangePicker
+                        value={date}
+                        onChange={setDate}
+                        placeholder={`${rangePlaceholders[0]} – ${rangePlaceholders[1]}`}
+                        format="dd.MM.yyyy"
+                        style={{ width: 320 }}
+                        showHeader={false}
                     />
                 ) : (
-                    <DatePicker
-                        format="DD.MM.YYYY"
-                        value={singleDate ? dayjs(singleDate, 'DD.MM.YYYY') : undefined}
-                        onChange={handleSingleChange}
+                    <CustomDatePicker
+                        value={date}
+                        onChange={setDate}
                         placeholder={singlePlaceholder}
-                        className={styles.datePicker}
-                        disabled={readOnly}
+                        format="dd.MM.yyyy"
+                        style={{ width: 280 }}
+                        oneTap
                     />
                 )}
             </div>

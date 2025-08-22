@@ -72,8 +72,8 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
                                 value: val.toString(),
                             }))}
                             setSelectedItems={handleSelectChange}
-                            itemsContentMaxWidth={100}
-                            itemsContentMinWidth={50}
+                            itemsContentMaxWidth={90}
+                            itemsContentMinWidth={90}
                         />
                     </div>
                 </div>

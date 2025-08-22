@@ -114,6 +114,8 @@ function Table<T extends Record<string, any>>({
 
     const [selectedIds, setSelectedIds] = useState<string[]>(selectedRowIds ?? []);
 
+    const isLoadingOverall = state === 'pending' || props.isLoading;
+
     useEffect(() => {
         if (selectedRowIds) setSelectedIds(selectedRowIds);
     }, [selectedRowIds]);
@@ -467,6 +469,35 @@ function Table<T extends Record<string, any>>({
     let hasTopSummary = false;
     let hasBottomSummary = false;
 
+    if (!isLoadingOverall && Array.isArray(data) && data.length > 0) {
+        columns
+            .filter((col) => !!col.accessorKey && (col as any).enableSummary === true)
+            .forEach((col) => {
+                const key = col.accessorKey as string;
+
+                const sum = data.reduce((acc, row) => {
+                    const val = getNestedValue(row, key);
+                    return acc + (typeof val === 'number' ? val : !isNaN(Number(val)) ? Number(val) : 0);
+                }, 0);
+
+                if (summaryMode === 'top') {
+                    summaryTopRow[key] = sum;
+                    hasTopSummary = true;
+                } else if (summaryMode === 'bottom') {
+                    summaryBottomRow[key] = sum;
+                    hasBottomSummary = true;
+                }
+            });
+    }
+
+    const finalData: any = isLoadingOverall
+        ? []
+        : [
+              ...(hasTopSummary ? [summaryTopRow] : []),
+              ...(Array.isArray(data) ? data : []),
+              ...(hasBottomSummary ? [summaryBottomRow] : []),
+          ];
+
     const pinnedLeftColumns = [
         'mrt-row-select',
         'mrt-row-numbers',
@@ -474,33 +505,6 @@ function Table<T extends Record<string, any>>({
             .filter(([_, val]: any) => val?.config?.freeze === true)
             .map(([key]) => key),
     ];
-
-    columns
-        .filter((col) => !!col.accessorKey && (col as any).enableSummary === true)
-        .forEach((col) => {
-            const key = col.accessorKey as string;
-
-            const sum = data.reduce((acc, row) => {
-                const val = getNestedValue(row, key);
-                return acc + (typeof val === 'number' ? val : !isNaN(Number(val)) ? Number(val) : 0);
-            }, 0);
-
-            if (summaryMode === 'top') {
-                summaryTopRow[key] = sum;
-                hasTopSummary = true;
-            } else if (summaryMode === 'bottom') {
-                summaryBottomRow[key] = sum;
-                hasBottomSummary = true;
-            }
-        });
-
-    const finalData: any = props.isLoading
-        ? []
-        : [
-              ...(hasTopSummary ? [summaryTopRow] : []),
-              ...(Array.isArray(data) ? data : []),
-              ...(hasBottomSummary ? [summaryBottomRow] : []),
-          ];
 
     const table = useMaterialReactTable<T>({
         columns: columnsWithFilter,
