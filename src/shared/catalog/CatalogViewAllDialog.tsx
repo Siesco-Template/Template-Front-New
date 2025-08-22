@@ -88,7 +88,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
         setFilters(generatedFilters);
     }, []);
 
-    console.log(showMoreColumns, 'showMoreColumns');
+    // console.log(showMoreColumns, 'showMoreColumns');
 
     if (['md-lg', 'lg', 'xl'].includes(sizePreset)) {
         return (

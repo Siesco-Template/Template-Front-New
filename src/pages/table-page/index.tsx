@@ -319,12 +319,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 },
             ],
         },
-        {
-            accessorKey: 'compileDate',
-            header: 'Tərtib tarixi',
-            filterVariant: 'date-interval',
-            placeholder: 'Tərtib tarixi',
-        },
     ];
 
     const [filters, setFilters] = useState<FilterConfig[]>([]);
@@ -345,7 +339,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
 
-    console.log(selectedRowIds, selectedRows, 'selectedRowIds, selectedRows');
+    // console.log(selectedRowIds, selectedRows, 'selectedRowIds, selectedRows');
     return (
         <>
             <Table_Header
