@@ -39,9 +39,8 @@ const meta: Meta<typeof S_Button> = {
     parameters: {
         backgrounds: {
             options: {
-                red: { name: 'White', value: '#000000' },
-                white: { name: 'Grey', value: '#333' },
-                blue: { name: 'Blue', value: '#F5F5F5' },
+                grey: { name: 'Grey', value: '#333' },
+                blue: { name: 'Bluish', value: '#F5F5F5' },
             },
         },
     },

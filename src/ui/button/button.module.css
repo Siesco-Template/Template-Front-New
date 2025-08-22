@@ -4,13 +4,13 @@
     background: none;
     cursor: pointer;
     user-select: none;
-    transform: scale(1);
+    scale: 1;
     text-decoration: none;
     border: none;
 }
 
 .btn.animation {
-    transition: all 0.25s ease-in-out;
+    transition: 0.1s ease-in-out;
 }
 
 /* Primary button */
@@ -91,7 +91,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-inverse, #fff);
+    border: 1px solid var(--border-inverse, #fff);
     background: var(--background-teritary, #ebebeb);
     color: var(--content-brand-bold, #061d55);
     text-align: center;
@@ -116,7 +116,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-brand, #0d3caf);
+    border: 1px solid var(--border-brand, #0d3caf);
     background: transparent;
     color: var(--content-brand, #0d3caf);
     text-align: center;
@@ -128,7 +128,7 @@
     border: 2px solid var(--border-brand, #0d3caf);
 }
 .secondary-primary:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -139,7 +139,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-negative, #f44336);
+    border: 1px solid var(--border-negative, #f44336);
     background: transparent;
     color: var(--content-negative, #f44336);
     text-align: center;
@@ -151,7 +151,7 @@
     border: 2px solid var(--border-negative, #f44336);
 }
 .secondary-red:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -162,7 +162,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-positive, #38c172);
+    border: 1px solid var(--border-positive, #38c172);
     background: transparent;
     color: var(--content-positive, #38c172);
     text-align: center;
@@ -174,7 +174,7 @@
     border: 2px solid var(--border-positive, #38c172);
 }
 .secondary-green:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -185,7 +185,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-inverse, #fff);
+    border: 1px solid var(--border-inverse, #fff);
     background: transparent;
     color: var(--content-brand-bold, #061d55);
     text-align: center;
@@ -197,7 +197,7 @@
     border: 2px solid var(--border-inverse, #fff);
 }
 .secondary-secondary:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -432,7 +432,7 @@
 
 /* is unstyled button */
 .unstyled {
-    border: 1.5px solid transparent;
+    border: 1px solid transparent;
     background: transparent;
     color: hsl(var(--clr-grey-700));
 }
@@ -471,7 +471,7 @@
     top: -5px;
 
     border-radius: 12px;
-    border: 1.5px solid #fff;
+    border: 1px solid #fff;
     background: var(--Colors-Red, #ff3b30);
 }
 
