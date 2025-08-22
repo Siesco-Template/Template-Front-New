@@ -28,6 +28,8 @@ const Table_Footer: React.FC<TableFooterProps> = ({
     const [pageSize, setPageSize] = useState<number>(defaultTake);
     const hasUserChanged = useRef(false);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const selectRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -61,8 +63,6 @@ const Table_Footer: React.FC<TableFooterProps> = ({
 
     const start = totalItems === 0 ? 0 : currentPage * pageSize + 1;
     const end = Math.min((currentPage + 1) * pageSize, totalItems);
-
-    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         if (!table_key) return;
@@ -149,6 +149,9 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                                 hasUserChanged.current = true;
                                 setPageSize(-1);
                                 onInfiniteChange?.(true);
+
+                                setSearchParams({}, { replace: true });
+
                                 setFilterDataState((prev: any) => ({
                                     ...prev,
                                     take: 20,

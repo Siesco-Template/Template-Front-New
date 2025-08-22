@@ -75,7 +75,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
     const handleConfirmDelete = () => {
         if (filterToDelete) {
             filterService
-                .deleteFilter(filterToDelete.id) // Using filter.id to delete the filter
+                .deleteFilter(filterToDelete.id)
                 .then(() => {
                     const updatedFilters = savedFilters.filter((filter: any) => filter.id !== filterToDelete.id);
                     setSavedFilters(updatedFilters);
@@ -109,7 +109,8 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 setSelectedFilter(response);
                 setEditing(false);
                 setOpenDropdownId(null);
-                // console.log(response.data, 'selectedfiltr');
+
+                onApplyFilter(response?.filterValues ?? []);
             })
             .catch((error) => {
                 console.error('Filter əldə edərkən xəta baş verdi:', error);
@@ -208,10 +209,18 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
 
     // select filter for view
     const handleFilterClick = (id?: string) => {
+        if (!id) {
+            return;
+        }
         const selected = savedFilters.find((filter: any) => filter.id == id);
         setSelectedFilter(selected);
-        // console.log(selected, 'selected');
         onApplyFilter(selected?.filterValues);
+    };
+
+    const handleBack = () => {
+        setSelectedFilter(null);
+        setEditing(false);
+        // QƏTİYYƏN onApplyFilter çağırmırıq ki, URL dəyişməsin
     };
     return (
         <ul className={styles.savedFilterList}>
@@ -219,7 +228,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 {selectedFilter ? (
                     <div className={styles.selectedFilterDetails}>
                         <div className={styles.selectedFilterHeader}>
-                            <button className={styles.selectedFilterInfo} type="button" onClick={handleFilterClick}>
+                            <button className={styles.selectedFilterInfo} type="button" onClick={handleBack}>
                                 <ArrowLeftIcon />
                                 <span>
                                     {selectedFilter.filterTitle.charAt(0).toUpperCase() +
@@ -227,39 +236,30 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                 </span>
                             </button>
                             <div className={styles.btnGroup}>
-                                {editing ? (
-                                    <S_Button
-                                        variant="main-10"
-                                        isIcon
-                                        iconBtnSize="15"
-                                        color="secondary"
-                                        aria-label="Yadda saxla"
-                                        onClick={handleSaveEditedFilter}
-                                    >
-                                        <DiskIcon width={16} height={16} color="hsl(var(--clr-primary-900))" />
-                                    </S_Button>
-                                ) : (
-                                    <S_Button
-                                        variant="main-10"
-                                        isIcon
-                                        iconBtnSize="15"
-                                        color="secondary"
-                                        aria-label="Düzəliş et"
-                                        onClick={() => setEditing(true)}
-                                    >
-                                        <EditIcon width={16} height={16} color="hsl(var(--clr-primary-900))" />
-                                    </S_Button>
-                                )}
+                                {editing && (
+                                    <>
+                                        <S_Button
+                                            variant="main-10"
+                                            isIcon
+                                            iconBtnSize="15"
+                                            color="secondary"
+                                            aria-label="Yadda saxla"
+                                            onClick={handleSaveEditedFilter}
+                                        >
+                                            <DiskIcon width={16} height={16} color="hsl(var(--clr-primary-900))" />
+                                        </S_Button>
 
-                                <S_Button
-                                    variant="main-10"
-                                    isIcon
-                                    aria-label="Sil"
-                                    iconBtnSize="15"
-                                    onClick={() => handleDelete(selectedFilter.id)}
-                                >
-                                    <TrashIcon width={16} height={16} color="#fff" />
-                                </S_Button>
+                                        <S_Button
+                                            variant="main-10"
+                                            isIcon
+                                            aria-label="Sil"
+                                            iconBtnSize="15"
+                                            onClick={() => handleDelete(selectedFilter.id)}
+                                        >
+                                            <TrashIcon width={16} height={16} color="#fff" />
+                                        </S_Button>
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -340,7 +340,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 )}
                 <ConfirmModal
                     open={showDeleteModal}
-                    onOpenChange={setShowDeleteModal} 
+                    onOpenChange={setShowDeleteModal}
                     description={`${filterToDelete?.filterTitle} filterini silmək istədiyinizdən əminsiniz mi?`}
                     confirmText="Təsdiqlə"
                     cancelText="Ləğv et"

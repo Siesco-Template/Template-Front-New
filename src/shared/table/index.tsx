@@ -10,8 +10,9 @@ import {
 } from 'material-react-table';
 import { MRT_Localization_AZ } from 'material-react-table/locales/az';
 
-import { S_Checkbox } from '@/ui';
+import { S_Checkbox, S_Input } from '@/ui';
 
+import Catalog from '../catalog';
 import { FilterKey } from '../filter/config/filterTypeEnum';
 import CatalogSimple from '../filter/filters/CatalogSimple';
 import DropdownMultiSelect from '../filter/filters/CatalogWithMultiSelect';
@@ -255,20 +256,22 @@ function Table<T extends Record<string, any>>({
         switch (filterType) {
             case FilterKey.Text:
                 return (
-                    <TextFilter
-                        key={filter.key || filter.column}
-                        value={filter.value}
-                        placeholder={filter.placeholder || filter.column}
-                        onChange={(val) => _onChange(filter.key, val)}
-                        readOnly={filter.readOnly}
-                        compact={true}
-                    />
+                    <div style={{ width: '160px' }}>
+                        <S_Input
+                            key={filter.key || filter.column}
+                            value={filter.value ?? ''}
+                            placeholder={filter.placeholder || filter.column}
+                            onChange={(e) => _onChange(filter.key, e.target.value)}
+                            readOnly={filter.readOnly}
+                            inputSize="medium"
+                            style={{ width: '100%' }}
+                        />
+                    </div>
                 );
             case FilterKey.NumberInterval:
                 return (
                     <NumberIntervalFilter
                         key={filter.key || filter.column}
-                        // label={filter.label || filter.column}
                         value={
                             typeof filter.value === 'object' && filter.value !== null
                                 ? filter.value
@@ -286,7 +289,6 @@ function Table<T extends Record<string, any>>({
                 return (
                     <DropdownMultiSelect
                         key={filter.key}
-                        // label={filter.label}
                         filterKey={filter.key}
                         options={filter.options || []}
                         value={filter.value || []}
@@ -295,15 +297,39 @@ function Table<T extends Record<string, any>>({
                     />
                 );
             case FilterKey.Select:
+                const items = (filter.options || []).map((opt: any) => ({
+                    value: opt.value,
+                    label: opt.label,
+                    disabled: !!opt.disabled,
+                }));
+
+                const selectedObj =
+                    filter.value != null && filter.value !== ''
+                        ? (items.find((i: any) => i.value === filter.value) ?? null)
+                        : null;
                 return (
-                    <CatalogSimple
-                        key={filter.key}
-                        // label={filter.label}
-                        options={filter.options || []}
-                        value={filter.value || ''}
-                        onChange={(value) => _onChange(filter.key, value)}
-                        disabled={filter.readOnly}
-                    />
+                    <div style={{ width: '160px' }}>
+                        <Catalog
+                            key={filter.key}
+                            items={items}
+                            getLabel={(i: any) => i?.label}
+                            getRowId={(i: any) => String(i?.value)}
+                            value={selectedObj ? [selectedObj] : []}
+                            onChange={(sel) => {
+                                const picked = Array.isArray(sel) ? sel[0] : sel;
+                                const newVal = picked ? (picked as any).value : '';
+                                _onChange(filter.key, newVal);
+                            }}
+                            multiple={false}
+                            enableModal={false}
+                            sizePreset="md-lg"
+                            totalItemCount={items.length}
+                            onRefetch={undefined}
+                            onClickNew={undefined}
+                            isLoading={false}
+                            showMoreColumns={filter.showMoreColumns || []}
+                        />
+                    </div>
                 );
             case FilterKey.DateInterval:
                 return (

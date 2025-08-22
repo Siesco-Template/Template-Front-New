@@ -129,13 +129,11 @@ export const applyFiltersToUrl = (
                       : f.value,
         }));
 
-    const newFilterData = {
-        filter: validFilters,
-        skip,
-        take,
-        sort,
-    };
+    const newFilterData: any = { filter: validFilters, take: 20, skip: 0 };
 
+    if (Array.isArray(sort) && sort.length > 0) {
+        newFilterData.sort = sort;
+    }
     const base = window.location.hash.split('?')[0];
 
     window.location.hash = `${base}?filterData=${JSON.stringify(newFilterData)}`;

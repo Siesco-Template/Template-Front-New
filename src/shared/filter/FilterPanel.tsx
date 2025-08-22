@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 
 import dayjs from 'dayjs';
 
 import { filterService } from '@/services/filter/filter.service';
 
+import { SearchIcon } from '@/shared/icons';
+
 import { S_Input } from '@/ui';
-import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
 import Catalog from '../catalog';
 import { CatalogSelect } from '../catalog/shared/select';
@@ -20,7 +21,6 @@ import DateIntervalFilter from './filters/DateIntervalFilter';
 import DraggableItems from './filters/Draggable';
 import NumberIntervalFilter from './filters/NumberIntervalFilter';
 import SavedFilters from './filters/SavedFilters';
-import TextFilter from './filters/TextFilter';
 import FilterHeader from './layout/filterHeader';
 import Header from './layout/header';
 import SearchHeader from './layout/searchHeader';
@@ -61,6 +61,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     };
 
     useDebounce(mainWidth, 200, handleResize);
+
     useEffect(() => {
         handleResize();
     }, []);
@@ -223,6 +224,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                             readOnly={filter.readOnly}
                             inputSize="medium"
                             style={{ width: '100%' }}
+                            icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
+                            iconPosition="right"
                         />
                     </div>
                 );
