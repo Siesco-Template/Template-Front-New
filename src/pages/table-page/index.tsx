@@ -77,41 +77,17 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [isInfinite, setIsInfinite] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        if (!isInfinite) return;
-
-        const sentinel = sentinelRef.current;
-        if (!sentinel) return;
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting && !loading && data.length < totalItems) {
-                    fetchData(true);
-                }
-            },
-            {
-                root: document.querySelector(`.${styles.tableScrollWrapper}`),
-                rootMargin: '0px',
-                threshold: 1.0,
-            }
-        );
-
-        observer.observe(sentinel);
-
-        return () => {
-            if (sentinel) observer.unobserve(sentinel);
-        };
-    }, [isInfinite, loading, data.length, totalItems]);
-
     const handleCustomExport = () => {
         setIsExcelModalOpen(true);
     };
+
     const location = useLocation();
 
     const fetchData = (isLoadMore = false) => {
         if (loading) return;
         setLoading(true);
 
+        console.log('budayammm');
         const raw: any = filterDataForFetch();
 
         const nextPage = isLoadMore ? currentPage + 1 : 1;
@@ -339,7 +315,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
 
-    // console.log(selectedRowIds, selectedRows, 'selectedRowIds, selectedRows');
     return (
         <>
             <Table_Header
@@ -354,7 +329,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 actions={['create', 'exportFile']}
                 table_key="customer_table"
                 notification={isFilterApplied}
-                // onClickExport={() => {}}
             />
 
             <div className={styles.wrapper}>
@@ -381,8 +355,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             }}
                             enableCheckbox
                             getRowId={(r) => String((r as any).Id)}
+                            totalDBRowCount={totalItems}
+                            fetchh={fetchData.bind(null, true)}
+                            totalFetched={data?.length}
+                            isInfinite={isInfinite}
                         />
-                        {isInfinite && <div ref={sentinelRef} style={{ height: 1 }} />}
+                        <div ref={sentinelRef} style={{ height: 1 }} />
                     </div>
                     <Table_Footer
                         totalItems={totalItems}

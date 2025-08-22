@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 import {
     MRT_ColumnDef,
@@ -63,6 +63,10 @@ type TableProps<T extends Record<string, any>> = {
     isConfigCollapsed?: boolean;
     onSelectedRowsChange?: (ids: string[], rows: T[]) => void;
     selectedRowIds?: string[];
+    fetchh: any;
+    totalFetched: any;
+    isInfinite: any;
+    totalDBRowCount: any;
 };
 
 const customLocalization = {
@@ -91,14 +95,18 @@ function Table<T extends Record<string, any>>({
     setRowCheckboxSelect,
     getRowId,
     getRowProps,
+    isInfinite,
     columnOrderState,
     onRowDoubleClick,
     enableRowNumbers = true,
     enableMultiSelect = false,
     enableColumnOrdering = false,
+    fetchh,
     enableColumnResizing = false,
     enableColumnActions = false,
     enableColumnActionsCustom = true,
+    totalDBRowCount,
+    totalFetched,
     isConfigCollapsed = false,
     enableColumnFilter = true,
     onColumnSizingChange,
@@ -114,6 +122,19 @@ function Table<T extends Record<string, any>>({
 
     const [selectedIds, setSelectedIds] = useState<string[]>(selectedRowIds ?? []);
 
+    const tableContainerRef = useRef(null);
+
+    const fetchMoreOnBottomReached = useCallback(
+        (containerRefElement?: HTMLDivElement | null) => {
+            if (containerRefElement) {
+                const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+                if (scrollHeight - scrollTop - clientHeight < 10 && totalFetched < totalDBRowCount) {
+                    fetchh();
+                }
+            }
+        },
+        [fetchh, totalFetched, totalDBRowCount]
+    );
     const isLoadingOverall = state === 'pending' || props.isLoading;
 
     useEffect(() => {
@@ -517,6 +538,12 @@ function Table<T extends Record<string, any>>({
         enableColumnOrdering: enableColumnOrdering,
         enableSorting: false,
         enableColumnResizing: enableColumnResizing,
+        muiTableContainerProps: {
+            className: styles.tableContainer,
+            ref: tableContainerRef,
+            onScroll: (event: any) => isInfinite && fetchMoreOnBottomReached(event.target as HTMLDivElement),
+        },
+
         onColumnOrderChange: onColumnOrderChange
             ? (updaterOrValue) => {
                   const newOrder =
@@ -603,9 +630,6 @@ function Table<T extends Record<string, any>>({
         },
         muiTablePaperProps: {
             className: styles.tableWrapper,
-        },
-        muiTableContainerProps: {
-            className: styles.tableContainer,
         },
         muiTableBodyCellProps: ({ cell, row, column }) => {
             const columnId = cell.column.columnDef.accessorKey || cell.column.id;
