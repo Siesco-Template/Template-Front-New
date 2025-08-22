@@ -44,7 +44,9 @@ jobs:
               run: |
                   ssh -o StrictHostKeyChecking=no root@65.108.38.170 << 'EOF'
                       cd /home/projects/Template/Template-Front-New && \
-                      git switch main && \
+                      git fetch origin main && \
+                      git checkout main && \
                       git pull origin main && \
-                      docker-compose -f ./docker-compose.yml up -d --build template-front
+                      docker compose -f ./docker-compose.yml rm -sf template-front
+                      docker compose -f ./docker-compose.yml up -d --build template-front
                   EOF
