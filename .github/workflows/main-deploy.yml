@@ -1,8 +1,10 @@
-name: Deploy to Server
+name: CI
+
 on:
     push:
-        branches:
-            - main
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
     build:
@@ -28,7 +30,7 @@ jobs:
         name: SSH & Deploy on Remote Server
         runs-on: ubuntu-latest
         needs: build
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'push'
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
@@ -42,7 +44,9 @@ jobs:
               run: |
                   ssh -o StrictHostKeyChecking=no root@65.108.38.170 << 'EOF'
                       cd /home/projects/Template/Template-Front-New && \
+                      git fetch origin main && \
+                      git checkout main && \
                       git pull origin main && \
-                      docker-compose -f ./docker-compose.yml down && \
-                      docker-compose -f ./docker-compose.yml up -d --build
+                      docker compose -f ./docker-compose.yml rm -sf template-front
+                      docker compose -f ./docker-compose.yml up -d --build template-front
                   EOF
