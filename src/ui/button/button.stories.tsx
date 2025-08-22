@@ -9,6 +9,7 @@ const sizes = ['32', '36', '44', '48', '52'] as const;
 const meta: Meta<typeof S_Button> = {
     title: 'UI/Button',
     component: S_Button,
+    tags: ['autodocs'],
     args: {
         as: 'button',
         variant: 'primary',

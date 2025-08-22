@@ -10,6 +10,9 @@ const preview: Preview = {
                 date: /Date$/i,
             },
         },
+        docs: {
+            autodocs: true,
+        },
     },
     globalTypes: {
         theme: {
@@ -17,7 +20,7 @@ const preview: Preview = {
             description: 'Global theme for components',
             defaultValue: 'light',
             toolbar: {
-                icon: 'sun', // shows sun/moon icon; moon appears when dark is selected
+                icon: 'sun',
                 items: [
                     { value: 'light', title: 'Light' },
                     { value: 'dark', title: 'Dark' },
