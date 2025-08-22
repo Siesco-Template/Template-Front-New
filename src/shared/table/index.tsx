@@ -10,6 +10,8 @@ import {
 } from 'material-react-table';
 import { MRT_Localization_AZ } from 'material-react-table/locales/az';
 
+import { S_Checkbox } from '@/ui';
+
 import { FilterKey } from '../filter/config/filterTypeEnum';
 import CatalogSimple from '../filter/filters/CatalogSimple';
 import DropdownMultiSelect from '../filter/filters/CatalogWithMultiSelect';
@@ -69,6 +71,16 @@ const customLocalization = {
     rowNumber: '№',
 };
 
+type RowSel = MRT_RowSelectionState;
+
+const idsToRowSel = (ids: string[]): RowSel =>
+    ids.reduce((acc, id) => {
+        acc[id] = true;
+        return acc;
+    }, {} as RowSel);
+
+const rowSelToIds = (sel: RowSel): string[] => Object.keys(sel).filter((k) => !!sel[k]);
+
 function Table<T extends Record<string, any>>({
     state,
     columns,
@@ -100,10 +112,10 @@ function Table<T extends Record<string, any>>({
     const [activeMenuColumn, setActiveMenuColumn] = useState<any>(null);
     const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
 
-    const [selectedRows, setSelectedRows] = useState<string[]>(selectedRowIds ?? []);
+    const [selectedIds, setSelectedIds] = useState<string[]>(selectedRowIds ?? []);
 
     useEffect(() => {
-        if (selectedRowIds) setSelectedRows(selectedRowIds);
+        if (selectedRowIds) setSelectedIds(selectedRowIds);
     }, [selectedRowIds]);
 
     const getRowById = (id: string) => {
@@ -111,22 +123,24 @@ function Table<T extends Record<string, any>>({
         return r?.original as T | undefined;
     };
 
-    const handleRowClick = (rowId: string) => {
-        setSelectedRows((prev) => {
-            const next = enableMultiSelect
-                ? prev.includes(rowId)
-                    ? prev.filter((id) => id !== rowId)
-                    : [...prev, rowId]
-                : prev.includes(rowId)
-                  ? []
-                  : [rowId];
+    const applySelection = (nextIds: string[]) => {
+        setSelectedIds(nextIds);
+        if (onSelectedRowsChange) {
+            const rows = nextIds.map((id) => getRowById(id)).filter(Boolean) as T[];
+            onSelectedRowsChange(nextIds, rows);
+        }
+    };
 
-            if (onSelectedRowsChange) {
-                const rows = next.map((id) => getRowById(id)).filter(Boolean) as T[];
-                onSelectedRowsChange(next, rows);
-            }
-            return next;
-        });
+    const handleRowClick = (rowId: string) => {
+        const next = enableMultiSelect
+            ? selectedIds.includes(rowId)
+                ? selectedIds.filter((id) => id !== rowId)
+                : [...selectedIds, rowId]
+            : selectedIds.includes(rowId)
+              ? []
+              : [rowId];
+
+        applySelection(next);
     };
 
     const {
@@ -168,25 +182,15 @@ function Table<T extends Record<string, any>>({
         };
     }, []);
 
-    const changeSelect = (changeSelect: Dispatch<SetStateAction<MRT_RowSelectionState>>) => {
-        if (rowCheckboxSelectState && setRowCheckboxSelect && typeof changeSelect === 'function') {
-            const data = arrayToObject(rowCheckboxSelectState);
-            const changedDatas = changeSelect(data);
-            setRowCheckboxSelect(
-                // @ts-ignore
-                changedDatas
-            );
-        }
-    };
-
     const configOrderObj = config.tables?.[tableKey]?.columnsOrder || {};
     const configColumnOrder = Object.keys(configOrderObj).sort((a, b) => configOrderObj[a] - configOrderObj[b]);
 
     const fullColumnOrder = [
         'mrt-row-numbers',
+        ...(enableCheckbox ? ['mrt-row-select'] : []),
         ...(columnOrderState?.length
-            ? columnOrderState.filter((col) => col !== 'mrt-row-numbers')
-            : configColumnOrder.filter((col) => col !== 'mrt-row-numbers')),
+            ? columnOrderState.filter((col) => col !== 'mrt-row-numbers' && col !== 'mrt-row-select')
+            : configColumnOrder.filter((col) => col !== 'mrt-row-numbers' && col !== 'mrt-row-select')),
     ];
 
     const effectiveColumnOrder = fullColumnOrder.length ? fullColumnOrder : undefined;
@@ -464,6 +468,7 @@ function Table<T extends Record<string, any>>({
     let hasBottomSummary = false;
 
     const pinnedLeftColumns = [
+        'mrt-row-select',
         'mrt-row-numbers',
         ...Object.entries(config.tables?.[tableKey]?.columns || {})
             .filter(([_, val]: any) => val?.config?.freeze === true)
@@ -520,10 +525,59 @@ function Table<T extends Record<string, any>>({
             : undefined,
         enableRowNumbers: enableRowNumbers,
         displayColumnDefOptions: {
-            'mrt-row-numbers': {
+            'mrt-row-numbers': { enableColumnOrdering: false },
+            'mrt-row-select': {
+                size: 36,
                 enableColumnOrdering: false,
+                enableResizing: false,
+
+                Header: ({ table }) => {
+                    const selectable = table.getRowModel().rows.filter((r) => r.getCanSelect?.());
+                    const all = selectable.length > 0 && selectable.every((r) => r.getIsSelected());
+                    const some = selectable.some((r) => r.getIsSelected()) && !all;
+
+                    return (
+                        <div
+                            data-mrt-row-select
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ width: '100%', height: '100%' }}
+                        >
+                            <S_Checkbox
+                                label=""
+                                color="primary"
+                                size="200"
+                                checked={all || some}
+                                onCheckedChange={({ checked }) => {
+                                    table.toggleAllRowsSelected(!!checked);
+                                }}
+                            />
+                        </div>
+                    );
+                },
+
+                Cell: ({ row }) => {
+                    if (row.original?.isSummaryRow || !row.getCanSelect?.()) {
+                        return <div style={{ width: 24, height: 24 }} />;
+                    }
+
+                    const checked = row.getIsSelected();
+                    return (
+                        <div data-mrt-row-select onClick={(e) => e.stopPropagation()}>
+                            <S_Checkbox
+                                label=""
+                                color="primary"
+                                size="200"
+                                checked={checked}
+                                onCheckedChange={({ checked }) => {
+                                    row.toggleSelected(!!checked);
+                                }}
+                            />
+                        </div>
+                    );
+                },
             },
         },
+
         layoutMode: 'grid',
         enableTopToolbar: false,
         enableMultiRowSelection: enableMultiSelect,
@@ -554,10 +608,10 @@ function Table<T extends Record<string, any>>({
             const isSummaryRow = row.original?.isSummaryRow;
             const isColSelected = selectedColumnKey === column?.id;
 
-            const isRowSelected = selectedRows.includes(row.id); // <-- YENİ
+            const isRowSelected = selectedIds.includes(row.id);
             const allLeaf = table.getAllLeafColumns();
             const colIdx = allLeaf.findIndex((c) => c.id === column.id);
-            const isFirst = colIdx === 0;
+            const isFirst = colIdx === -1;
             const isLast = colIdx === allLeaf.length - 1;
 
             const tableColumnConfig = config.tables?.[tableKey]?.columns?.[columnId];
@@ -570,13 +624,11 @@ function Table<T extends Record<string, any>>({
             const mergedCell = rowCfg.cell || {};
             const mergedBorder = rowCfg.border || {};
 
-            const selectedBg = rowCfg?.selected?.backgroundColor ?? '#E6F0FF'; // <-- YENİ
+            const selectedBg = rowCfg?.selected?.backgroundColor ?? '#E6F0FF';
 
             const getBackgroundColor = () => {
-                // 1) SEÇİLMİŞ SƏTİR
-                if (isRowSelected) return selectedBg; // <-- YENİ
+                if (isRowSelected) return selectedBg;
 
-                // 2) Highlight
                 if (props.highlightedRowIds?.includes(row.id)) return '#E6F0FF';
 
                 const baseColor = mergedCell.backgroundColor ?? '#ffffff';
@@ -617,7 +669,6 @@ function Table<T extends Record<string, any>>({
                     ...(isFirst && { borderLeft: '1px solid #0068F7' }),
                     ...(isLast && { borderRight: '1px solid #0068F7' }),
                     zIndex: 1,
-                    position: 'relative',
                 }),
             };
 
@@ -632,7 +683,8 @@ function Table<T extends Record<string, any>>({
         },
 
         muiTableHeadCellProps: ({ column }) => {
-            const isPinned = column.id === 'mrt-row-numbers' || column.getIsPinned?.() === 'left';
+            const isPinned =
+                column.id === 'mrt-row-numbers' || column.id === 'mrt-row-select' || column.getIsPinned?.() === 'left';
 
             const index = table.getAllLeafColumns().findIndex((c) => c.id === column.id);
 
@@ -654,6 +706,9 @@ function Table<T extends Record<string, any>>({
                         display: 'none',
                     },
                     ...(index === 0 && {
+                        paddingBottom: '12px',
+                    }),
+                    ...(index === 1 && {
                         paddingBottom: '12px',
                     }),
 
@@ -692,11 +747,20 @@ function Table<T extends Record<string, any>>({
         // onPaginationChange,
         onSortingChange: onSortChange,
         onShowColumnFiltersChange: setShowColumnFilters,
-        enableRowSelection: enableCheckbox,
+        enableRowSelection: enableCheckbox ? (row) => !row.original?.isSummaryRow : false,
         enableRowPinning: true,
         rowPinningDisplayMode: 'select-sticky',
         // @ts-ignore
-        onRowSelectionChange: changeSelect,
+        onRowSelectionChange: (updater) => {
+            const current = idsToRowSel(selectedIds);
+            const nextSel = typeof updater === 'function' ? updater(current) : updater;
+            let nextIds = rowSelToIds(nextSel);
+
+            if (!enableMultiSelect && nextIds.length > 1) {
+                nextIds = [nextIds[nextIds.length - 1]];
+            }
+            applySelection(nextIds);
+        },
         // rowCount: tableCount?.rowCount,
         positionPagination: 'bottom',
         // rowCount,
@@ -726,7 +790,7 @@ function Table<T extends Record<string, any>>({
             columnSizing: columnSizing,
             columnOrder: effectiveColumnOrder ?? tableOrdering,
             // globalFilter,
-            rowSelection: arrayToObject(rowCheckboxSelectState),
+            rowSelection: idsToRowSel(selectedIds),
             pagination: {
                 pageIndex: Math.floor(filterDataState.skip / filterDataState.take),
                 pageSize: filterDataState.take,
@@ -746,14 +810,21 @@ function Table<T extends Record<string, any>>({
         muiTableBodyRowProps: ({ row }: any) => {
             const rowId = row.id;
 
-            const isSelected = selectedRows.includes(rowId);
+            const isRowSelected = selectedIds.includes(row.id);
             const rowConfig = config.tables?.[tableKey]?.row || {};
             const rowHeight = rowConfig?.cell?.padding;
 
             const isHighlighted = props.highlightedRowIds?.includes?.(rowId);
 
             const defaultProps = {
-                onClick: () => handleRowClick(rowId),
+                onClick: (e: React.MouseEvent) => {
+                    const target = e.target as HTMLElement;
+                    if (target.closest('input[type="checkbox"]') || target.closest('[data-mrt-row-select]')) return;
+
+                    if (row.original?.isSummaryRow) return;
+
+                    handleRowClick(rowId);
+                },
                 onDoubleClick: () => {
                     onRowDoubleClick?.(row.original);
                 },
@@ -761,7 +832,6 @@ function Table<T extends Record<string, any>>({
                 onMouseLeave: () => setHoveredRowId(null),
                 style: {
                     cursor: 'pointer',
-                    backgroundColor: isHighlighted ? '#E6F0FF' : undefined,
                     height: rowHeight ? `${rowHeight}px` : '45px',
                 },
             };

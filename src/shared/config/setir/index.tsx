@@ -6,6 +6,7 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
+import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
 
 const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
@@ -81,19 +82,17 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             <label className={styles.sectionSubHeader}>Sətir</label>
             <div className={styles.configRow}>
                 <label>Sətir məsafəsi</label>
-                <input
-                    type="number"
-                    min={0}
-                    value={cellConfig.padding !== undefined ? String(cellConfig.padding) : ''}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        const num = Number(val);
-                        if (val === '') {
-                            updateConfig(tableKey, `row.cell.padding`, undefined);
-                        } else if (!isNaN(num) && num <= 50) {
-                            updateConfig(tableKey, `row.cell.padding`, num);
-                        }
-                    }}
+                <ValidatedNumberInput
+                    value={cellConfig.padding}
+                    min={34}
+                    max={50}
+                    step={1}
+                    defaultValue={34}
+                    className={styles.numberInput}
+                    invalidClass={styles.invalid}
+                    shakeClass={styles.shake}
+                    tooltipText="34–50 px aralığında olmalıdır"
+                    onValidChange={(v) => updateConfig(tableKey, 'row.cell.padding', v)}
                 />
                 <span>px</span>
             </div>
@@ -144,42 +143,36 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             </div>
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Qalınlığı</label>
-                <input
-                    type="number"
+                <ValidatedNumberInput
+                    value={borderConfig.thickness}
                     min={0}
-                    value={borderConfig.thickness !== undefined ? String(borderConfig.thickness) : ''}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        const num = Number(val);
-                        if (val === '') {
-                            updateConfig(tableKey, `row.border.thickness`, undefined);
-                        } else if (!isNaN(num) && num <= 10) {
-                            updateConfig(tableKey, `row.border.thickness`, num);
-                        }
-                    }}
+                    max={10}
+                    step={1}
+                    defaultValue={1}
+                    className={styles.numberInput}
+                    invalidClass={styles.invalid}
+                    shakeClass={styles.shake}
+                    tooltipText="0–10 px aralığında olmalıdır"
+                    onValidChange={(v) => updateConfig(tableKey, 'row.border.thickness', v)}
                 />
-
                 <span>px</span>
             </div>
 
             <div className={styles.sectionSubHeader}>Mətn</div>
             <div className={styles.configRow}>
                 <label>Ölçüsü</label>
-                <input
-                    type="number"
-                    min={8}
-                    value={textConfig.fontSize !== undefined ? String(textConfig.fontSize) : ''}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        const num = Number(val);
-                        if (val === '') {
-                            updateConfig(tableKey, `row.text.fontSize`, undefined);
-                        } else if (!isNaN(num) && num <= 24) {
-                            updateConfig(tableKey, `row.text.fontSize`, num);
-                        }
-                    }}
+                <ValidatedNumberInput
+                    value={textConfig.fontSize}
+                    min={10}
+                    max={20}
+                    step={1}
+                    defaultValue={14}
+                    className={styles.numberInput}
+                    invalidClass={styles.invalid}
+                    shakeClass={styles.shake}
+                    tooltipText="10-20 px aralığında olmalıdır"
+                    onValidChange={(v) => updateConfig(tableKey, 'row.text.fontSize', v)}
                 />
-
                 <span>px</span>
             </div>
 

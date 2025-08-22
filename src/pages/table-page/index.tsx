@@ -15,6 +15,7 @@ import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
+import TableRowActions from '@/shared/table/tableRowActions';
 
 import styles from './style.module.css';
 
@@ -123,7 +124,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             : buildQueryParamsFromTableRequest(raw);
 
         const allowed = new Set(
-            columns.map((c) => c.accessorKey).filter((k): k is string => typeof k === 'string' && k.trim() !== '')
+            columns
+                .filter(
+                    (c) =>
+                        typeof c.accessorKey === 'string' && c.accessorKey.trim() !== '' && c.accessorKey !== 'actions'
+                )
+                .map((c) => c.accessorKey as string)
         );
 
         let visibleColumns = Object.entries(columnVisibility)
@@ -132,10 +138,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
         visibleColumns = Array.from(new Set(visibleColumns));
 
+        const mandatoryHidden = ['Id'];
+
         if (visibleColumns.length > 0) {
-            queryParams.columns = visibleColumns.join(',');
+            queryParams.columns = [...new Set([...visibleColumns, ...mandatoryHidden])].join(',');
         } else {
-            delete queryParams.columns;
+            queryParams.columns = mandatoryHidden.join(',');
         }
 
         reportService
@@ -231,6 +239,48 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 );
             },
         },
+        {
+            id: 'actions',
+            header: '',
+            accessorKey: 'actions',
+            enableColumnFilter: false,
+            enableColumnDragging: false,
+            enableColumnActions: false,
+            enableResizing: false,
+            enableSorting: false,
+            maxSize: 36,
+            Cell: ({ row }: any) => {
+                if (row.original?.isSummaryRow) return null;
+                const onClick = (action: 'edit' | 'delete' | 'block' | 'permissions' | 'resetPassword') => {
+                    // setSelectedUserId(row.id);
+                    if (action === 'edit') {
+                        // setIsEditModalOpen(true);
+                    } else if (action === 'block') {
+                        // setIsBlockModalOpen(true);
+                    } else if (action === 'delete') {
+                        // setIsDeleteModalOpen(true);
+                    } else if (action === 'permissions') {
+                        // navigate(APP_URLS.huquqlar('', { userId: row.id }));
+                    } else if (action === 'resetPassword') {
+                        // setIsResetPasswordModalOpen(true);
+                    }
+                };
+                return (
+                    <div
+                        data-row-actions
+                        onClick={(e) => e.stopPropagation()}
+                        onDoubleClick={(e) => e.stopPropagation()}
+                    >
+                        <TableRowActions
+                            onDelete={() => onClick('delete')}
+                            onBlock={() => onClick('block')}
+                            onEdit={() => onClick('edit')}
+                            onResetPassword={() => onClick('resetPassword')}
+                        />
+                    </div>
+                );
+            },
+        },
     ];
 
     const filterColumns = [
@@ -323,12 +373,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             isLoading={loading}
                             isConfigCollapsed={isConfigCollapsed}
                             selectedRowIds={selectedRowIds}
+                            tableKey="customer_table"
                             onSelectedRowsChange={(ids, rows) => {
                                 setSelectedRowIds(ids);
                                 setSelectedRows(rows);
                             }}
-                            tableKey="customer_table"
-                            getRowId={(r) => String((r as any).Number)}
+                            enableCheckbox
+                            getRowId={(r) => String((r as any).Id)}
                         />
                         {isInfinite && <div ref={sentinelRef} style={{ height: 1 }} />}
                     </div>
