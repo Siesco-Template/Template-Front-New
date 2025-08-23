@@ -11,7 +11,6 @@ import { SearchIcon } from '@/shared/icons';
 import { S_Input } from '@/ui';
 
 import Catalog from '../catalog';
-import { CatalogSelect } from '../catalog/shared/select';
 import { useTableContext } from '../table/table-context';
 import { useDebounce } from '../table/useDebounce';
 import { applyFiltersToUrl, parseFiltersFromUrl } from './config/filterHelpers';
@@ -497,7 +496,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                             )}
                         </div>
                     </div>
-                </div>{' '}
+                </div>
             </div>
             <ConfirmModal
                 open={isSaveModalOpen}

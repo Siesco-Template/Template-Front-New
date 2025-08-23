@@ -15,7 +15,6 @@ import { ArrowLeftIcon, DiskIcon, EditIcon, TrashIcon } from '../../shared/icons
 import Modal from '../../shared/modal';
 import ConfirmModal from '../../shared/modal';
 import { FilterConfig } from '../../types';
-import TextFilter from '../TextFilter';
 import styles from './style.module.css';
 
 interface SavedFiltersProps {
