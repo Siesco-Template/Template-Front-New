@@ -6,8 +6,8 @@ import { cls } from '@/shared/utils';
 
 import styles from './input.module.css';
 
-export type InputSize = 'default' | 'medium' | 'small';
-interface I_InputProps extends Field.InputProps {
+export type InputSize = '36' | '44' | '48' | '52';
+export interface I_InputProps extends Field.InputProps {
     label?: string;
     labelProps?: Field.LabelProps;
     details?: string;
@@ -17,14 +17,12 @@ interface I_InputProps extends Field.InputProps {
     errorText?: string;
     inputSize?: InputSize;
     rootProps?: Field.RootProps;
-    textarea?: boolean;
-    rows?: number;
-    resize?: 'both' | 'horizontal' | 'vertical' | 'none';
     icon?: any;
     iconPosition?: 'left' | 'right';
+    onClickIcon?: () => void;
 }
 
-const S_Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, I_InputProps>((props, ref) => {
+const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
     const {
         inputSize = 'medium',
         label = '',
@@ -37,64 +35,67 @@ const S_Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, I_InputProps>
         className,
         rootProps,
         autoComplete = 'off',
-        textarea = false,
-        resize = 'both',
-        rows = 1,
         icon,
         iconPosition = 'right',
+        onClickIcon,
         ...inputProps
     } = props;
     const isError = errorText ? 'true' : 'false';
 
+    const inputClasses = cls(styles.input, styles[`size-${inputSize}`], styles['icon-position-' + iconPosition]);
+
+    console.log(isError);
+
     return (
-        <Field.Root {...rootProps} aria-invalid={isError} className={cls(styles.input, className)}>
-            {label && (
-                <div data-part="input-header-wrapper">
-                    <Field.Label {...labelProps} data-error={isError}>
-                        {label}
-                    </Field.Label>
+        <Field.Root {...rootProps} aria-invalid={isError} className={cls(styles.root, className)}>
+            {(label || details) && (
+                <div className={styles.inputHeader}>
+                    {label && (
+                        <Field.Label {...labelProps} className={cls(styles.label, labelProps?.className)}>
+                            {label}
+                        </Field.Label>
+                    )}
                     {details && (
-                        <span {...detailsProps} data-error={isError}>
+                        <span {...detailsProps} className={cls(styles.details, detailsProps?.className)}>
                             {details}
                         </span>
                     )}
                 </div>
             )}
-            {textarea ? (
-                <Field.Textarea
-                    ref={ref as React.Ref<HTMLTextAreaElement>}
-                    className={cls(styles.field, styles.textarea)}
-                    rows={rows}
-                    autoresize={resize === 'none'}
-                    style={{ resize: resize }}
+
+            <div className={styles.inputContainer}>
+                <Field.Input
+                    ref={ref as React.Ref<HTMLInputElement>}
+                    className={inputClasses}
+                    autoComplete={autoComplete}
+                    onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                    onKeyDown={(e) => {
+                        if (['e', 'E', '+', '-'].includes(e.key) && inputProps.type === 'number') {
+                            e.preventDefault();
+                        }
+                    }}
+                    {...inputProps}
                 />
-            ) : (
-                <div className={styles.inputContainer}>
-                    <Field.Input
-                        ref={ref as React.Ref<HTMLInputElement>}
-                        className={cls(styles.field)}
-                        data-error={isError}
-                        data-size={inputSize}
-                        data-icon={!!icon}
-                        autoComplete={autoComplete}
-                        onWheel={(e) => (e.target as HTMLInputElement).blur()}
-                        onKeyDown={(e) => {
-                            if (['e', 'E', '+', '-'].includes(e.key) && inputProps.type === 'number') {
-                                e.preventDefault();
-                            }
-                        }}
-                        {...inputProps}
-                    />
-                    {icon && (
-                        <button type="button" className={styles.iconContainer} data-position={iconPosition}>
-                            {icon}
-                        </button>
-                    )}
-                </div>
+                {icon && (
+                    <button
+                        type="button"
+                        className={cls(styles.icon, styles['icon-position-' + iconPosition])}
+                        data-position={iconPosition}
+                        onClick={onClickIcon}
+                        style={onClickIcon ? { cursor: 'default' } : { cursor: 'pointer' }}
+                    >
+                        {icon}
+                    </button>
+                )}
+            </div>
+
+            {!errorText && description && (
+                <Field.HelperText {...descriptionProps} className={cls(styles.helperText, descriptionProps?.className)}>
+                    {description}
+                </Field.HelperText>
             )}
-            {!errorText && description && <Field.HelperText {...descriptionProps}>{description}</Field.HelperText>}
             {errorText && (
-                <Field.HelperText {...descriptionProps} data-error={isError} data-part="error-text">
+                <Field.HelperText className={cls(styles.errorText, descriptionProps?.className)}>
                     {errorText}
                 </Field.HelperText>
             )}

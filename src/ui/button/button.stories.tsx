@@ -36,12 +36,8 @@ const meta: Meta<typeof S_Button> = {
         onClick: { action: 'clicked' },
     },
     parameters: {
-        backgrounds: {
-            options: {
-                black: { name: 'Black', value: '#333' },
-                white: { name: 'White', value: '#F5F5F5' },
-            },
-        },
+        controls: { expanded: true },
+        layout: 'centered',
     },
 };
 export default meta;
