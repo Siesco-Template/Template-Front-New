@@ -1,4 +1,13 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode, useEffect, useState } from 'react';
+import {
+    ButtonHTMLAttributes,
+    DetailedHTMLProps,
+    FC,
+    ReactNode,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import { S_Link } from '@/shared/routing';
 import { I_Link } from '@/shared/routing/S_Link';
@@ -40,8 +49,16 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     showTooltip = false,
     ...props
 }) => {
+    const btnRef = useRef<HTMLButtonElement>(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
     const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
+    const [fixedWidth, setFixedWidth] = useState<number | undefined>();
+
+    useEffect(() => {
+        if (btnRef.current && !fixedWidth && !isLoading) {
+            setFixedWidth(btnRef.current.offsetWidth);
+        }
+    }, [btnRef?.current]);
 
     const handleMouseEnter = () => {
         if (showTooltip) {
@@ -85,15 +102,16 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     return (
         <div className={styles.btnContainer}>
             <button
+                ref={btnRef}
                 tabIndex={1}
                 {...(props as ButtonElementProps)}
                 className={buttonClasses}
                 disabled={disabled}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                style={{ width: fixedWidth }}
             >
-                {<div className={styles['dot-carousel']}></div>}
-                {children}
+                {isLoading ? <div className={styles['dot-carousel']}></div> : children}
                 {notification && <div className={styles.notification}></div>}
             </button>
             {isTooltipOpen && <div className={styles.tooltip}>{props['aria-label'] || props.title || ''}</div>}

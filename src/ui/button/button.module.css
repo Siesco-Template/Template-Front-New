@@ -547,12 +547,12 @@
 .primary-green .dot-carousel,
 .secondary-green .dot-carousel,
 .ghost-green .dot-carousel {
-    background-color: var(--background-positive, #f44336);
-    color: var(--background-positive, #f44336);
+    background-color: var(--background-positive, #38c172);
+    color: var(--background-positive, #38c172);
     box-shadow:
-        9980px 0 0 0 var(--background-positive, #f44336),
-        9990px 0 0 0 var(--background-positive, #f44336),
-        10000px 0 0 0 var(--background-positive, #f44336);
+        9980px 0 0 0 var(--background-positive, #38c172),
+        9990px 0 0 0 var(--background-positive, #38c172),
+        10000px 0 0 0 var(--background-positive, #38c172);
 }
 
 .primary-secondary .dot-carousel,

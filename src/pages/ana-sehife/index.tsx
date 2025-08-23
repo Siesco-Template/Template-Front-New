@@ -440,7 +440,7 @@ export default function ComponentsPage() {
                         description="Accessible dialog component (modal) with header, content and footer slots. See users modals for real usage."
                     >
                         <DemoSection title="Basic Dialog">
-                            <S_Button variant="main-20" color="primary" onClick={() => setIsDialogOpen(true)}>
+                            <S_Button variant="primary" color="primary" onClick={() => setIsDialogOpen(true)}>
                                 Open Dialog
                             </S_Button>
 
@@ -454,10 +454,10 @@ export default function ComponentsPage() {
                                         <S_Textarea resize="vertical" style={{ maxHeight: '200px' }} />
                                     </div>
                                     <DialogFooter>
-                                        <S_Button variant="outlined-10" onClick={() => setIsDialogOpen(false)}>
+                                        <S_Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
                                             Cancel
                                         </S_Button>
-                                        <S_Button variant="main-10" onClick={() => setIsDialogOpen(false)}>
+                                        <S_Button variant="primary" onClick={() => setIsDialogOpen(false)}>
                                             Confirm
                                         </S_Button>
                                     </DialogFooter>
@@ -539,25 +539,25 @@ const [open, setOpen] = useState(false);
                         description="Versatile button component with multiple variants, colors, and states. Supports icons, loading states, and various interactions."
                     >
                         <DemoSection title="Color Variants">
-                            <S_Button variant="main-20" color="primary">
+                            <S_Button variant="primary" color="primary">
                                 Primary Button
                             </S_Button>
-                            <S_Button variant="main-20" color="secondary">
+                            <S_Button variant="primary" color="secondary">
                                 Secondary Button
                             </S_Button>
-                            <S_Button variant="outlined-20" color="primary">
+                            <S_Button variant="secondary" color="primary">
                                 Outlined Button
                             </S_Button>
-                            <S_Button variant="ghost-20" color="red">
+                            <S_Button variant="ghost" color="red">
                                 Ghost Red
                             </S_Button>
                         </DemoSection>
 
                         <DemoSection title="States">
-                            <S_Button disabled variant="main-20" color="primary">
+                            <S_Button disabled variant="primary" color="primary">
                                 Disabled Button
                             </S_Button>
-                            <S_Button isIcon iconBtnSize="15" variant="main-20" color="secondary" aria-label="Add Item">
+                            <S_Button variant="primary" color="secondary" aria-label="Add Item">
                                 <PlusIcon size={16} />
                             </S_Button>
                         </DemoSection>
@@ -566,7 +566,7 @@ const [open, setOpen] = useState(false);
                             props={[
                                 {
                                     name: 'variant',
-                                    type: "'main-10' | 'main-20' | 'main-30' | 'outlined-10' | 'outlined-20' | 'outlined-30' | 'ghost-10' | 'ghost-20' | 'ghost-30'",
+                                    type: "'main-10' | 'primary' | 'main-30' | 'outlined-10' | 'outlined-20' | 'outlined-30' | 'ghost-10' | 'ghost-20' | 'ghost-30'",
                                     description: 'Button style variant',
                                 },
                                 {
