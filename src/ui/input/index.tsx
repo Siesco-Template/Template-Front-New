@@ -42,9 +42,12 @@ const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
     } = props;
     const isError = errorText ? 'true' : 'false';
 
-    const inputClasses = cls(styles.input, styles[`size-${inputSize}`], styles['icon-position-' + iconPosition]);
-
-    console.log(isError);
+    const inputClasses = cls(
+        styles.input,
+        styles[`size-${inputSize}`],
+        icon && styles['icon-position-' + iconPosition],
+        errorText && styles.error
+    );
 
     return (
         <Field.Root {...rootProps} aria-invalid={isError} className={cls(styles.root, className)}>
@@ -82,7 +85,7 @@ const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
                         className={cls(styles.icon, styles['icon-position-' + iconPosition])}
                         data-position={iconPosition}
                         onClick={onClickIcon}
-                        style={onClickIcon ? { cursor: 'default' } : { cursor: 'pointer' }}
+                        style={onClickIcon ? { cursor: 'pointer' } : { cursor: 'default' }}
                     >
                         {icon}
                     </button>

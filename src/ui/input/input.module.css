@@ -30,6 +30,11 @@
     line-height: var(--lh-16, 16px);
 }
 
+.root:has(.input:disabled) .label,
+.root:has(.input:disabled) .details {
+    color: var(--content-disabled, #a6a6a6);
+}
+
 /* Input */
 .inputContainer {
     position: relative;
@@ -79,7 +84,7 @@
     color: var(--content-tertiary, #666);
 }
 
-.inputContainer .input:not(:focus):not(:placeholder-shown) {
+.inputContainer .input:not(:focus):not(:placeholder-shown):not(.error) {
     border: 1px solid var(--border-tertiary, #ccc);
     background: var(--background-secondary, #f3f3f3);
 }
@@ -89,45 +94,56 @@
     background: var(--background-disabled, #f3f3f3);
 }
 
+.inputContainer .input.error {
+    background: var(--background-primary, #fff);
+    border: 1px solid var(--border-negative, #f44336);
+}
+
 /* Size */
-.input.size-36.icon-position-right {
-    padding: var(--pm-200, 8px) 40px var(--pm-200, 8px) var(--pm-200, 8px);
+.input.size-36 {
     border-radius: var(--br-2xl, 12px);
+    padding: var(--pm-200, 8px);
+}
+.input.size-36.icon-position-right {
+    padding-right: 40px;
 }
 .input.size-36.icon-position-left {
-    padding: var(--pm-200, 8px) var(--pm-200, 8px) var(--pm-200, 8px) 40px;
-    border-radius: var(--br-2xl, 12px);
+    padding-left: 40px;
 }
 
-.input.size-44.icon-position-right {
+.input.size-44 {
     height: 44px;
-    padding: var(--pm-300, 14px) 40px var(--pm-300, 14px) var(--pm-350, 16px);
     border-radius: var(--br-2xl, 12px);
+    padding: var(--pm-300, 14px) var(--pm-350, 16px);
+}
+.input.size-44.icon-position-right {
+    padding-right: 40px;
 }
 .input.size-44.icon-position-left {
-    height: 44px;
-    padding: var(--pm-300, 14px) var(--pm-350, 16px) var(--pm-300, 14px) 40px;
-    border-radius: var(--br-2xl, 12px);
+    padding-left: 40px;
 }
 
-.input.size-48.icon-position-right {
-    padding: var(--pm-300, 14px) 40px var(--pm-300, 14px) var(--pm-350, 16px);
+.input.size-48 {
     border-radius: var(--br-3xl, 16px);
+    padding: var(--pm-300, 14px) var(--pm-350, 16px);
+}
+.input.size-48.icon-position-right {
+    padding-right: 40px;
 }
 .input.size-48.icon-position-left {
-    padding: var(--pm-300, 14px) var(--pm-350, 16px) var(--pm-300, 14px) 40px;
-    border-radius: var(--br-3xl, 16px);
+    padding-left: 40px;
 }
 
-.input.size-52.icon-position-right {
+.input.size-52 {
     height: 40px;
-    padding: var(--pm-350) 40px var(--pm-350) var(--pm-350);
     border-radius: var(--br-3xl, 16px);
+    padding: var(--pm-350);
+}
+.input.size-52.icon-position-right {
+    padding-right: 40px;
 }
 .input.size-52.icon-position-left {
-    height: 40px;
-    padding: var(--pm-350) var(--pm-350) var(--pm-350) 40px;
-    border-radius: var(--br-3xl, 16px);
+    padding-left: 40px;
 }
 
 /* Icon */
