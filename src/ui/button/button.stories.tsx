@@ -29,7 +29,7 @@ const meta: Meta<typeof S_Button> = {
         size: { control: 'select', options: sizes },
         disabled: { control: 'boolean' },
         disableAnimation: { control: 'boolean' },
-        isLoading: { control: 'boolean', name: 'isLoading' },
+        isLoading: { control: 'boolean' },
         notification: { control: 'boolean' },
         showTooltip: { control: 'boolean' },
         className: { control: false },
@@ -70,6 +70,7 @@ export const GhostIcon: Story = {
         children: '⚙️',
         variant: 'ghost',
         color: 'primary',
+        showTooltip: true,
     },
 };
 
@@ -115,5 +116,15 @@ export const AsLink: Story = {
         children: 'Go to Dashboard',
         variant: 'primary',
         color: 'primary',
+    },
+};
+
+export const WithTooltip: Story = {
+    args: {
+        children: 'Hover me',
+        variant: 'secondary',
+        color: 'primary',
+        showTooltip: true,
+        title: 'Tooltip message',
     },
 };

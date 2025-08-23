@@ -55,7 +55,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     const [fixedWidth, setFixedWidth] = useState<number | undefined>();
 
     useEffect(() => {
-        if (btnRef.current && !fixedWidth && !isLoading) {
+        if (btnRef.current && !fixedWidth) {
             setFixedWidth(btnRef.current.offsetWidth);
         }
     }, [btnRef?.current]);
@@ -100,22 +100,32 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     }
 
     return (
-        <div className={styles.btnContainer}>
+        <>
             <button
                 ref={btnRef}
-                tabIndex={1}
-                {...(props as ButtonElementProps)}
+                tabIndex={-1}
                 className={buttonClasses}
-                disabled={disabled}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                style={{ width: fixedWidth }}
+                style={{ position: 'absolute', left: '-9999px', width: isLoading ? fixedWidth : undefined }}
             >
-                {isLoading ? <div className={styles['dot-carousel']}></div> : children}
-                {notification && <div className={styles.notification}></div>}
+                {children}
             </button>
-            {isTooltipOpen && <div className={styles.tooltip}>{props['aria-label'] || props.title || ''}</div>}
-        </div>
+
+            <div className={styles.btnContainer}>
+                <button
+                    tabIndex={1}
+                    {...(props as ButtonElementProps)}
+                    className={buttonClasses}
+                    disabled={disabled}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    style={{ width: isLoading ? fixedWidth : undefined }}
+                >
+                    {isLoading ? <div className={styles['dot-carousel']}></div> : children}
+                    {notification && <div className={styles.notification}></div>}
+                </button>
+                {isTooltipOpen && <div className={styles.tooltip}>{props['aria-label'] || props.title || ''}</div>}
+            </div>
+        </>
     );
 };
 
