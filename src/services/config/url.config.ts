@@ -25,7 +25,7 @@ export const APP_URLS = {
 
     changePassword: (url = '', urlParams = {}) => APP_URLS.root('/change-password' + url, urlParams),
     forgotPassword: (url = '', urlParams = {}) => APP_URLS.root('/forgot-password' + url, urlParams),
-    newPassword: (url = '', urlParams = {}) => APP_URLS.root('/newPassword' + url, urlParams),
+    newPassword: (url = '', urlParams = {}) => APP_URLS.root('/new-password' + url, urlParams),
     otp: (url = '', urlParams = {}) => APP_URLS.root('/otp' + url, urlParams),
 
     notifications: (url = '', urlParams = {}) => APP_URLS.root('/bildirisler' + url, urlParams),

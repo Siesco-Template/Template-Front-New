@@ -17,7 +17,7 @@ interface ButtonProps {
     className?: string;
     disabled?: boolean;
     disableAnimation?: boolean;
-    isLaoding?: boolean;
+    isLoading?: boolean;
     notification?: boolean;
     showTooltip?: boolean;
 }
@@ -36,7 +36,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     disabled,
     className = '',
     notification = false,
-    isLaoding = false,
+    isLoading = false,
     showTooltip = false,
     ...props
 }) => {
@@ -70,6 +70,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
         !disableAnimation && styles.animation,
         styles[`${variant}-${color}`],
         styles[`${variant}-size-${size}`],
+        isLoading && styles.loading,
         className
     );
 
@@ -91,8 +92,8 @@ const S_Button: FC<I_ButtonComponentProps> = ({
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                {isLaoding && <span className={styles.loader}></span>}
-                {isLaoding ? <div className="loader"></div> : children}{' '}
+                {<div className={styles['dot-carousel']}></div>}
+                {children}
                 {notification && <div className={styles.notification}></div>}
             </button>
             {isTooltipOpen && <div className={styles.tooltip}>{props['aria-label'] || props.title || ''}</div>}

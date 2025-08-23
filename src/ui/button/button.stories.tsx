@@ -18,7 +18,7 @@ const meta: Meta<typeof S_Button> = {
         children: 'Click me',
         disabled: false,
         disableAnimation: false,
-        isLaoding: false,
+        isLoading: false,
         notification: false,
         showTooltip: false,
     },
@@ -29,7 +29,7 @@ const meta: Meta<typeof S_Button> = {
         size: { control: 'select', options: sizes },
         disabled: { control: 'boolean' },
         disableAnimation: { control: 'boolean' },
-        isLaoding: { control: 'boolean', name: 'isLoading' },
+        isLoading: { control: 'boolean', name: 'isLoading' },
         notification: { control: 'boolean' },
         showTooltip: { control: 'boolean' },
         className: { control: false },
@@ -85,7 +85,7 @@ export const WithNotification: Story = {
 export const Loading: Story = {
     args: {
         children: 'Loading…',
-        isLaoding: true,
+        isLoading: true,
         variant: 'primary',
         color: 'primary',
     },
