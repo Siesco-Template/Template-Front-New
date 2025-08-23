@@ -135,9 +135,9 @@
 }
 
 .input.size-52 {
-    height: 40px;
+    height: 52px;
     border-radius: var(--br-3xl, 16px);
-    padding: var(--pm-350);
+    padding: var(--pm-350, 16px);
 }
 .input.size-52.icon-position-right {
     padding-right: 40px;
