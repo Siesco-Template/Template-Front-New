@@ -108,13 +108,14 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 setSelectedFilter(response);
                 setEditing(false);
                 setOpenDropdownId(null);
-
                 onApplyFilter(response?.filterValues ?? []);
             })
             .catch((error) => {
                 console.error('Filter əldə edərkən xəta baş verdi:', error);
             });
     };
+
+    console.log(selectedFilter, 'selectedFilter');
 
     // axtaris
     const handleSearchChange = (value: string) => {
@@ -219,7 +220,6 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
     const handleBack = () => {
         setSelectedFilter(null);
         setEditing(false);
-        // QƏTİYYƏN onApplyFilter çağırmırıq ki, URL dəyişməsin
     };
     return (
         <ul className={styles.savedFilterList}>

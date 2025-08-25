@@ -100,10 +100,11 @@ export const applyFiltersToUrl = (
     filters: { id: string; value: any }[],
     skip: number = 0,
     take: number = 20,
-    sort: any[] = []
-) => {
-    const validFilters = filters
-        ?.filter((f) => {
+    sort: any[] = [],
+    opts?: { replace?: boolean }
+): boolean => {
+    const validFilters = (filters || [])
+        .filter((f) => {
             if (f.value === null || f.value === undefined) return false;
             if (typeof f.value === 'string' && f.value.trim() === '') return false;
             if (Array.isArray(f.value) && f.value.length === 0) return false;
@@ -111,8 +112,8 @@ export const applyFiltersToUrl = (
                 typeof f.value === 'object' &&
                 'min' in f.value &&
                 'max' in f.value &&
-                f.value.min === '' &&
-                f.value.max === ''
+                (f.value.min === '' || f.value.min == null) &&
+                (f.value.max === '' || f.value.max == null)
             )
                 return false;
             return true;
@@ -123,20 +124,29 @@ export const applyFiltersToUrl = (
                 typeof f.value === 'object' && 'min' in f.value && 'max' in f.value
                     ? `${f.value.min ?? ''},${f.value.max ?? ''}`
                     : Array.isArray(f.value)
-                      ? f.id.toLowerCase().includes('date')
-                          ? f.value
-                          : f.value.join(',')
+                      ? f.value
                       : f.value,
         }));
 
-    const newFilterData: any = { filter: validFilters, take: 20, skip: 0 };
+    const newFilterData: any = { filter: validFilters, skip, take, sort };
 
-    if (Array.isArray(sort) && sort.length > 0) {
-        newFilterData.sort = sort;
+    const currentHash = window.location.hash || '';
+    const base = currentHash.split('?')[0]; // mövcud route hissəsi (#/table)
+    const nextHash = `${base}?filterData=${JSON.stringify(newFilterData)}`;
+
+    if (currentHash === nextHash) return false;
+
+    if (opts?.replace) {
+        const url = window.location.pathname + window.location.search + nextHash;
+        window.history.replaceState(null, '', url);
+    } else {
+        window.location.hash = nextHash;
     }
-    const base = window.location.hash.split('?')[0];
+    setTimeout(() => {
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+    }, 0);
 
-    window.location.hash = `${base}?filterData=${JSON.stringify(newFilterData)}`;
+    return true;
 };
 
 export const clearUrlParams = () => {

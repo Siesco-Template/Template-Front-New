@@ -13,6 +13,7 @@ interface TableFooterProps {
     isInfiniteScroll?: boolean;
     table_key?: string;
     onInfiniteChange?: (val: boolean) => void;
+    filtersReady?: boolean;
 }
 
 const Table_Footer: React.FC<TableFooterProps> = ({
@@ -20,6 +21,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
     isInfiniteScroll = false,
     table_key,
     onInfiniteChange,
+    filtersReady = true,
 }: any) => {
     const { filterDataState, onPaginationChange, setFilterDataState } = useTableContext();
     const { config } = useTableConfig();
@@ -66,6 +68,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
 
     useEffect(() => {
         if (!table_key) return;
+        if (!filtersReady) return;
 
         const filterDataParam = searchParams.get('filterData');
         let parsed: any;

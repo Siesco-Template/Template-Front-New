@@ -71,7 +71,6 @@ function ConfirmModal(props: Props) {
                 <div className={styles.body}>
                     {isSaveMode ? (
                         <>
-                            {/* Optional email/info */}
                             {(props as SaveModeProps).mode === 'create' && (props as SaveModeProps).email && (
                                 <div className={styles.createWarning}>
                                     <p>Filtri yadda saxlamaq üçün ad daxil edin.</p>

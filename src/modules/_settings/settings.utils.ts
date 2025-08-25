@@ -38,41 +38,49 @@ export function convertPersonalizationToNavigation(data?: PersonalizationItem[])
 }
 
 export function getPersonalizationDiff(current: NavigationItem[], initial: NavigationItem[]): Record<string, any> {
-    const diff: Record<string, any> = {}; // Fərqlər
+    const diff: Record<string, any> = {};
 
-    // İki menyu muq
     const compare = (curr: NavigationItem[], init: NavigationItem[], path: string) => {
-        const length = Math.max(curr.length, init.length); // İkisinə görə maksimum uzunluq
+        const maxLength = Math.max(curr.length, init.length);
 
-        for (let i = 0; i < length; i++) {
-            const item = curr[i]; // Hazırkı konfiqurasiya
-            const initItem = init[i]; // İlkin konfiqurasiya
-            const basePath = `${path}[${i}]`; //  extraConfig.personalizationMenu[0])
+        for (let i = 0; i < maxLength; i++) {
+            const currentItem = curr[i];
+            const initialItem = init[i];
 
-            if (!item || !initItem) continue; // Hər iki obyekt varsa müqayisə edək
+            if (!currentItem || !initialItem) continue;
 
-            const fieldsToCompare: [keyof NavigationItem, string][] = [
-                ['show', 'visible'], // show → visible
-                ['title', 'label'], // title → label
-            ];
-
-            for (const [itemKey, configKey] of fieldsToCompare) {
-                const currentVal = item[itemKey]; // Hazırkı dəyər
-                const initialVal = initItem[itemKey]; // İlkin dəyər
-
-                if (currentVal !== initialVal) {
-                    // Əgər dəyişiklik varsa diff obyektinə əlavə et
-                    diff[`${basePath}.${configKey}`] = currentVal;
+            // ID-lər fərqli olarsa sırada dəyişiklik baş verib
+            if (currentItem.id !== initialItem.id) {
+                // tap curr[] içində initialItem.id-nin indexini (əgər tapılarsa)
+                const newIndex = curr.findIndex((it) => it.id === initialItem.id);
+                if (newIndex !== -1 && newIndex !== i) {
+                    diff[`${path}[${newIndex}].order`] = i;
+                }
+                // həmçinin, əgər curr[i] → yeni elementdirsə, onun da indexini qeyd et
+                const expectedIndex = init.findIndex((it) => it.id === currentItem.id);
+                if (expectedIndex !== -1 && expectedIndex !== i) {
+                    diff[`${path}[${i}].order`] = expectedIndex;
                 }
             }
 
-            // Əgər alt menyular varsa, rekursiv müqayisə et
-            if ((item.subLinks?.length || 0) > 0 || (initItem.subLinks?.length || 0) > 0) {
-                compare(item.subLinks || [], initItem.subLinks || [], `${basePath}.children`);
+            const fieldsToCompare: [keyof NavigationItem, string][] = [
+                ['show', 'visible'],
+                ['title', 'label'],
+            ];
+
+            for (const [itemKey, configKey] of fieldsToCompare) {
+                if (currentItem[itemKey] !== initialItem[itemKey]) {
+                    diff[`${path}[${i}].${configKey}`] = currentItem[itemKey];
+                }
+            }
+
+            // Rekursiv alt menyulara bax
+            if ((currentItem.subLinks?.length || 0) > 0 || (initialItem.subLinks?.length || 0) > 0) {
+                compare(currentItem.subLinks || [], initialItem.subLinks || [], `${path}[${i}].children`);
             }
         }
     };
 
     compare(current, initial, 'extraConfig.personalizationMenu');
-    return diff; // Tapılan fərqləri qaytar
+    return diff;
 }

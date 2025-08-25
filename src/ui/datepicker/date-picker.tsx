@@ -6,11 +6,13 @@ import formatPickerLang from './locales/az_AZ';
 import styles from './style.module.css';
 
 type CustomDatePickerProps = Omit<DatePickerProps, 'as'> & {
-    error?: string;
+    error?: string | false;
 };
 
 export default function CustomDatePicker(props: CustomDatePickerProps) {
     const { error, label, style, ...rest } = props;
+
+    console.log(error, 'error');
     return (
         <div className={styles.wrapper}>
             {label && <label className={styles.label}>{label}</label>}
@@ -21,7 +23,7 @@ export default function CustomDatePicker(props: CustomDatePickerProps) {
                     placement="auto"
                     style={{
                         ...(style || {}),
-                        ...(error ? { borderColor: 'var(--color-red-400)' } : {}),
+                        ...(error && typeof error === 'string' ? { borderColor: 'var(--color-red-400)' } : {}),
                     }}
                 />
             </CustomProvider>

@@ -6,7 +6,7 @@ import formatPickerLang from './locales/az_AZ';
 import styles from './style.module.css';
 
 type CustomDateRangePickerProps = Omit<DateRangePickerProps, 'as'> & {
-    error?: string;
+    error?: string | false;
 };
 export default function CustomDateRangePicker(props: CustomDateRangePickerProps) {
     const { error, label, style, ...rest } = props;
@@ -21,7 +21,7 @@ export default function CustomDateRangePicker(props: CustomDateRangePickerProps)
                     placement="auto"
                     style={{
                         ...(style || {}),
-                        ...(error ? { borderColor: 'var(--color-red-400)' } : {}),
+                        ...(error && typeof error === 'string' ? { borderColor: 'var(--color-red-400)' } : {}),
                     }}
                 />
             </CustomProvider>

@@ -27,7 +27,7 @@ const SortableItem: React.FC<{
     id: string;
     searchText?: string;
     onToggleVisibility: (key: string) => void;
-}> = ({ item, id, searchText, onToggleVisibility }) => {
+}> = ({ item, id, searchText, onToggleVisibility }: any) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     const style: React.CSSProperties = {
@@ -97,7 +97,7 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
         );
         setSavedFilters(updated);
 
-        const visibilityMap = updated.reduce<Record<string, boolean>>((acc, curr) => {
+        const visibilityMap = updated.reduce<Record<string, boolean>>((acc, curr: any) => {
             acc[curr.key] = curr.visible !== false;
             return acc;
         }, {});

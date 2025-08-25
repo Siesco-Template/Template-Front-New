@@ -2,9 +2,8 @@ import { Checkbox, Dropdown } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { flushSync } from 'react-dom';
 
-import { S_Button } from '@/ui';
+import { S_Button, S_Input } from '@/ui';
 
-import TextFilter from '../filter/filters/TextFilter';
 import { FloppyDiskIcon } from '../icons';
 import { VisibilityIcon } from './icons';
 import { useTableContext } from './table-context';
@@ -81,7 +80,12 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
             dropdownRender={() => (
                 <div className={styles.visibilityDropdown}>
                     <div className={styles.visibilityDropdownHeader}>
-                        <TextFilter placeholder="Axtar " value={searchTerm} onChange={setSearchTerm} compact />
+                        <S_Input
+                            placeholder="Axtar"
+                            value={searchTerm ?? ''}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            inputSize="small"
+                        />
                         <S_Button
                             variant="main-20"
                             color="primary"
@@ -90,8 +94,8 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                             aria-label="Təsdiq et"
                             onClick={(e) => {
                                 e.preventDefault();
-                                (flushSync(() => setDropdownOpen(false)));
-                                (handleSave());
+                                flushSync(() => setDropdownOpen(false));
+                                handleSave();
                             }}
                             disabled={!hasAnyVisibleSelected}
                         >

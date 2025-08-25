@@ -1,5 +1,5 @@
-import { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
-import React, { useState } from 'react';
+import { error } from 'console';
+import React, { useEffect, useState } from 'react';
 
 import CustomDatePicker from '@/ui/datepicker/date-picker';
 import CustomDateRangePicker from '@/ui/datepicker/date-range-picker';
@@ -9,13 +9,19 @@ import styles from './style.module.css';
 
 interface DateIntervalFilterProps {
     label?: string;
-    value?: string | [string, string] | any;
+    value?: string | [string, string] | Date | [Date, Date];
     onChange: (value: string | [string, string]) => void;
     readOnly?: boolean;
     singlePlaceholder?: string;
-    rangePlaceholders?: [string, string];
+    rangePlaceholders?: [string, string] | string;
     inline?: boolean;
+    errorMsg?: string | false;
 }
+
+const formatDate = (date: Date): string =>
+    `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
+
+const isDateInstance = (val: any): val is Date => val instanceof Date && !isNaN(val.getTime());
 
 const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
     label,
@@ -25,17 +31,53 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
     singlePlaceholder = 'Tarix seçin',
     rangePlaceholders = ['Başlanğıc tarix', 'Bitmə tarixi'],
     inline = false,
+    errorMsg,
 }) => {
     const [isRangeMode, setIsRangeMode] = useState(Array.isArray(value));
+
+    const placeholder =
+        typeof rangePlaceholders === 'string' ? rangePlaceholders : `${rangePlaceholders[0]} – ${rangePlaceholders[1]}`;
 
     const toggleMode = () => {
         if (readOnly) return;
         const next = !isRangeMode;
         setIsRangeMode(next);
-        onChange(next ? ['', ''] : '');
     };
 
-    const [date, setDate] = useState(value || (isRangeMode ? ['', ''] : ''));
+    console.log(value, 'value in date interval');
+
+    const toDate = (v: string | Date | null | undefined) =>
+        v == null || v === ''
+            ? null
+            : v instanceof Date
+              ? v
+              : (() => {
+                    const [dd, mm, yyyy] = String(v).split('.');
+                    return new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+                })();
+
+    const internalValue = (() => {
+        if (isRangeMode) {
+            if (Array.isArray(value)) {
+                const [a, b] = value;
+                return [toDate(a), toDate(b)] as [Date | null, Date | null];
+            }
+            return [null, null] as [null, null];
+        } else {
+            return toDate(value as any);
+        }
+    })();
+
+    const handleChange = (val: any) => {
+        if (isRangeMode) {
+            const [start, end] = (Array.isArray(val) ? val : [null, null]) as [Date | null, Date | null];
+            const formatted: [string, string] = [start ? formatDate(start) : '', end ? formatDate(end) : ''];
+            onChange(formatted);
+        } else {
+            const formatted = val ? formatDate(val as Date) : '';
+            onChange(formatted);
+        }
+    };
 
     return (
         <div className={`${styles.container} ${inline ? styles.inlineContainer : ''}`}>
@@ -51,20 +93,22 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
             <div className={styles.inputWrapper}>
                 {isRangeMode ? (
                     <CustomDateRangePicker
-                        value={date}
-                        onChange={setDate}
-                        placeholder={`${rangePlaceholders[0]} – ${rangePlaceholders[1]}`}
+                        value={internalValue}
+                        onChange={handleChange}
+                        placeholder={placeholder}
                         format="dd.MM.yyyy"
-                        style={{ width: 320 }}
+                        style={{ width: '100%' }}
                         showHeader={false}
+                        error={errorMsg}
                     />
                 ) : (
                     <CustomDatePicker
-                        value={date}
-                        onChange={setDate}
+                        value={internalValue}
+                        onChange={handleChange}
                         placeholder={singlePlaceholder}
                         format="dd.MM.yyyy"
-                        style={{ width: 280 }}
+                        style={{ width: '100%' }}
+                        error={errorMsg}
                         oneTap
                     />
                 )}

@@ -282,7 +282,9 @@ export default function ComponentsPage() {
                             </h1>
                             <NavLink
                                 to="https://template.microsol.az/storybook/?path=/docs/configure-your-project--docs"
-                                className="!text-4xl !font-bold !bg-gradient-to-r !from-orange-500 !to-pink-600 !bg-clip-text !text-transparent !mb-4"
+                                className="!text-4xl !font-bold !bg-gradient-to-r !from-orange-500 !to-pink-600 !bg-clip-text !text-transparent !mb-4
+           !transition-all !duration-300 !ease-in-out 
+           hover:!scale-105 hover:!underline hover:!decoration-pink-600 hover:!decoration-2"
                                 target="_blank"
                             >
                                 Storybook demo
@@ -295,7 +297,7 @@ export default function ComponentsPage() {
                     </div>
                 </div>
 
-                <div className="!max-w-7xl !mx-auto !px-6 !py-12">
+                <div className="!max-w-7xl !mx-auto !px-6 !py-12 hidden">
                     <ComponentSection
                         title="Avatar"
                         description="Display user avatars with fallback initials and lazy loading support. Perfect for user profiles and contact lists."

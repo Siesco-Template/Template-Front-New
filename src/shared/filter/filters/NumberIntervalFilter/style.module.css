@@ -10,7 +10,7 @@
 .inputWrapper {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid #dee2e6;
+    border: 1px solid hsl(var(--clr-grey-300));
     overflow: hidden;
     transition: all 0.3s ease;
 }
@@ -93,8 +93,8 @@
     cursor: pointer;
     font-size: 14px;
 }
-.inputWrapper:hover {
-    border-color: #4096ff;
+.inputWrapper:focus-within {
+    border-color: hsl(var(--clr-primary-500));
     background-color: #ffffff;
 }
 .inlineContainer {

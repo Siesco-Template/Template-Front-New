@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
@@ -15,7 +15,6 @@ import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
-import TableRowActions from '@/shared/table/tableRowActions';
 
 import styles from './style.module.css';
 
@@ -64,12 +63,16 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     isConfigCollapsed,
     onToggleConfigCollapse,
 }) => {
-    const { columnVisibility, filterDataState } = useTableContext();
+    const { columnVisibility, filterDataState, onColumnFiltersChange } = useTableContext();
 
+    const location = useLocation();
     const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-    const [loading, setLoading] = useState(false);
+    const allowFetchRef = useRef(false);
 
+    const { loadConfigFromApi, config } = useTableConfig();
+
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState<BudceTableData[]>([]);
     const [totalItems, setTotalItems] = useState(0);
     const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
@@ -77,70 +80,30 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [isInfinite, setIsInfinite] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const handleCustomExport = () => {
-        setIsExcelModalOpen(true);
-    };
+    const [filtersReady, setFiltersReady] = useState(false);
 
-    const location = useLocation();
+    const handleCustomExport = () => setIsExcelModalOpen(true);
 
-    const fetchData = (isLoadMore = false) => {
-        if (loading) return;
-        setLoading(true);
+    const didMountColVis = useRef(false);
+    const colVisJson = JSON.stringify(columnVisibility);
 
-        console.log('budayammm');
-        const raw: any = filterDataForFetch();
+    const handleFilterPanelChange = useCallback(
+        (key: string, value: any) => {
+            const isEmpty =
+                value === '' ||
+                value == null ||
+                (Array.isArray(value) && value.length === 0) ||
+                (typeof value === 'object' && 'min' in value && 'max' in value && value.min === '' && value.max === '');
 
-        const nextPage = isLoadMore ? currentPage + 1 : 1;
+            const next = [
+                ...(filterDataState?.filter ?? []).filter((f: any) => f.id !== key),
+                ...(!isEmpty ? [{ id: key, value }] : []),
+            ];
 
-        const queryParams = isInfinite
-            ? buildQueryParamsFromTableRequest(raw, {
-                  isInfiniteScroll: true,
-                  page: nextPage,
-              })
-            : buildQueryParamsFromTableRequest(raw);
-
-        const allowed = new Set(
-            columns
-                .filter(
-                    (c) =>
-                        typeof c.accessorKey === 'string' && c.accessorKey.trim() !== '' && c.accessorKey !== 'actions'
-                )
-                .map((c) => c.accessorKey as string)
-        );
-
-        let visibleColumns = Object.entries(columnVisibility)
-            .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key))
-            .map(([key]) => key);
-
-        visibleColumns = Array.from(new Set(visibleColumns));
-
-        const mandatoryHidden = ['Id'];
-
-        if (visibleColumns.length > 0) {
-            queryParams.columns = [...new Set([...visibleColumns, ...mandatoryHidden])].join(',');
-        } else {
-            queryParams.columns = mandatoryHidden.join(',');
-        }
-
-        reportService
-            .getAllReports('reports', queryParams)
-            .then((res: any) => {
-                if (isInfinite) {
-                    if (isLoadMore) {
-                        setData((prev) => [...prev, ...res.items]);
-                        setCurrentPage(nextPage);
-                    } else {
-                        setData(res.items);
-                        setCurrentPage(1);
-                    }
-                } else {
-                    setData(res.items);
-                }
-                setTotalItems(res.totalCount);
-            })
-            .catch(console.error)
-            .finally(() => setLoading(false));
-    };
+            onColumnFiltersChange?.(next);
+        },
+        [filterDataState?.filter, onColumnFiltersChange]
+    );
 
     const columns: CustomMRTColumn<BudceTableData>[] = [
         {
@@ -153,21 +116,19 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         {
             accessorKey: 'CompileDate',
             header: 'Tərtib tarixi',
-            filterVariant: 'text',
+            // @ts-expect-error
+            filterVariant: 'date-interval',
             placeholder: 'Tərtib tarixi',
             Cell: ({ cell }: any) => {
                 const rawValue = cell.getValue();
                 const date = rawValue ? new Date(rawValue) : null;
-
                 const formatted =
                     date && !isNaN(date.getTime())
                         ? `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`
                         : '';
-
                 return <div>{formatted}</div>;
             },
         },
-
         {
             accessorKey: 'Term',
             header: 'Rüb',
@@ -193,11 +154,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             Cell: ({ cell }) => {
                 const status = cell.getValue<ReportStatus | null>();
                 const label = status != null ? ReportStatusLabels[status] : undefined;
-
                 if (!label) return null;
-
                 const { bg, text } = ReportStatusColors[status!] ?? { bg: '#eee', text: '#333' };
-
                 return (
                     <span
                         style={{
@@ -215,7 +173,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 );
             },
         },
-
         {
             id: 'actions',
             header: '',
@@ -229,43 +186,21 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             Cell: ({ row }: any) => {
                 if (row.original?.isSummaryRow) return null;
                 const onClick = (action: 'edit' | 'delete' | 'block' | 'permissions' | 'resetPassword') => {
-                    // setSelectedUserId(row.id);
-                    if (action === 'edit') {
-                        // setIsEditModalOpen(true);
-                    } else if (action === 'block') {
-                        // setIsBlockModalOpen(true);
-                    } else if (action === 'delete') {
-                        // setIsDeleteModalOpen(true);
-                    } else if (action === 'permissions') {
-                        // navigate(APP_URLS.huquqlar('', { userId: row.id }));
-                    } else if (action === 'resetPassword') {
-                        // setIsResetPasswordModalOpen(true);
-                    }
+                    // ...
                 };
                 return (
                     <div
                         data-row-actions
                         onClick={(e) => e.stopPropagation()}
                         onDoubleClick={(e) => e.stopPropagation()}
-                    >
-                        <TableRowActions
-                            onDelete={() => onClick('delete')}
-                            onBlock={() => onClick('block')}
-                            onEdit={() => onClick('edit')}
-                            onResetPassword={() => onClick('resetPassword')}
-                        />
-                    </div>
+                    ></div>
                 );
             },
         },
     ];
 
     const filterColumns = [
-        {
-            accessorKey: 'Number',
-            header: 'Unikal nömrə',
-            filterVariant: 'text',
-        },
+        { accessorKey: 'Number', header: 'Unikal nömrə', filterVariant: 'text' },
         {
             accessorKey: 'ReportStatus',
             header: 'Status',
@@ -287,28 +222,122 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 { label: '4', value: 4 },
             ],
             showMoreColumns: [
-                {
-                    accessorKey: 'Number',
-                    header: 'Unikal nömrə',
-                    filterVariant: 'text',
-                    placeholder: 'Unikal nömrə',
-                },
+                { accessorKey: 'Number', header: 'Unikal nömrə', filterVariant: 'text', placeholder: 'Unikal nömrə' },
             ],
+        },
+        {
+            accessorKey: 'Test',
+            header: 'Test',
+            filterVariant: 'number-interval',
+        },
+        {
+            accessorKey: 'CompileDate',
+            header: 'Tərtib tarixi',
+            filterVariant: 'date-interval',
         },
     ];
 
     const [filters, setFilters] = useState<FilterConfig[]>([]);
 
     useEffect(() => {
-        const generatedFilters = generateFiltersFromColumns(filterColumns);
-        setFilters(generatedFilters);
+        const generated = generateFiltersFromColumns(filterColumns);
+        setFilters(generated);
+
+        // loadConfigFromApi();
+    }, []);
+
+    console.log(config, 'config in table');
+
+    const fetchData = useCallback(
+        (isLoadMore = false, reason: string = 'unknown') => {
+            if (!allowFetchRef.current) {
+                console.log('[fetchData] BLOCKED (allowFetchRef=false). reason=', reason);
+                return;
+            }
+            if (loading) return;
+
+            setLoading(true);
+            console.log('[fetchData] GO. isLoadMore=', isLoadMore, 'reason=', reason);
+
+            const raw: any = filterDataForFetch();
+            const nextPage = isLoadMore ? currentPage + 1 : 1;
+
+            const queryParams = isInfinite
+                ? buildQueryParamsFromTableRequest(raw, { isInfiniteScroll: true, page: nextPage })
+                : buildQueryParamsFromTableRequest(raw);
+
+            const allowed = new Set(
+                columns
+                    .filter(
+                        (c) =>
+                            typeof c.accessorKey === 'string' &&
+                            c.accessorKey.trim() !== '' &&
+                            c.accessorKey !== 'actions'
+                    )
+                    .map((c) => c.accessorKey as string)
+            );
+
+            let visibleColumns = Object.entries(columnVisibility)
+                .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key))
+                .map(([key]) => key);
+
+            visibleColumns = Array.from(new Set(visibleColumns));
+            const mandatoryHidden = ['Id'];
+
+            if (visibleColumns.length > 0) {
+                queryParams.columns = [...new Set([...visibleColumns, ...mandatoryHidden])].join(',');
+            } else {
+                queryParams.columns = mandatoryHidden.join(',');
+            }
+
+            reportService
+                .getAllReports('reports', queryParams)
+                .then((res: any) => {
+                    if (isInfinite) {
+                        if (isLoadMore) {
+                            setData((prev) => [...prev, ...res.items]);
+                            setCurrentPage(nextPage);
+                        } else {
+                            setData(res.items);
+                            setCurrentPage(1);
+                        }
+                        console.log('[fetchData] infinite branch');
+                    } else {
+                        setData(res.items);
+                    }
+                    setTotalItems(res.totalCount);
+                })
+                .catch(console.error)
+                .finally(() => setLoading(false));
+        },
+        [loading, isInfinite, currentPage, columnVisibility]
+    );
+
+    const handleLoadMore = useCallback(() => fetchData(true, 'table-loadMore'), [fetchData]);
+
+    const [hashKey, setHashKey] = useState<string>(() => window.location.hash);
+
+    useEffect(() => {
+        const onHash = () => setHashKey(window.location.hash);
+        window.addEventListener('hashchange', onHash);
+        return () => window.removeEventListener('hashchange', onHash);
     }, []);
 
     useEffect(() => {
-        if (Object.keys(columnVisibility).length > 0) {
-            fetchData();
+        if (!filtersReady) return;
+        fetchData(false, 'deps-change');
+    }, [filtersReady, location.search, isInfinite]);
+
+    useEffect(() => {
+        if (!filtersReady) return;
+
+        if (!didMountColVis.current) {
+            didMountColVis.current = true;
+            return;
         }
-    }, [columnVisibility, location.search, isInfinite]);
+
+        fetchData(false, 'column-visibility-change');
+    }, [colVisJson, filtersReady]);
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
@@ -323,7 +352,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 title={'Table Demo'}
                 onToggleFilter={onToggleCollapse}
                 onToggleConfig={onToggleConfigCollapse}
-                onRefresh={fetchData}
+                onRefresh={() => fetchData(false, 'header-refresh')}
                 page="report"
                 onClickCustomExport={handleCustomExport}
                 actions={['create', 'exportFile']}
@@ -334,9 +363,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             <div className={styles.wrapper}>
                 <div
                     className={styles.tableArea}
-                    style={{
-                        marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px',
-                    }}
+                    style={{ marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px' }}
                 >
                     <div className={styles.tableScrollWrapper}>
                         <Table
@@ -356,7 +383,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             enableCheckbox
                             getRowId={(r) => String((r as any).Id)}
                             totalDBRowCount={totalItems}
-                            fetchh={fetchData.bind(null, true)}
+                            fetchh={handleLoadMore}
                             totalFetched={data?.length}
                             isInfinite={isInfinite}
                         />
@@ -367,6 +394,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         table_key="customer_table"
                         isInfiniteScroll={isInfinite}
                         onInfiniteChange={setIsInfinite}
+                        filtersReady={filtersReady}
                     />
                 </div>
 
@@ -380,10 +408,14 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     <FilterPanel
                         filters={filters}
                         storageKey="customer_table"
-                        onChange={() => {}}
+                        onChange={handleFilterPanelChange}
                         isCollapsed={isFilterCollapsed}
                         onToggleCollapse={onToggleCollapse}
                         table_key="reports"
+                        onReady={() => {
+                            allowFetchRef.current = true;
+                            setFiltersReady(true);
+                        }}
                     />
                 </div>
 

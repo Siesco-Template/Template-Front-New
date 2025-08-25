@@ -25,9 +25,7 @@ const NumberIntervalFilter = ({
     const [isRangeMode, setIsRangeMode] = useState(false);
 
     useEffect(() => {
-        // console.log(value, 'vle');
         if (Array.isArray(value)) {
-            // Əgər value massivdirsə (məsələn [1, 3])
             setMin(value[0]?.toString() ?? '');
             setMax(value[1]?.toString() ?? '');
         } else if (typeof value === 'object' && value !== null) {

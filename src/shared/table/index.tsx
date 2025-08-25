@@ -14,8 +14,6 @@ import { S_Checkbox, S_Input } from '@/ui';
 
 import Catalog from '../catalog';
 import { FilterKey } from '../filter/config/filterTypeEnum';
-import CatalogSimple from '../filter/filters/CatalogSimple';
-import DropdownMultiSelect from '../filter/filters/CatalogWithMultiSelect';
 import DateIntervalFilter from '../filter/filters/DateIntervalFilter';
 import NumberIntervalFilter from '../filter/filters/NumberIntervalFilter';
 import { ArrowDownIcon, MoreVerticalIcon } from '../icons';
@@ -94,7 +92,7 @@ function Table<T extends Record<string, any>>({
     setRowCheckboxSelect,
     getRowId,
     getRowProps,
-    isInfinite,
+    isInfinite = false,
     columnOrderState,
     onRowDoubleClick,
     enableRowNumbers = true,
@@ -127,7 +125,8 @@ function Table<T extends Record<string, any>>({
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-                if (scrollHeight - scrollTop - clientHeight < 10 && totalFetched < totalDBRowCount) {
+                if (scrollHeight - scrollTop - clientHeight < 10 && totalFetched < totalDBRowCount && isInfinite) {
+                    console.log('table icindeyem');
                     fetchh();
                 }
             }
@@ -251,6 +250,7 @@ function Table<T extends Record<string, any>>({
             filterType = FilterKeyMap[filterType];
         }
 
+        console.log(filterType, filter, 'filterType');
         switch (filterType) {
             case FilterKey.Text:
                 return (
@@ -283,17 +283,17 @@ function Table<T extends Record<string, any>>({
                         placeholder={filter.placeholder || filter.column}
                     />
                 );
-            case FilterKey.MultiSelect:
-                return (
-                    <DropdownMultiSelect
-                        key={filter.key}
-                        filterKey={filter.key}
-                        options={filter.options || []}
-                        value={filter.value || []}
-                        onChange={(key, values) => _onChange(key, values)}
-                        disabled={filter.readOnly}
-                    />
-                );
+            // case FilterKey.MultiSelect:
+            //     return (
+            //         <DropdownMultiSelect
+            //             key={filter.key}
+            //             filterKey={filter.key}
+            //             options={filter.options || []}
+            //             value={filter.value || []}
+            //             onChange={(key, values) => _onChange(key, values)}
+            //             disabled={filter.readOnly}
+            //         />
+            //     );
             case FilterKey.Select:
                 const items = (filter.options || []).map((opt: any) => ({
                     value: opt.value,
@@ -331,16 +331,17 @@ function Table<T extends Record<string, any>>({
                 );
             case FilterKey.DateInterval:
                 return (
-                    <DateIntervalFilter
-                        key={filter.key}
-                        inline
-                        // label={filter.label}
-                        value={filter.value || ['', '']}
-                        onChange={(val) => _onChange(filter.key, val)}
-                        readOnly={filter.readOnly}
-                        singlePlaceholder={filter.placeholder}
-                        rangePlaceholders={filter.rangePlaceholders}
-                    />
+                    <div style={{ width: '190px' }}>
+                        <DateIntervalFilter
+                            key={filter.key}
+                            inline
+                            value={filter.value}
+                            onChange={(val) => _onChange(filter.key, val)}
+                            singlePlaceholder={filter.placeholder}
+                            rangePlaceholders={'Aralıq seçin'}
+                            errorMsg={false}
+                        />
+                    </div>
                 );
             default:
                 return null;
@@ -862,11 +863,8 @@ function Table<T extends Record<string, any>>({
         muiTableBodyRowProps: ({ row }: any) => {
             const rowId = row.id;
 
-            const isRowSelected = selectedIds.includes(row.id);
             const rowConfig = config.tables?.[tableKey]?.row || {};
             const rowHeight = rowConfig?.cell?.padding;
-
-            const isHighlighted = props.highlightedRowIds?.includes?.(rowId);
 
             const defaultProps = {
                 onClick: (e: React.MouseEvent) => {
