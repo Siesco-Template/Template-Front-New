@@ -6,28 +6,17 @@ import { cls } from '@/shared/utils';
 
 import styles from './button.module.css';
 
-type IButtonVariant =
-    | 'main-10'
-    | 'main-20'
-    | 'main-30'
-    | 'outlined-10'
-    | 'outlined-20'
-    | 'outlined-30'
-    | 'ghost-10'
-    | 'ghost-20'
-    | 'ghost-30'
-    | 'none';
-
-type IconButtonSize = '0' | '5' | '10' | '15' | '20' | '30';
+type IButtonVariant = 'primary' | 'secondary' | 'ghost';
+type Size = '32' | '36' | '44' | '48' | '52';
 interface ButtonProps {
     as?: 'button' | 'link';
     variant?: IButtonVariant;
-    color?: 'primary' | 'secondary' | 'red' | 'green' | 'none';
+    color?: 'primary' | 'secondary' | 'red' | 'green';
+    size?: Size;
     isIcon?: boolean;
     unstyled?: boolean;
     children?: ReactNode;
     className?: string;
-    iconBtnSize?: IconButtonSize;
     disabled?: boolean;
     disableAnimation?: boolean;
     active?: boolean;
@@ -41,14 +30,14 @@ type I_ButtonComponentProps = (ButtonProps & ButtonElementProps) | (ButtonProps 
 
 const S_Button: FC<I_ButtonComponentProps> = ({
     as = 'button',
-    variant = 'main-20',
+    variant = 'primary',
     color = 'primary',
+    size = '36',
     disableAnimation = false,
     children,
     disabled,
     active,
     isIcon = false,
-    iconBtnSize = '10',
     unstyled = false,
     className = '',
     notification = false,
@@ -85,13 +74,14 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     const buttonClasses = cls(
         styles.btn,
         !disableAnimation && styles.animation,
-        styles[`${variant}-${disabled ? 'disabled' : color}`],
+        styles[`${variant}-${color}`],
+        styles[`${variant}-size-${size}`],
         unstyled && styles.unstyled,
         active && styles['active-btn'],
         className
     );
 
-    if (as === 'link' && 'href' in props) {
+    if (as === 'link' && 'to' in props) {
         return (
             //@ts-ignore
             <S_Link to={props.href as string} className={buttonClasses} {...props}>
@@ -99,37 +89,12 @@ const S_Button: FC<I_ButtonComponentProps> = ({
             </S_Link>
         );
     }
-    const iconStyle = !isIcon
-        ? {}
-        : {
-              //   minWidth: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              //   minWidth: 'fit-content',
-              padding: {
-                  '0': `0`,
-                  '5': `var(--pm-50)`,
-                  '10': `var(--pm-100)`,
-                  '15': 'var(--pm-200)',
-                  '20': 'var(--pm-350)',
-                  '30': 'var(--pm-400)',
-              }[iconBtnSize],
-              borderRadius: {
-                  '0': `var(--r-50)`,
-                  '5': `var(--pm-100)`,
-                  '10': `var(--r-200)`,
-                  '15': 'var(--r-300)',
-                  '20': 'var(--r-350)',
-                  '30': 'var(--r-400)',
-              }[iconBtnSize],
-          };
+
     return (
         <div className={styles.btnContainer}>
             <button
                 tabIndex={1}
                 {...(props as ButtonElementProps)}
-                style={iconStyle}
                 className={buttonClasses}
                 disabled={disabled}
                 onMouseEnter={handleMouseEnter}

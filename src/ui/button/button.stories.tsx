@@ -2,33 +2,22 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import S_Button from '.';
 
-const variants = [
-    'main-10',
-    'main-20',
-    'main-30',
-    'outlined-10',
-    'outlined-20',
-    'outlined-30',
-    'ghost-10',
-    'ghost-20',
-    'ghost-30',
-    'none',
-] as const;
-
-const colors = ['primary', 'secondary', 'red', 'green', 'none'] as const;
-const iconSizes = ['0', '5', '10', '15', '20', '30'] as const;
+const variants = ['primary', 'secondary', 'ghost'] as const;
+const colors = ['primary', 'secondary', 'red', 'green'] as const;
+const sizes = ['32', '36', '44', '48', '52'] as const;
 
 const meta: Meta<typeof S_Button> = {
     title: 'UI/Button',
     component: S_Button,
+    tags: ['autodocs'],
     args: {
         as: 'button',
-        variant: 'main-20',
+        variant: 'primary',
         color: 'primary',
+        size: '36',
         children: 'Click me',
         disabled: false,
         isIcon: false,
-        iconBtnSize: '10',
         disableAnimation: false,
         active: false,
         isLaoding: false,
@@ -38,8 +27,8 @@ const meta: Meta<typeof S_Button> = {
         as: { control: 'inline-radio', options: ['button', 'link'] },
         variant: { control: 'select', options: variants },
         color: { control: 'select', options: colors },
+        size: { control: 'select', options: sizes },
         isIcon: { control: 'boolean' },
-        iconBtnSize: { control: 'select', options: iconSizes },
         disabled: { control: 'boolean' },
         disableAnimation: { control: 'boolean' },
         active: { control: 'boolean' },
@@ -48,7 +37,15 @@ const meta: Meta<typeof S_Button> = {
         className: { control: false },
         onClick: { action: 'clicked' },
     },
-    parameters: { layout: 'centered' },
+    parameters: {
+        backgrounds: {
+            options: {
+                red: { name: 'White', value: '#000000' },
+                white: { name: 'Grey', value: '#333' },
+                blue: { name: 'Blue', value: '#F5F5F5' },
+            },
+        },
+    },
 };
 export default meta;
 
@@ -57,15 +54,15 @@ type Story = StoryObj<typeof S_Button>;
 export const Primary: Story = {
     args: {
         children: 'Primary',
-        variant: 'main-20',
+        variant: 'primary',
         color: 'primary',
     },
 };
 
-export const SecondaryOutlined: Story = {
+export const Secondary: Story = {
     args: {
-        children: 'Secondary outlined',
-        variant: 'outlined-20',
+        children: 'Secondary',
+        variant: 'secondary',
         color: 'secondary',
     },
 };
@@ -75,9 +72,8 @@ export const GhostIcon: Story = {
         isIcon: true,
         'aria-label': 'Settings',
         children: '⚙️',
-        variant: 'ghost-20',
-        color: 'none',
-        iconBtnSize: '15',
+        variant: 'ghost',
+        color: 'primary',
     },
 };
 
@@ -85,7 +81,7 @@ export const WithNotification: Story = {
     args: {
         children: 'Inbox',
         notification: true,
-        variant: 'main-20',
+        variant: 'primary',
         color: 'primary',
     },
 };
@@ -94,7 +90,7 @@ export const Loading: Story = {
     args: {
         children: 'Loading…',
         isLaoding: true,
-        variant: 'main-20',
+        variant: 'primary',
         color: 'primary',
     },
 };
@@ -103,7 +99,7 @@ export const Disabled: Story = {
     args: {
         children: 'Disabled',
         disabled: true,
-        variant: 'main-20',
+        variant: 'primary',
         color: 'primary',
     },
 };
@@ -112,7 +108,7 @@ export const ActiveState: Story = {
     args: {
         children: 'Active',
         active: true,
-        variant: 'outlined-20',
+        variant: 'secondary',
         color: 'green',
     },
 };
@@ -120,8 +116,9 @@ export const ActiveState: Story = {
 export const AsLink: Story = {
     args: {
         as: 'link',
+        to: '/dashboard',
         children: 'Go to Dashboard',
-        variant: 'main-20',
+        variant: 'primary',
         color: 'primary',
     },
 };

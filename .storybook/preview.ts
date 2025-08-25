@@ -11,6 +11,24 @@ const preview: Preview = {
                 date: /Date$/i,
             },
         },
+        docs: {
+            autodocs: true,
+        },
+    },
+    globalTypes: {
+        theme: {
+            name: 'Theme',
+            description: 'Global theme for components',
+            defaultValue: 'light',
+            toolbar: {
+                icon: 'sun',
+                items: [
+                    { value: 'light', title: 'Light' },
+                    { value: 'dark', title: 'Dark' },
+                ],
+                dynamicTitle: true,
+            },
+        },
     },
 };
 
