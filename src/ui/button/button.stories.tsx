@@ -17,34 +17,27 @@ const meta: Meta<typeof S_Button> = {
         size: '36',
         children: 'Click me',
         disabled: false,
-        isIcon: false,
         disableAnimation: false,
-        active: false,
-        isLaoding: false,
+        isLoading: false,
         notification: false,
+        showTooltip: false,
     },
     argTypes: {
         as: { control: 'inline-radio', options: ['button', 'link'] },
         variant: { control: 'select', options: variants },
         color: { control: 'select', options: colors },
         size: { control: 'select', options: sizes },
-        isIcon: { control: 'boolean' },
         disabled: { control: 'boolean' },
         disableAnimation: { control: 'boolean' },
-        active: { control: 'boolean' },
-        isLaoding: { control: 'boolean', name: 'isLoading' },
+        isLoading: { control: 'boolean' },
         notification: { control: 'boolean' },
+        showTooltip: { control: 'boolean' },
         className: { control: false },
         onClick: { action: 'clicked' },
     },
     parameters: {
-        backgrounds: {
-            options: {
-                red: { name: 'White', value: '#000000' },
-                white: { name: 'Grey', value: '#333' },
-                blue: { name: 'Blue', value: '#F5F5F5' },
-            },
-        },
+        controls: { expanded: true },
+        layout: 'centered',
     },
 };
 export default meta;
@@ -69,11 +62,11 @@ export const Secondary: Story = {
 
 export const GhostIcon: Story = {
     args: {
-        isIcon: true,
         'aria-label': 'Settings',
         children: '⚙️',
         variant: 'ghost',
         color: 'primary',
+        showTooltip: true,
     },
 };
 
@@ -89,7 +82,7 @@ export const WithNotification: Story = {
 export const Loading: Story = {
     args: {
         children: 'Loading…',
-        isLaoding: true,
+        isLoading: true,
         variant: 'primary',
         color: 'primary',
     },
@@ -107,7 +100,6 @@ export const Disabled: Story = {
 export const ActiveState: Story = {
     args: {
         children: 'Active',
-        active: true,
         variant: 'secondary',
         color: 'green',
     },
@@ -120,5 +112,15 @@ export const AsLink: Story = {
         children: 'Go to Dashboard',
         variant: 'primary',
         color: 'primary',
+    },
+};
+
+export const WithTooltip: Story = {
+    args: {
+        children: 'Hover me',
+        variant: 'secondary',
+        color: 'primary',
+        showTooltip: true,
+        title: 'Tooltip message',
     },
 };

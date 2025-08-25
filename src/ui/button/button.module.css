@@ -4,13 +4,20 @@
     background: none;
     cursor: pointer;
     user-select: none;
-    transform: scale(1);
+    scale: 1;
     text-decoration: none;
     border: none;
 }
 
 .btn.animation {
-    transition: all 0.25s ease-in-out;
+    transition:
+        all 0.25s ease-in-out,
+        border-width 0.1s ease-in-out;
+}
+
+/* Loading */
+.loading {
+    cursor: default;
 }
 
 /* Primary button */
@@ -24,15 +31,19 @@
     text-align: center;
     font-style: normal;
 }
-.primary-primary:hover {
+.primary-primary.loading {
+    min-width: 50px;
+    background: var(--background-selected, #e7eefd);
+}
+.primary-primary:not(.loading):hover {
     background: var(--background-primary);
     color: var(--content-brand, #0d3caf);
 }
-.primary-primary:active {
+.primary-primary:not(.loading):active {
     background: var(--background-primary, #fff);
     color: var(--content-brand, #0d3caf);
 }
-.primary-primary:disabled {
+.primary-primary:not(.loading):disabled {
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -48,15 +59,20 @@
     text-align: center;
     font-style: normal;
 }
-.primary-red:hover {
+.primary-red.loading {
+    min-width: 50px;
+    background: var(--background-negative-subtle, #fdd9d7);
+    border: 1px solid var(--border-negative, #f44336);
+}
+.primary-red:not(.loading):hover {
     background: var(--background-negative-subtle, #fdd9d7);
     color: var(--content-negative, #f44336);
 }
-.primary-red:active {
+.primary-red:not(.loading):active {
     background: var(--background-negative-subtle, #fdd9d7);
     color: var(--content-negative, #f44336);
 }
-.primary-red:disabled {
+.primary-red:not(.loading):disabled {
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -72,15 +88,20 @@
     text-align: center;
     font-style: normal;
 }
-.primary-green:hover {
+.primary-green.loading {
+    min-width: 50px;
+    background: var(--background-positive-subtle, #fdd9d7);
+    border: 1px solid var(--border-positive, #f44336);
+}
+.primary-green:not(.loading):hover {
     background: var(--background-positive-subtle, #fdd9d7);
     color: var(--content-positive, #38c172);
 }
-.primary-green:active {
+.primary-green:not(.loading):active {
     background: var(--background-positive-subtle, #fdd9d7);
     color: var(--content-positive, #38c172);
 }
-.primary-green:disabled {
+.primary-green:not(.loading):disabled {
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -91,19 +112,24 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-inverse, #fff);
+    border: 1px solid var(--border-inverse, #fff);
     background: var(--background-teritary, #ebebeb);
     color: var(--content-brand-bold, #061d55);
     text-align: center;
     font-style: normal;
 }
-.primary-secondary:hover {
+.primary-secondary.loading {
+    min-width: 50px;
+    border: 1px solid var(--border-inverse, #fff);
+    background: var(--background-teritary, #ebebeb);
+}
+.primary-secondary:not(.loading):hover {
     background: var(--background-primary, #fff);
 }
-.primary-secondary:active {
+.primary-secondary:not(.loading):active {
     background: var(--background-primary, #fff);
 }
-.primary-secondary:disabled {
+.primary-secondary:not(.loading):disabled {
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     border: none;
@@ -116,19 +142,23 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-brand, #0d3caf);
+    border: 1px solid var(--border-brand, #0d3caf);
     background: transparent;
     color: var(--content-brand, #0d3caf);
     text-align: center;
     font-style: normal;
 }
-.secondary-primary:hover {
+.secondary-primary.loading {
+    min-width: 50px;
+    border: 1px solid var(--border-brand, #0d3caf);
 }
-.secondary-primary:active {
+.secondary-primary:not(.loading):hover {
+}
+.secondary-primary:not(.loading):active {
     border: 2px solid var(--border-brand, #0d3caf);
 }
-.secondary-primary:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+.secondary-primary:not(.loading):disabled {
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -139,19 +169,23 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-negative, #f44336);
+    border: 1px solid var(--border-negative, #f44336);
     background: transparent;
     color: var(--content-negative, #f44336);
     text-align: center;
     font-style: normal;
 }
-.secondary-red:hover {
+.secondary-red.loading {
+    min-width: 50px;
+    border: 1px solid var(--border-negative, #0d3caf);
 }
-.secondary-red:active {
+.secondary-red:not(.loading):hover {
+}
+.secondary-red:not(.loading):active {
     border: 2px solid var(--border-negative, #f44336);
 }
-.secondary-red:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+.secondary-red:not(.loading):disabled {
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -162,19 +196,23 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-positive, #38c172);
+    border: 1px solid var(--border-positive, #38c172);
     background: transparent;
     color: var(--content-positive, #38c172);
     text-align: center;
     font-style: normal;
 }
-.secondary-green:hover {
+.secondary-green.loading {
+    min-width: 50px;
+    border: 1px solid var(--border-positive, #0d3caf);
 }
-.secondary-green:active {
+.secondary-green:not(.loading):hover {
+}
+.secondary-green:not(.loading):active {
     border: 2px solid var(--border-positive, #38c172);
 }
-.secondary-green:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+.secondary-green:not(.loading):disabled {
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -185,19 +223,23 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border-inverse, #fff);
+    border: 1px solid var(--border-inverse, #fff);
     background: transparent;
     color: var(--content-brand-bold, #061d55);
     text-align: center;
     font-style: normal;
 }
-.secondary-secondary:hover {
+.secondary-secondary.loading {
+    min-width: 50px;
+    border: 1px solid var(--border-inverse, #fff);
 }
-.secondary-secondary:active {
+.secondary-secondary:not(.loading):hover {
+}
+.secondary-secondary:not(.loading):active {
     border: 2px solid var(--border-inverse, #fff);
 }
-.secondary-secondary:disabled {
-    border: 1.5px solid var(--border-disabled, #ccc);
+.secondary-secondary:not(.loading):disabled {
+    border: 1px solid var(--border-disabled, #ccc);
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
     cursor: default;
@@ -212,13 +254,15 @@
     text-align: center;
     font-style: normal;
 }
-.ghost-primary:hover {
+.ghost-primary.loading {
+}
+.ghost-primary:not(.loading):hover {
     color: var(--content-brand-bold, #061d55);
 }
-.ghost-primary:active {
+.ghost-primary:not(.loading):active {
     color: var(--content-brand, #0d3caf);
 }
-.ghost-primary:disabled {
+.ghost-primary:not(.loading):disabled {
     color: var(--content-brand, #0d3caf);
     cursor: default;
 }
@@ -231,13 +275,15 @@
     text-align: center;
     font-style: normal;
 }
-.ghost-red:hover {
+.ghost-red.loading {
+}
+.ghost-red:not(.loading):hover {
     color: var(--content-tertiary, #666);
 }
-.ghost-red:active {
+.ghost-red:not(.loading):active {
     color: var(--content-secondary, #333);
 }
-.ghost-red:disabled {
+.ghost-red:not(.loading):disabled {
     color: var(--content-secondary, #333);
     cursor: default;
 }
@@ -250,13 +296,15 @@
     text-align: center;
     font-style: normal;
 }
-.ghost-green:hover {
+.ghost-green.loading {
+}
+.ghost-green:not(.loading):hover {
     color: var(--content-tertiary, #666);
 }
-.ghost-green:active {
+.ghost-green:not(.loading):active {
     color: var(--content-secondary, #333);
 }
-.ghost-green:disabled {
+.ghost-green:not(.loading):disabled {
     color: var(--content-secondary, #333);
     cursor: default;
 }
@@ -269,11 +317,13 @@
     text-align: center;
     font-style: normal;
 }
-.ghost-secondary:hover {
+.ghost-secondary.loading {
 }
-.ghost-secondary:active {
+.ghost-secondary:not(.loading):hover {
 }
-.ghost-secondary:disabled {
+.ghost-secondary:not(.loading):active {
+}
+.ghost-secondary:not(.loading):disabled {
     cursor: default;
 }
 
@@ -281,7 +331,6 @@
 .primary-size-52 {
     padding: var(--pm-350, 16px);
     height: 52px;
-    min-width: 128px;
     border-radius: var(--br-5xl, 20px);
     gap: var(--gap-200, 4px);
     font-size: var(--fs-16, 16px);
@@ -291,7 +340,6 @@
 .secondary-size-52 {
     padding: var(--pm-350, 16px);
     height: 52px;
-    min-width: 128px;
     border-radius: var(--br-5xl, 20px);
     gap: var(--gap-200, 4px);
     font-size: var(--fs-16, 16px);
@@ -311,7 +359,6 @@
 .primary-size-48 {
     padding: var(--pm-250, 12px) var(--pm-350, 16px);
     height: 48px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
@@ -321,7 +368,6 @@
 .secondary-size-48 {
     padding: var(--pm-250, 12px) var(--pm-350, 16px);
     height: 48px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
@@ -369,7 +415,6 @@
 .primary-size-36 {
     padding: var(--pm-200, 8px) var(--pm-350, 16px);
     height: 36px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
@@ -379,7 +424,6 @@
 .secondary-size-36 {
     padding: var(--pm-200, 8px) var(--pm-350, 16px);
     height: 36px;
-    min-width: 128px;
     gap: var(--gap-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
@@ -423,59 +467,23 @@
     line-height: var(--lh-16, 16px);
 }
 
-.none-none {
-    background-color: transparent;
-    color: hsl(var(--clr-primary-500));
-}
-
 /* ---------------------------------------------------------------------------- */
-
-/* is unstyled button */
-.unstyled {
-    border: 1.5px solid transparent;
-    background: transparent;
-    color: hsl(var(--clr-grey-700));
-}
-
-/* Loading */
-.loader {
-    width: var(--wh-150);
-    height: var(--wh-150);
-    border: var(--wh-25) solid hsl(var(--clr-primary-500));
-    border-radius: 50%;
-    border-top-color: transparent;
-    margin-right: var(--pm-250);
-    animation: spin var(--animation-slow) linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
 /* Notification */
 .notification {
     display: flex;
-    width: 12px;
-    height: 12px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 14px;
+    height: 14px;
     position: absolute;
-    right: -2px;
-    top: -5px;
+    right: 9px;
+    top: -7px;
 
-    border-radius: 12px;
-    border: 1.5px solid #fff;
-    background: var(--Colors-Red, #ff3b30);
+    border-radius: 100%;
+    border: 1px solid var(--clr-white);
+    background: var(--background-negative, #ff3b30);
 }
 
-/* reset default styles */
+/* Tooltip */
 .btnContainer {
     position: relative;
 }
@@ -501,5 +509,80 @@
     }
     to {
         opacity: 1;
+    }
+}
+
+/* Loading */
+.dot-carousel {
+    position: relative;
+    left: -9990px;
+    width: 7px;
+    height: 7px;
+    border-radius: 100%;
+    animation: dot-carousel 1.5s infinite linear;
+}
+
+.primary-primary .dot-carousel,
+.secondary-primary .dot-carousel,
+.ghost-primary .dot-carousel {
+    background-color: var(--background-brand, #0d3caf);
+    color: var(--background-brand, #0d3caf);
+    box-shadow:
+        9980px 0 0 0 var(--background-brand, #0d3caf),
+        9990px 0 0 0 var(--background-brand, #0d3caf),
+        10000px 0 0 0 var(--background-brand, #0d3caf);
+}
+
+.primary-red .dot-carousel,
+.secondary-red .dot-carousel,
+.ghost-red .dot-carousel {
+    background-color: var(--background-negative, #f44336);
+    color: var(--background-negative, #f44336);
+    box-shadow:
+        9980px 0 0 0 var(--background-negative, #f44336),
+        9990px 0 0 0 var(--background-negative, #f44336),
+        10000px 0 0 0 var(--background-negative, #f44336);
+}
+
+.primary-green .dot-carousel,
+.secondary-green .dot-carousel,
+.ghost-green .dot-carousel {
+    background-color: var(--background-positive, #38c172);
+    color: var(--background-positive, #38c172);
+    box-shadow:
+        9980px 0 0 0 var(--background-positive, #38c172),
+        9990px 0 0 0 var(--background-positive, #38c172),
+        10000px 0 0 0 var(--background-positive, #38c172);
+}
+
+.primary-secondary .dot-carousel,
+.secondary-secondary .dot-carousel,
+.ghost-secondary .dot-carousel {
+    background-color: var(--background-brand-pressed, #061d55);
+    color: var(--background-brand-pressed, #061d55);
+    box-shadow:
+        9980px 0 0 0 var(--background-brand-pressed, #061d55),
+        9990px 0 0 0 var(--background-brand-pressed, #061d55),
+        10000px 0 0 0 var(--background-brand-pressed, #061d55);
+}
+
+@keyframes dot-carousel {
+    0% {
+        box-shadow:
+            9980px 0 0 -1px currentColor,
+            9990px 0 0 1px currentColor,
+            10000px 0 0 -1px currentColor;
+    }
+    50% {
+        box-shadow:
+            10000px 0 0 -1px currentColor,
+            9980px 0 0 -1px currentColor,
+            9990px 0 0 1px currentColor;
+    }
+    100% {
+        box-shadow:
+            9990px 0 0 1px currentColor,
+            10000px 0 0 -1px currentColor,
+            9980px 0 0 -1px currentColor;
     }
 }

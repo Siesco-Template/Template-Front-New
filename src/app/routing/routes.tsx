@@ -121,7 +121,7 @@ export const routes: Route[] = [
                 roles: [],
             },
             {
-                path: APP_URLS.set_password(),
+                path: APP_URLS.set_password('/:token'),
                 element: <LazyLoadable page={<SetPassword />} />,
                 isAuth: false,
                 roles: [],

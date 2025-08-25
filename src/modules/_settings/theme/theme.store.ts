@@ -21,10 +21,9 @@ export type Theme = {
     name: string;
     type: 'dark' | 'light';
     id: string;
-    primary: ThemePalette;
-    secondary: ThemePalette;
-    background: string;
-    foreground: string;
+    content: Record<string, string>;
+    background: Record<string, string>;
+    border: Record<string, string>;
 };
 
 export type ThemeState = {

@@ -1,34 +1,37 @@
-import { DefaultThemes } from '../settings.contants';
-import { Theme, ThemeState } from './theme.store';
+import { Theme } from './theme.store';
 
 export const transformThemeToCss = (theme?: Theme) => {
     if (theme) {
-        const primaryColors = Object.entries(theme.primary).reduce(
+        const contentColors = Object.entries(theme.content).reduce(
             (acc, [key, value]) => {
-                acc[`--clr-primary-${key}`] = value;
+                acc[`--content-${key}`] = value;
                 return acc;
             },
             {} as Record<string, string>
         );
 
-        const secondaryColors = Object.entries(theme.secondary).reduce(
+        const backgroundColors = Object.entries(theme.background).reduce(
             (acc, [key, value]) => {
-                acc[`--clr-secondary-${key}`] = value;
+                acc[`--content-${key}`] = value;
                 return acc;
             },
             {} as Record<string, string>
         );
 
-        const bgAndForegroundColor = {
-            '--clr-background': theme.background,
-            '--clr-foreground': theme.foreground,
-        };
+        const borderColors = Object.entries(theme.border).reduce(
+            (acc, [key, value]) => {
+                acc[`--content-${key}`] = value;
+                return acc;
+            },
+            {} as Record<string, string>
+        );
+
         return {
             type: theme.type,
             cssVariables: {
-                ...primaryColors,
-                ...secondaryColors,
-                ...bgAndForegroundColor,
+                ...contentColors,
+                ...backgroundColors,
+                ...borderColors,
             },
         };
     }
