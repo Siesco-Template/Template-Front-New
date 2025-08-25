@@ -8,7 +8,6 @@ import S_Drawer from './drawer';
 import S_Image from './image/index';
 import S_Input from './input';
 import S_InputPassword from './input/input-password';
-import S_InputWithIcon from './input/input-with-icon';
 import S_Pagination from './pagination';
 import S_RadioGroup from './radio-group';
 import S_Select from './select';
@@ -24,7 +23,6 @@ export {
 
     // Inputs
     S_Input,
-    S_InputWithIcon,
     S_InputPassword,
     S_RadioGroup,
     S_Switch,
