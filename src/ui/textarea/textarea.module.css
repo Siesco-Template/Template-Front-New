@@ -2,46 +2,181 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    gap: var(--gap-200);
 }
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--pm-150);
+}
+
+.labelWithIcon {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .textarea label {
-    color: hsl(var(--clr-primary-500));
-    font-weight: 500;
-    font-size: var(--fs-50);
-    line-height: 16px;
+    color: var(--content-secondary);
+    font-size: var(--fs-12);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--lh-14);
+}
+
+.labelInfo {
+    display: inline-flex;
+    line-height: 0;
+    color: var(--content-tertiary);
+    cursor: default;
+}
+.labelInfo:hover {
+    color: var(--content-secondary);
+}
+
+.details {
+    color: var(--content-secondary);
+    text-align: right;
+    font-size: var(--fs-12);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-16);
+}
+
+.fieldWrapper {
+    position: relative;
 }
 
 .textareaField {
     width: 100%;
-    padding: 8px;
-    border-radius: var(--r-300);
-    font-size: 14px;
-    border: 1px solid hsl(var(--clr-grey-400));
+    border: 1px solid transparent;
+    outline: none;
+
+    border-radius: var(--br-3xl);
+    background: var(--background-tertiary);
+    transition: all 0.3s ease;
+
     font-size: var(--fs-200);
     padding: 10px var(--pm-400);
-    background: hsl(var(--clr-white));
-    outline: none;
+
+    padding-right: calc(var(--pm-400) + 22px);
+    padding-bottom: calc(10px + 12px);
 }
 
-.textareaField[data-error='true'] {
-    border-color: red;
+.textareaField[data-height='100'] {
+    min-height: 100px;
+}
+.textareaField[data-height='120'] {
+    min-height: 120px;
+}
+.textareaField[data-height='140'] {
+    min-height: 140px;
+}
+.textareaField[data-height='160'] {
+    min-height: 160px;
+}
+.textareaField[data-height='200'] {
+    min-height: 200px;
 }
 
 .textareaField[data-size='small'] {
     font-size: 12px;
-    padding: 6px;
+    padding: 6px 10px;
 }
-
 .textareaField[data-size='medium'] {
     font-size: 14px;
 }
-
 .textareaField[data-size='default'] {
     font-size: 16px;
-    padding: 10px;
+    padding: 10px 14px;
+}
+
+.textareaField:hover {
+    background: var(--background-disabled);
+}
+.textareaField:focus-visible {
+    border: 1px solid var(--border-brand);
+    background: var(--background-primary);
+}
+
+.textareaField[data-status='success'] {
+    border-color: var(--border-positive);
+    background: var(--background-primary);
+}
+.textareaField[data-status='success']:hover {
+    border-color: var(--border-positive);
+}
+.textareaField[data-status='success']:focus-visible {
+    border-color: var(--border-positive);
+}
+
+.textareaField[data-status='error'],
+.textareaField[data-error='true'] {
+    border: 1px solid var(--border-negative);
+    background: var(--background-primary);
+}
+.textareaField[data-status='error']:hover,
+.textareaField[data-error='true']:hover {
+    border-color: var(--border-negative);
+}
+.textareaField[data-status='error']:focus-visible,
+.textareaField[data-error='true']:focus-visible {
+    border-color: var(--border-negative);
+}
+
+.helper {
+    color: var(--content-tertiary);
+    font-size: var(--fs-10);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-12, 12px);
 }
 
 .errorText {
-    color: hsl(var(--clr-red-400)) !important;
-    font-size: var(--fs-50) !important;
+    color: var(--content-negative);
+    font-size: var(--fs-10);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-12);
     margin-top: var(--pm-100);
+}
+
+.fieldInfo {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    display: inline-flex;
+    line-height: 0;
+    color: var(--content-tertiary);
+    pointer-events: auto;
+}
+.fieldInfo:hover {
+    color: var(--content-secondary);
+}
+
+.counter {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    font-size: var(--fs-10);
+    line-height: var(--lh-12);
+    color: var(--content-tertiary);
+    user-select: none;
+    pointer-events: none;
+
+    color: var(--content-tertiary);
+
+    font-size: var(--fs-10);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-12);
+}
+
+.fieldWrapper .textareaField[data-status='error'] ~ .counter {
+    color: var(--content-negative);
+}
+.fieldWrapper .textareaField[data-status='success'] ~ .counter {
+    color: var(--content-positive);
 }

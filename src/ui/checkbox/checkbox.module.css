@@ -53,10 +53,6 @@
     background: var(--background-selected);
 }
 
-.control[data-focus] {
-    border: var(--Stroke-lg, 4px) solid var(--background-primary-inverse-20, rgba(0, 0, 0, 0.06));
-}
-
 .control[data-state='checked'],
 .control[data-state='indeterminate'] {
     border-color: var(--background-brand);
