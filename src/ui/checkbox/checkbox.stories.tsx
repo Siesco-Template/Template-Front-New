@@ -35,7 +35,6 @@ const CenterDecorator = (StoryFn: any) => (
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100vh',
         }}
     >
         <StoryFn />
