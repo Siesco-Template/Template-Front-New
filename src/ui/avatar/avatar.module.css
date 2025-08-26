@@ -1,14 +1,43 @@
 .avatar {
-    border-radius: 99999%;
-    background: #f2f5f7;
-    text-align: center;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    border-radius: 200px;
+    background-color: var(--background-tertiary);
 }
 
-.avatar [data-part='fallback'] {
-    font-weight: 600;
-    color: hsl(var(--clr-grey-900));
+.avatar.online::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--content-positive);
+    border: 1px solid var(--border-inverse);
+    border-radius: 50%;
+}
+
+.avatar.online[data-size='xs']::after {
+    width: 6px;
+    height: 6px;
+}
+.avatar.online[data-size='sm']::after {
+    width: 8px;
+    height: 8px;
+}
+.avatar.online[data-size='md']::after {
+    width: 10px;
+    height: 10px;
+}
+.avatar.online[data-size='lg']::after {
+    width: 12px;
+    height: 12px;
+}
+.avatar.online[data-size='xl']::after {
+    width: 14px;
+    height: 14px;
+}
+.avatar.online[data-size='2xl']::after {
+    width: 16px;
+    height: 16px;
 }

@@ -19,8 +19,7 @@ export default function CustomDatePicker(props: CustomDatePickerProps) {
             <CustomProvider locale={formatPickerLang()}>
                 <DatePicker
                     {...rest}
-                    menuClassName="z-[100]"
-                    placement="auto"
+                    menuClassName={styles.customMenu}
                     style={{
                         ...(style || {}),
                         ...(error && typeof error === 'string' ? { borderColor: 'var(--color-red-400)' } : {}),

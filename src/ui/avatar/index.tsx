@@ -3,63 +3,57 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Avatar, AvatarRootProps, useAvatarContext } from '@ark-ui/react/avatar';
 
+import { UserIcon3 } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
 import styles from './avatar.module.css';
 
-type IAvatarSize = '100' | '200' | '300' | '400' | '500' | '600' | '700' | '750' | '800' | '850' | '900';
+export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type AvatarType = 'image' | 'placeholder';
+
 interface I_AvatarProps extends AvatarRootProps {
     name?: string;
-    image: string;
-    size?: IAvatarSize;
+    imageUrl?: string;
+    size?: AvatarSize;
+    type?: AvatarType;
+    online?: boolean;
 }
 
-function getInitials(name: string = '') {
-    if (typeof name !== 'string') return '';
+const sizeMap: Record<AvatarSize, number> = {
+    xs: 20,
+    sm: 28,
+    md: 36,
+    lg: 48,
+    xl: 56,
+    '2xl': 64,
+};
 
-    const parts = name.trim().split(/\s+/);
-    if (parts.length === 1) {
-        return parts[0].charAt(0).toUpperCase();
-    }
+const S_Avatar: FC<I_AvatarProps> = ({
+    imageUrl,
+    name,
+    size = 'md',
+    type = 'placeholder',
+    online = false,
+    className,
+    ...props
+}) => {
+    const pixelSize = sizeMap[size];
 
-    const initials = parts
-        .map((word) => word.charAt(0).toUpperCase())
-        .slice(0, 2)
-        .join('');
-
-    return initials;
-}
-
-const S_Avatar: FC<I_AvatarProps> = ({ image, name, className, size = '200', ...props }) => {
-    const avatarSize: Record<IAvatarSize, number> = {
-        '100': 20,
-        '200': 24,
-        '300': 28,
-        '400': 36,
-        '500': 42,
-        '600': 50,
-        '700': 58,
-        '750': 60,
-        '800': 64,
-        '850': 68,
-        '900': 72,
-    };
-
-    const nameFirstChars = getInitials(name);
     return (
         <Avatar.Root
             {...props}
-            className={cls(styles.avatar, className)}
-            style={{ width: avatarSize[size], height: avatarSize[size] }}
+            className={cls(styles.avatar, styles[size], online && styles.online, className)}
+            style={{ width: pixelSize, height: pixelSize }}
+            data-size={size}
         >
-            {name && <Avatar.Fallback>{nameFirstChars}</Avatar.Fallback>}
-            {image && (
-                <AvatarNextImage
-                    src={image || '...'}
-                    width={avatarSize[size]}
-                    height={avatarSize[size]}
-                    alt={name || ''}
-                />
+            {type === 'placeholder' && (
+                <Avatar.Fallback aria-label={name || 'User'}>
+                    <UserIcon3 className={styles.icon} color="var(--content-tertiary)" aria-hidden="true" />
+                </Avatar.Fallback>
+            )}
+
+            {type === 'image' && imageUrl && (
+                <AvatarImage src={imageUrl} alt={name || ''} width={pixelSize} height={pixelSize} />
             )}
         </Avatar.Root>
     );
@@ -67,16 +61,10 @@ const S_Avatar: FC<I_AvatarProps> = ({ image, name, className, size = '200', ...
 
 export default S_Avatar;
 
-type ImageProps = {
-    src: string;
-    width?: string | number;
-    height?: string | number;
-    alt?: string;
-    hidden?: boolean;
-};
-const AvatarNextImage = (props: ImageProps) => {
+const AvatarImage = (props: { src: string; width: number; height: number; alt?: string }) => {
     const avatar = useAvatarContext();
-    const { hidden, ...imageProps } = avatar.getImageProps() as ImageProps;
+    const { hidden, ...imageProps } = avatar.getImageProps();
+
     return (
         <LazyLoadImage
             {...imageProps}
@@ -84,6 +72,9 @@ const AvatarNextImage = (props: ImageProps) => {
             style={{
                 visibility: hidden ? 'hidden' : 'visible',
                 objectFit: 'cover',
+                width: props.width,
+                height: props.height,
+                borderRadius: '200px',
             }}
         />
     );
