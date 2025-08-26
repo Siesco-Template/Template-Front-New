@@ -109,6 +109,16 @@
     --clr-primary-800: #04153e;
     --clr-primary-900: #031030;
 
+    --clr-secondary-100: #ffffff;
+    --clr-secondary-200: #ffffff;
+    --clr-secondary-300: #fafafa;
+    --clr-secondary-400: #ffffff;
+    --clr-secondary-500: #f5f7f9;
+    --clr-secondary-600: #9cb0c4;
+    --clr-secondary-700: #4b637c;
+    --clr-secondary-800: #3a4c5f;
+    --clr-secondary-900: #212b36;
+
     /* Yellow Colors */
     --clr-yellow-100: #fdf4e0;
     --clr-yellow-200: #fbeac1;
@@ -211,6 +221,9 @@
     --content-disabled: var(--clr-neutral-350);
     --content-brand: var(--clr-primary-500);
     --content-brand-bold: var(--clr-primary-700);
+    --content-secondary-brand: var(--clr-secondary-500);
+    --content-secondary-brand-bold: var(--clr-secondary-700);
+    --content-inverse-secondary-brand-bold: var(--clr-secondary-700);
     --content-link: var(--clr-blue-500);
     --content-link-secondary: var(--clr-blue-600);
     --content-link-tertiary: var(--clr-blue-700);
@@ -223,11 +236,12 @@
 
     /* Background colors */
     --background-primary: var(--clr-white);
-    --background-secondary: var(--clr-neutral-50);
+    --background-secondary: var(--clr-neutral-100);
     --background-tertiary: var(--clr-neutral-150);
     --background-subtle: var(--clr-neutral-200);
     --background-strong: var(--clr-neutral-250);
     --background-selected: var(--clr-primary-100);
+    --background-secondary-selected: var(--clr-secondary-100);
     --background-disabled: var(--clr-neutral-100);
     --background-inverse: var(--clr-neutral-900);
     --background-primary-inverse-50: var(--clr-black-50);
@@ -237,6 +251,9 @@
     --background-brand: var(--clr-primary-500);
     --background-brand-hover: var(--clr-primary-600);
     --background-brand-pressed: var(--clr-primary-700);
+    --background-secondary-brand: var(--clr-secondary-500);
+    --background-secondary-brand-hover: var(--clr-secondary-600);
+    --background-secondary-brand-pressed: var(--clr-secondary-700);
     --background-info: var(--clr-blue-500);
     --background-info-subtle: var(--clr-blue-100);
     --background-notice: var(--clr-yellow-500);
@@ -254,6 +271,7 @@
     --border-strong: var(--clr-neutral-100);
     --border-disabled: var(--clr-neutral-200);
     --border-brand: var(--clr-primary-500);
+    --border-secondary-brand: var(--clr-secondary-500);
     --border-inverse: var(--clr-white);
     --border-focus: var(--clr-primary-500);
     --border-info: var(--clr-blue-500);
@@ -274,6 +292,9 @@
     --content-disabled: var(--clr-neutral-600);
     --content-brand: var(--clr-primary-100);
     --content-brand-bold: var(--clr-primary-100);
+    --content-secondary-brand: var(--clr-secondary-100);
+    --content-secondary-brand-bold: var(--clr-secondary-100);
+    --content-inverse-secondary-brand-bold: var(--clr-secondary-700);
     --content-link: var(--clr-blue-400);
     --content-link-secondary: var(--clr-blue-300);
     --content-link-tertiary: var(--clr-blue-200);
@@ -291,6 +312,7 @@
     --background-subtle: var(--clr-neutral-650);
     --background-strong: var(--clr-neutral-600);
     --background-selected: var(--clr-primary-800);
+    --background-secondary-selected: var(--clr-secondary-800);
     --background-disabled: var(--clr-neutral-800);
     --background-inverse: var(--clr-white);
     --background-primary-inverse-50: var(--clr-white-50);
@@ -300,6 +322,9 @@
     --background-brand: var(--clr-primary-400);
     --background-brand-hover: var(--clr-primary-300);
     --background-brand-pressed: var(--clr-primary-200);
+    --background-secondary-brand: var(--clr-secondary-500);
+    --background-secondary-brand-hover: var(--clr-secondary-300);
+    --background-secondary-brand-pressed: var(--clr-secondary-200);
     --background-info: var(--clr-blue-400);
     --background-info-subtle: var(--clr-blue-800);
     --background-notice: var(--clr-yellow-400);
@@ -317,6 +342,7 @@
     --border-strong: var(--clr-neutral-900);
     --border-disabled: var(--clr-neutral-700);
     --border-brand: var(--clr-primary-400);
+    --border-secondary-brand: var(--clr-secondary-200);
     --border-inverse: var(--clr-neutral-900);
     --border-focus: var(--clr-primary-400);
     --border-info: var(--clr-blue-400);
