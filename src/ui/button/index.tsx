@@ -1,13 +1,4 @@
-import {
-    ButtonHTMLAttributes,
-    DetailedHTMLProps,
-    FC,
-    ReactNode,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from 'react';
+import { ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { S_Link } from '@/shared/routing';
 import { I_Link } from '@/shared/routing/S_Link';
@@ -15,7 +6,7 @@ import { cls } from '@/shared/utils';
 
 import styles from './button.module.css';
 
-type IButtonVariant = 'primary' | 'secondary' | 'ghost';
+type IButtonVariant = 'primary' | 'outlined' | 'ghost' | 'inverse';
 type Size = '32' | '36' | '44' | '48' | '52';
 interface ButtonProps {
     as?: 'button' | 'link';
@@ -105,7 +96,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
                 ref={btnRef}
                 tabIndex={-1}
                 className={buttonClasses}
-                style={{ position: 'absolute', left: '-9999px', width: isLoading ? fixedWidth : undefined }}
+                style={{ position: 'absolute', left: '-9999px' }}
             >
                 {children}
             </button>

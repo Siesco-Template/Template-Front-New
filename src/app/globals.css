@@ -44,6 +44,7 @@
     --pm-100: calc(var(--pm-base) - 12px); /* 4px */
     --pm-150: calc(var(--pm-base) - 10px); /* 6px */
     --pm-200: calc(var(--pm-base) - 8px); /* 8px */
+    --pm-225: calc(var(--pm-base) - 6px); /* 10px */
     --pm-250: calc(var(--pm-base) - 4px); /* 12px */
     --pm-300: calc(var(--pm-base) - 2px); /* 14px */
     --pm-350: var(--pm-base); /* 16px */
@@ -62,6 +63,7 @@
     --gap-200: calc(var(--gap-base) - 12px); /* 4px */
     --gap-250: calc(var(--gap-base) - 10px); /* 6px */
     --gap-300: calc(var(--gap-base) - 8px); /* 8px */
+    --gap-325: calc(var(--gap-base) - 6px); /* 10px */
     --gap-350: calc(var(--gap-base) - 4px); /* 12px */
     --gap-400: calc(var(--gap-base) - 2px); /* 14px */
     --gap-450: var(--gap-base); /* 16px */
@@ -219,6 +221,7 @@
     --content-secondary-inverse: var(--clr-neutral-100);
     --content-tertiary-inverse: var(--clr-neutral-300);
     --content-disabled: var(--clr-neutral-350);
+    --content-brand-light: var(--clr-primary-100);
     --content-brand: var(--clr-primary-500);
     --content-brand-bold: var(--clr-primary-700);
     --content-secondary-brand: var(--clr-secondary-500);
@@ -274,6 +277,7 @@
     --border-secondary-brand: var(--clr-secondary-500);
     --border-inverse: var(--clr-white);
     --border-focus: var(--clr-primary-500);
+    --border-secondary-focus: var(--clr-secondary-500);
     --border-info: var(--clr-blue-500);
     --border-positive: var(--clr-green-500);
     --border-notice: var(--clr-yellow-500);
@@ -290,6 +294,7 @@
     --content-secondary-inverse: var(--clr-neutral-800);
     --content-tertiary-inverse: var(--clr-neutral-600);
     --content-disabled: var(--clr-neutral-600);
+    --content-brand-light: var(--clr-primary-100);
     --content-brand: var(--clr-primary-100);
     --content-brand-bold: var(--clr-primary-100);
     --content-secondary-brand: var(--clr-secondary-100);
@@ -345,6 +350,7 @@
     --border-secondary-brand: var(--clr-secondary-200);
     --border-inverse: var(--clr-neutral-900);
     --border-focus: var(--clr-primary-400);
+    --border-secondary-focus: var(--clr-secondary-400);
     --border-info: var(--clr-blue-400);
     --border-positive: var(--clr-green-400);
     --border-notice: var(--clr-yellow-400);
