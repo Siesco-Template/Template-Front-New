@@ -1,5 +1,4 @@
 import { useLayoutEffect } from 'react';
-import { Toaster } from 'react-hot-toast';
 
 import { useAuthStore } from '@/store/authStore';
 
@@ -23,7 +22,6 @@ const App = () => {
 
     return (
         <Providers>
-            <Toaster position="top-right" reverseOrder={false} />
             <AppInitializer config={config} />
             <Routing />
         </Providers>

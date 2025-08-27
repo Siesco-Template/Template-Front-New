@@ -102,9 +102,9 @@ import UserIcon3 from './user-03.svg?react';
 import UserBlockIcon from './user-block.svg?react';
 import UserCardIcon from './user-card.svg?react';
 import UserRectangleIcon from './user-rectangle.svg?react';
-
+import XIcon from './union.svg?react';
 export {
-    BoldIcon,
+    BoldIcon,XIcon,
     RedoIcon,
     TimeIcon,
     FloppyDiskIcon,

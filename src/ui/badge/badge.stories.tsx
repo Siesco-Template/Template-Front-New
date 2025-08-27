@@ -15,8 +15,15 @@ const meta: Meta<typeof S_Badge> = {
             control: 'radio',
             options: [1, 2, 3],
         },
+        showIcon: {
+            control: 'boolean',
+        },
+        icon: {
+            control: false,
+        },
     },
 };
+
 export default meta;
 type Story = StoryObj<typeof S_Badge>;
 
@@ -25,6 +32,7 @@ export const Default: Story = {
         text: 'Badge',
         status: 'default',
         type: 1,
+        showIcon: true,
     },
 };
 
@@ -43,6 +51,7 @@ export const Showcase: Story = {
                 {statuses.map((status) => (
                     <div key={status} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <S_Badge text="Badge" status={status} type={1} />
+                        <S_Badge text="Badge" status={status} type={1} showIcon={false} />
                         <S_Badge text="Badge" status={status} type={2} />
                         <S_Badge text="Badge" status={status} type={3} />
                     </div>
