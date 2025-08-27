@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import S_Button from '.';
 
-const variants = ['primary', 'secondary', 'ghost'] as const;
+const variants = ['primary', 'outlined', 'ghost', 'inverse'] as const;
 const colors = ['primary', 'secondary', 'red', 'green'] as const;
 const sizes = ['32', '36', '44', '48', '52'] as const;
 
@@ -55,7 +55,7 @@ export const Primary: Story = {
 export const Secondary: Story = {
     args: {
         children: 'Secondary',
-        variant: 'secondary',
+        variant: 'outlined',
         color: 'secondary',
     },
 };
@@ -100,7 +100,7 @@ export const Disabled: Story = {
 export const ActiveState: Story = {
     args: {
         children: 'Active',
-        variant: 'secondary',
+        variant: 'outlined',
         color: 'green',
     },
 };
@@ -118,7 +118,7 @@ export const AsLink: Story = {
 export const WithTooltip: Story = {
     args: {
         children: 'Hover me',
-        variant: 'secondary',
+        variant: 'outlined',
         color: 'primary',
         showTooltip: true,
         title: 'Tooltip message',
