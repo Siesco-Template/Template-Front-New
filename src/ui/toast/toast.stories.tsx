@@ -1,5 +1,3 @@
-import { Check } from 'lucide-react';
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 import S_Button from '../button';
