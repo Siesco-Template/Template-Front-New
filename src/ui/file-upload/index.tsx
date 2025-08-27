@@ -4,7 +4,7 @@ import { NotesIcon, TrashIcon } from '@/shared/icons';
 
 import styles from './style.module.css';
 
-const ImageUpload = ({ onChange, error }: any) => {
+const File_Upload = ({ onChange, error }: any) => {
     const [images, setImages] = useState<File[]>([]);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,4 +56,4 @@ const ImageUpload = ({ onChange, error }: any) => {
     );
 };
 
-export default ImageUpload;
+export default File_Upload;

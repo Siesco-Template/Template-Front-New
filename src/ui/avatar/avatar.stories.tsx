@@ -31,7 +31,6 @@ export default meta;
 
 type Story = StoryObj<typeof S_Avatar>;
 
-// Reusable Canvas-Centering Decorator
 const centerDecorator = (StoryFn: any) => (
     <div
         style={{
