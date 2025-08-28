@@ -38,41 +38,41 @@
     --lh-80: calc(var(--lh-base) + 64px); /* 80px */
     --lh-120: calc(var(--lh-base) + 104px); /* 120px */
 
-    /* Sizing (padding, margin) */
-    --pm-base: 1rem;
-    --pm-50: calc(var(--pm-base) - 14px); /* 2px */
-    --pm-100: calc(var(--pm-base) - 12px); /* 4px */
-    --pm-150: calc(var(--pm-base) - 10px); /* 6px */
-    --pm-200: calc(var(--pm-base) - 8px); /* 8px */
-    --pm-225: calc(var(--pm-base) - 6px); /* 10px */
-    --pm-250: calc(var(--pm-base) - 4px); /* 12px */
-    --pm-300: calc(var(--pm-base) - 2px); /* 14px */
-    --pm-350: var(--pm-base); /* 16px */
-    --pm-400: calc(var(--pm-base) + 4px); /* 20px */
-    --pm-450: calc(var(--pm-base) + 8px); /* 24px */
-    --pm-500: calc(var(--pm-base) + 16px); /* 32px */
-    --pm-550: calc(var(--pm-base) + 24px); /* 40px */
-    --pm-600: calc(var(--pm-base) + 40px); /* 56px */
-    --pm-650: calc(var(--pm-base) + 112px); /* 128px */
-    --pm-700: calc(var(--pm-base) + 240px); /* 256px */
-    --pm-800: calc(var(--pm-base) + 496px); /* 512px */
+    /* Sizing */
+    --size-base: 1rem;
+    --size-50: calc(var(--size-base) - 14px); /* 2px */
+    --size-100: calc(var(--size-base) - 12px); /* 4px */
+    --size-150: calc(var(--size-base) - 10px); /* 6px */
+    --size-200: calc(var(--size-base) - 8px); /* 8px */
+    --size-225: calc(var(--size-base) - 6px); /* 10px */
+    --size-250: calc(var(--size-base) - 4px); /* 12px */
+    --size-300: calc(var(--size-base) - 2px); /* 14px */
+    --size-350: var(--size-base); /* 16px */
+    --size-400: calc(var(--size-base) + 4px); /* 20px */
+    --size-450: calc(var(--size-base) + 8px); /* 24px */
+    --size-500: calc(var(--size-base) + 16px); /* 32px */
+    --size-550: calc(var(--size-base) + 24px); /* 40px */
+    --size-600: calc(var(--size-base) + 40px); /* 56px */
+    --size-650: calc(var(--size-base) + 112px); /* 128px */
+    --size-700: calc(var(--size-base) + 240px); /* 256px */
+    --size-800: calc(var(--size-base) + 496px); /* 512px */
 
-    /* Spacing (gap) */
-    --gap-base: 1rem;
-    --gap-100: calc(var(--gap-base) - 14px); /* 2px */
-    --gap-200: calc(var(--gap-base) - 12px); /* 4px */
-    --gap-250: calc(var(--gap-base) - 10px); /* 6px */
-    --gap-300: calc(var(--gap-base) - 8px); /* 8px */
-    --gap-325: calc(var(--gap-base) - 6px); /* 10px */
-    --gap-350: calc(var(--gap-base) - 4px); /* 12px */
-    --gap-400: calc(var(--gap-base) - 2px); /* 14px */
-    --gap-450: var(--gap-base); /* 16px */
-    --gap-500: calc(var(--gap-base) + 4px); /* 20px */
-    --gap-550: calc(var(--gap-base) + 8px); /* 24px */
-    --gap-600: calc(var(--gap-base) + 16px); /* 32px */
-    --gap-650: calc(var(--gap-base) + 24px); /* 40px */
-    --gap-700: calc(var(--gap-base) + 32px); /*48px */
-    --gap-800: calc(var(--gap-base) + 48px); /* 64px */
+    /* Spacing */
+    --space-base: 1rem;
+    --space-100: calc(var(--space-base) - 14px); /* 2px */
+    --space-200: calc(var(--space-base) - 12px); /* 4px */
+    --space-250: calc(var(--space-base) - 10px); /* 6px */
+    --space-300: calc(var(--space-base) - 8px); /* 8px */
+    --space-325: calc(var(--space-base) - 6px); /* 10px */
+    --space-350: calc(var(--space-base) - 4px); /* 12px */
+    --space-400: calc(var(--space-base) - 2px); /* 14px */
+    --space-450: var(--space-base); /* 16px */
+    --space-500: calc(var(--space-base) + 4px); /* 20px */
+    --space-550: calc(var(--space-base) + 8px); /* 24px */
+    --space-600: calc(var(--space-base) + 16px); /* 32px */
+    --space-650: calc(var(--space-base) + 24px); /* 40px */
+    --space-700: calc(var(--space-base) + 32px); /* 48px */
+    --space-800: calc(var(--space-base) + 48px); /* 64px */
 
     /* Stroke (Border wdith) */
     --bw-base: 1rem;
@@ -113,13 +113,13 @@
 
     --clr-secondary-100: #ffffff;
     --clr-secondary-200: #ffffff;
-    --clr-secondary-300: #fafafa;
+    --clr-secondary-300: #ffffff;
     --clr-secondary-400: #ffffff;
-    --clr-secondary-500: #f5f7f9;
-    --clr-secondary-600: #9cb0c4;
-    --clr-secondary-700: #4b637c;
-    --clr-secondary-800: #3a4c5f;
-    --clr-secondary-900: #212b36;
+    --clr-secondary-500: #ecedee;
+    --clr-secondary-600: #abb0b5;
+    --clr-secondary-700: #5b6167;
+    --clr-secondary-800: #484c51;
+    --clr-secondary-900: #292b2e;
 
     /* Yellow Colors */
     --clr-yellow-100: #fdf4e0;
