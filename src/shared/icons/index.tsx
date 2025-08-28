@@ -91,20 +91,24 @@ import SystemThemeBackground from './system-theme-background.svg?react';
 import TagIcon from './tag.svg?react';
 import TaskIcon from './task.svg?react';
 import TelegramIcon from './telegram.svg?react';
-import { default as Tick, default as TickIcon } from './tick.svg?react';
+import TickIcon from './tick.svg?react';
+import TickIconn from './tickIcon.svg?react';
 import TimeIcon from './time-oclock.svg?react';
 import TimeQuarterIconn from './time-quarter-past.svg?react';
 import TrashIcon from './trash.svg?react';
 import UnCheckIcon from './uncheck.svg?react';
 import UnderlineIcon from './underline-icon.svg?react';
 import UndoIcon from './undo.svg?react';
+import XIcon from './union.svg?react';
 import UserIcon3 from './user-03.svg?react';
 import UserBlockIcon from './user-block.svg?react';
 import UserCardIcon from './user-card.svg?react';
 import UserRectangleIcon from './user-rectangle.svg?react';
-import XIcon from './union.svg?react';
+
 export {
-    BoldIcon,XIcon,
+    BoldIcon,
+    XIcon,
+    TickIconn,
     RedoIcon,
     TimeIcon,
     FloppyDiskIcon,
@@ -190,7 +194,6 @@ export {
     TagIcon,
     TaskIcon,
     TelegramIcon,
-    Tick,
     TickIcon,
     TimeQuarterIconn,
     TrashIcon,
