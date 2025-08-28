@@ -24,41 +24,32 @@ const meta: Meta<typeof S_Banner> = {
         type: {
             control: 'radio',
             options: ['success', 'info', 'warning', 'error'],
-            description: 'Banner tipi — rəng və ikon dəyişir',
         },
         title: {
             control: 'text',
-            description: 'Başlıq mətni',
         },
         description: {
             control: 'text',
-            description: 'Açıqlama mətni (optional)',
         },
         icon: {
             control: false,
-            description: 'Custom sol ikon (verilməzsə type-a görə default)',
         },
         action: {
             control: false,
-            description: 'Sağda action sahəsi (bir və ya bir neçə düymə/element)',
         },
         closable: {
             control: 'boolean',
-            description: 'Close düyməsi görünsün',
         },
         direction: {
             control: 'radio',
             options: ['horizontal', 'vertical'],
-            description: 'Action düymələrinin düzümü',
         },
         device: {
             control: 'radio',
             options: ['web', 'mobile'],
-            description: 'Görünüş: web və ya mobile preview',
         },
         onClose: {
             action: 'onClose fired',
-            description: 'Banner bağlananda çağırılır',
         },
     },
 };

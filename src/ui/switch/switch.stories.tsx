@@ -15,23 +15,18 @@ const meta: Meta<typeof S_Switch> = {
     argTypes: {
         label: {
             control: 'text',
-            description: 'Switch yanındakı mətn',
         },
         disabled: {
             control: 'boolean',
-            description: 'Deaktiv vəziyyət',
         },
         checked: {
             control: 'boolean',
-            description: 'Kontrollu istifadə üçün seçili vəziyyət',
         },
         defaultChecked: {
             control: 'boolean',
-            description: 'Uncontrolled başlanğıc dəyəri',
         },
         onCheckedChange: {
             action: 'checked changed',
-            description: 'Switch dəyəri dəyişəndə çağrılır',
         },
         className: { control: 'text' },
     },

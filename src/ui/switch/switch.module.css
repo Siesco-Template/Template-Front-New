@@ -47,6 +47,10 @@
     line-height: var(--lh-20, 20px);
 }
 
+.switch:is(:checked, [data-checked], [aria-checked='true'], [data-state='checked'])[data-hover] [data-part='control'] {
+    background: var(--background-subtle, #ccc);
+}
+
 .hiddenInputFixed {
     position: fixed !important;
     top: 0 !important;

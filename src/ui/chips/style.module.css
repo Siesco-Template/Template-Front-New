@@ -7,7 +7,6 @@
     cursor: pointer;
     user-select: none;
     transition: all 0.2s ease-in-out;
-
     padding: var(--Sizing-4, 4px) var(--Spacing-6, 6px);
     gap: var(--Spacing-2, 2px);
     border-radius: var(--br-xl);
@@ -15,9 +14,7 @@
 
 .outline {
     border: 1px solid var(--border-brand);
-
     color: var(--content-tertiary);
-
     font-size: var(--fs-14);
     font-style: normal;
     font-weight: 400;
@@ -37,9 +34,7 @@
 .outlined-fill {
     border: 1px solid var(--border-brand);
     background: var(--background-selected);
-
     color: var(--content-brand);
-
     font-size: var(--fs-14);
     font-style: normal;
     font-weight: 400;

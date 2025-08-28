@@ -28,26 +28,20 @@ export default meta;
 
 type Story = StoryObj<typeof S_Checkbox>;
 
-export const Checked: Story = {
-    args: {
-        checked: false,
-        label: 'Checked',
-    },
+export const Default: Story = {
+    args: { checked: false, label: 'Checked' },
     render: (args, { updateArgs }) => {
         const [checkedState, setCheckedState] = useState(args.checked);
-
-        useEffect(() => {
-            setCheckedState(args.checked ?? false);
-        }, [args.checked]);
+        useEffect(() => setCheckedState(args.checked ?? false), [args.checked]);
 
         return (
-            <S_Checkbox
+            <S_Checkbox 
                 {...args}
                 checked={checkedState}
                 onCheckedChange={(e) => {
                     if (e.checked !== 'indeterminate') {
                         setCheckedState(e.checked === true);
-                        updateArgs({ checked: e.checked === true });
+                        updateArgs({ checked: e.checked === true, indeterminate: false });
                     }
                 }}
             />
