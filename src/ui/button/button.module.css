@@ -423,36 +423,36 @@
 
 /* Size - 52 */
 .primary-size-52 {
-    padding: var(--pm-350, 16px) var(--pm-300, 14px);
+    padding: var(--space-450, 16px) var(--space-400, 14px);
     height: 52px;
     border-radius: var(--br-5xl, 20px);
-    gap: var(--gap-200, 4px);
+    gap: var(--space-200, 4px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .outlined-size-52 {
-    padding: var(--pm-350, 16px) var(--pm-300, 14px);
+    padding: var(--space-450) var(--space-400, 14px);
     height: 52px;
     border-radius: var(--br-5xl, 20px);
-    gap: var(--gap-200, 4px);
+    gap: var(--space-200, 4px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .ghost-size-52 {
-    padding: var(--pm-200, 8px) 0;
+    padding: var(--space-300, 8px) 0;
     border-radius: var(--br-5xl, 20px);
-    gap: var(--gap-200, 4px);
+    gap: var(--space-200, 4px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .inverse-size-52 {
-    padding: var(--pm-350, 16px) var(--pm-300, 14px);
+    padding: var(--space-450) var(--space-400, 14px);
     height: 52px;
     border-radius: var(--br-5xl, 20px);
-    gap: var(--gap-200, 4px);
+    gap: var(--space-200, 4px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
@@ -460,35 +460,35 @@
 
 /* Size - 48 */
 .primary-size-48 {
-    padding: var(--pm-250, 12px);
+    padding: var(--space-350, 12px);
     height: 48px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .outlined-size-48 {
-    padding: var(--pm-250, 12px);
+    padding: var(--space-350, 12px);
     height: 48px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .ghost-size-48 {
-    padding: var(--pm-200, 8px) 0;
-    gap: var(--gap-300, 8px);
+    padding: var(--space-300, 8px) 0;
+    gap: var(--space-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .inverse-size-48 {
-    padding: var(--pm-250, 12px);
+    padding: var(--space-350, 12px);
     height: 48px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-3xl, 16px);
     font-size: var(--fs-16, 16px);
     font-weight: 500;
@@ -497,35 +497,35 @@
 
 /* Size - 44 */
 .primary-size-44 {
-    padding: var(--pm-200, 8px) var(--pm-300, 14px);
+    padding: var(--space-300, 8px) var(--space-400, 14px);
     height: 44px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .outlined-size-44 {
-    padding: var(--pm-200, 8px) var(--pm-300, 14px);
+    padding: var(--space-300, 8px) var(--space-400, 14px);
     height: 44px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .ghost-size-44 {
-    padding: var(--pm-200, 8px) 0;
-    gap: var(--gap-300, 8px);
+    padding: var(--space-300, 8px) 0;
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .inverse-size-44 {
-    padding: var(--pm-200, 8px) var(--pm-300, 14px);
+    padding: var(--space-300, 8px) var(--space-400, 14px);
     height: 44px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
@@ -534,35 +534,35 @@
 
 /* Size - 36 */
 .primary-size-36 {
-    padding: var(--pm-200, 8px) var(--pm-225, 10px);
+    padding: var(--space-300, 8px) var(--space-325, 10px);
     height: 36px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .outlined-size-36 {
-    padding: var(--pm-200, 8px) var(--pm-225, 10px);
+    padding: var(--space-300, 8px) var(--space-325, 10px);
     height: 36px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .ghost-size-36 {
-    padding: var(--pm-100, 4px) 0;
-    gap: var(--gap-300, 8px);
+    padding: var(--space-200, 4px) 0;
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .inverse-size-36 {
-    padding: var(--pm-200, 8px) var(--pm-225, 10px);
+    padding: var(--space-300, 8px) var(--space-325, 10px);
     height: 36px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
@@ -571,35 +571,35 @@
 
 /* Size - 32 */
 .primary-size-32 {
-    padding: var(--pm-200, 8px);
+    padding: var(--space-300, 8px);
     height: 32px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .outlined-size-32 {
-    padding: var(--pm-200, 8px);
+    padding: var(--space-300, 8px);
     height: 32px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .ghost-size-32 {
-    padding: var(--pm-100, 4px) 0;
-    gap: var(--gap-300, 8px);
+    padding: var(--space-200, 4px) 0;
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
     line-height: var(--lh-20, 20px);
 }
 .inverse-size-32 {
-    padding: var(--pm-200, 8px);
+    padding: var(--space-300, 8px);
     height: 32px;
-    gap: var(--gap-300, 8px);
+    gap: var(--space-300, 8px);
     border-radius: var(--br-2xl, 12px);
     font-size: var(--fs-14, 14px);
     font-weight: 500;
@@ -611,35 +611,14 @@
 /* Notification */
 .notification {
     display: flex;
-    width: 14px;
-    height: 14px;
+    width: 8px;
+    height: 8px;
     position: absolute;
-    right: 9px;
-    top: -7px;
+    right: 8px;
+    top: -4px;
 
     border-radius: 100%;
-    border: 1px solid var(--clr-white);
     background: var(--background-negative, #ff3b30);
-}
-
-/* Tooltip */
-.btnContainer {
-    position: relative;
-}
-
-.tooltip {
-    animation: fadeIn 0.2s ease-in-out;
-    position: absolute;
-    bottom: -23px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: hsl(var(--clr-primary-900));
-    color: hsl(var(--clr-white-50));
-    padding: var(--pm-100) var(--pm-150);
-    border-radius: var(--r-200);
-    font-size: var(--fs-25);
-    white-space: nowrap;
-    z-index: 1000;
 }
 
 @keyframes fadeIn {

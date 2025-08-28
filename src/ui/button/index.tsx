@@ -19,7 +19,6 @@ interface ButtonProps {
     disableAnimation?: boolean;
     isLoading?: boolean;
     notification?: boolean;
-    showTooltip?: boolean;
 }
 
 type ButtonElementProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
@@ -37,12 +36,9 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     className = '',
     notification = false,
     isLoading = false,
-    showTooltip = false,
     ...props
 }) => {
     const btnRef = useRef<HTMLButtonElement>(null);
-    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-    const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
     const [fixedWidth, setFixedWidth] = useState<number | undefined>();
 
     useEffect(() => {
@@ -50,28 +46,6 @@ const S_Button: FC<I_ButtonComponentProps> = ({
             setFixedWidth(btnRef.current.offsetWidth);
         }
     }, [btnRef?.current]);
-
-    const handleMouseEnter = () => {
-        if (showTooltip) {
-            const timeout = setTimeout(() => {
-                setIsTooltipOpen(true);
-            }, 200);
-            setTooltipTimeout(timeout);
-        }
-    };
-
-    const handleMouseLeave = () => {
-        if (tooltipTimeout) {
-            clearTimeout(tooltipTimeout);
-        }
-        setIsTooltipOpen(false);
-    };
-
-    useEffect(() => {
-        return () => {
-            if (tooltipTimeout) clearTimeout(tooltipTimeout);
-        };
-    }, [tooltipTimeout]);
 
     const buttonClasses = cls(
         styles.btn,
@@ -101,21 +75,16 @@ const S_Button: FC<I_ButtonComponentProps> = ({
                 {children}
             </button>
 
-            <div className={styles.btnContainer}>
-                <button
-                    tabIndex={1}
-                    {...(props as ButtonElementProps)}
-                    className={buttonClasses}
-                    disabled={disabled}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    style={{ width: isLoading ? fixedWidth : undefined }}
-                >
-                    {isLoading ? <div className={styles['dot-carousel']}></div> : children}
-                    {notification && <div className={styles.notification}></div>}
-                </button>
-                {isTooltipOpen && <div className={styles.tooltip}>{props['aria-label'] || props.title || ''}</div>}
-            </div>
+            <button
+                tabIndex={1}
+                {...(props as ButtonElementProps)}
+                className={buttonClasses}
+                disabled={disabled}
+                style={{ width: isLoading ? fixedWidth : undefined }}
+            >
+                {isLoading ? <div className={styles['dot-carousel']}></div> : children}
+                {notification && <div className={styles.notification}></div>}
+            </button>
         </>
     );
 };
