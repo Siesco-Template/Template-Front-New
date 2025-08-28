@@ -1,6 +1,7 @@
 .checkbox {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -9,10 +10,18 @@
 
 .label {
     color: var(--content-secondary);
-    font-size: var(---fs-16);
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-20);
+}
+
+.checkbox[data-size='14'] .label,
+.checkbox[data-size='16'] .label {
+    font-size: var(--fs-14);
+}
+
+.checkbox[data-size='20'] .label {
+    font-size: var(--fs-16);
 }
 
 .control {
@@ -61,7 +70,13 @@
 
 .control[data-state='checked'][data-hover],
 .control[data-state='indeterminate'][data-hover] {
-    border-color: transparent;
+    background: var(--background-selected, #e7eefd);
+    border-color: var(--background-selected, #e7eefd);
+}
+
+.control[data-state='checked'][data-hover] > svg,
+.control[data-state='indeterminate'][data-hover] > svg {
+    color: var(--content-tertiary, #666);
 }
 
 .control[data-state='checked'][data-hover] .indicator > svg,
@@ -80,20 +95,17 @@
     color: var(--content-inverse);
 }
 
-.disabled,
-.checkbox[aria-disabled='true'] {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
 .disabled .control,
 .checkbox[aria-disabled='true'] .control {
     border: 2px solid var(--border-disabled);
     background: var(--background-disabled);
 }
 
-.disabled .label,
-.checkbox[aria-disabled='true'] .label {
+.disabled .indicator > svg {
+    color: var(--content-disabled) !important;
+}
+
+.disabled .label {
     color: var(--content-disabled);
     font-size: var(--fs-16);
     font-style: normal;

@@ -1,84 +1,55 @@
-/* Root */
 .switch {
     display: flex;
-    gap: var(--pm-200);
+    gap: 8px;
     align-items: center;
     cursor: pointer;
 }
 
 .switch [data-part='control'] {
     display: inline-flex;
-    width: calc(var(--wh-400) + 0.125rem);
-    background-color: hsl(var(--clr-grey-300));
-    padding: var(--pm-100);
+    background: var(--background-teritary, #ebebeb);
     border-radius: 9999999px;
-    transition: var(--animation);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.08) inset;
+    transition: all 0.2s ease;
     border: 1px solid transparent;
+    align-items: center;
 }
-.switch[data-hover] [data-part='control'] {
-    background-color: hsl(var(--clr-grey-500));
+.switch [data-part='thumb'] {
+    background: var(--content-primary-inverse, #fff);
+    border-radius: 9999999px;
+    transition: all 0.2s ease;
 }
 
-.switch [data-part='thumb'] {
-    width: var(--wh-150);
-    height: var(--wh-150);
-    background: hsl(var(--clr-background));
-    border-radius: 9999999px;
-    transition: var(--animation);
+.switch[data-hover] [data-part='control'] {
+    background: var(--background-subtle, #ccc);
 }
 
 .switch:is(:checked, [data-checked], [aria-checked='true'], [data-state='checked']) [data-part='thumb'] {
     transform: translateX(100%);
 }
-
 .switch:is(:checked, [data-checked], [aria-checked='true'], [data-state='checked']) [data-part='control'] {
-    background: hsl(var(--clr-blue-400));
+    background: var(--content-brand, #0d3caf);
 }
 
-.switch[data-color='primary'][data-focus] [data-part='control'] {
-    border: 1px solid hsl(var(--clr-primary-400));
-}
-.switch[data-color='blue'][data-focus] [data-part='control'] {
-    border: 1px solid hsl(var(--clr-blue-200));
-}
-
-/* onChecked bg switch */
-.switch.variant-default[data-color='primary']:is(:checked, [data-checked]) [data-part='control'] {
-    background: hsl(var(--clr-primary-400));
-}
-.switch.variant-default[data-color='primary']:is(:checked, [data-checked]) [data-part='control'][data-hover] {
-    background: hsl(var(--clr-primary-500));
-}
-.switch.variant-default[data-color='primary']:is(:checked, [data-checked]) [data-part='control'][data-active] {
-    background: hsl(var(--clr-primary-600));
-}
-
-.switch.variant-default[data-color='blue']:is(:checked, [data-checked]) [data-part='control'] {
-    background: hsl(var(--clr-blue-400));
-}
-.switch.variant-default[data-color='blue']:is(:checked, [data-checked]) [data-part='control'][data-hover] {
-    background: hsl(var(--clr-blue-600));
-}
-.switch.variant-default[data-color='blue']:is(:checked, [data-checked]) [data-part='control'][data-active] {
-    background: hsl(var(--clr-blue-700));
-}
-
-/* switch is disabled */
 .switch:is(:disabled, [data-disabled]) {
     cursor: auto;
 }
 .switch:is(:disabled, [data-disabled]) [data-part='control'] {
-    background: hsl(var(--clr-grey-300));
+    background: var(--background-disabled, #f3f3f3);
 }
 .switch:is(:disabled, [data-disabled]) [data-part='thumb'] {
-    background: hsl(var(--clr-grey-500));
+    background: var(--content-disabled, #a6a6a6);
 }
 .switch:is(:disabled, [data-disabled]) [data-part='label'] {
-    color: hsl(var(--clr-grey-400));
+    color: var(--content-disabled, #a6a6a6);
+    font-size: var(--fs-16, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px);
 }
 
-/* hidden input */
+.switch:is(:checked, [data-checked], [aria-checked='true'], [data-state='checked'])[data-hover] [data-part='control'] {
+    background: var(--background-subtle, #ccc);
+}
 
 .hiddenInputFixed {
     position: fixed !important;
@@ -88,4 +59,31 @@
     height: 0px;
     opacity: 0;
     pointer-events: none;
+}
+
+.switch[data-size='14'] [data-part='control'] {
+    height: 14px;
+    width: 22px;
+}
+.switch[data-size='14'] [data-part='thumb'] {
+    width: 10px;
+    height: 10px;
+}
+
+.switch[data-size='16'] [data-part='control'] {
+    height: 16px;
+    width: 26px;
+}
+.switch[data-size='16'] [data-part='thumb'] {
+    width: 12px;
+    height: 12px;
+}
+
+.switch[data-size='20'] [data-part='control'] {
+    height: 20px;
+    width: 32px;
+}
+.switch[data-size='20'] [data-part='thumb'] {
+    width: 16px;
+    height: 16px;
 }

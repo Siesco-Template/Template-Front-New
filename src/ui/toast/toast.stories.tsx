@@ -14,7 +14,6 @@ const meta: Meta<typeof S_Toast> = {
     argTypes: {
         label: {
             control: 'text',
-            description: 'Toast başlığı',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: '-' },
@@ -22,7 +21,6 @@ const meta: Meta<typeof S_Toast> = {
         },
         description: {
             control: 'text',
-            description: 'İzah (optional)',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: '-' },
@@ -31,7 +29,6 @@ const meta: Meta<typeof S_Toast> = {
         type: {
             control: 'radio',
             options: ['success', 'error', 'warning', 'info'],
-            description: 'Toast tipi — rəng və ikon dəyişir',
             table: {
                 type: { summary: `'success' | 'error' | 'warning' | 'info'` },
                 defaultValue: { summary: 'info' },
@@ -39,7 +36,6 @@ const meta: Meta<typeof S_Toast> = {
         },
         icon: {
             control: false,
-            description: 'Custom sol ikon (optional). Verilməzsə `type`-a uyğun default ikon göstərilir.',
             table: {
                 type: { summary: 'ReactNode' },
                 defaultValue: { summary: 'default icon' },
@@ -47,7 +43,6 @@ const meta: Meta<typeof S_Toast> = {
         },
         duration: {
             control: 'number',
-            description: 'Toast görünmə müddəti (ms)',
             table: {
                 type: { summary: 'number' },
                 defaultValue: { summary: 3000 },

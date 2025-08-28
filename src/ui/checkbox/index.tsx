@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Checkbox, CheckboxLabelProps, CheckboxRootProps } from '@ark-ui/react/checkbox';
 import { Remove } from '@mui/icons-material';
 
-import { TickIcon } from '@/shared/icons';
+import { TickIconn } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
 import styles from './checkbox.module.css';
@@ -40,7 +40,7 @@ const S_Checkbox: FC<I_CheckboxProps> = ({
         >
             <Checkbox.Control data-part="control" className={styles.control}>
                 <Checkbox.Indicator data-part="indicator" className={styles.indicator}>
-                    {indeterminate ? <Remove /> : <TickIcon />}
+                    {indeterminate ? <Remove /> : <TickIconn width='currentWidth'/>}
                 </Checkbox.Indicator>
             </Checkbox.Control>
 
