@@ -6,7 +6,7 @@ import 'dayjs/locale/az';
 import { Loader2 } from 'lucide-react';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';

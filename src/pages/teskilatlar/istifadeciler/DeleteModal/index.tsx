@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import styles from './style.module.css';
 

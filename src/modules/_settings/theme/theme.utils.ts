@@ -12,7 +12,7 @@ export const transformThemeToCss = (theme?: Theme) => {
 
         const backgroundColors = Object.entries(theme.background).reduce(
             (acc, [key, value]) => {
-                acc[`--content-${key}`] = value;
+                acc[`--background-${key}`] = value;
                 return acc;
             },
             {} as Record<string, string>
@@ -20,7 +20,7 @@ export const transformThemeToCss = (theme?: Theme) => {
 
         const borderColors = Object.entries(theme.border).reduce(
             (acc, [key, value]) => {
-                acc[`--content-${key}`] = value;
+                acc[`--border-${key}`] = value;
                 return acc;
             },
             {} as Record<string, string>

@@ -3,7 +3,7 @@ import S_Badge from './badge';
 import S_Button from './button';
 import S_Checkbox from './checkbox';
 import S_ContextMenu2 from './context-menu/context-menu-2/index';
-import { Dialog } from './dialog';
+import { Dialog } from './dialog/shared';
 import S_Drawer from './drawer';
 import S_Image from './image/index';
 import S_Input from './input';

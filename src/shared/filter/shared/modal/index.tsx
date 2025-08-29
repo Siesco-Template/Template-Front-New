@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { S_Button, S_Input } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import styles from './style.module.css';
 

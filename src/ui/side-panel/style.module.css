@@ -1,9 +1,4 @@
-.mainContent {
-    max-width: 502px;
-    height: 100%;
-    max-height: 97vh;
-}
-
-.header {
-    margin-bottom: var(--pm-500);
+.modalBody {
+    flex: 1;
+    overflow-y: auto;
 }

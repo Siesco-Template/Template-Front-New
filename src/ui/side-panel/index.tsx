@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './side-panel-dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './shared';
 import styles from './style.module.css';
 
 interface Props {
@@ -6,16 +6,19 @@ interface Props {
     onOpenChange: (open: boolean) => void;
     title: string;
     children: React.ReactNode;
+    footer?: React.ReactNode;
+    maxWidth?: string;
 }
 
-function S_SidePanel({ open, onOpenChange, title, children }: Props) {
+function S_SidePanel({ open, onOpenChange, title, children, footer, maxWidth }: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.mainContent}>
+            <DialogContent className={styles.mainContent} style={{ maxWidth }}>
                 <DialogHeader>
-                    <DialogTitle className={styles.header}>{title}</DialogTitle>
+                    <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
-                {children}
+                <div className={styles.modalBody}>{children}</div>
+                {footer && <DialogFooter className={styles.modalFooter}>{footer}</DialogFooter>}
             </DialogContent>
         </Dialog>
     );

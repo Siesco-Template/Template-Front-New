@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { S_Input } from '@/ui';
 import S_Button from '@/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import { FolderItem } from '../types';
 

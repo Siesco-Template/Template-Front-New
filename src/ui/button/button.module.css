@@ -8,6 +8,9 @@
     text-decoration: none;
     border: none;
 }
+.btn:focus {
+    outline: 1px solid var(--border-focus, #0d3caf);
+}
 
 .btn.animation {
     transition:
@@ -42,6 +45,7 @@
     background: var(--background-selected, #fff);
     color: var(--content-brand, #0d3caf);
 }
+
 .primary-primary:not(.loading):disabled {
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);

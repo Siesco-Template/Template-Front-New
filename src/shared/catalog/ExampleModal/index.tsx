@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 import S_Textarea from '@/ui/textarea';
 
 import styles from './style.module.css';

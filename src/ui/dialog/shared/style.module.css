@@ -1,0 +1,39 @@
+@import 'tw-animate-css';
+
+/* Overlay */
+.overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background: #000 !important;
+    opacity: 0.8 !important;
+    z-index: 110 !important;
+}
+
+/* Dialog Content */
+.content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 110;
+    transform: translate(-50%, -50%);
+    background: var(--background-primary, #fff);
+    border-radius: 16px;
+    box-shadow: var(--shadow-l2);
+    transition-duration: 200;
+}
+
+.content[data-state='open'] {
+    @apply animate-in fade-in-0 zoom-in-90 slide-in-from-left-50 slide-in-from-top-50;
+}
+
+.content[data-state='closed'] {
+    @apply animate-out fade-out-0 zoom-out-90 slide-out-to-left-50 slide-out-to-top-50;
+}
+
+/* Dialog Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-350, 12px);
+}

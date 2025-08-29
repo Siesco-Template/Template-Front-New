@@ -1,84 +1,33 @@
-import * as React from 'react';
-
-import { X } from 'lucide-react';
-
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { ReactNode } from 'react';
 
 import { cls } from '@/shared/utils';
 
-import S_Button from '../button';
-import styles from './dialog.module.css';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './shared';
+import styles from './style.module.css';
 
-const Dialog = DialogPrimitive.Root;
+export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-const DialogTrigger = DialogPrimitive.Trigger;
+interface Props {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    children?: ReactNode;
+    title?: ReactNode;
+    size?: ModalSize;
+    footer?: ReactNode;
+}
 
-const DialogPortal = DialogPrimitive.Portal;
+function Modal({ open, onOpenChange, children, title, size = 'md', footer }: Props) {
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className={cls(styles.modalContent, styles[size])}>
+                <DialogHeader className={cls(styles.modalHeader, styles[size])}>
+                    <DialogTitle className={cls(styles.modalTitle, styles[size])}>{title}</DialogTitle>
+                </DialogHeader>
+                <div className={styles.modalBody}>{children}</div>
+                <DialogFooter className={cls(styles.modalFooter, styles[size])}>{footer}</DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
-const DialogClose = DialogPrimitive.Close;
-
-const DialogOverlay = React.forwardRef<
-    React.ElementRef<typeof DialogPrimitive.Overlay>,
-    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-    <DialogPrimitive.Overlay ref={ref} className={cls(styles.overlay, className)} {...props} />
-));
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
-
-const DialogContent = React.forwardRef<
-    React.ElementRef<typeof DialogPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-    <DialogPortal>
-        <DialogOverlay />
-        <DialogPrimitive.Content ref={ref} className={cls(styles.content, className)} {...props}>
-            {children}
-            <DialogPrimitive.Close className={styles.close}>
-                <S_Button variant="ghost" size="32" aria-label="close">
-                    <X width={16} height={16} />
-                </S_Button>
-                <span className="sr-only">Close</span>
-            </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-    </DialogPortal>
-));
-DialogContent.displayName = DialogPrimitive.Content.displayName;
-
-const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cls(styles.header, className)} {...props} />
-);
-DialogHeader.displayName = 'DialogHeader';
-
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cls(styles.footer, className)} {...props} />
-);
-DialogFooter.displayName = 'DialogFooter';
-
-const DialogTitle = React.forwardRef<
-    React.ElementRef<typeof DialogPrimitive.Title>,
-    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props }, ref) => (
-    <DialogPrimitive.Title ref={ref} className={cls(styles.title, className)} {...props} />
-));
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
-
-const DialogDescription = React.forwardRef<
-    React.ElementRef<typeof DialogPrimitive.Description>,
-    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-    <DialogPrimitive.Description ref={ref} className={cls(styles.description, className)} {...props} />
-));
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
-
-export {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogOverlay,
-    DialogPortal,
-    DialogTitle,
-    DialogTrigger,
-};
+export default Modal;

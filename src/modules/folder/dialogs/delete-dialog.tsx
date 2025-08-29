@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import { FolderItem } from '../types';
 

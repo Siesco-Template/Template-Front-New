@@ -6,7 +6,8 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 import { cls } from '@/shared/utils';
 
-import styles from './side-panel.module.css';
+import S_Button from '../../button';
+import styles from './style.module.css';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -22,7 +23,6 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <DialogPrimitive.Overlay ref={ref} className={cls(styles.overlay, className)} {...props} />
 ));
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
@@ -32,26 +32,25 @@ const DialogContent = React.forwardRef<
         <DialogOverlay />
         <DialogPrimitive.Content ref={ref} className={cls(styles.content, className)} {...props}>
             {children}
-            <DialogPrimitive.Close className={styles.close}>
-                <button>
-                    <X width={16} height={16} color="#fff" />
-                </button>
-                <span className="sr-only">Close</span>
-            </DialogPrimitive.Close>
         </DialogPrimitive.Content>
     </DialogPortal>
 ));
-DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cls(styles.header, className)} {...props} />
+    <div className={cls(styles.header, className)} {...props}>
+        {props.children}
+        <DialogPrimitive.Close className={styles.close} tabIndex={-1}>
+            <S_Button variant="ghost" size="32" aria-label="close" tabIndex={1}>
+                <X width={20} height={20} />
+            </S_Button>
+            <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+    </div>
 );
-DialogHeader.displayName = 'DialogHeader';
 
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div className={cls(styles.footer, className)} {...props} />
 );
-DialogFooter.displayName = 'DialogFooter';
 
 const DialogTitle = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Title>,
@@ -59,7 +58,6 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <DialogPrimitive.Title ref={ref} className={cls(styles.title, className)} {...props} />
 ));
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
 const DialogDescription = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Description>,
@@ -67,7 +65,6 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <DialogPrimitive.Description ref={ref} className={cls(styles.description, className)} {...props} />
 ));
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
     Dialog,

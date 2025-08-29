@@ -1,0 +1,75 @@
+@import 'tw-animate-css';
+
+/* Overlay */
+.overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background: #000 !important;
+    opacity: 0.6 !important;
+    z-index: 100 !important;
+}
+
+/* Dialog Content */
+.content {
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    z-index: 110;
+    background: var(--background-secondary, #f3f3f3);
+    animation: all 0.3s ease-in-out;
+    min-height: 400px;
+    max-height: 100dvh - 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-450, 16px);
+    padding: var(--size-500, 32px) var(--size-250, 12px);
+    border-radius: var(--br-3xl) var(--br-3xl) 0 0;
+    box-shadow:
+        0 4px 4px 0 rgba(0, 0, 0, 0.08),
+        -8px 0 8px 0 rgba(108, 125, 140, 0.08);
+}
+
+.content[data-state='open'] {
+    @apply animate-in slide-in-from-bottom-100 slide-in-from-right-0 duration-300;
+}
+
+.content[data-state='closed'] {
+    @apply animate-out slide-out-to-bottom-100 slide-out-to-right-0 duration-300;
+}
+
+/* Dialog Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-350, 12px);
+}
+
+/* Title */
+.title {
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-20, 20px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 33px;
+}
+
+/* Close */
+.close {
+    position: absolute;
+    padding: var(--space-450, 16px) var(--space-350) var(--space-450) var(--space-500);
+    z-index: 100;
+    border-radius: var(--br-7xl) 0 0 var(--br-7xl);
+    background: var(--background-inverse, #1a1a1a);
+    left: -56px;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.close button {
+    cursor: pointer;
+}

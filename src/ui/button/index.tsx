@@ -38,6 +38,8 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     isLoading = false,
     ...props
 }) => {
+    const { tabIndex: userTabIndex, ...restButtonProps } = props as ButtonElementProps;
+
     const btnRef = useRef<HTMLButtonElement>(null);
     const [fixedWidth, setFixedWidth] = useState<number | undefined>();
 
@@ -55,6 +57,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
         isLoading && styles.loading,
         className
     );
+    const effectiveTabIndex = disabled ? -1 : (userTabIndex ?? 0);
 
     if (as === 'link' && 'to' in props) {
         return (
@@ -69,6 +72,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
             <button
                 ref={btnRef}
                 tabIndex={-1}
+                aria-hidden="true"
                 className={buttonClasses}
                 style={{ position: 'absolute', left: '-9999px' }}
             >
@@ -76,14 +80,15 @@ const S_Button: FC<I_ButtonComponentProps> = ({
             </button>
 
             <button
-                tabIndex={1}
-                {...(props as ButtonElementProps)}
+                {...restButtonProps}
+                type={(props as ButtonElementProps).type ?? 'button'}
+                tabIndex={effectiveTabIndex}
                 className={buttonClasses}
                 disabled={disabled}
                 style={{ width: isLoading ? fixedWidth : undefined }}
             >
-                {isLoading ? <div className={styles['dot-carousel']}></div> : children}
-                {notification && <div className={styles.notification}></div>}
+                {isLoading ? <div className={styles['dot-carousel']} /> : children}
+                {notification && <div className={styles.notification} />}
             </button>
         </>
     );

@@ -9,7 +9,7 @@ import { UserRole, userRoleOptions } from '@/shared/constants/enums';
 import { cls } from '@/shared/utils';
 
 import { S_Button, S_Input } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 import S_Select_Simple from '@/ui/select/select-simple';
 
 import { ConfirmModal } from '../ConfirmModal';

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import { Folder } from '..';
 import { folderService } from '../services/folder.service';
