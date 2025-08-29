@@ -225,8 +225,8 @@
     --content-brand: var(--clr-primary-500);
     --content-brand-bold: var(--clr-primary-700);
     --content-secondary-brand: var(--clr-secondary-500);
-    --content-secondary-brand-bold: var(--clr-secondary-700);
-    --content-inverse-secondary-brand-bold: var(--clr-secondary-700);
+    --content-secondary-brand-bold: var(--clr-secondary-800);
+    --content-inverse-secondary-brand-bold: var(--clr-secondary-500);
     --content-link: var(--clr-blue-500);
     --content-link-secondary: var(--clr-blue-600);
     --content-link-tertiary: var(--clr-blue-700);
@@ -256,7 +256,7 @@
     --background-brand-pressed: var(--clr-primary-700);
     --background-secondary-brand: var(--clr-secondary-500);
     --background-secondary-brand-hover: var(--clr-secondary-600);
-    --background-secondary-brand-pressed: var(--clr-secondary-700);
+    --background-secondary-brand-pressed: var(--clr-secondary-800);
     --background-info: var(--clr-blue-500);
     --background-info-subtle: var(--clr-blue-100);
     --background-notice: var(--clr-yellow-500);
