@@ -27,24 +27,6 @@
     height: 100%;
 }
 
-.searchWithButtons .btngroup button {
-    display: flex;
-    width: 36px;
-    height: 36px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    transition: all var(--animation);
-
-    border-radius: 12px;
-    border: 1px solid var(--Foundation-surface-White, #fff);
-    background: transparent;
-}
-
-.searchWithButtons .btngroup button:hover {
-    background: hsl(var(--clr-white-50));
-}
-
 .searchOnTop {
     display: flex;
     align-items: center;
@@ -64,7 +46,7 @@
 }
 
 .logo span {
-    color: hsl(var(--clr-primary-900));
+    color: var(--content-brand-bold, #061d55);
     font-family: Poppins;
     font-size: 20px;
     font-style: normal;
@@ -127,13 +109,17 @@
 }
 
 .fullName {
-    color: hsl(var(--clr-primary-900));
+    color: var(--content-secondary, #333);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+    /* 18/Medium */
     font-family: Poppins;
-    font-size: 16px;
+    font-size: var(--fs-18, 18px);
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
-    wrap: nowrap;
+    line-height: var(--lh-24, 24px); /* 133.333% */
 }
 
 .initialsAvatar {

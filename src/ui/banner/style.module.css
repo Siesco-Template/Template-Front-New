@@ -8,6 +8,10 @@
     position: relative;
     max-width: 100%;
     overflow: hidden;
+    width: 900px;
+
+    padding: var(--space-450, 16px);
+    gap: var(--space-350);
 }
 
 .banner::before {
@@ -41,7 +45,7 @@
     color: var(--content-primary, #1a1a1a);
     font-size: var(--fs-14, 14px);
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     line-height: var(--lh-20, 20px);
 }
 
@@ -49,7 +53,7 @@
     color: var(--content-secondary, #333);
     font-size: var(--fs-12, 12px);
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     line-height: var(--lh-14, 14px);
 }
 

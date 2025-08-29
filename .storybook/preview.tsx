@@ -31,6 +31,11 @@ const preview: Preview = {
         controls: {
             matchers: { color: /(background|color)$/i, date: /Date$/i },
         },
+        options: {
+            storySort: {
+                order: ['Introduction', ['Configure your project'], 'Tokens', ['Colors', 'Sizes'], 'Components'],
+            },
+        },
         docs: {
             autodocs: true,
         },

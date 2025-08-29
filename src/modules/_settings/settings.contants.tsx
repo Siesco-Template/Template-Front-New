@@ -28,41 +28,6 @@ export type NavigationItem = {
     show: boolean;
 };
 
-// export const NavigationLinks: NavigationItem[] = [
-//     {
-//         href: APP_URLS.anaSehife(),
-//         title: 'Ana səhifə',
-//         icon: MenuHomeIcon,
-//         roles: [],
-//         permissionKey: [],
-//         show: true,
-//     },
-//     {
-//         href: APP_URLS.teskilatlar(),
-//         title: 'Təşkilatlar',
-//         icon: MenuCompanyIcon,
-//         roles: [],
-//         permissionKey: [],
-//         show: true,
-//         subLinks: [
-//             {
-//                 title: 'İstifadəçilər',
-//                 href: APP_URLS.istifadeciler(),
-//                 roles: [],
-//                 permissionKey: ['user/getAll'],
-//                 show: true,
-//             },
-//             {
-//                 title: 'Hüquqlar',
-//                 href: APP_URLS.huquqlar(),
-//                 roles: [],
-//                 permissionKey: ['permission/getAll'],
-//                 show: true,
-//             },
-//         ],
-//     },
-// ];
-
 export const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
     home: MenuHomeIcon,
     reports: MenuReportIcon,

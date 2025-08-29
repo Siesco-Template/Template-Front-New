@@ -6,22 +6,11 @@ import { useAuthStore } from '@/store/authStore';
 import { APP_URLS } from '@/services/config/url.config';
 import { excelService } from '@/services/import/export/excel.service';
 
-import {
-    DownloadIcon,
-    DownloadIconn,
-    LeftIcon,
-    NotifiIcon,
-    OutlineStartIcon,
-    RightIcon,
-    SettingIcon,
-    StarIcon,
-    TimeQuarterIconn,
-} from '@/shared/icons';
-// import logo_img from '@/shared/icons/afmis-logo.svg?url';
+import { DownloadIcon, DownloadIconn, LeftIcon, RightIcon, SettingIcon, StarIcon } from '@/shared/icons';
 import companyLogo from '@/shared/images/company.png';
 import { cls } from '@/shared/utils';
 
-import { S_Button, S_SidePanel } from '@/ui';
+import { S_Avatar, S_Button, S_SidePanel } from '@/ui';
 
 import { SETTINGS_URL } from '../../settings.config';
 import styles from './header-content.module.css';
@@ -76,32 +65,20 @@ const Header_Content = () => {
                     </div>
                     <div className={styles.searchWithButtons}>
                         <div className={styles.btngroup}>
-                            <button className={styles.leftBtn} onClick={() => navigate(-1)}>
-                                <LeftIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
-                            </button>
-                            <button className={styles.btnRight} onClick={() => navigate(+1)}>
-                                <RightIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
-                            </button>
+                            <S_Button variant="primary" color="secondary" onClick={() => navigate(-1)}>
+                                <LeftIcon color="var(--content-secondary-brand-bold)" width={16} height={16} />
+                            </S_Button>
+                            <S_Button variant="primary" color="secondary" onClick={() => navigate(+1)}>
+                                <RightIcon color="var(--content-secondary-brand-bold)" width={16} height={16} />
+                            </S_Button>
                         </div>
-                        {/* <div className={styles.searchOnTop}>
-                            <S_Input
-                                icon={<SearchIcon color="#fff" width={15} height={15} />}
-                                placeholder="Axtar"
-                                inputSize="small"
-                                className={styles.inp}
-                                fieldClassName={styles.inpField}
-                                iconPosition="left"
-                            />
-                        </div> */}
                     </div>
                 </div>
 
                 <ul className={styles.sideNav}>
                     <li>
                         <S_Button
-                            variant="main-10"
-                            isIcon
-                            iconBtnSize="15"
+                            variant="primary"
                             color="secondary"
                             aria-label="Endirilənlər"
                             onClick={() => {
@@ -110,27 +87,24 @@ const Header_Content = () => {
                                 setIsPanelOpen(true);
                             }}
                         >
-                            <DownloadIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
+                            <DownloadIcon color="var(--content-secondary-brand-bold)" width={16} height={16} />
                         </S_Button>
                     </li>
                     <li>
                         <S_Button
-                            variant="main-10"
-                            isIcon
-                            iconBtnSize="15"
+                            variant="primary"
                             color="secondary"
                             aria-label="Tənzimləmələr"
                             onClick={() => navigate(SETTINGS_URL.interfaceSettings())}
                         >
-                            <SettingIcon color="hsl(var(--clr-primary-900))" width={16} height={16} />
+                            <SettingIcon color="var(--content-secondary-brand-bold)" width={16} height={16} />
                         </S_Button>
                     </li>
 
                     <li>
                         <div className={styles.profile}>
                             <Link className={styles.profile} to={'/profil'}>
-                                <span className={styles.fullName}>{user.fullName}</span>
-                                <img src={companyLogo} alt="" />
+                                <S_Avatar />
                             </Link>
                         </div>
                     </li>
@@ -151,66 +125,6 @@ const Header_Content = () => {
                 }
             >
                 <>
-                    {selectedPanel === 'notifications' && (
-                        <section className={styles.panel}>
-                            {/* <h2 className={styles.label}>Dünən</h2> */}
-
-                            {/* {notifications.map((notification) => (
-                                <Notification
-                                    key={notification.id}
-                                    notification={notification}
-                                    onNotificationClick={() => handleNotificationClick(notification.id)}
-                                    onDelete={() => handleNotificationDelete(notification.id)}
-                                />
-                            ))} */}
-                        </section>
-                    )}
-                    {selectedPanel === 'history' && (
-                        <section className={styles.panel}>
-                            <div className={styles.historyItems}>
-                                <h2 className={styles.label}>Bu gün</h2>
-                                <div className={styles.historyItemsGroup}>
-                                    {Array.from({ length: 5 }).map((_, index) => (
-                                        <div className={styles.historyItem} key={index}>
-                                            <p>
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                industry.
-                                            </p>
-                                            <span>10:50 AM</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className={styles.historyItems}>
-                                <h2 className={styles.label}>12.04.2025</h2>
-                                <div className={styles.historyItemsGroup}>
-                                    {Array.from({ length: 5 }).map((_, index) => (
-                                        <div className={styles.historyItem} key={index}>
-                                            <p>
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                industry.
-                                            </p>
-                                            <span>10:50 AM</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </section>
-                    )}
-                    {selectedPanel === 'favorites' && (
-                        <section className={styles.panel}>
-                            {Array.from({ length: 5 }).map((_, index) => (
-                                <div className={styles.favoriteItem} key={index}>
-                                    <StarIcon width={12} height={12} color="hsl(var(--clr-grey-400))" />
-                                    <div className={styles.favoriteItemContent}>
-                                        <h3>Subtitle</h3>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </section>
-                    )}
                     {selectedPanel === 'downloads' && (
                         <section className={styles.panel}>
                             <div className={styles.downloadItems}>

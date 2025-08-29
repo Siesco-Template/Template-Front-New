@@ -31,7 +31,6 @@ const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    // const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
     const { pinned, alwaysOpen } = useLayoutStore();
     const { user } = useAuthStore();
     const { permissions } = usePermission();

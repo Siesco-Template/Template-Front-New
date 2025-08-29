@@ -32,10 +32,6 @@ export const Default: Story = {
                         setFiles(newFiles);
                     }}
                 />
-                <pre style={{ fontSize: 12, marginTop: 16 }}>
-                    {files.length > 0 &&
-                        files.map((file, i) => `${i + 1}. ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)\n`)}
-                </pre>
             </div>
         );
     },

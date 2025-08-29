@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { ArrowDown } from '@/shared/filter/shared/icons';
+import { ArrowDownIcon } from '@/shared/icons';
+
 import S_Banner from '.';
 import S_Button from '../button';
 
@@ -20,6 +23,9 @@ const meta: Meta<typeof S_Banner> = {
     title: 'UI/Banner',
     component: S_Banner,
     tags: ['autodocs'],
+    parameters: {
+        layout: 'centered',
+    },
     argTypes: {
         type: {
             control: 'radio',
@@ -100,6 +106,7 @@ export const Warning: Story = {
         action: (
             <>
                 <S_Button variant="primary" children="Button" />
+                <S_Button variant="primary" children={<ArrowDown width="16" height="16" />} />
             </>
         ),
     },

@@ -126,7 +126,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                 </div>
             )}
         >
-            <S_Button variant="main-10" isIcon iconBtnSize="15" color="secondary" aria-label="Görünürlük">
+            <S_Button variant="primary" color="secondary" aria-label="Görünürlük">
                 <VisibilityIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
             </S_Button>
         </Dropdown>

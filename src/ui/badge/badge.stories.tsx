@@ -6,6 +6,9 @@ const meta: Meta<typeof S_Badge> = {
     title: 'UI/Badge',
     component: S_Badge,
     tags: ['autodocs'],
+    parameters: {
+        layout: 'centered',
+    },
     argTypes: {
         status: {
             control: 'select',

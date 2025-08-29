@@ -96,25 +96,16 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                 <h1>{renderTitle(title)}</h1>
             </div>
             <div className={styles.table_header_btn}>
-                <S_Button variant="main-10" isIcon iconBtnSize="15" color="secondary" aria-label="Faq">
+                <S_Button variant="primary" color="secondary" aria-label="Faq">
                     <QuestionIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
                 </S_Button>
                 {tableVisibiltyColumn && <TableVisibilityChangeMenu table_key={table_key} />}
-                <S_Button
-                    variant="main-10"
-                    isIcon
-                    iconBtnSize="15"
-                    color="secondary"
-                    aria-label="Yenilə"
-                    onClick={onRefresh}
-                >
+                <S_Button variant="primary" color="secondary" aria-label="Yenilə" onClick={onRefresh}>
                     <RefreshIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
                 </S_Button>
                 {onToggleFilter && (
                     <S_Button
-                        variant="main-10"
-                        isIcon
-                        iconBtnSize="15"
+                        variant="primary"
                         color="secondary"
                         aria-label="Filter"
                         onClick={onToggleFilter}
@@ -125,14 +116,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                 )}
 
                 {onToggleConfig && (
-                    <S_Button
-                        variant="main-10"
-                        isIcon
-                        iconBtnSize="15"
-                        color="secondary"
-                        aria-label="Konfiqurasiya"
-                        onClick={onToggleConfig}
-                    >
+                    <S_Button variant="primary" color="secondary" aria-label="Konfiqurasiya" onClick={onToggleConfig}>
                         <FilterIconn width={14} height={14} color="hsl(var(--clr-primary-900))" />
                     </S_Button>
                 )}
@@ -184,47 +168,47 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                 {importFromExcel ? (
                     page && actions?.includes('uploadFile') ? (
                         <PermissionGuard permissionKey={`${page}/uploadFile`}>
-                            <S_Button variant="main-10" color="secondary" onClick={importFromExcel}>
+                            <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
                                 <ExcelIconImport width={14} height={14} color="hsl(var(--clr-primary-900))" /> Excel
                                 şablondan yüklə
                             </S_Button>
                         </PermissionGuard>
                     ) : (
-                        <S_Button variant="main-10" color="secondary" onClick={importFromExcel}>
+                        <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
                             <ExcelIconImport width={14} height={14} color="hsl(var(--clr-primary-900))" /> Excel
                             şablondan yüklə
                         </S_Button>
                     )
                 ) : null}
 
-                <S_Button variant="main-10" color="secondary">
+                <S_Button variant="primary" color="secondary">
                     Qovluq kimi göstər
                 </S_Button>
                 {onClickCancelBtn && (
-                    <S_Button variant="main-10" color="secondary" onClick={onClickCancelBtn}>
+                    <S_Button variant="primary" color="secondary" onClick={onClickCancelBtn}>
                         Ləğv et
                     </S_Button>
                 )}
                 {onClickSaveBtn && (
-                    <S_Button variant="main-10" color="secondary" onClick={onClickSaveBtn}>
+                    <S_Button variant="primary" color="secondary" onClick={onClickSaveBtn}>
                         Yadda saxla
                     </S_Button>
                 )}
                 {onClickRightBtn ? (
                     page && actions?.includes('create') ? (
                         <PermissionGuard permissionKey={`${page}/create`}>
-                            <S_Button variant="main-10" onClick={onClickRightBtn}>
+                            <S_Button variant="primary" color="secondary" onClick={onClickRightBtn}>
                                 <NewItemIcon color="#fff" /> Yeni
                             </S_Button>
                         </PermissionGuard>
                     ) : (
-                        <S_Button variant="main-10" onClick={onClickRightBtn}>
+                        <S_Button variant="primary" color="secondary" onClick={onClickRightBtn}>
                             <NewItemIcon color="#fff" /> Yeni
                         </S_Button>
                     )
                 ) : null}
                 {onClickSaveandApplyBtn && (
-                    <S_Button variant="main-10" onClick={onClickSaveandApplyBtn}>
+                    <S_Button variant="primary" color="secondary" onClick={onClickSaveandApplyBtn}>
                         Yadda saxla və təsdiqlə
                     </S_Button>
                 )}
