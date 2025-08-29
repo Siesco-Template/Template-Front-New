@@ -40,7 +40,7 @@ const S_Checkbox: FC<I_CheckboxProps> = ({
         >
             <Checkbox.Control data-part="control" className={styles.control}>
                 <Checkbox.Indicator data-part="indicator" className={styles.indicator}>
-                    {indeterminate ? <Remove /> : <TickIconn width='currentWidth'/>}
+                    {indeterminate ? <Remove /> : <TickIconn width="currentWidth" />}
                 </Checkbox.Indicator>
             </Checkbox.Control>
 

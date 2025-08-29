@@ -191,7 +191,7 @@ function PermissionTable({ tableData, setTableData, currentPage, itemPerPage }: 
                                             onChange={() =>
                                                 handleCheckboxChange(row, item.key, action.key, !hasPermission)
                                             }
-                                            size="100"
+                                            size="16"
                                         />
                                     </td>
                                 );

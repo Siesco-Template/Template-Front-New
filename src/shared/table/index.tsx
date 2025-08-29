@@ -261,7 +261,7 @@ function Table<T extends Record<string, any>>({
                             placeholder={filter.placeholder || filter.column}
                             onChange={(e) => _onChange(filter.key, e.target.value)}
                             readOnly={filter.readOnly}
-                            inputSize="medium"
+                            inputSize="36"
                             style={{ width: '100%' }}
                         />
                     </div>
@@ -601,7 +601,7 @@ function Table<T extends Record<string, any>>({
                             <S_Checkbox
                                 label=""
                                 color="primary"
-                                size="200"
+                                size="16"
                                 checked={all || some}
                                 onCheckedChange={({ checked }) => {
                                     table.toggleAllRowsSelected(!!checked);
@@ -622,7 +622,7 @@ function Table<T extends Record<string, any>>({
                             <S_Checkbox
                                 label=""
                                 color="primary"
-                                size="200"
+                                size="16"
                                 checked={checked}
                                 onCheckedChange={({ checked }) => {
                                     row.toggleSelected(!!checked);

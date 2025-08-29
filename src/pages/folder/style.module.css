@@ -1,6 +1,6 @@
 .folder {
-    background: #fff;
+    background: var(--background-primary, #fff);
     height: 100%;
-    padding: var(--pm-400);
-    border-radius: var(--r-400);
+    padding: var(--space-450);
+    border-radius: var(--br-3xl);
 }

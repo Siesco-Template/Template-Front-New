@@ -97,11 +97,11 @@ const Table_Header: React.FC<TableHeaderProps> = ({
             </div>
             <div className={styles.table_header_btn}>
                 <S_Button variant="primary" color="secondary" aria-label="Faq">
-                    <QuestionIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                    <QuestionIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
                 </S_Button>
                 {tableVisibiltyColumn && <TableVisibilityChangeMenu table_key={table_key} />}
                 <S_Button variant="primary" color="secondary" aria-label="Yenilə" onClick={onRefresh}>
-                    <RefreshIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                    <RefreshIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
                 </S_Button>
                 {onToggleFilter && (
                     <S_Button
@@ -111,13 +111,13 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                         onClick={onToggleFilter}
                         notification={notification}
                     >
-                        <FilterIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                        <FilterIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
                     </S_Button>
                 )}
 
                 {onToggleConfig && (
                     <S_Button variant="primary" color="secondary" aria-label="Konfiqurasiya" onClick={onToggleConfig}>
-                        <FilterIconn width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                        <FilterIconn width={14} height={14} color="var(--content-secondary-brand-bold)" />
                     </S_Button>
                 )}
 
@@ -129,7 +129,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                             onClickExport?.();
                         }}
                     >
-                        <XlsIcon width={14} height={14} color="hsl(var(--clr-primary-900))" /> Endir
+                        <XlsIcon width={14} height={14} color="var(--content-secondary-brand-bold)" /> Endir
                     </button>
 
                     <button
@@ -138,7 +138,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                         aria-expanded={open}
                         onClick={() => setOpen(!open)}
                     >
-                        <DownIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                        <DownIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
                     </button>
 
                     {open && (
@@ -169,13 +169,13 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                     page && actions?.includes('uploadFile') ? (
                         <PermissionGuard permissionKey={`${page}/uploadFile`}>
                             <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
-                                <ExcelIconImport width={14} height={14} color="hsl(var(--clr-primary-900))" /> Excel
-                                şablondan yüklə
+                                <ExcelIconImport width={14} height={14} color="var(--content-secondary-brand-bold)" />{' '}
+                                Excel şablondan yüklə
                             </S_Button>
                         </PermissionGuard>
                     ) : (
                         <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
-                            <ExcelIconImport width={14} height={14} color="hsl(var(--clr-primary-900))" /> Excel
+                            <ExcelIconImport width={14} height={14} color="var(--content-secondary-brand-bold)" /> Excel
                             şablondan yüklə
                         </S_Button>
                     )
@@ -197,18 +197,18 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                 {onClickRightBtn ? (
                     page && actions?.includes('create') ? (
                         <PermissionGuard permissionKey={`${page}/create`}>
-                            <S_Button variant="primary" color="secondary" onClick={onClickRightBtn}>
+                            <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
                                 <NewItemIcon color="#fff" /> Yeni
                             </S_Button>
                         </PermissionGuard>
                     ) : (
-                        <S_Button variant="primary" color="secondary" onClick={onClickRightBtn}>
+                        <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
                             <NewItemIcon color="#fff" /> Yeni
                         </S_Button>
                     )
                 ) : null}
                 {onClickSaveandApplyBtn && (
-                    <S_Button variant="primary" color="secondary" onClick={onClickSaveandApplyBtn}>
+                    <S_Button variant="primary" color="primary" onClick={onClickSaveandApplyBtn}>
                         Yadda saxla və təsdiqlə
                     </S_Button>
                 )}

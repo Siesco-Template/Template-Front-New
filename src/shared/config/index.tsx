@@ -130,10 +130,9 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                     <h1>Konfiqurasiya</h1>
                     <div className={styles.btns}>
                         <S_Button
-                            variant="outlined-10"
-                            iconBtnSize="15"
+                            variant="primary"
+                            color="primary"
                             aria-label="Sıfırla"
-                            isIcon
                             onClick={() => setIsConfirmResetOpen(true)}
                         >
                             {isResetting ? (
@@ -142,7 +141,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                                 <RedoIcon color="hsl(var(--clr-primary-500))" width={16} height={16} />
                             )}
                         </S_Button>
-                        <S_Button variant="main-10" iconBtnSize="15" aria-label="Təsdiqlə" isIcon onClick={handleSave}>
+                        <S_Button variant="primary" color="primary" aria-label="Təsdiqlə" onClick={handleSave}>
                             {isSaving ? (
                                 <span className={styles.spinner} />
                             ) : (

@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 16px;
-    background: var(--Foundation-surface-White, #fff);
+    background: var(--background-primary, #fff);
     height: 100%;
     transition: all 0.3s ease;
     padding: 16px 16px 0 16px;
@@ -27,11 +27,10 @@
     top: 0;
     width: 270px;
     height: 100%;
-    background: #fff;
     border-radius: 16px 16px 0 0;
     transition: all 0.4s ease;
     will-change: transform;
-    border-radius: 12px;
+    border-radius: 16px;
 }
 .filterPanel {
     right: 0;

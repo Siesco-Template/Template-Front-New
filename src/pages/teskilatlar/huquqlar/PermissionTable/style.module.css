@@ -10,7 +10,8 @@
     white-space: nowrap;
 
     overflow: hidden;
-    color: hsl(var(--clr-grey-600));
+    color: var(--content-secondary, #333);
+
     font-size: var(--fs-50);
     font-style: normal;
     font-weight: 500;
@@ -23,10 +24,12 @@
 
 .thead th,
 .subHeader th {
-    border: 1px solid hsl(var(--clr-grey-100));
-    background: hsl(var(--clr-white-200));
-    color: hsl(var(--clr-grey-600));
-    font-size: var(--fs-50);
+    border: 1px solid var(--border-tertiary, #333);
+    background: var(--background-secondary-brand, #5b6167);
+
+    color: var(--content-secondary, #333);
+
+    font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -39,13 +42,23 @@
 }
 
 .table tbody tr {
-    border-top: 1px solid hsl(var(--clr-grey-100));
-    border-bottom: 1px solid hsl(var(--clr-grey-100));
+    border-top: 1px solid var(--border-tertiary, #ccc);
+    border-bottom: 1px solid var(--border-tertiary, #ccc);
+    background: var(--background-primary, #fff);
+    padding: var(--space-300) var(--space-350);
+
+    overflow: hidden;
+    color: var(--content-primary, #1a1a1a);
+
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .table th,
 .table td {
-    padding: var(--pm-300);
+    padding: var(--space-300) var(--space-350);
     text-align: left;
     vertical-align: middle;
 }
