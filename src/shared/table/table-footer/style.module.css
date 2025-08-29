@@ -4,10 +4,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 16px;
-    background: var(--Foundation-surface-White, #fff);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    font-size: 14px;
+    font-size: var(--fs-14);
+
+    background: var(--background-primary, #fff);
 }
 
 .leftSide {
@@ -16,13 +17,13 @@
 }
 
 .label {
-    color: var(--Black-700, rgba(0, 0, 0, 0.6));
+    overflow: hidden;
+    color: var(--content-secondary, #333);
     text-align: center;
-    font-size: 14px;
+    font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--Typography-Line-Height-Body-2, 20px); /* 142.857% */
-    letter-spacing: var(--Typography-Letter-Space-Body-2, 0.25px);
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .select {
@@ -36,13 +37,12 @@
 
 .range {
     overflow: hidden;
-    color: var(--Black-700, rgba(0, 0, 0, 0.6));
+    color: var(--content-tertiary, #666);
     text-align: center;
-    font-size: 14px;
+    font-size: var(--fs-12);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--Typography-Line-Height-Body-2, 20px); /* 142.857% */
-    letter-spacing: var(--Typography-Letter-Space-Body-2, 0.25px);
+    line-height: var(--lh-20, 20px); /* 166.667% */
 }
 
 .iconBtn {

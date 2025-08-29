@@ -24,7 +24,7 @@ interface ISidebar_Content_PinnedProps {
 
 const IconComponent = ({ link }: { link: NavigationItem }) => {
     const Icon = link.icon || getIconById(link.id);
-    return <>{Icon && <Icon color="white" />}</>;
+    return <>{Icon && <Icon color="var(--content-primary, #1A1A1A)" />}</>;
 };
 const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen, setSubMenuOpen, toggleSubMenu }) => {
     const { navigationLinks } = useSettingsStore();

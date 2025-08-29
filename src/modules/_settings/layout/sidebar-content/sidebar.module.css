@@ -2,6 +2,7 @@
     overflow: hidden;
     opacity: 1;
     height: 100%;
+    gap: 24px;
 }
 .sidebarWrapper.disable {
     transform: translateX(-100%);
@@ -16,7 +17,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0 16;
+    padding: 0 var(--size-350);
 }
 
 .sidebarItem {
@@ -165,9 +166,7 @@
     transition: 0.3s;
     padding-left: 28px;
     border-radius: var(--br-xxl, 12px);
-
     height: 40px;
-    padding: var(--Spacing-12, 12px) var(--Spacing-16, 16px);
     gap: var(--Spacing-12, 12px);
 }
 .sidebarSubLink:hover {
@@ -235,7 +234,8 @@
 
 .pinned .pinnedLink {
     color: hsl(var(--clr-foreground));
-    padding: var(--pm-400);
+    padding: var(--size-350, 16px);
+
     border-radius: 50%;
     transition: all 0.3s ease;
     position: relative;
@@ -244,17 +244,16 @@
     pointer-events: auto;
 }
 .pinned .pinnedLink:not(.pinnedParentActive):not(.linkActive):hover {
-    background-color: hsl(var(--clr-white-50));
+    background: var(--background-primary, #fff);
 }
 
 .pinned .pinnedLink.linkActive {
-    color: hsl(var(--clr-white-50));
-    background-color: hsl(var(--clr-blue-500));
+    background: var(--background-brand, #0d3caf);
 }
 .pinned .pinnedLink.linkActive svg g path,
 .pinnedLink.linkActive svg path,
 .pinnedLink.linkActive svg rect {
-    stroke: hsl(var(--clr-white-50));
+    stroke: var(--content-primary-inverse, #fff);
 }
 .pinned .pinnedLink:hover::after {
     content: attr(title);
@@ -273,13 +272,16 @@
     z-index: 1000;
 }
 .pinnedParentActive {
-    color: hsl(var(--clr-white-50));
-    background-color: hsl(var(--clr-blue-500));
+    background: var(--background-primary, #fff);
+
+    box-shadow:
+        0 2px 4px 0 rgba(0, 0, 0, 0.08),
+        0 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 .pinnedParentActive svg g path,
 .pinnedParentActive svg path,
 .pinnedParentActive svg rect {
-    stroke: hsl(var(--clr-white-50));
+    stroke: var(--content-brand, #0d3caf);
 }
 .pinnedSubMenu {
     position: relative;
@@ -289,6 +291,12 @@
     display: flex;
     flex-direction: column;
     padding: 0 var(--pm-200);
+    background: var(--background-primary, #fff);
+    border-radius: var(--br-xxl, 12px);
+
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.1),
+        0 0 4px 0 rgba(0, 0, 0, 0.08);
 }
 .subLinkItemsContainer .pinnedLink {
     padding: 12px 16px;
