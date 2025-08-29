@@ -101,7 +101,7 @@ const Profile = () => {
                             name="name"
                             value={form.name}
                             onChange={handleChange}
-                            size={36}
+                            size={'36'}
                         />
                         <S_Input label="Təşkilatın VÖEN-i" name="voen" value={form.voen} onChange={handleChange} />
                         <S_Input label="Təşkilat kodu" name="code" value={form.code} onChange={handleChange} />
