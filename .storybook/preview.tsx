@@ -33,13 +33,7 @@ const preview: Preview = {
         },
         options: {
             storySort: {
-                order: [
-                    'Introduction',
-                    ['Introduction configure your project'],
-                    'Tokens',
-                    ['Colors', 'Sizes'],
-                    'Components',
-                ],
+                order: ['Introduction', ['Configure your project'], 'Tokens', ['Colors', 'Sizes'], 'Components'],
             },
         },
         docs: {
