@@ -9,7 +9,7 @@ import { cls } from '@/shared/utils';
 import styles from './avatar.module.css';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-export type AvatarType = 'image' | 'placeholder';
+export type AvatarType = 'image' | 'placeholder' | 'name';
 
 interface I_AvatarProps extends AvatarRootProps {
     name?: string;
@@ -28,6 +28,15 @@ const sizeMap: Record<AvatarSize, number> = {
     '2xl': 64,
 };
 
+const fontSizeMap: Record<AvatarSize, number> = {
+    xs: 10,
+    sm: 12,
+    md: 14,
+    lg: 14,
+    xl: 16,
+    '2xl': 16,
+};
+
 const S_Avatar: FC<I_AvatarProps> = ({
     imageUrl,
     name,
@@ -39,11 +48,18 @@ const S_Avatar: FC<I_AvatarProps> = ({
 }) => {
     const pixelSize = sizeMap[size];
 
+    const getInitials = (fullName?: string) => {
+        if (!fullName) return '';
+        const words = fullName.trim().split(/\s+/);
+        if (words.length === 1) return words[0][0]?.toUpperCase();
+        return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+    };
+
     return (
         <Avatar.Root
             {...props}
             className={cls(styles.avatar, styles[size], online && styles.online, className)}
-            style={{ width: pixelSize, height: pixelSize }}
+            style={{ width: pixelSize, height: pixelSize, ['--avatar-font' as any]: `${fontSizeMap[size]}px` }}
             data-size={size}
         >
             {type === 'placeholder' && (
@@ -54,6 +70,12 @@ const S_Avatar: FC<I_AvatarProps> = ({
 
             {type === 'image' && imageUrl && (
                 <AvatarImage src={imageUrl} alt={name || ''} width={pixelSize} height={pixelSize} />
+            )}
+
+            {type === 'name' && name && (
+                <Avatar.Fallback aria-label={name}>
+                    <span className={styles.initials}>{getInitials(name)}</span>
+                </Avatar.Fallback>
             )}
         </Avatar.Root>
     );

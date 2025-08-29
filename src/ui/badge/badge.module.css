@@ -1,11 +1,18 @@
 .badge {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 2px 8px;
+    justify-content: center;
+    gap: var(--space-200, 4px);
     border-radius: 999px;
-    font-size: 13px;
+    padding: var(--space-200, 4px) var(--space-300, 8px);
+}
+
+.badge span {
     font-weight: 500;
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-14, 14px);
 }
 
 .icon {
@@ -23,7 +30,7 @@
 }
 
 .iconType3 {
-    width: 6px !important; 
+    width: 6px !important;
     height: 6px !important;
     border-radius: 9999px;
     background-color: currentColor;
@@ -31,6 +38,10 @@
 
 .type-2 {
     background-color: transparent !important;
+}
+
+.type-2 span {
+    font-weight: 400 !important;
 }
 
 .variant-default {
