@@ -1,47 +1,47 @@
 .authContainer {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  height: 100dvh;
-  background-color: hsl(var(--clr-white-200));
-  overflow-y: auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 100dvh;
+    background: var(--background-secondary, #f3f3f3);
+    overflow-y: auto;
 }
 
 .leftSection {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 80px;
-  padding-block: 72px;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+    padding-block: 72px;
 }
 
 .logoWrapper img {
-  object-fit: contain;
-  width: auto;
-  height: var(--pm-325);
+    object-fit: contain;
+    width: auto;
+    height: var(--pm-325);
 }
 
 .outletWrapper {
-  width: min(77%, 552px);
+    width: min(77%, 552px);
 }
 
 .rightSection {
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  gap: var(--pm-925);
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    gap: var(--pm-925);
 }
 
 .authLogo {
-  object-fit: cover;
+    object-fit: cover;
 }
 .logoWrapper {
     display: flex;

@@ -1,11 +1,8 @@
 .header {
     height: 52px;
-    background: hsl(var(--clr-white-200));
+    background: var(--background-secondary, #f3f3f3);
     padding: var(--pm-200, 8px) var(--pm-400, 16px);
     width: 100%;
-
-    /* border-bottom: 1px solid var(--Neutral-50, #fafafa); */
-    /* max-width: 1440px; */
 }
 
 .layout {
@@ -15,12 +12,11 @@
     max-height: calc(100dvh - 48px);
 }
 
-/* Sidebar */
 .layoutSidebar {
     position: relative;
-    background: hsl(var(--clr-white-200));
-    transition: all var(--animation-2);
+    transition: width 0.3s ease;
     height: 100%;
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .layoutSidebar.unpinned.small {
@@ -55,7 +51,7 @@
     display: flex;
     flex-direction: column;
     overflow-x: auto;
-    background: hsl(var(--clr-white-200));
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .mainLayout {
@@ -66,17 +62,28 @@
 /* Toggle button */
 .sidebarToggleBtn {
     position: absolute;
-    border-radius: var(--r-300);
-    background: hsl(var(--clr-white-50));
     color: hsl(var(--clr-primary-500));
-    width: var(--wh-325);
-    height: var(--wh-325);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 20px;
     z-index: 100;
-    box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
+
+    display: flex;
+    width: 29px;
+    height: 29px;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 12px;
+    border: 1px solid var(--border-inverse, #fff);
+    background: var(--background-primary, #fff);
+
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.1),
+        0 0 4px 0 rgba(0, 0, 0, 0.08);
 }
 
 .sidebarToggleBtn.left {

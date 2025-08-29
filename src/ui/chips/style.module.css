@@ -1,15 +1,16 @@
 .chip {
     display: inline-flex;
     align-items: center;
-    font-size: 16px;
-    padding: 8px 16px;
+    font-size: var(--fs-16);
+    padding: var(--space-300) var(--space-450);
     border-radius: 999px;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s ease-in-out;
-    padding: var(--Sizing-4, 4px) var(--Spacing-6, 6px);
-    gap: var(--Spacing-2, 2px);
+    padding: var(--space-200, 4px) var(--space-250, 6px);
+    gap: var(--space-100, 2px);
     border-radius: var(--br-xl);
+    height: 26px;
 }
 
 .outline {
@@ -50,10 +51,20 @@
 
 .label {
     white-space: nowrap;
-    color: var(--content-tertiary, #666);
-
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-20, 20px);
+}
+
+.chip.outline .label {
+    color: var(--content-tertiary);
+}
+
+.chip.fill .label {
+    color: var(--content-secondary-inverse);
+}
+
+.chip.outlined-fill .label {
+    color: var(--content-brand);
 }

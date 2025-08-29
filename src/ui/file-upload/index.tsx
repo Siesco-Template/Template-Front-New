@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { UploadFileIcon, XIcon } from '@/shared/icons';
 
@@ -31,6 +31,7 @@ const File_Upload = ({
     defaultFiles = [],
 }: Props) => {
     const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (defaultFiles && defaultFiles.length > 0) {
@@ -50,6 +51,19 @@ const File_Upload = ({
             onChange(newFiles.map((f) => f.file));
             newFiles.forEach((f, i) => simulateUpload(f.file, uploadFiles.length + i));
         }
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        const newFiles = Array.from(e.dataTransfer.files).map((file) => ({
+            file,
+            status: 'uploading',
+            progress: 0,
+        }));
+        const updated: any = [...uploadFiles, ...newFiles];
+        setUploadFiles(updated);
+        onChange(newFiles.map((f) => f.file));
+        newFiles.forEach((f, i) => simulateUpload(f.file, uploadFiles.length + i));
     };
 
     const simulateUpload = (file: File, index: number) => {
@@ -84,8 +98,13 @@ const File_Upload = ({
                 [styles.verticalProgress]: progressPosition === 'bottom',
             })}
         >
-            <label className={styles.uploadBox}>
-                <input type="file" accept="image/*" multiple onChange={handleFileChange} hidden />
+            <label
+                className={styles.uploadBox}
+                onDrop={handleDrop}
+                onDragOver={(e) => e.preventDefault()}
+                onDragEnter={(e) => e.preventDefault()}
+            >
+                <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleFileChange} hidden />
                 <div
                     className={clsx(styles.uploadContent, {
                         [styles.vertical]: direction === 'vertical',
@@ -99,7 +118,7 @@ const File_Upload = ({
                         <p>Drag & drop here</p>
                         <small>JPEG, PNG, PDF and MP4 format, up to 60MB</small>
                         <small>or</small>
-                        <S_Button onClick={(e: any) => handleFileChange(e)}>Select file</S_Button>
+                        <S_Button onClick={() => fileInputRef.current?.click()}>Select file</S_Button>
                     </div>
                 </div>
             </label>
@@ -132,17 +151,16 @@ const File_Upload = ({
                                     {item.status === 'completed' && (
                                         <span className={styles.completedText}>Completed</span>
                                     )}
-                                    {item.status === 'failed' && <span className={styles.failedText}> Failed</span>}
+                                    {item.status === 'failed' && <span className={styles.failedText}>Failed</span>}
                                     {item.status === 'invalid' && (
-                                        <>
-                                            <span className={styles.errorMessage}>File format is not valid</span>
-                                        </>
+                                        <span className={styles.errorMessage}>File format is not valid</span>
                                     )}
                                 </div>
                             </div>
                             <button type="button" className={styles.removeButton} onClick={() => removeFile(index)}>
                                 <XIcon />
                             </button>
+
                             {(item.status === 'uploading' || item.status === 'completed') && (
                                 <div className={styles.progressBar}>
                                     <div

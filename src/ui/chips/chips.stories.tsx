@@ -6,6 +6,9 @@ const meta: Meta<typeof S_Chips> = {
     title: 'UI/Chips',
     component: S_Chips,
     tags: ['autodocs'],
+    parameters: {
+        layout: 'centered',
+    },
     argTypes: {
         type: {
             control: 'radio',

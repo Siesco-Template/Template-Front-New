@@ -56,7 +56,12 @@ const S_Banner = ({
             {action && <div className={`${styles.action} ${styles[direction]}`}>{action}</div>}
 
             {closable && (
-                <button className={styles.close} onClick={handleClose} aria-label="Close">
+                <button
+                    className={styles.close}
+                    style={{ alignSelf: action ? 'center' : 'flex-start' }}
+                    onClick={handleClose}
+                    aria-label="Close"
+                >
                     <XIcon width={16} height={16} color="var(--content-secondary, #333)" />
                 </button>
             )}

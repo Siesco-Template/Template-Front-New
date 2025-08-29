@@ -28,7 +28,7 @@ const Layout_Sidebar: FC = () => {
                 togglePinned(!pinned);
             }}
         >
-            <DirectionLeft01 width={20} height={20} />
+            <DirectionLeft01 width={20} height={20} color="var(--content-brand, #0D3CAF)" />
         </button>
     );
 
