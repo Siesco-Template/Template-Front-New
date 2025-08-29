@@ -7,7 +7,7 @@ const Home = () => {
             <section style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <NavLink
                     style={{ padding: '14px 16px' }}
-                    to="https://template.microsol.az/storybook/?path=/docs/configure-your-project--docs"
+                    to="https://template.microsol.az/storybook/?path=/docs/introduction-configure-your-project--docs"
                     target="_blank"
                     className="
     relative inline-block px-10 py-4 
