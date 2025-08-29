@@ -1,5 +1,5 @@
 .panelWrapper {
-    width: 280px;
+    width: 270px;
     transition: all 0.3s ease;
     height: 100%;
     border-radius: 16px 16px;
@@ -11,7 +11,7 @@
 
 .configPanel {
     overflow-y: auto;
-    width: 280px;
+    width: 270px;
     padding: 16px;
 }
 
@@ -36,7 +36,6 @@
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
-    border-bottom: 1px solid #eee;
     cursor: pointer;
 
     border-radius: 12px;
@@ -48,15 +47,16 @@
 }
 
 .sectionHeaderActive {
-    background: var(--foundation-surface-light-active, #f0f3f6);
+    background: var(--background-selected, #e7eefd);
 }
 
 .sectionHeader span {
-    color: var(--foundation-dark-normal-active, #3d4c5e);
-    font-size: 14px;
+    color: var(--content-secondary, #333);
+
+    font-size: var(--fs-14, 14px);
     font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+    font-weight: 500;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .sectionContent {
@@ -73,7 +73,7 @@
 }
 
 .sectionHeader button.rotate {
-    transform: rotate(45deg); /* '+' işarəsi → '×' vizualı */
+    transform: rotate(45deg);
 }
 
 .sectionBody {
@@ -81,12 +81,10 @@
     overflow: hidden;
     transition: max-height 0.4s ease;
 
-    padding: 6px 4px 6px 12px;
 }
 
 .sectionBody.hidden {
     max-height: 0;
-    padding: 0;
 }
 
 .configRow {
@@ -112,12 +110,6 @@
     margin: 4px 0;
 
     color: var(--content-tertiary, #b2b2b2);
-    font-feature-settings:
-        'liga' off,
-        'clig' off;
-
-    /* 12/Regular */
-    font-family: Poppins;
     font-size: var(--Font-Size-12, 12px);
     font-style: normal;
     font-weight: 400;

@@ -1,6 +1,6 @@
 import { SearchIcon } from '@/shared/icons';
 
-import { S_Input } from '@/ui';
+import { S_Button, S_Input } from '@/ui';
 
 import styles from './style.module.css';
 
@@ -18,14 +18,14 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onReset, onSearchChange, se
                 placeholder="Axtar"
                 value={searchText}
                 onChange={(e) => onSearchChange?.(e.target.value)}
-                inputSize="medium"
+                inputSize="36"
                 label=""
                 icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                 iconPosition="right"
             />
-            <button className={styles.searchButton} onClick={onReset}>
+            <S_Button color="secondary" variant="primary" onClick={onReset}>
                 Təmizlə
-            </button>
+            </S_Button>
         </div>
     );
 };

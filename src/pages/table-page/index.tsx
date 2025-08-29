@@ -358,7 +358,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 actions={['create', 'exportFile']}
                 table_key="customer_table"
                 notification={isFilterApplied}
-                onClickRightBtn={() => {}}
+                onClickRightBtn={()=>{}}
             />
 
             <div className={styles.wrapper}>

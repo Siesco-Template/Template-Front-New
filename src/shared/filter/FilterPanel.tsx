@@ -8,7 +8,7 @@ import { filterService } from '@/services/filter/filter.service';
 
 import { SearchIcon } from '@/shared/icons';
 
-import { S_Input } from '@/ui';
+import { S_Button, S_Input } from '@/ui';
 
 import Catalog from '../catalog';
 import { useTableContext } from '../table/table-context';
@@ -204,7 +204,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                             placeholder={filter.placeholder || filter.column}
                             onChange={(e) => _onChange(filter.key, e.target.value)}
                             readOnly={filter.readOnly}
-                            inputSize="medium"
+                            inputSize="36"
                             style={{ width: '100%' }}
                             icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                             iconPosition="right"
@@ -470,9 +470,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                                 <div className={styles.filterContent}>
                                                     {filteredSavedFilters.map(renderFilter)}
                                                 </div>
-                                                <Button variant="tertiary" onClick={handleApplyFilters}>
+                                                <S_Button
+                                                    variant="primary"
+                                                    color="primary"
+                                                    onClick={handleApplyFilters}
+                                                >
                                                     Tətbiq et
-                                                </Button>
+                                                </S_Button>
                                             </div>
                                         </>
                                     )}

@@ -6,29 +6,14 @@
 }
 
 .filterTitle {
-    color: var(--Black, #000);
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-16, 16px);
     font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+    font-weight: 500;
+    line-height: var(--lh-20, 20px); /* 125% */
 }
 
 .filterHeaderButtons {
     display: flex;
     gap: 4px;
-}
-
-.headerBtn {
-    display: flex;
-    width: 36px;
-    height: 36px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-
-    border-radius: 12px;
-    border: 1px solid var(--Foundation-surface-White, #fff);
-    background: var(--foundation-surface-white-active, #f5f7f9);
 }

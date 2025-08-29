@@ -7,12 +7,9 @@ import { SearchIcon } from '@/shared/icons';
 
 import { S_Button, S_Input } from '@/ui';
 
-import { isValidFilterValue } from '../../config/filterHelpers';
 import SearchHeader from '../../layout/searchHeader';
 import ActionsDropdown from '../../shared/actions/Actions';
-import Button from '../../shared/button';
 import { ArrowLeftIcon, DiskIcon, EditIcon, TrashIcon } from '../../shared/icons';
-import Modal from '../../shared/modal';
 import ConfirmModal from '../../shared/modal';
 import { FilterConfig } from '../../types';
 import styles from './style.module.css';
@@ -238,24 +235,29 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                 {editing && (
                                     <>
                                         <S_Button
-                                            variant="main-10"
-                                            isIcon
-                                            iconBtnSize="15"
+                                            variant="primary"
                                             color="secondary"
                                             aria-label="Yadda saxla"
                                             onClick={handleSaveEditedFilter}
                                         >
-                                            <DiskIcon width={16} height={16} color="hsl(var(--clr-primary-900))" />
+                                            <DiskIcon
+                                                width={16}
+                                                height={16}
+                                                color="var(--background-secondary-brand, #ECEDEE)"
+                                            />
                                         </S_Button>
 
                                         <S_Button
-                                            variant="main-10"
-                                            isIcon
+                                            variant="primary"
+                                            color="secondary"
                                             aria-label="Sil"
-                                            iconBtnSize="15"
                                             onClick={() => handleDelete(selectedFilter.id)}
                                         >
-                                            <TrashIcon width={16} height={16} color="#fff" />
+                                            <TrashIcon
+                                                width={16}
+                                                height={16}
+                                                color="var(--background-secondary-brand, #ECEDEE)"
+                                            />
                                         </S_Button>
                                     </>
                                 )}
@@ -279,9 +281,13 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                 ))}
                         </div>
 
-                        <Button variant="tertiary" onClick={() => onApplyFilter(selectedFilter.filterValues)}>
+                        <S_Button
+                            variant="primary"
+                            color="primary"
+                            onClick={() => onApplyFilter(selectedFilter.filterValues)}
+                        >
                             Tətbiq et
-                        </Button>
+                        </S_Button>
                     </div>
                 ) : (
                     <>
@@ -291,7 +297,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                 placeholder="Axtar..."
                                 value={searchTerm}
                                 onChange={(e) => handleSearchChange(e.target.value)}
-                                inputSize="medium"
+                                inputSize="36"
                                 style={{ width: '100%' }}
                                 icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                                 iconPosition="right"
