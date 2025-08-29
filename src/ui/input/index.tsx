@@ -7,7 +7,7 @@ import { cls } from '@/shared/utils';
 import styles from './input.module.css';
 
 export type InputSize = '36' | '44' | '48' | '52';
-export interface I_InputProps extends Field.InputProps {
+export interface I_InputProps extends Omit<Field.InputProps, 'size'> {
     label?: string;
     labelProps?: Field.LabelProps;
     details?: string;
@@ -15,7 +15,7 @@ export interface I_InputProps extends Field.InputProps {
     description?: string;
     descriptionProps?: Field.HelperTextProps;
     errorText?: string;
-    inputSize?: InputSize;
+    size?: InputSize;
     rootProps?: Field.RootProps;
     icon?: any;
     iconPosition?: 'left' | 'right';
@@ -24,7 +24,7 @@ export interface I_InputProps extends Field.InputProps {
 
 const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
     const {
-        inputSize = 'medium',
+        size = '36',
         label = '',
         labelProps,
         details,
@@ -44,7 +44,7 @@ const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
 
     const inputClasses = cls(
         styles.input,
-        styles[`size-${inputSize}`],
+        styles[`size-${size}`],
         icon && styles['icon-position-' + iconPosition],
         errorText && styles.error
     );

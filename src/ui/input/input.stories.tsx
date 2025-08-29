@@ -26,7 +26,7 @@ const meta: Meta<typeof S_Input> = {
         autoComplete: 'off',
     } as I_InputProps,
     argTypes: {
-        inputSize: { control: 'inline-radio', options: sizes },
+        size: { control: 'inline-radio', options: sizes },
         iconPosition: { control: 'inline-radio', options: ['left', 'right'] },
         type: {
             control: 'select',
@@ -143,7 +143,7 @@ export const SizesShowcase: Story = {
         return (
             <div style={{ display: 'grid', gap: 12, width: 360 }}>
                 {sizes.map((sz) => (
-                    <S_Input key={sz} {...args} label={`Size ${sz}`} inputSize={sz} placeholder={`inputSize="${sz}"`} />
+                    <S_Input key={sz} {...args} label={`Size ${sz}`} size={sz} placeholder={`inputSize="${sz}"`} />
                 ))}
             </div>
         );
