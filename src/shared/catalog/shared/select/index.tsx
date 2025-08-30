@@ -198,9 +198,13 @@ export function CatalogSelect<T>({
                         )}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             {(multiple ? selectedArray.length > 0 : selected) && (
-                                <CloseIcon className={styles.closeIcon} onClick={clearSelection} />
+                                <CloseIcon color="var(--content-tertiary)" onClick={clearSelection} />
                             )}
-                            {open ? <DirectionUpIcon /> : <DirectionDownIcon />}
+
+                            <DirectionDownIcon
+                                color="var(--content-tertiary)"
+                                className={cls(styles.icon, open && styles.iconOpen)}
+                            />
                         </div>
                     </button>
                 </Popover.Trigger>

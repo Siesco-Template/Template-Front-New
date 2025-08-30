@@ -214,7 +214,7 @@
     cursor: pointer;
 }
 
-.selectOption .optionLabel {
+.selectOption.optionLabel {
     width: 100%;
     color: var(--content-secondary, #333);
     font-size: var(--fs-14, 14px);
@@ -227,13 +227,22 @@
 .selectOption:hover {
     background: var(--background-secondary, #f3f3f3);
 }
-.selectOption:hover .optionLabel {
+.selectOption:hover.optionLabel {
     color: var(--content-primary, #1a1a1a);
 }
 
 .selectOption.selected {
     background: var(--background-selected, #e7eefd);
 }
-.selectOption.selected .optionLabel {
+.selectOption.selected.optionLabel {
     color: var(--content-brand, #0d3caf);
+}
+
+/* Icon */
+.icon {
+    transition: transform 0.2s ease;
+}
+
+.iconOpen {
+    transform: rotate(180deg);
 }
