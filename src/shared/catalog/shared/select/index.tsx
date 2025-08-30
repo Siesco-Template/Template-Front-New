@@ -161,7 +161,7 @@ export function CatalogSelect<T>({
             </div>
 
             <Popover.Root open={open} onOpenChange={setOpen}>
-                <Popover.Trigger asChild>
+                <Popover.Trigger asChild disabled={disabled}>
                     <button ref={containerRef} className={triggerClassName}>
                         {multiple ? (
                             selectedArray.length > 0 ? (
@@ -257,10 +257,15 @@ export function CatalogSelect<T>({
                                         className={cls(styles.selectOption, isSelected && styles.selected)}
                                     />
                                 ) : (
-                                    <div className={cls(styles.selectOption, isSelected && styles.selected)} key={key}>
-                                        <div className={styles.optionLabel} onClick={() => toggleItem(item)}>
-                                            {label}
-                                        </div>
+                                    <div
+                                        className={cls(
+                                            styles.optionLabel,
+                                            styles.selectOption,
+                                            isSelected && styles.selected
+                                        )}
+                                        onClick={() => toggleItem(item)}
+                                    >
+                                        {label}
                                     </div>
                                 );
                             })
@@ -270,7 +275,11 @@ export function CatalogSelect<T>({
                     </div>
                 </Popover.Content>
             </Popover.Root>
-            {description && <span className={cls(styles.description, disabled && styles.disabled)}>{description}</span>}
+            {description && (
+                <span className={cls(styles.description, disabled && styles.disabled, styles[`state-${state}`])}>
+                    {description}
+                </span>
+            )}
         </div>
     );
 }

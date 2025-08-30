@@ -4,8 +4,7 @@ import { MRT_RowData } from 'material-react-table';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Catalog, { PresetSize } from '.';
-import { CustomMRTColumn } from '../table';
+import Catalog from './index';
 
 // Sample data types
 interface User extends MRT_RowData {
@@ -76,84 +75,84 @@ const sampleUsers: User[] = [
     },
     {
         id: '6',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
+        name: 'David Chen',
+        email: 'david@example.com',
+        role: 'Developer',
+        department: 'IT',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-03-15',
     },
     {
         id: '7',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
+        name: 'Emma Davis',
+        email: 'emma@example.com',
+        role: 'Manager',
+        department: 'Sales',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-01-20',
     },
     {
         id: '8',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
-        status: 'active',
-        createdAt: '2024-02-28',
+        name: 'Frank Miller',
+        email: 'frank@example.com',
+        role: 'Analyst',
+        department: 'Finance',
+        status: 'inactive',
+        createdAt: '2024-02-10',
     },
     {
         id: '9',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
+        name: 'Grace Lee',
+        email: 'grace@example.com',
         role: 'Designer',
         department: 'Marketing',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-03-05',
     },
     {
         id: '10',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
+        name: 'Henry Taylor',
+        email: 'henry@example.com',
+        role: 'Admin',
+        department: 'IT',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-01-30',
     },
     {
         id: '11',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
+        name: 'Ivy Garcia',
+        email: 'ivy@example.com',
+        role: 'Manager',
+        department: 'HR',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-02-25',
     },
     {
         id: '12',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
-        status: 'active',
-        createdAt: '2024-02-28',
+        name: 'Jack Thompson',
+        email: 'jack@example.com',
+        role: 'Developer',
+        department: 'IT',
+        status: 'inactive',
+        createdAt: '2024-03-12',
     },
     {
         id: '13',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
-        role: 'Designer',
-        department: 'Marketing',
+        name: 'Kate Martinez',
+        email: 'kate@example.com',
+        role: 'Analyst',
+        department: 'Finance',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-01-18',
     },
     {
         id: '14',
-        name: 'Charlie Wilson',
-        email: 'charlie@example.com',
+        name: 'Leo Rodriguez',
+        email: 'leo@example.com',
         role: 'Designer',
         department: 'Marketing',
         status: 'active',
-        createdAt: '2024-02-28',
+        createdAt: '2024-02-08',
     },
 ];
 
@@ -163,73 +162,85 @@ const sampleProducts: Product[] = [
     { id: '3', name: 'Desk Chair', category: 'Furniture', price: 199.99, stock: 25, supplier: 'OfficeMax' },
     { id: '4', name: 'Coffee Mug', category: 'Kitchen', price: 12.99, stock: 100, supplier: 'HomeGoods' },
     { id: '5', name: 'Notebook', category: 'Stationery', price: 5.99, stock: 500, supplier: 'PaperCo' },
+    { id: '6', name: 'Monitor', category: 'Electronics', price: 299.99, stock: 30, supplier: 'TechCorp' },
+    { id: '7', name: 'Desk Lamp', category: 'Furniture', price: 45.99, stock: 75, supplier: 'OfficeMax' },
+    { id: '8', name: 'Water Bottle', category: 'Kitchen', price: 18.99, stock: 150, supplier: 'HomeGoods' },
 ];
 
-// Column definitions for modal tables
-const userColumns: CustomMRTColumn<User>[] = [
-    { accessorKey: 'name', header: 'Name', filterVariant: 'text' },
-    { accessorKey: 'email', header: 'Email', filterVariant: 'text' },
-    {
-        accessorKey: 'role',
-        header: 'Role',
-        filterVariant: 'select',
-        filterSelectOptions: [
-            { label: 'Admin', value: 'Admin' },
-            { label: 'Manager', value: 'Manager' },
-            { label: 'Developer', value: 'Developer' },
-            { label: 'Analyst', value: 'Analyst' },
-            { label: 'Designer', value: 'Designer' },
-        ],
-    },
-    {
-        accessorKey: 'department',
-        header: 'Department',
-        filterVariant: 'select',
-        filterSelectOptions: [
-            { label: 'IT', value: 'IT' },
-            { label: 'HR', value: 'HR' },
-            { label: 'Finance', value: 'Finance' },
-            { label: 'Marketing', value: 'Marketing' },
-        ],
-    },
-    {
-        accessorKey: 'status',
-        header: 'Status',
-        filterVariant: 'select',
-        filterSelectOptions: [
-            { label: 'Active', value: 'active' },
-            { label: 'Inactive', value: 'inactive' },
-        ],
-    },
-];
+type CatalogStoryArgs = {
+    multiple: boolean;
+    title?: string;
+    label?: string;
 
-const productColumns: CustomMRTColumn<Product>[] = [
-    { accessorKey: 'name', header: 'Product Name', filterVariant: 'text' },
-    {
-        accessorKey: 'category',
-        header: 'Category',
-        filterVariant: 'select',
-        filterSelectOptions: [
-            { label: 'Electronics', value: 'Electronics' },
-            { label: 'Furniture', value: 'Furniture' },
-            { label: 'Kitchen', value: 'Kitchen' },
-            { label: 'Stationery', value: 'Stationery' },
-        ],
-    },
-    { accessorKey: 'price', header: 'Price', filterVariant: 'range' },
-    { accessorKey: 'stock', header: 'Stock', filterVariant: 'range' },
-    { accessorKey: 'supplier', header: 'Supplier', filterVariant: 'text' },
-];
+    // story-only controls mapped into selectProps
+    selectState?: 'default' | 'success' | 'error';
+    selectSize?: '36' | '44' | '48' | '52';
+    selectDisabled?: boolean;
+    selectDescription?: string;
+    selectPlaceholder?: string;
+};
 
-const sizePresets: PresetSize[] = ['md-lg', 'lg', 'xl', 'xxl'];
-
-const meta: Meta<typeof Catalog> = {
+// 👇 type Meta with our custom args (not the component props)
+const meta: Meta<CatalogStoryArgs> = {
     title: 'Shared/Catalog',
     component: Catalog,
     tags: ['autodocs'],
     parameters: {
-        controls: { expanded: true },
+        controls: {
+            expanded: true,
+            exclude: ['enableModal', 'sizePreset', 'showMoreColumns', 'onRefetch', 'onClickNew'],
+        },
         layout: 'padded',
+    },
+    argTypes: {
+        multiple: {
+            control: 'boolean',
+            description: 'Enable multiple selection',
+            defaultValue: false,
+        },
+        title: {
+            control: 'text',
+            description: 'Default placeholder for the select (overridden by selectPlaceholder)',
+            defaultValue: 'Select Item',
+        },
+        label: {
+            control: 'text',
+            description: 'Label above the select input',
+            defaultValue: 'Label',
+        },
+
+        // ✅ story-only controls
+        selectState: {
+            control: { type: 'inline-radio' },
+            options: ['default', 'success', 'error'],
+            description: 'Visual state passed to inner CatalogSelect',
+        },
+        selectSize: {
+            control: { type: 'select' },
+            options: ['36', '44', '48', '52'],
+            description: 'Size passed to inner CatalogSelect',
+        },
+        selectDisabled: {
+            control: 'boolean',
+            description: 'Disable the inner CatalogSelect',
+        },
+        selectDescription: {
+            control: 'text',
+            description: 'Description under the select',
+        },
+        selectPlaceholder: {
+            control: 'text',
+            description: 'Overrides title as placeholder',
+        },
+
+        // keep non-interactive props out of controls
+        items: { control: false },
+        value: { control: false },
+        onChange: { control: false },
+        getLabel: { control: false },
+        getRowId: { control: false },
+        totalItemCount: { control: false },
+        selectProps: { control: false },
     },
     decorators: [
         (Story) => (
@@ -244,278 +255,215 @@ export default meta;
 
 type Story = StoryObj<typeof Catalog>;
 
-// Base story with users data
-export const SingleSelect: Story = {
-    render: () => {
-        const [value, setValue] = useState<User[]>([]);
+// Helper
+const onSelect =
+    <T,>(setValue: React.Dispatch<React.SetStateAction<T[]>>) =>
+    (selected: T | T[] | null) => {
+        if (Array.isArray(selected)) setValue(selected);
+        else if (selected) setValue([selected]);
+        else setValue([]);
+    };
+
+// ------- USERS TEMPLATES --------
+const UsersTemplate = (args: any) => {
+    const [value, setValue] = useState<User[]>([]);
+    return (
+        <Catalog<User>
+            items={sampleUsers}
+            getLabel={(u) => u.name}
+            getRowId={(u) => u.id}
+            value={value}
+            onChange={onSelect<User>(setValue)}
+            totalItemCount={sampleUsers.length}
+            enableModal={false}
+            multiple={args.multiple}
+            title={args.title}
+            label={args.label}
+            selectProps={{
+                state: args.selectState ?? 'default',
+                size: args.selectSize ?? '36',
+                disabled: args.selectDisabled ?? false,
+                description: args.selectDescription,
+                placeholder: args.selectPlaceholder,
+            }}
+        />
+    );
+};
+
+export const Default: Story = {
+    args: {
+        multiple: false,
+        title: 'Select User',
+        label: 'User',
+        selectState: 'default',
+        selectSize: '36',
+        selectDisabled: false,
+        selectDescription: 'Pick a single user',
+        selectPlaceholder: undefined,
+    },
+    render: (args) => <UsersTemplate {...args} />,
+};
+
+export const MultipleSelection: Story = {
+    args: {
+        multiple: true,
+        title: 'Select Users',
+        label: 'Users',
+        selectState: 'success',
+        selectSize: '44',
+        selectDisabled: false,
+        selectDescription: 'Choose one or more users',
+    },
+    render: (args) => <UsersTemplate {...args} />,
+};
+
+export const WithPreselectedValues: Story = {
+    args: {
+        multiple: true,
+        title: 'Select Users',
+        label: 'Users (Pre-selected)',
+        selectState: 'default',
+        selectSize: '44',
+    },
+    render: (args) => {
+        const [value, setValue] = useState<User[]>([sampleUsers[0], sampleUsers[2]]);
         return (
             <Catalog<User>
                 items={sampleUsers}
-                getLabel={(user: User) => user.name}
-                getRowId={(user: User) => user.id}
+                getLabel={(u) => u.name}
+                getRowId={(u) => u.id}
                 value={value}
-                onChange={(selected) => {
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
-                }}
-                multiple={false}
-                enableModal={true}
-                sizePreset="md-lg"
-                showMoreColumns={userColumns}
+                onChange={onSelect<User>(setValue)}
                 totalItemCount={sampleUsers.length}
-                title="Select User"
-                label="User"
-            />
-        );
-    },
-};
-
-export const MultiSelect: Story = {
-    render: () => {
-        const [value, setValue] = useState<User[]>([]);
-        return (
-            <Catalog<User>
-                items={sampleUsers}
-                getLabel={(user: User) => user.name}
-                getRowId={(user: User) => user.id}
-                value={value}
-                onChange={(selected) => {
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
-                }}
-                multiple={true}
-                enableModal={true}
-                sizePreset="md-lg"
-                showMoreColumns={userColumns}
-                totalItemCount={sampleUsers.length}
-                title="Select Users"
-                label="Users"
-            />
-        );
-    },
-};
-
-export const ProductsCatalog: Story = {
-    render: () => {
-        const [value, setValue] = useState<Product[]>([]);
-        return (
-            <Catalog<Product>
-                items={sampleProducts}
-                getLabel={(product: Product) => product.name}
-                getRowId={(product: Product) => product.id}
-                value={value}
-                onChange={(selected) => {
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
-                }}
-                multiple={true}
-                enableModal={true}
-                sizePreset="xl"
-                showMoreColumns={productColumns}
-                totalItemCount={sampleProducts.length}
-                title="Select Products"
-                label="Products"
-            />
-        );
-    },
-};
-
-export const WithoutModal: Story = {
-    render: () => {
-        const [value, setValue] = useState<User[]>([]);
-        return (
-            <Catalog<User>
-                items={sampleUsers}
-                getLabel={(user: User) => user.name}
-                getRowId={(user: User) => user.id}
-                value={value}
-                onChange={(selected) => {
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
-                }}
-                multiple={false}
                 enableModal={false}
-                totalItemCount={sampleUsers.length}
-                title="Select User"
-                label="User (No Modal)"
+                multiple={args.multiple}
+                title={args.title}
+                label={args.label}
+                selectProps={{
+                    state: args.selectState ?? 'default',
+                    size: args.selectSize ?? '44',
+                    description: 'Already selected 2 users',
+                }}
             />
         );
     },
 };
 
-export const LoadingState: Story = {
-    render: () => {
+export const LongLabelHandling: Story = {
+    args: {
+        multiple: true,
+        title: 'Select Items with Long Names',
+        label: 'Long Names Test',
+        selectState: 'default',
+        selectSize: '48',
+        selectDescription: 'Stress test long labels',
+    },
+    render: (args) => {
+        const longNameUsers = sampleUsers.map((user) => ({
+            ...user,
+            name: `${user.name} - Senior ${user.role} Manager with Extended Department Responsibilities`,
+        }));
+        const [value, setValue] = useState<User[]>([]);
+        return (
+            <Catalog<User>
+                items={longNameUsers}
+                getLabel={(u) => u.name}
+                getRowId={(u) => u.id}
+                value={value}
+                onChange={onSelect<User>(setValue)}
+                totalItemCount={longNameUsers.length}
+                enableModal={false}
+                multiple={args.multiple}
+                title={args.title}
+                label={args.label}
+                selectProps={{
+                    state: args.selectState ?? 'default',
+                    size: args.selectSize ?? '48',
+                    description: args.selectDescription,
+                }}
+            />
+        );
+    },
+};
+
+export const EmptyState: Story = {
+    args: {
+        multiple: false,
+        title: 'No items available',
+        label: 'Empty Catalog',
+        selectState: 'error',
+        selectSize: '36',
+        selectPlaceholder: 'Empty…',
+        selectDescription: 'Nothing to select',
+    },
+    render: (args) => {
         const [value, setValue] = useState<User[]>([]);
         return (
             <Catalog<User>
                 items={[]}
-                getLabel={(user: User) => user.name}
-                getRowId={(user: User) => user.id}
+                getLabel={(u) => u.name}
+                getRowId={(u) => u.id}
                 value={value}
-                onChange={(selected) => {
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
-                }}
-                multiple={false}
-                enableModal={true}
-                sizePreset="md-lg"
-                showMoreColumns={userColumns}
+                onChange={onSelect<User>(setValue)}
                 totalItemCount={0}
-                isLoading={true}
-                title="Loading Users"
-                label="Users"
-            />
-        );
-    },
-};
-
-export const LargeDataset: Story = {
-    render: () => {
-        const [value, setValue] = useState<User[]>([]);
-        const largeDataset = Array.from({ length: 100 }, (_, i) => ({
-            id: String(i + 1),
-            name: `User ${i + 1}`,
-            email: `user${i + 1}@example.com`,
-            role: ['Admin', 'Manager', 'Developer', 'Analyst', 'Designer'][i % 5],
-            department: ['IT', 'HR', 'Finance', 'Marketing', 'Sales'][i % 5],
-            status: i % 3 === 0 ? 'inactive' : ('active' as const),
-            createdAt: new Date(2024, 0, i + 1).toISOString().split('T')[0],
-        })) as User[];
-
-        return (
-            <Catalog<User>
-                items={largeDataset}
-                getLabel={(user: User) => user.name}
-                getRowId={(user: User) => user.id}
-                value={value}
-                onChange={(selected) => {
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
+                enableModal={false}
+                multiple={args.multiple}
+                title={args.title}
+                label={args.label}
+                selectProps={{
+                    state: args.selectState ?? 'error',
+                    size: args.selectSize ?? '36',
+                    placeholder: args.selectPlaceholder,
+                    description: args.selectDescription,
                 }}
-                multiple={true}
-                enableModal={true}
-                sizePreset="xxl"
-                showMoreColumns={userColumns}
-                totalItemCount={100}
-                title="Select from Large Dataset"
-                label="Large Dataset"
             />
         );
     },
 };
 
-export const WithCallbacks: Story = {
-    render: () => {
-        const [value, setValue] = useState<User[]>([]);
+export const DisabledState: Story = {
+    args: {
+        multiple: false,
+        title: 'Disabled Catalog',
+        label: 'Disabled',
+        selectState: 'default',
+        selectSize: '36',
+        selectDisabled: true,
+        selectDescription: 'This control is disabled',
+    },
+    render: (args) => <UsersTemplate {...args} />,
+};
+
+// ------- PRODUCTS TEMPLATE --------
+export const ProductCatalog: Story = {
+    args: {
+        multiple: true,
+        title: 'Select Products',
+        label: 'Products',
+        selectState: 'default',
+        selectSize: '36',
+        selectDescription: 'Pick products to add',
+    },
+    render: (args) => {
+        const [value, setValue] = useState<Product[]>([]);
         return (
-            <Catalog<User>
-                items={sampleUsers}
-                getLabel={(user: User) => user.name}
-                getRowId={(user: User) => user.id}
+            <Catalog<Product>
+                items={sampleProducts}
+                getLabel={(p) => `${p.name} - $${p.price}`}
+                getRowId={(p) => p.id}
                 value={value}
-                onChange={(selected) => {
-                    console.log('Selection changed:', selected);
-                    if (Array.isArray(selected)) {
-                        setValue(selected);
-                    } else if (selected) {
-                        setValue([selected]);
-                    } else {
-                        setValue([]);
-                    }
+                onChange={onSelect<Product>(setValue)}
+                totalItemCount={sampleProducts.length}
+                enableModal={false}
+                multiple={args.multiple}
+                title={args.title}
+                label={args.label}
+                selectProps={{
+                    state: args.selectState ?? 'default',
+                    size: args.selectSize ?? '36',
+                    description: args.selectDescription,
                 }}
-                multiple={true}
-                enableModal={true}
-                sizePreset="lg"
-                showMoreColumns={userColumns}
-                totalItemCount={sampleUsers.length}
-                title="With Callbacks"
-                label="Users"
-                onRefetch={() => console.log('Refetching data...')}
-                onClickNew={() => console.log('Adding new user...')}
             />
-        );
-    },
-};
-
-// Size preset variations
-export const SizePresets: Story = {
-    render: () => {
-        const [selectedSize, setSelectedSize] = useState<PresetSize>('md-lg');
-        const [value, setValue] = useState<User[]>([]);
-
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-                    {sizePresets.map((size) => (
-                        <button
-                            key={size}
-                            onClick={() => setSelectedSize(size)}
-                            style={{
-                                padding: '8px 16px',
-                                border: selectedSize === size ? '2px solid #007bff' : '1px solid #ccc',
-                                borderRadius: '4px',
-                                background: selectedSize === size ? '#e3f2fd' : 'white',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            {size}
-                        </button>
-                    ))}
-                </div>
-
-                <Catalog<User>
-                    items={sampleUsers}
-                    getLabel={(user: User) => user.name}
-                    getRowId={(user: User) => user.id}
-                    value={value}
-                    onChange={(selected) => {
-                        if (Array.isArray(selected)) {
-                            setValue(selected);
-                        } else if (selected) {
-                            setValue([selected]);
-                        } else {
-                            setValue([]);
-                        }
-                    }}
-                    multiple={true}
-                    enableModal={true}
-                    sizePreset={selectedSize}
-                    showMoreColumns={userColumns}
-                    totalItemCount={sampleUsers.length}
-                    title={`Size: ${selectedSize}`}
-                    label="Size Preset Demo"
-                />
-            </div>
         );
     },
 };

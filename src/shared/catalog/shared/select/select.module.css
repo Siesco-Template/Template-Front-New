@@ -55,7 +55,7 @@
     background: var(--background-primary, #fff);
 }
 
-.trigger:not(:focus-within):not(.open).completed {
+.trigger.completed {
     border: 1px solid var(--border-tertiary, #ccc);
     background: var(--background-secondary, #f3f3f3);
 }
@@ -111,19 +111,19 @@
 }
 
 /* States */
-.trigger:not(.disabled).error {
-    border: 1px solid var(--border-negative, #f44336) !important;
+.trigger.state-error {
+    border: 1px solid var(--border-negative, #f44336);
 }
 
-.trigger:not(.disabled).success {
-    border: 1px solid var(--border-positive, #38c172) !important;
+.trigger.state-success {
+    border: 1px solid var(--border-positive, #38c172);
 }
 
-.trigger:not(.disabled).error .description {
+.description.state-error {
     color: var(--content-negative);
 }
 
-.trigger:not(.disabled).success .description {
+.description.state-success {
     color: var(--content-positive);
 }
 

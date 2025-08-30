@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
+import { MRT_RowData } from 'material-react-table';
 
 import { CustomMRTColumn } from '../table';
 import CatalogViewAllDialog from './CatalogViewAllDialog';
-import { CatalogSelect } from './shared/select';
+import { CatalogSelect, CatalogSelectProps } from './shared/select';
 
 // Preset modal sizes matching design tokens
 export const PRESET_SIZES = {
@@ -15,6 +15,13 @@ export const PRESET_SIZES = {
 } as const;
 
 export type PresetSize = keyof typeof PRESET_SIZES;
+
+type SelectPassThroughProps<T> = Partial<
+    Omit<
+        CatalogSelectProps<T>,
+        'items' | 'getKey' | 'getLabel' | 'multiple' | 'selected' | 'onChange' | 'onViewAll' | 'showMore'
+    >
+>;
 
 export interface CatalogProps<T extends MRT_RowData> {
     /** Full dataset to display */
@@ -45,47 +52,63 @@ export interface CatalogProps<T extends MRT_RowData> {
     isLoading?: boolean;
     /** Label for the catalog */
     label?: string;
+    /** Title shown as default placeholder (unless overridden) */
     title?: string;
+
+    /** Extra props to pass through to the underlying CatalogSelect */
+    selectProps?: SelectPassThroughProps<T>;
 }
 
-export function Catalog<T extends MRT_RowData>({
-    items,
-    getLabel,
-    getRowId,
-    value,
-    onChange,
-    multiple = false,
-    enableModal = true,
-    sizePreset = 'md-lg',
-    showMoreColumns,
-    totalItemCount,
-    onRefetch,
-    onClickNew,
-    isLoading,
-    label,
-    title,
-}: CatalogProps<T>) {
+export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
+    const {
+        items,
+        getLabel,
+        getRowId,
+        value,
+        onChange,
+        multiple = false,
+        enableModal = true,
+        sizePreset = 'md-lg',
+        showMoreColumns,
+        totalItemCount,
+        onRefetch,
+        onClickNew,
+        isLoading,
+        label,
+        title,
+        selectProps,
+    } = props;
+
     const [open, setOpen] = useState(false);
 
-    const handleSelect = (newValue: T | T[] | null) => {
-        onChange(newValue);
-    };
-
+    const handleSelect = (newValue: T | T[] | null) => onChange(newValue);
     const paperStyle = PRESET_SIZES[sizePreset];
+
+    const {
+        placeholder: placeholderFromParent,
+        state: stateFromParent,
+        ...restSelectProps
+    } = (selectProps ?? {}) as SelectPassThroughProps<T>;
+
+    const computedState: NonNullable<CatalogSelectProps<T>['state']> = stateFromParent ?? 'default';
+
+    const placeholder = placeholderFromParent ?? title ?? 'Seçin';
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-            <CatalogSelect
+            <CatalogSelect<T>
                 items={items}
                 getKey={(p) => getRowId(p)}
                 getLabel={(p) => getLabel(p)}
                 multiple={multiple}
                 selected={multiple ? value : value.length > 0 ? value[0] : null}
                 onChange={handleSelect}
-                placeholder={title || 'Seçin'}
+                placeholder={placeholder}
+                state={computedState}
                 onViewAll={() => setOpen(true)}
                 showMore={enableModal}
                 label={label}
+                {...restSelectProps}
             />
 
             {enableModal && (
@@ -109,5 +132,3 @@ export function Catalog<T extends MRT_RowData>({
         </div>
     );
 }
-
-export default Catalog;
