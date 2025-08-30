@@ -35,7 +35,7 @@ export const Default: Story = {
         useEffect(() => setCheckedState(args.checked ?? false), [args.checked]);
 
         return (
-            <S_Checkbox 
+            <S_Checkbox
                 {...args}
                 checked={checkedState}
                 onCheckedChange={(e) => {

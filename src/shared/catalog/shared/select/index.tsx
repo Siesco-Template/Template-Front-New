@@ -3,10 +3,14 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import * as Popover from '@radix-ui/react-popover';
 
 import { CloseIcon, DirectionDownIcon, DirectionUpIcon, SearchIcon } from '@/shared/icons';
+import { cls } from '@/shared/utils';
 
 import { S_Button, S_Checkbox, S_Input } from '@/ui';
+import S_Chips from '@/ui/chips';
 
 import styles from './select.module.css';
+
+type Size = '52' | '48' | '44' | '36';
 
 export type CatalogSelectProps<T> = {
     items: T[];
@@ -19,6 +23,10 @@ export type CatalogSelectProps<T> = {
     onViewAll?: () => void;
     showMore?: boolean;
     label?: string;
+    description?: string;
+    disabled?: boolean;
+    state: 'success' | 'error' | 'default';
+    size?: Size;
 };
 
 export function CatalogSelect<T>({
@@ -32,12 +40,16 @@ export function CatalogSelect<T>({
     onViewAll,
     showMore = false,
     label,
+    description,
+    disabled = false,
+    state = 'default',
+    size = '36',
 }: CatalogSelectProps<T>) {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [dropdownWidth, setDropdownWidth] = useState(0);
 
-    const selectedArray: T[] = multiple && Array.isArray(selected) ? selected : [];
+    const selectedArray: T[] = multiple ? (Array.isArray(selected) ? selected : selected ? [selected] : []) : [];
     const [visibleCount, setVisibleCount] = useState(selectedArray.length || 1);
     const overflowCount = multiple ? selectedArray.length - visibleCount : 0;
 
@@ -72,15 +84,14 @@ export function CatalogSelect<T>({
     // Hidden offscreen measurement container
     useLayoutEffect(() => {
         if (!multiple || !containerRef.current) return;
-        const containerWidth = containerRef.current.clientWidth - 16;
-        const reserve = 42 + 35; // space for clear+arrow icons + (+N) chip width
+        const containerWidth = containerRef.current.clientWidth - 52;
         let used = 0;
         let count = 0;
 
         measureRefs.current.forEach((el) => {
             if (!el) return;
-            const w = el.getBoundingClientRect().width;
-            if (used + w + 16 <= containerWidth - reserve) {
+            const w = el.clientWidth;
+            if (used + w + 16 <= containerWidth) {
                 used += w + 16 + 8; // gap
                 count++;
             }
@@ -107,66 +118,84 @@ export function CatalogSelect<T>({
         return () => window.removeEventListener('resize', handleResize);
     }, [handleResize]);
 
-    return (
-        <>
-            {label && <label className={styles.selectLabel}>{label}</label>}
+    let isCompleted = false;
+    if (multiple) {
+        isCompleted = selectedArray.length > 0;
+    } else {
+        isCompleted = Boolean(selected);
+    }
 
-            <div style={{ position: 'absolute', visibility: 'hidden', height: 0, overflow: 'hidden' }}>
+    const triggerClassName = cls(
+        styles.trigger,
+        open && styles.open,
+        disabled && styles.disabled,
+        isCompleted && styles.completed,
+        styles[`size-${size}`],
+        disabled && styles.disabled,
+        styles[`state-${state}`]
+    );
+
+    return (
+        <div className={styles.wrapper}>
+            {label && <label className={cls(styles.label, disabled && styles.disabled)}>{label}</label>}
+
+            <div
+                style={{
+                    position: 'absolute',
+                    visibility: 'hidden',
+                    height: 2,
+                    width: '100%',
+                    overflow: 'hidden',
+                    left: 0,
+                    top: 0,
+                    backgroundColor: 'red',
+                    display: 'flex',
+                    gap: 4,
+                }}
+            >
                 {selectedArray.map((item, idx) => (
-                    <div key={getKey(item)} ref={(el) => (measureRefs.current[idx] = el)} className={styles.selectChip}>
-                        {getLabel(item)}
+                    <div ref={(el) => (measureRefs.current[idx] = el)} key={getKey(item)}>
+                        <S_Chips label={getLabel(item)} type="outlined-fill" />
                     </div>
                 ))}
             </div>
+
             <Popover.Root open={open} onOpenChange={setOpen}>
                 <Popover.Trigger asChild>
-                    <button
-                        ref={containerRef}
-                        className={styles.selectTrigger}
-                        style={{ borderColor: open ? 'hsl(var(--clr-primary-500))' : 'hsl(var(--clr-grey-300))' }}
-                    >
-                        <div className={styles.selectChips}>
-                            {multiple ? (
-                                selectedArray.length > 0 ? (
-                                    <>
-                                        {selectedArray.map((item, idx) => (
-                                            <div
-                                                key={getKey(item)}
-                                                className={styles.selectChip}
-                                                style={{ display: idx < visibleCount ? 'flex' : 'none' }}
-                                            >
-                                                {getLabel(item)}
-                                                <CloseIcon
-                                                    className={styles.chipCloseIcon}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        toggleItem(item);
-                                                    }}
-                                                />
-                                            </div>
-                                        ))}
-                                        {overflowCount > 0 && (
-                                            <div className={styles.selectChip}>
-                                                +{overflowCount}
-                                                <CloseIcon
-                                                    className={styles.chipCloseIcon}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        removeOverflow();
-                                                    }}
-                                                />
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <span className={styles.placeholder}>{placeholder}</span>
-                                )
-                            ) : selected && !Array.isArray(selected) ? (
-                                <span className={styles.placeholder}>{getLabel(selected)}</span>
+                    <button ref={containerRef} className={triggerClassName}>
+                        {multiple ? (
+                            selectedArray.length > 0 ? (
+                                <div className={styles.selectChips}>
+                                    {selectedArray.slice(0, visibleCount).map((item, idx) => (
+                                        <S_Chips
+                                            key={getKey(item)}
+                                            label={getLabel(item)}
+                                            type="outlined-fill"
+                                            onRightIconClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleItem(item);
+                                            }}
+                                        />
+                                    ))}
+                                    {overflowCount > 0 && (
+                                        <S_Chips
+                                            label={`+${overflowCount}`}
+                                            type="outlined-fill"
+                                            onRightIconClick={(e) => {
+                                                e.stopPropagation();
+                                                removeOverflow();
+                                            }}
+                                        />
+                                    )}
+                                </div>
                             ) : (
-                                <span className={styles.placeholder}>{placeholder}</span>
-                            )}
-                        </div>
+                                <div className={styles.placeholder}>{placeholder}</div>
+                            )
+                        ) : selected && !Array.isArray(selected) ? (
+                            <div className={styles.placeholder}>{getLabel(selected)}</div>
+                        ) : (
+                            <div className={styles.placeholder}>{placeholder}</div>
+                        )}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             {(multiple ? selectedArray.length > 0 : selected) && (
                                 <CloseIcon className={styles.closeIcon} onClick={clearSelection} />
@@ -179,27 +208,31 @@ export function CatalogSelect<T>({
                 <Popover.Content
                     sideOffset={4}
                     align="start"
-                    className={styles.dropdownContent}
+                    className={styles.dropdown}
                     style={{ width: dropdownWidth }}
                 >
                     <div className={styles.searchHeader}>
-                        <S_Input
-                            autoFocus
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Axtar"
-                            icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
-                            iconPosition="left"
-                        />
+                        <div className={styles.searchBox}>
+                            <S_Input
+                                autoFocus
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Axtar"
+                                icon={<SearchIcon width={16} height={16} />}
+                                iconPosition="right"
+                                size="36"
+                            />
+                        </div>
                         {showMore && (
                             <S_Button
                                 type="button"
-                                className="!py-1.5"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onViewAll?.();
                                 }}
-                                variant="main-10"
+                                variant="primary"
+                                color="primary"
+                                size="36"
                             >
                                 Hamısı
                             </S_Button>
@@ -215,19 +248,19 @@ export function CatalogSelect<T>({
                                     ? selectedArray.some((i) => getKey(i) === key)
                                     : selected !== null && !Array.isArray(selected) && getKey(selected) === key;
 
-                                return (
-                                    <div key={key} className={styles.selectOption}>
-                                        {multiple ? (
-                                            <S_Checkbox
-                                                checked={isSelected}
-                                                onCheckedChange={() => toggleItem(item)}
-                                                label={label}
-                                            />
-                                        ) : (
-                                            <div className={styles.optionLabel} onClick={() => toggleItem(item)}>
-                                                {label}
-                                            </div>
-                                        )}
+                                return multiple ? (
+                                    <S_Checkbox
+                                        key={key}
+                                        checked={isSelected}
+                                        onCheckedChange={() => toggleItem(item)}
+                                        label={label}
+                                        className={cls(styles.selectOption, isSelected && styles.selected)}
+                                    />
+                                ) : (
+                                    <div className={cls(styles.selectOption, isSelected && styles.selected)} key={key}>
+                                        <div className={styles.optionLabel} onClick={() => toggleItem(item)}>
+                                            {label}
+                                        </div>
                                     </div>
                                 );
                             })
@@ -237,6 +270,7 @@ export function CatalogSelect<T>({
                     </div>
                 </Popover.Content>
             </Popover.Root>
-        </>
+            {description && <span className={cls(styles.description, disabled && styles.disabled)}>{description}</span>}
+        </div>
     );
 }

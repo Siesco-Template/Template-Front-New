@@ -80,7 +80,7 @@ export function Catalog<T extends MRT_RowData>({
                 getKey={(p) => getRowId(p)}
                 getLabel={(p) => getLabel(p)}
                 multiple={multiple}
-                selected={multiple ? value : value[0]}
+                selected={multiple ? value : value.length > 0 ? value[0] : null}
                 onChange={handleSelect}
                 placeholder={title || 'Seçin'}
                 onViewAll={() => setOpen(true)}
@@ -93,7 +93,6 @@ export function Catalog<T extends MRT_RowData>({
                     open={open}
                     setOpen={setOpen}
                     items={items}
-                    getLabel={getLabel}
                     getRowId={getRowId}
                     value={value}
                     multiple={multiple}
