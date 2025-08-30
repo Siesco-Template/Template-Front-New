@@ -13,7 +13,7 @@ interface Props {
 function S_SidePanel({ open, onOpenChange, title, children, footer, maxWidth }: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.mainContent} style={{ maxWidth }}>
+            <DialogContent className={styles.mainContent} style={{ width: maxWidth || '480px' }}>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>

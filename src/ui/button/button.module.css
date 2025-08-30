@@ -8,9 +8,6 @@
     text-decoration: none;
     border: none;
 }
-.btn:focus {
-    outline: 1px solid var(--border-focus, #0d3caf);
-}
 
 .btn.animation {
     transition:
