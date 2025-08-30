@@ -1,55 +1,159 @@
-.contextMenu {
-    z-index: 9;
-    list-style-type: none;
-    position: absolute;
-    top: 70%;
-    right: 0%;
-    padding: var(--pm-200);
-    border: none;
+.wrapper {
+    background: var(--background-primary, #fff);
+    box-shadow: var(--shadow-l1);
+    padding: var(--space-300, 8px);
+    padding-right: var(--space-200, 4px);
+    border-radius: var(--br-2xl, 12px);
     outline: none;
-    border-radius: var(--r-150);
-    background: var(--Background-Primary, hsl(var(--clr-white))) !important;
-    min-width: 196px;
-    box-shadow: 0px 2px 4px 0px hsla(0, 0%, 0%, 0.08);
 }
 
-.contextMenuItem {
+.menu {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-300, 8px);
+    outline: none;
+    padding-right: var(--space-200, 4px);
+}
+
+.menu::-webkit-scrollbar {
+    width: var(--size-100, 4px);
+    height: var(--size-100, 4px);
+}
+.menu::-webkit-scrollbar-track {
+    background: var(--background-secondary, #f3f3f3);
+    border-radius: var(--br-xl);
+}
+.menu::-webkit-scrollbar-thumb {
+    background: var(--background-subtle, #ccc);
+    border-radius: var(--br-xl);
+}
+.menu::-webkit-scrollbar-thumb:hover {
+    background: var(--background-strong, #ccc);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-300, 8px);
+    align-items: center;
+    gap: var(--space-350, 12px);
+    border-radius: var(--br-xl, 8px);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
     width: 100%;
-    padding: var(--pm-200);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: var(--pm-100);
-    font-weight: 500;
-    color: hsl(var(--clr-grey-700));
-}
-.contextMenuItem span {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin-top: 3px;
-}
-.contextMenuItem span svg path {
-    stroke: hsl(var(--clr-primary-500));
 }
 
-.contextMenuItem:first-child span svg:last-child path {
-    fill: hsl(var(--clr-primary-500));
+.iconLeft,
+.iconRight {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    transition: color 0.2s ease;
 }
-.contextMenuItem:hover {
-    background: hsla(192, 12%, 95%, 1);
-    border-radius: var(--r-150);
-    transition: 0.2s ease;
+.iconLeft {
+    color: var(--content-primary, #1a1a1a);
+}
+.iconRight {
+    color: var(--content-tertiary-inverse, #b2b2b2);
+}
+.iconLeft svg {
+    color: var(--content-primary, #1a1a1a);
+    stroke: var(--content-primary, #1a1a1a);
+}
+.iconRight svg {
+    color: var(--content-tertiary-inverse, #1a1a1a);
+    stroke: var(--content-tertiary-inverse, #1a1a1a);
 }
 
-.moreButton {
-    cursor: pointer;
+.label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px);
+    transition: color 0.2s ease;
+    text-align: left;
+    display: inline-block;
+    width: 100%;
 }
 
-.moreIcon {
-    font-size: 18px;
+/* ---------- states ---------- */
+
+/* hover & keyboard highlight */
+.item:not(.itemDisabled):hover,
+.item:not(.itemDisabled)[data-highlighted] {
+    background: var(--background-secondary, #f3f3f3);
 }
 
-.contextMenu:focus {
-    outline: none;
+.item:not(.itemDisabled):hover .label,
+.item:not(.itemDisabled)[data-highlighted] .label {
+    color: var(--content-primary, #1a1a1a);
+}
+
+.item:not(.itemDisabled):hover .iconLeft,
+.item:not(.itemDisabled):hover .iconRight,
+.item:not(.itemDisabled)[data-highlighted] .iconLeft,
+.item:not(.itemDisabled)[data-highlighted] .iconRight {
+    color: var(--content-primary, #1a1a1a);
+}
+
+.item:not(.itemDisabled):hover .iconLeft svg,
+.item:not(.itemDisabled):hover .iconRight svg,
+.item:not(.itemDisabled)[data-highlighted] .iconLeft svg,
+.item:not(.itemDisabled)[data-highlighted] .iconRight svg {
+    color: var(--content-primary, #1a1a1a);
+    stroke: var(--content-primary, #1a1a1a);
+}
+
+/* active / selected (blue text & icons on light blue chip) */
+.itemActive {
+    background: var(--background-selected, #e7eefd);
+}
+.itemActive .label {
+    color: var(--content-brand, #0d3caf);
+}
+.itemActive .iconLeft,
+.itemActive .iconRight {
+    color: var(--content-brand, #0d3caf);
+}
+.itemActive .iconLeft svg,
+.itemActive .iconRight svg {
+    color: var(--content-brand, #0d3caf);
+    stroke: var(--content-brand, #0d3caf);
+}
+
+/* Ensure keyboard navigation works with active items */
+.itemActive[data-highlighted] {
+    background: var(--background-selected, #e7eefd);
+}
+
+/* disabled */
+.item[aria-disabled='true'],
+.itemDisabled {
+    background: transparent;
+    cursor: not-allowed;
+}
+.item[aria-disabled='true'] .label,
+.itemDisabled .label {
+    color: var(--content-disabled, #a6a6a6);
+}
+.item[aria-disabled='true'] .iconLeft,
+.item[aria-disabled='true'] .iconRight,
+.itemDisabled .iconLeft,
+.itemDisabled .iconRight {
+    color: var(--content-disabled, #a6a6a6);
+}
+.item[aria-disabled='true'] .iconLeft svg,
+.item[aria-disabled='true'] .iconRight svg,
+.itemDisabled .iconLeft svg,
+.itemDisabled .iconRight svg {
+    color: var(--content-disabled, #a6a6a6);
+    stroke: var(--content-disabled, #a6a6a6);
 }

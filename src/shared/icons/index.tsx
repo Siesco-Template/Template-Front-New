@@ -63,6 +63,7 @@ import MenuCatalogIcon from './menu-catalog.svg?react';
 import MenuCompanyIcon from './menu-company.svg?react';
 import MenuDataAnalyticsIcon from './menu-data-analytics.svg?react';
 import MenuHomeIcon from './menu-home.svg?react';
+import MenuLineHorizontalIcon from './menu-line-horizontal.svg?react';
 import MenuNotificationIcon from './menu-notification.svg?react';
 import MenuReportIcon from './menu-report.svg?react';
 import MenuIcon from './menuIcon.svg?react';
@@ -213,4 +214,5 @@ export {
     FilterIcon1,
     DragIcon,
     EyeSlashIcon,
+    MenuLineHorizontalIcon,
 };
