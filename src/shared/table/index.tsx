@@ -327,6 +327,7 @@ function Table<T extends Record<string, any>>({
                             onClickNew={undefined}
                             isLoading={false}
                             showMoreColumns={filter.showMoreColumns || []}
+                            searchItems
                         />
                     </div>
                 );

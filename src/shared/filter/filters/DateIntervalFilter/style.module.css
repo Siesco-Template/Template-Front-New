@@ -10,13 +10,18 @@
 }
 
 .label {
-    color: hsl(var(--clr-blue-900));
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
+    margin-bottom: 1px;
+
+    color: var(--content-secondary, #333);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+    font-family: Poppins;
+    font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 600;
-    line-height: normal;
-    margin-bottom: 1px;
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .switchButton {

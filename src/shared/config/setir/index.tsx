@@ -1,6 +1,7 @@
 import { ColorPicker } from 'antd';
 import { useEffect, useState } from 'react';
 
+import Catalog from '@/shared/catalog';
 import { BoldIcon, DashedIcon, ItalicIcon, RowIcon1, RowIcon2, SolidIcon } from '@/shared/config/icons';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
@@ -50,13 +51,13 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
                         onClick={() => updateConfig(tableKey, 'row.stripeStyle', 'plain')}
                         className={rowConfig.stripeStyle === 'plain' ? styles.isActiveBtn : ''}
                     >
-                        <RowIcon1 />
+                        <RowIcon1 color="var(--content-secondary)" />
                     </button>
                     <button
                         onClick={() => updateConfig(tableKey, 'row.stripeStyle', 'striped')}
                         className={rowConfig.stripeStyle === 'striped' ? styles.isActiveBtn : ''}
                     >
-                        <RowIcon2 />
+                        <RowIcon2 color="var(--content-secondary)" />
                     </button>
                 </div>
             </div>
@@ -64,16 +65,32 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             <label className={styles.sectionSubHeader}>Səhifədə göstər</label>
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <div className={styles.configRowItem}>
-                    <div style={{ width: '60px' }}>
-                        <S_Select_Simple
-                            value={[selectedValue]}
+                    <div style={{ width: '90px' }}>
+                        <Catalog
                             items={[10, 20, 50, 100].map((val) => ({
                                 label: val.toString(),
                                 value: val.toString(),
                             }))}
-                            setSelectedItems={handleSelectChange}
-                            itemsContentMaxWidth={90}
-                            itemsContentMinWidth={90}
+                            getLabel={(i: any) => i?.label}
+                            getRowId={(i: any) => String(i?.value)}
+                            value={
+                                selectedValue
+                                    ? [{ label: selectedValue.toString(), value: selectedValue.toString() }]
+                                    : []
+                            }
+                            onChange={(sel) => {
+                                const picked: any = Array.isArray(sel) ? sel[0] : sel;
+                                const newVal = picked ? picked : '';
+                                handleSelectChange([newVal]);
+                            }}
+                            multiple={false}
+                            enableModal={false}
+                            sizePreset="md-lg"
+                            totalItemCount={6}
+                            onRefetch={undefined}
+                            onClickNew={undefined}
+                            isLoading={false}
+                            searchItems={false}
                         />
                     </div>
                 </div>
@@ -115,8 +132,8 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
                 <label>Stil</label>
                 <div className={styles.buttonGroup}>
                     {[
-                        { value: 'solid', icon: <SolidIcon /> },
-                        { value: 'dashed', icon: <DashedIcon /> },
+                        { value: 'solid', icon: <SolidIcon color="var(--content-secondary)" /> },
+                        { value: 'dashed', icon: <DashedIcon color="var(--content-secondary)" /> },
                     ].map((item) => (
                         <button
                             key={item.value}
@@ -183,13 +200,13 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
                         onClick={() => updateConfig(tableKey, `row.text.italic`, !textConfig.italic)}
                         className={textConfig.italic ? styles.isActive : ''}
                     >
-                        <ItalicIcon width={18} height={18} color="#28303F" />
+                        <ItalicIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                     <button
                         onClick={() => updateConfig(tableKey, `row.text.bold`, !textConfig.bold)}
                         className={textConfig.bold ? styles.isActive : ''}
                     >
-                        <BoldIcon width={18} height={18} color="#28303F" />
+                        <BoldIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                 </div>
             </div>

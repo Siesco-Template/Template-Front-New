@@ -81,7 +81,7 @@ function PermissionsPage() {
                 />
             </div>
 
-            {!userId && (
+            {/* {!userId && (
                 <div className={styles.paginationContainer}>
                     <div className={styles.paginationControls}>
                         <span>Səhifədə göstər:</span>
@@ -120,7 +120,7 @@ function PermissionsPage() {
                         )}
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

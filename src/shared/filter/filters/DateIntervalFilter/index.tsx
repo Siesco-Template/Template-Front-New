@@ -43,7 +43,7 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
         setIsRangeMode(next);
     };
 
-    console.log(value, 'value in date interval');
+    // console.log(value, 'value in date interval');
 
     const toDate = (v: string | Date | null | undefined) =>
         v == null || v === ''
@@ -84,7 +84,7 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
                 <label className={styles.label}>{label}</label>
                 {!readOnly && (
                     <button onClick={toggleMode} className={styles.switchButton}>
-                        <ArrowTransferIcon color="#005A9E" width={18} height={18} />
+                        <ArrowTransferIcon color="var(--content-brand)" width={18} height={18} />
                     </button>
                 )}
             </div>

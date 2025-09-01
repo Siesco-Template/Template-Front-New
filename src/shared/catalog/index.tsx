@@ -57,6 +57,8 @@ export interface CatalogProps<T extends MRT_RowData> {
 
     /** Extra props to pass through to the underlying CatalogSelect */
     selectProps?: SelectPassThroughProps<T>;
+
+    searchItems: boolean;
 }
 
 export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
@@ -77,6 +79,7 @@ export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
         label,
         title,
         selectProps,
+        searchItems,
     } = props;
 
     const [open, setOpen] = useState(false);
@@ -108,6 +111,7 @@ export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
                 onViewAll={() => setOpen(true)}
                 showMore={enableModal}
                 label={label}
+                searchItems={searchItems}
                 {...restSelectProps}
             />
 

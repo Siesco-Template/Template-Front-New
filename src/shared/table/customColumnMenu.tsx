@@ -74,28 +74,27 @@ const CustomColumnMenu = <T extends Record<string, any>>({ column, table, tableK
                 top: position.top,
                 left: position.left,
                 zIndex: 1000,
-                background: '#fff',
                 borderRadius: '8px',
                 boxShadow: '0 2px 12px rgba(0, 0, 0, 0.15)',
             }}
         >
             <button onClick={() => handleSort(null)} className={styles.customColumnMenuItem}>
-                <MobileDataIcon width={18} height={18} color="#28303F" />
+                <MobileDataIcon width={18} height={18} color="var(--content-tertiary)" />
                 Sıralamanı sıfırla
             </button>
 
             <button onClick={() => handleSort(false)} className={styles.customColumnMenuItem}>
-                <MobileDataIcon width={18} height={18} color="#28303F" />
+                <MobileDataIcon width={18} height={18} color="var(--content-tertiary)" />
                 Sırala A–Z
             </button>
 
             <button onClick={() => handleSort(true)} className={styles.customColumnMenuItem}>
-                <MobileDataIcon width={18} height={18} color="#28303F" />
+                <MobileDataIcon width={18} height={18} color="var(--content-tertiary)" />
                 Sırala Z–A
             </button>
 
             <button className={styles.customColumnMenuItem} onClick={handleToggleFreezeColumn}>
-                <PinIcon width={18} height={18} color="#28303F" />
+                <PinIcon width={18} height={18} color="var(--content-tertiary)" />
                 {config?.tables?.[tableKey]?.columns?.[column.id]?.config?.freeze ? 'Dondurmanı sil' : 'Dondur'}
             </button>
         </div>

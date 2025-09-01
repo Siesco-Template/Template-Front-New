@@ -2,18 +2,7 @@ import React, { useState } from 'react';
 
 import { useAuthStore } from '@/store/authStore';
 
-import {
-    BriefCaseIcon,
-    CallingIcon,
-    IdCard,
-    LogoutIcon,
-    MailIcon,
-    PencilIcon,
-    PencilPaperIcon,
-    TagIcon,
-    UserCardIcon,
-    UserRectangleIcon,
-} from '@/shared/icons';
+import { BriefCaseIcon, LogoutIcon, PencilIcon } from '@/shared/icons';
 
 import { S_Button, S_Input } from '@/ui';
 
@@ -60,7 +49,7 @@ const Profile = () => {
                             </S_Button>
 
                             <S_Button variant="primary" color="primary" onClick={handleLogout}>
-                                <LogoutIcon /> Çıxış
+                                <LogoutIcon color="var(--clr-content-brand-light)" /> Çıxış
                             </S_Button>
                         </div>
                     </>
@@ -87,7 +76,7 @@ const Profile = () => {
                         <div className={styles.icon}>
                             <BriefCaseIcon width={28} height={28} color="var(--content-secondary-brand-bold)" />
                         </div>
-                        <div>
+                        <div className={styles.profileInfo}>
                             <h1>{form.name}</h1>
                             <p>Təşkilatın adı</p>
                         </div>

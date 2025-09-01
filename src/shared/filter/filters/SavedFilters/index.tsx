@@ -225,7 +225,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                     <div className={styles.selectedFilterDetails}>
                         <div className={styles.selectedFilterHeader}>
                             <button className={styles.selectedFilterInfo} type="button" onClick={handleBack}>
-                                <ArrowLeftIcon />
+                                <ArrowLeftIcon color='var("--content-primary" )' />
                                 <span>
                                     {selectedFilter.filterTitle.charAt(0).toUpperCase() +
                                         selectedFilter.filterTitle.slice(1)}
@@ -243,7 +243,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                             <DiskIcon
                                                 width={16}
                                                 height={16}
-                                                color="var(--background-secondary-brand, #ECEDEE)"
+                                                color="var(--content-secondary-brand-bold)"
                                             />
                                         </S_Button>
 
@@ -256,7 +256,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                             <TrashIcon
                                                 width={16}
                                                 height={16}
-                                                color="var(--background-secondary-brand, #ECEDEE)"
+                                                color="var(--content-secondary-brand-bold)"
                                             />
                                         </S_Button>
                                     </>
@@ -297,7 +297,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                 placeholder="Axtar..."
                                 value={searchTerm}
                                 onChange={(e) => handleSearchChange(e.target.value)}
-                                inputSize="36"
+                                size="36"
                                 style={{ width: '100%' }}
                                 icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                                 iconPosition="right"

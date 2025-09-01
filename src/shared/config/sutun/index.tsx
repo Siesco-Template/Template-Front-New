@@ -20,6 +20,8 @@ import { useTableContext } from '@/shared/table/table-context';
 import { useTableOrdering } from '@/shared/table/table-ordering';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import { S_Button } from '@/ui';
+
 import BottomModal from '../modal/bottomModal';
 import styles from '../style.module.css';
 
@@ -141,7 +143,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={tableConfig.italic ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <ItalicIcon width={18} height={18} color="#28303F" />
+                        <ItalicIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
 
                     <button
@@ -155,7 +157,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.bold ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <BoldIcon width={18} height={18} color="#28303F" />
+                        <BoldIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                 </div>
             </div>
@@ -176,7 +178,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.alignment === 'left' ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <AlignLeftIcon width={18} height={18} color="#28303F" />
+                        <AlignLeftIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                     <button
                         onClick={() => {
@@ -191,7 +193,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.alignment === 'center' ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <AlignCenterIcon width={18} height={18} color="#28303F" />
+                        <AlignCenterIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                     <button
                         onClick={() => {
@@ -206,7 +208,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.alignment === 'right' ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <AlignRightIcon width={18} height={18} color="#28303F" />
+                        <AlignRightIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                 </div>
             </div>
@@ -230,28 +232,30 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
 
             <div className={styles.configRow}>
                 <label>Sıralamanı dəyiş</label>
-                <button
-                    className={styles.actionButton}
+                <S_Button
+                    color="secondary"
+                    variant="primary"
                     onClick={() => {
                         setModalType('order');
                         setIsModalOpen(true);
                     }}
                 >
                     Tənzimlə
-                </button>
+                </S_Button>
             </div>
 
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Ölçüləri dəyiş</label>
-                <button
-                    className={styles.actionButton}
+                <S_Button
+                    color="secondary"
+                    variant="primary"
                     onClick={() => {
                         setModalType('resize');
                         setIsModalOpen(true);
                     }}
                 >
                     Tənzimlə
-                </button>
+                </S_Button>
             </div>
 
             {isRowSum && <div className={styles.sectionSubHeader}>Cəmləmə sətri</div>}
@@ -264,19 +268,19 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                             onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'hidden')}
                             className={currentSummary === 'hidden' ? styles.isActive : ''}
                         >
-                            <ViewOffIcon width={18} height={18} color="#28303F" />
+                            <ViewOffIcon width={18} height={18} color="var(--content-secondary)" />
                         </button>
                         <button
                             onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'bottom')}
                             className={currentSummary === 'bottom' ? styles.isActive : ''}
                         >
-                            <AlignBottomIcon width={18} height={18} color="#28303F" />
+                            <AlignBottomIcon width={18} height={18} color="var(--content-secondary)" />
                         </button>
                         <button
                             onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'top')}
                             className={currentSummary === 'top' ? styles.isActive : ''}
                         >
-                            <AlignTopIcon width={18} height={18} color="#28303F" />
+                            <AlignTopIcon width={18} height={18} color="var(--content-secondary)" />
                         </button>
                     </div>
                 </div>

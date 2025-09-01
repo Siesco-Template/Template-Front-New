@@ -4,7 +4,6 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 import { filterService } from '@/services/filter/filter.service';
 
-import { clearUrlParams, toUrlFilterData } from '../../config/filterHelpers';
 import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon } from '../icons';
 import styles from './style.module.css';
 
@@ -103,22 +102,22 @@ const ActionsDropdown = ({
             {isOpen && (
                 <ul className={styles.dropdownMenu}>
                     <li onClick={onView} className={styles.dropdownItem}>
-                        <EyeIcon /> Bax
+                        <EyeIcon color="var(--content-tertiary)" /> Bax
                     </li>
                     <li onClick={onEdit} className={styles.dropdownItem}>
-                        <EditIcon /> Düzəliş et
+                        <EditIcon color="var(--content-tertiary)" /> Düzəliş et
                     </li>
                     <li onClick={onDelete} className={styles.dropdownItem}>
-                        <TrashIcon /> Sil
+                        <TrashIcon color="var(--content-tertiary)" /> Sil
                     </li>
                     <li onClick={handleDefaultToggle} className={styles.dropdownItem}>
                         {filter.isDefault ? (
                             <>
-                                <ReloadIcon /> Varsayılanı sıfırla
+                                <ReloadIcon color="var(--content-tertiary)" /> Varsayılanı sıfırla
                             </>
                         ) : (
                             <>
-                                <CopyCheckIcon /> Varsayılan et
+                                <CopyCheckIcon color="var(--content-tertiary)" /> Varsayılan et
                             </>
                         )}
                     </li>

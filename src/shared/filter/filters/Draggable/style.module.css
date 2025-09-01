@@ -6,12 +6,8 @@
 }
 
 .savedFilterRow {
-    border-radius: 12px;
-    border-top: 1px solid var(--Light-Blue, #edf2fa);
-    border-right: 1px solid var(--Light-Blue, #edf2fa);
-    border-bottom: 1px solid var(--Light-Blue, #edf2fa);
-    border-left: 4px solid var(--Light-Blue, #edf2fa);
-    background: var(--Foundation-Blue-White, #fff);
+    border-radius: var(--br-2xl);
+    background: var(--background-secondary, #f3f3f3);
     display: flex;
     height: 44px;
     padding: 12px;
@@ -24,13 +20,16 @@
 
 .savedFilterRow span {
     overflow: hidden;
-    color: var(--Foundation-Blue-Normal, #546881);
+    color: var(--content-secondary, #333);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
     text-overflow: ellipsis;
     font-family: Poppins;
-    font-size: 12px;
+    font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    line-height: var(--lh-14, 14px); /* 116.667% */
     margin-left: 5px;
 }
 
@@ -52,5 +51,4 @@
     justify-content: flex-end;
     gap: 5px;
     height: 100%;
-    
 }

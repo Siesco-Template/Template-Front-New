@@ -94,7 +94,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 >
                     <span>{label}</span>
                     <button className={isOpen ? styles.rotate : ''}>
-                        <PlusIcon width={18} height={18} color="#3D4C5E" />
+                        <PlusIcon width={18} height={18} color="var(--content-primary)" />
                     </button>
                 </div>
                 <div className={`${styles.sectionBody} ${!isOpen ? styles.hidden : ''}`}>
@@ -131,21 +131,21 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                     <div className={styles.btns}>
                         <S_Button
                             variant="primary"
-                            color="primary"
+                            color="secondary"
                             aria-label="Sıfırla"
                             onClick={() => setIsConfirmResetOpen(true)}
                         >
                             {isResetting ? (
                                 <span className={styles.spinner} />
                             ) : (
-                                <RedoIcon color="hsl(var(--clr-primary-500))" width={16} height={16} />
+                                <RedoIcon color="var(--clr-content-secondary-bold)" width={16} height={16} />
                             )}
                         </S_Button>
                         <S_Button variant="primary" color="primary" aria-label="Təsdiqlə" onClick={handleSave}>
                             {isSaving ? (
                                 <span className={styles.spinner} />
                             ) : (
-                                <FloppyDiskIcon color="#fff" width={16} height={16} />
+                                <FloppyDiskIcon color="var(--clr-content-brand-light)" width={16} height={16} />
                             )}
                         </S_Button>
                     </div>

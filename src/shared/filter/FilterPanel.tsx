@@ -473,6 +473,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                                     variant="primary"
                                                     color="primary"
                                                     onClick={handleApplyFilters}
+                                                    
                                                 >
                                                     Tətbiq et
                                                 </S_Button>

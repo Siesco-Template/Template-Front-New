@@ -242,7 +242,6 @@
     justify-content: flex-end;
     align-items: flex-end;
     right: 10px;
-    /* opacity: 0; */
 }
 
 [data-testid='MoreVertIcon'] {
@@ -314,9 +313,11 @@
     justify-content: center;
     align-items: flex-start;
     gap: 10px;
-    border-radius: var(--Corner-Medium, 12px);
-    border: 0.444px solid var(--Sand-Alpha-5, rgba(31, 24, 0, 0.13));
-    background: var(--Sand-1, #fdfdfc);
+
+    border-radius: var(--br-2xl);
+    background: var(--background-primary) !important;
+
+    box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
     overflow: hidden;
     padding: 0 !important;
 }
@@ -325,26 +326,31 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     width: 100%;
     cursor: pointer;
     padding: 8px 14px;
-    color: var(--Sand-12, #21201c);
+
+    color: var(--content-tertiary, #666);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
     font-family: Poppins;
-    font-size: 14.222px;
+    font-size: var(--fs, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: 21.333px; /* 150% */
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .customColumnMenuItem:hover {
-    background: var(--foundation-blue-normal-hover, #f2f4f7);
-    color: #002c68;
+    background: var(--background-selected, #e7eefd);
+    color: var(--content-brand);
 }
 
 .customColumnMenuItem:hover svg,
 .customColumnMenuItem:hover svg path {
-    color: #002c68 !important;
+    color: var(--content-brand) !important;
 }
 
 .MuiPopover-paper.MuiMenu-paper {

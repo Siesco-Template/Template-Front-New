@@ -27,6 +27,7 @@ export type CatalogSelectProps<T> = {
     disabled?: boolean;
     state: 'success' | 'error' | 'default';
     size?: Size;
+    searchItems: boolean;
 };
 
 export function CatalogSelect<T>({
@@ -43,6 +44,7 @@ export function CatalogSelect<T>({
     description,
     disabled = false,
     state = 'default',
+    searchItems = true,
     size = '36',
 }: CatalogSelectProps<T>) {
     const [open, setOpen] = useState(false);
@@ -216,17 +218,20 @@ export function CatalogSelect<T>({
                     style={{ width: dropdownWidth }}
                 >
                     <div className={styles.searchHeader}>
-                        <div className={styles.searchBox}>
-                            <S_Input
-                                autoFocus
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Axtar"
-                                icon={<SearchIcon width={16} height={16} />}
-                                iconPosition="right"
-                                size="36"
-                            />
-                        </div>
+                        {searchItems && (
+                            <div className={styles.searchBox}>
+                                <S_Input
+                                    autoFocus
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Axtar"
+                                    icon={<SearchIcon width={16} height={16} />}
+                                    iconPosition="right"
+                                    size="36"
+                                />
+                            </div>
+                        )}
+
                         {showMore && (
                             <S_Button
                                 type="button"

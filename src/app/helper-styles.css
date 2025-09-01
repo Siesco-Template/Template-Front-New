@@ -277,6 +277,13 @@ li {
     box-shadow: none !important;
 }
 
+:where(.css-dev-only-do-not-override-1a3rktk).ant-color-picker-trigger .ant-color-picker-color-block {
+    border-radius: 8px !important;
+}
+
+.ant-color-picker-trigger {
+    background: var(--background-primary, #fff);
+}
 @keyframes shine {
     0% {
         transform: translateX(-100%);
