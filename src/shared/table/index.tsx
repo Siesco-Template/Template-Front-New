@@ -17,6 +17,7 @@ import { FilterKey } from '../filter/config/filterTypeEnum';
 import DateIntervalFilter from '../filter/filters/DateIntervalFilter';
 import NumberIntervalFilter from '../filter/filters/NumberIntervalFilter';
 import { ArrowDownIcon, MoreVerticalIcon } from '../icons';
+import { toCssColor } from '../utils/color.utils';
 import CustomColumnMenu from './customColumnMenu';
 import { FilterIcon, FilterSolidIcon } from './icons';
 import { useTableContext } from './table-context';
@@ -261,7 +262,7 @@ function Table<T extends Record<string, any>>({
                             placeholder={filter.placeholder || filter.column}
                             onChange={(e) => _onChange(filter.key, e.target.value)}
                             readOnly={filter.readOnly}
-                            inputSize="36"
+                            size="36"
                             style={{ width: '100%' }}
                         />
                     </div>
@@ -684,8 +685,8 @@ function Table<T extends Record<string, any>>({
 
                 if (props.highlightedRowIds?.includes(row.id)) return '#E6F0FF';
 
-                const baseColor = mergedCell.backgroundColor ?? '#ffffff';
-                const altColor = mergedCell.alternateBackgroundColor ?? lightenColor(baseColor, 20);
+                const baseColor = toCssColor(mergedCell.backgroundColor) ?? '#ffffff';
+                const altColor = '#ffffff';
 
                 if (hoveredRowId === row.id) {
                     if (stripeStyle === 'plain') return altColor;
@@ -701,13 +702,13 @@ function Table<T extends Record<string, any>>({
 
             const style: React.CSSProperties = {
                 backgroundColor: getBackgroundColor(),
-                color: styleConfig.color ?? mergedText.color ?? '#000',
+                color: toCssColor(styleConfig.color) ?? toCssColor(mergedText.color) ?? '#000',
                 fontSize: styleConfig.fontSize ?? mergedText.fontSize,
                 fontStyle: (styleConfig.italic ?? rowCfg?.text?.italic) ? 'italic' : undefined,
                 fontWeight: (styleConfig.bold ?? rowCfg?.text?.bold) ? 'bold' : undefined,
                 textAlign: styleConfig.alignment ?? mergedText.alignment ?? 'left',
                 borderBottomStyle: mergedBorder.style || 'solid',
-                borderBottomColor: mergedBorder.color || 'transparent',
+                borderBottomColor: toCssColor(mergedBorder.color) || 'transparent',
                 borderBottomWidth: mergedBorder.thickness ? `${mergedBorder.thickness}px` : '1px',
                 transform: isColSelected ? 'scale(1.05)' : 'scale(1)',
                 opacity: selectedColumnKey ? (isColSelected ? 1 : 0.5) : 1,
@@ -772,7 +773,7 @@ function Table<T extends Record<string, any>>({
                         zIndex: 111,
                     }),
                     zIndex: isPinned ? 101 : 100,
-                    backgroundColor: headerConfig?.cell?.backgroundColor || 'hsl(var(--clr-grey-50))',
+                    backgroundColor: toCssColor(headerConfig?.cell?.backgroundColor),
                     transform: isSelected ? 'scale(1.05)' : 'scale(1)',
                     opacity: selectedColumnKey ? (isSelected ? 1 : 0.5) : 1,
                     transition: 'all 0.2s ease-in-out',

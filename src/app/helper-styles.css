@@ -163,82 +163,6 @@ li {
     }
 }
 
-/*------------------------------------- LIBRARY OVERRIDES -------------------------------------*/
-
-/* Select (Ant design) */
-.ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-    border-radius: var(--s, 8px);
-    border: 1px solid var(--Secondary-secondary-50, #fef5e7);
-    background: var(--Grey-grey-100, #f6f6f6);
-}
-
-.ant-select-single.ant-select-show-arrow .ant-select-selection-item {
-    color: var(--foundation-dark-normal-active, #3d4c5e);
-    font-feature-settings:
-        'liga' off,
-        'clig' off;
-    font-family: 'DM Sans';
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%;
-}
-
-.ant-select-single {
-    height: 30px !important;
-}
-
-.ant-select-single .ant-select-arrow {
-    color: var(--foundation-dark-normal-active, #3d4c5e);
-}
-
-.ant-input-outlined {
-    border-radius: var(--s, 8px);
-    border: 1px solid var(--Secondary-secondary-50, #fef5e7);
-    background-color: var(--Grey-grey-100, #f6f6f6);
-}
-
-.customCheckbox .ant-checkbox-inner {
-    border: 1px solid var(--Accent-Color-Blue-blue-300, #75acda);
-    background: var(--Blue-50, #eff8ff);
-    width: 18px;
-    height: 18px;
-}
-
-.customCheckbox .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: #1269b5 !important; /* istədiyin göy rəng */
-    border-color: #1269b5 !important;
-}
-
-.customCheckbox .ant-checkbox-input:focus + .ant-checkbox-inner {
-    box-shadow: 0 0 0 2px rgba(18, 105, 181, 0.2);
-}
-
-/* Date Picker (Ant design) */
-.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
-    background-color: hsl(var(--clr-primary-900)) !important;
-}
-
-.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(
-        .ant-picker-cell-range-end
-    )
-    .ant-picker-cell-inner,
-.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(
-        .ant-picker-cell-range-start
-    )
-    .ant-picker-cell-inner {
-    background-color: hsl(var(--clr-primary-900)) !important;
-}
-.ant-picker:hover {
-    border-color: hsl(var(--clr-grey-300)) !important;
-    box-shadow: none !important;
-}
-
-.ant-picker-range-focused {
-    border-color: hsl(var(--clr-primary-500)) !important;
-    box-shadow: none !important;
-}
-
 /* React Quill */
 .ql-container {
     color: hsl(var(--clr-grey-300)) !important;
@@ -277,51 +201,72 @@ li {
 
 /* Date Picker (RSuit) */
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
-    background-color: hsl(var(--clr-primary-300)) !important;
-    color: hsl(var(--clr-white-50)) !important;
+    background-color: blue !important;
+    color: white !important;
+}
+
+.rs-input-group.rs-input-group-inside {
+    border-color: transparent !important;
+}
+
+.rs-input-group.rs-input-group-inside,
+.rs-input {
+    border-radius: var(--br-2xl, 12px) !important;
+    background: var(--background-secondary, #f3f3f3) !important ;
+}
+.rs-input {
+    padding: 8px 11px !important;
+}
+.rs-picker-date > .rs-input-group.rs-input-group-inside .rs-input::placeholder {
+    color: var(--content-tertiary, #666);
+
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+}
+
+.rs-picker-date > .rs-input-group.rs-input-group-inside .rs-input:not(:disabled):not(:focus-within):hover::placeholder {
+    color: var(--content-secondary, #333) !important;
 }
 
 .rs-calendar-month-dropdown-cell:hover .rs-calendar-month-dropdown-cell-content {
-    background-color: hsl(var(--clr-primary-300)) !important;
-    color: hsl(var(--clr-white-50)) !important;
-}
-
-.rs-calendar-table-cell-is-today .rs-calendar-table-cell-content {
-    box-shadow: inset 0 0 0 1px hsl(var(--clr-primary-500));
+    background-color: blue !important;
+    color: white !important;
 }
 
 .rs-calendar-table-cell-selected .rs-calendar-table-cell-content {
-    background-color: hsl(var(--clr-primary-500)) !important;
-    color: hsl(var(--clr-white-50)) !important;
+    background-color: darkblue !important;
+    color: white !important;
 }
 
 .rs-calendar-month-dropdown-cell-active .rs-calendar-month-dropdown-cell-content {
-    background-color: hsl(var(--clr-primary-500)) !important;
-    color: hsl(var(--clr-white-50)) !important;
+    background-color: darkblue !important;
+    color: white !important;
 }
 
 .rs-calendar-header-title-date {
-    color: hsl(var(--clr-primary-900)) !important;
+    color: black !important;
 }
 
 .rs-calendar-month-dropdown-year-active {
-    color: hsl(var(--clr-primary-700)) !important;
+    color: gray !important;
 }
 
 .rs-calendar-table-cell-is-today .rs-calendar-table-cell-content {
-    box-shadow: inset 0 0 0 1px hsl(var(--clr-primary-300)) !important;
+    box-shadow: inset 0 0 0 1px blue !important;
 }
 
 .rs-stack-item .rs-btn {
-    color: hsl(var(--clr-primary-900)) !important;
+    color: black !important;
 }
 
 .rs-input-group:not(.rs-input-group-focus):hover {
-    border-color: unset !important;
+    border-color: var(--background-secondary) !important;
 }
 
 .rs-input-group-focus {
-    border-color: hsl(var(--clr-primary-500)) !important;
+    border-color: darkblue !important;
     outline: none !important;
 }
 
@@ -331,6 +276,7 @@ li {
     border-color: transparent !important;
     box-shadow: none !important;
 }
+
 @keyframes shine {
     0% {
         transform: translateX(-100%);

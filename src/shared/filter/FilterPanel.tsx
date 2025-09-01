@@ -186,7 +186,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         console.log(key, value, 'handleUpdateFilter');
         const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
         setSavedFilters(updatedFilters);
-        // onChange(key, value);
     };
 
     const renderFilter = (filter: any) => {
@@ -204,7 +203,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                             placeholder={filter.placeholder || filter.column}
                             onChange={(e) => _onChange(filter.key, e.target.value)}
                             readOnly={filter.readOnly}
-                            inputSize="36"
+                            size="36"
                             style={{ width: '100%' }}
                             icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                             iconPosition="right"

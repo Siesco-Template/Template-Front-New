@@ -1,4 +1,3 @@
-import { error } from 'console';
 import React, { useEffect, useState } from 'react';
 
 import CustomDatePicker from '@/ui/datepicker/date-picker';
@@ -93,6 +92,7 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
             <div className={styles.inputWrapper}>
                 {isRangeMode ? (
                     <CustomDateRangePicker
+                        // @ts-expect-error
                         value={internalValue}
                         onChange={handleChange}
                         placeholder={placeholder}
@@ -100,15 +100,17 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
                         style={{ width: '100%' }}
                         showHeader={false}
                         error={errorMsg}
+                        placement="leftEnd"
                     />
                 ) : (
-                    <CustomDatePicker
+                    <CustomDatePicker // @ts-expect-error
                         value={internalValue}
                         onChange={handleChange}
                         placeholder={singlePlaceholder}
                         format="dd.MM.yyyy"
                         style={{ width: '100%' }}
                         error={errorMsg}
+                        placement="leftEnd"
                         oneTap
                     />
                 )}
