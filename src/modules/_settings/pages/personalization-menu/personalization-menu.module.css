@@ -1,51 +1,50 @@
 .settingsHeader {
     display: flex;
     flex-direction: column;
-    align-items: var(--global-justify-content);
-    gap: var(--pm-100);
-    margin-bottom: var(--pm-600);
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 20px;
 }
 
 .settingsHeader .headerTitle {
-    color: var(--clr-primary-900, #05194a);
-    font-size: var(--fs-100);
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    line-height: var(--lh-20, 20px);
 }
 
 .settingsHeader .headerDescription {
-    color: hsl(var(--clr-grey-400));
-    font-size: var(--fs-50);
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 400;
-    line-height: normal;
+    line-height: var(--lh-14, 14px);
 }
 
-/* Sortable Item */
 .sortableItem {
     display: flex;
-    padding: var(--pm-400);
+    padding: 16px;
     justify-content: space-between;
     align-items: center;
     align-self: stretch;
-    border-radius: var(--r-300) var(--r-300) var(--r-300) var(--r-300);
-    background: hsl(var(--clr-white-600));
+    border: 0 solid var(--border-brand, #0d3caf);
+    background: var(--background-secondary, #f3f3f3);
+    border-radius: 16px;
 }
 
 .label {
     overflow: hidden;
-    color: hsl(var(--clr-grey-600));
-    text-overflow: ellipsis;
-    font-size: var(--fs-50);
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .singleItem {
-    border-radius: var(--r-300) var(--r-300) 0 0;
-    border-bottom: 1px solid hsl(var(--clr-primary-500));
+    border-radius: 16px 16px 0 0;
+    border-bottom: 1px solid var(--border-brand, #0d3caf);
 }
 
 .singleItemLabel {
@@ -57,7 +56,7 @@
 }
 
 .noborder:last-child {
-    border-radius: 0 0 var(--r-300) var(--r-300);
+    border-radius: 0 0 16px 16px;
 }
 
 .subLinksContainer {

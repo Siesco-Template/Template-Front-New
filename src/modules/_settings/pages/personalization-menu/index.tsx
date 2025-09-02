@@ -75,7 +75,7 @@ export default function PersonalizationMenu() {
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                distance: 8, // 8px movement required before drag starts
+                distance: 8,
             },
         }),
         useSensor(TouchSensor, {
@@ -226,7 +226,7 @@ export default function PersonalizationMenu() {
                         <div className={styles.sortableItem}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <span>
-                                    <DragIcon width={16} height={16} color="hsl(var(--clr-grey-300))" />
+                                    <DragIcon width={16} height={16} color="var(--content-tertiary)" />
                                 </span>
                                 <span className={styles.label}>{activeItem.title}</span>
                             </div>

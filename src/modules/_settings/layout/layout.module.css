@@ -1,7 +1,7 @@
 .header {
     height: 52px;
     background: var(--background-secondary, #f3f3f3);
-    padding: var(--pm-200, 8px) var(--pm-400, 16px);
+    padding:  8px 16px;
     width: 100%;
 }
 

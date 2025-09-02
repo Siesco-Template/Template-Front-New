@@ -98,7 +98,7 @@ const SettingsPageLayout = () => {
                     hasChange ? (
                         <div className={styles.buttonContainer}>
                             <S_Button
-                                variant="main-10"
+                                variant="primary"
                                 color="secondary"
                                 children={'Ləğv et'}
                                 onClick={() => {
@@ -109,7 +109,8 @@ const SettingsPageLayout = () => {
                                 }}
                             />
                             <S_Button
-                                variant="main-10"
+                                variant="primary"
+                                color="primary"
                                 children={'Yadda Saxla'}
                                 onClick={async () => {
                                     const mergedDiff = getFullConfigDiff(undefined, defaultConfig, config);

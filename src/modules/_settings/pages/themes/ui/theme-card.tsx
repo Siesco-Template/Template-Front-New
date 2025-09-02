@@ -70,10 +70,10 @@ const ThemeCard: FC<IThemeCardProps> = ({
                 <p>{theme.name}</p>
                 {isEditable && (
                     <div className={styles.themeCardBtns}>
-                        <S_Button isIcon variant="ghost-10" iconBtnSize="10" onClick={handleDelete}>
+                        <S_Button variant="primary" color="secondary" onClick={handleDelete}>
                             <TrashIcon />
                         </S_Button>
-                        <S_Button isIcon variant="ghost-10" iconBtnSize="10" onClick={handleEdit}>
+                        <S_Button variant="primary" color="secondary" onClick={handleEdit}>
                             <EditIcon />
                         </S_Button>
                     </div>

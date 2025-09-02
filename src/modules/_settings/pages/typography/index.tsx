@@ -62,7 +62,6 @@ const Typography = () => {
                             onChange={onChangeFontSize}
                             max={fontSizeMax}
                             step={0.1}
-                            size="15"
                         />
                         <span className={styles.sliderDescription}>
                             {classifyRange(fontSize, fontSizeMin, fontSizeMax)}
@@ -81,7 +80,6 @@ const Typography = () => {
                             onChange={onChangeLetterSpacing}
                             max={letterSpaceMax}
                             step={0.01}
-                            size="15"
                         />
                         <span className={styles.sliderDescription}>
                             {classifyRange(
@@ -110,11 +108,11 @@ const Typography = () => {
                     <div className={styles.switchesContainer}>
                         <div>
                             <span>Başlıqları vurğula</span>
-                            <S_Switch checked={highlightTitles} onCheckedChange={toggleHighlightTitles} />
+                            <S_Switch size="20" checked={highlightTitles} onCheckedChange={toggleHighlightTitles} />
                         </div>
                         <div>
                             <span>Linkləri vurğula</span>
-                            <S_Switch checked={highlightLinks} onCheckedChange={toggleHighlightLinks} />
+                            <S_Switch size="20" checked={highlightLinks} onCheckedChange={toggleHighlightLinks} />
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,8 @@ export type CatalogSelectProps<T> = {
     disabled?: boolean;
     state: 'success' | 'error' | 'default';
     size?: Size;
-    searchItems: boolean;
+    searchItems?: boolean;
+    clearable?: boolean;
 };
 
 export function CatalogSelect<T>({
@@ -45,6 +46,7 @@ export function CatalogSelect<T>({
     disabled = false,
     state = 'default',
     searchItems = true,
+    clearable = true,
     size = '36',
 }: CatalogSelectProps<T>) {
     const [open, setOpen] = useState(false);
@@ -199,10 +201,9 @@ export function CatalogSelect<T>({
                             <div className={styles.placeholder}>{placeholder}</div>
                         )}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            {(multiple ? selectedArray.length > 0 : selected) && (
+                            {clearable && (multiple ? selectedArray.length > 0 : selected) && (
                                 <CloseIcon color="var(--content-tertiary)" onClick={clearSelection} />
                             )}
-
                             <DirectionDownIcon
                                 color="var(--content-tertiary)"
                                 className={cls(styles.icon, open && styles.iconOpen)}

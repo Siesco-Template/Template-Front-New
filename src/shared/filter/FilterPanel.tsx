@@ -22,7 +22,6 @@ import SavedFilters from './filters/SavedFilters';
 import FilterHeader from './layout/filterHeader';
 import Header from './layout/header';
 import SearchHeader from './layout/searchHeader';
-import Button from './shared/button';
 import ConfirmModal from './shared/modal';
 import styles from './styles/filter.module.css';
 import { FilterConfig } from './types';
@@ -473,7 +472,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                                     variant="primary"
                                                     color="primary"
                                                     onClick={handleApplyFilters}
-                                                    
                                                 >
                                                     Tətbiq et
                                                 </S_Button>

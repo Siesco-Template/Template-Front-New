@@ -65,7 +65,7 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             <label className={styles.sectionSubHeader}>Səhifədə göstər</label>
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <div className={styles.configRowItem}>
-                    <div style={{ width: '90px' }}>
+                    <div style={{ width: '75px' }}>
                         <Catalog
                             items={[10, 20, 50, 100].map((val) => ({
                                 label: val.toString(),
@@ -91,6 +91,7 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
                             onClickNew={undefined}
                             isLoading={false}
                             searchItems={false}
+                            clearable={false}
                         />
                     </div>
                 </div>
