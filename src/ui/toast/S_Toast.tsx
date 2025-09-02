@@ -1,7 +1,9 @@
-import { Toaster } from 'sonner';
+import { FC } from 'react';
 
-const S_Toast = () => {
-    return <Toaster position="top-right" closeButton expand={false} duration={3000} />;
+import { Toaster, ToasterProps } from 'sonner';
+
+const S_Toast: FC<ToasterProps> = (props) => {
+    return <Toaster {...props} />;
 };
 
 export default S_Toast;
