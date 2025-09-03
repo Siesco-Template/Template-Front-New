@@ -1,0 +1,82 @@
+.boxWrapper {
+    display: flex;
+    width: 150px;
+    height: 80px;
+    background-color: var(--background-secondary-brand-hover, #abb0b5);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 4px;
+    border: 1px solid var(--border-secondary-focus, #ecedee);
+}
+
+.sidebar {
+    width: 25%;
+    border-radius: 4px;
+    background: var(--background-primary, #fff);
+}
+
+.content {
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.topBox {
+    width: 100%;
+    height: 30%;
+    background: var(--background-primary, #fff);
+    border-radius: 4px;
+}
+
+.middleBox {
+    width: 100%;
+    height: 30%;
+    background: var(--background-primary, #fff);
+    border-radius: 4px;
+}
+
+.lines {
+    background: var(--background-primary, #fff);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border-radius: 4px;
+    height: 30%;
+    width: 100%;
+    padding: 2px;
+    gap: 2px;
+}
+
+.line1 {
+    width: 55px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--content-secondary-inverse, #f3f3f3);
+}
+
+.line2 {
+    height: 6px;
+    border-radius: 1px;
+    height: 18%;
+    background: var(--background-secondary-brand, #ecedee);
+}
+
+.line3 {
+    width: 34px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--content-secondary-inverse, #f3f3f3);
+}
+
+.line4 {
+    width: 16px;
+    border-radius: 1px;
+    height: 6px;
+    background: var(--content-secondary-inverse, #f3f3f3);
+}

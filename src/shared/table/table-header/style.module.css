@@ -62,9 +62,9 @@
     right: 0;
 
     border-radius: 12px;
-    background: var(--Foundation-Blue-White, #fff);
+    background: var(--background-primary, #fff);
 
-    box-shadow: 0px 4px 8px 0px rgba(91, 118, 168, 0.12);
+    box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
 
     display: flex;
     width: 96px;
@@ -79,18 +79,18 @@
     width: 100%;
     text-align: left;
 
-    color: var(--foundation-dark-normal-active, #3d4c5e);
-    font-size: 14px;
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-14, 14px);
     font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px);
 
     padding: 8px;
     border-radius: 8px;
 }
 
 .dropdownItem:hover {
-    background-color: #f3f7ff;
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .downloadMain {
