@@ -300,7 +300,7 @@ input[type='number'] {
     }
 }
 
-.modalContent h1 {
+.title {
     color: var(--content-tertiary, #666) !important;
     font-size: var(--fs-14, 14px);
     font-style: normal;

@@ -4,7 +4,6 @@ import { configService } from '@/services/configuration/configuration.service';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
-import S_Toast from '@/ui/toast/S_Toast';
 import { showToast } from '@/ui/toast/showToast';
 
 import { FloppyDiskIcon, PlusIcon, RedoIcon } from '../icons';
@@ -187,10 +186,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 size="xs"
                 title="Xəbərdarlıq"
                 footer={
-                    <div
-                        style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}
-                        className={styles.modalContent}
-                    >
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
                         <S_Button
                             tabIndex={1}
                             type="button"
@@ -206,7 +202,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                     </div>
                 }
             >
-                <h1>Konfiqurasiyanı sıfırlamaq istədiyinizdən əminsiniz mi?</h1>
+                <h1 className={styles.title}>Konfiqurasiyanı sıfırlamaq istədiyinizdən əminsiniz mi?</h1>
             </Modal>
         </div>
     );
