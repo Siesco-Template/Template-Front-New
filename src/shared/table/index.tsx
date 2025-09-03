@@ -687,7 +687,7 @@ function Table<T extends Record<string, any>>({
                 if (props.highlightedRowIds?.includes(row.id)) return '#E6F0FF';
 
                 const baseColor = toCssColor(mergedCell.backgroundColor) ?? '#ffffff';
-                const altColor = '#ffffff';
+                const altColor = 'var(--background-secondary, #F3F3F3)';
 
                 if (hoveredRowId === row.id) {
                     if (stripeStyle === 'plain') return altColor;
