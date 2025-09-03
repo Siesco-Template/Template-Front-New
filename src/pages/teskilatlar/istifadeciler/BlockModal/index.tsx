@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button } from '@/ui';
+import Modal from '@/ui/dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 import S_Textarea from '@/ui/textarea';
 
@@ -59,41 +60,43 @@ export function BlockModal({ open, onOpenChange, onSubmit, selectedUserId }: Pro
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.modalContent}>
-                <DialogHeader>
-                    <DialogTitle>Blokla</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <S_Textarea
-                        value={reason}
-                        onChange={handleInput}
-                        errorText={error}
-                        placeholder="Səbəbi daxil edin"
-                        resize="vertical"
-                        style={{ maxHeight: '200px' }}
-                    />
-
-                    <DialogFooter>
-                        <S_Button
-                            type="button"
-                            variant="outlined-10"
-                            onClick={() => onOpenChange(false)}
-                            disabled={false}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button
-                            type="submit"
-                            variant="main-10"
-                            disabled={isBlocking || !!error}
-                            isLaoding={isBlocking}
-                        >
-                            Təsdiqlə
-                        </S_Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            title="Blokla"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={false}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        type="submit"
+                        variant="primary"
+                        color="primary"
+                        disabled={isBlocking || !!error}
+                        isLoading={isBlocking}
+                    >
+                        Təsdiqlə
+                    </S_Button>
+                </div>
+            }
+        >
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <S_Textarea
+                    value={reason}
+                    onChange={handleInput}
+                    errorText={error}
+                    placeholder="Səbəbi daxil edin"
+                    resize="vertical"
+                    style={{ maxHeight: '200px' }}
+                />
+            </form>
+        </Modal>
     );
 }

@@ -138,7 +138,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
         <div className={styles.paginationWrapper}>
             <div className={styles.leftSide}>
                 <span className={styles.label}>Səhifədə göstər:</span>
-                <div style={{ width: '75px' }}>
+                <div style={{ width: '90px' }}>
                     <Catalog
                         items={[
                             { label: '10', value: '10' },

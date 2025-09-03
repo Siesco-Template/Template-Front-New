@@ -30,8 +30,17 @@ const TableActions: FC<TableActionProps> = ({
                 <Menu.Positioner>
                     <Menu.Content className="header-menu">
                         {edit && (
-                            <Menu.Item value="edit" onClick={onClickEdit}>
-                                <PencilPaperIcon /> Düzəliş et
+                            <Menu.Item
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-start',
+                                    gap: '10px',
+                                }}
+                                value="edit"
+                                onClick={onClickEdit}
+                            >
+                                {edit} <span> Düzəliş et</span>
                             </Menu.Item>
                         )}
                         {info && (

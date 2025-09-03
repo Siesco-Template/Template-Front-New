@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button, S_Input } from '@/ui';
+import Modal from '@/ui/dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 
 import styles from './style.module.css';
@@ -60,35 +61,42 @@ export function ResetPasswordModal({ open, onOpenChange, onSubmit, selectedUserI
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.modalContent}>
-                <DialogHeader>
-                    <DialogTitle>Şifrəni sıfırla</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <S_Input
-                        label="Yeni şifrə"
-                        value={newPassword}
-                        onChange={handleInput}
-                        errorText={error}
-                        placeholder="Yeni şifrəni daxil edin"
-                    />
-
-                    <DialogFooter>
-                        <S_Button
-                            type="button"
-                            variant="outlined-10"
-                            onClick={() => onOpenChange(false)}
-                            disabled={false}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button type="submit" variant="main-10" disabled={isLoading || !!error} isLaoding={isLoading}>
-                            Təsdiqlə
-                        </S_Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            title="Şifrəni sıfırla"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={false}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        type="submit"
+                        variant="primary"
+                        color="primary"
+                        disabled={isLoading || !!error}
+                        isLoading={isLoading}
+                    >
+                        Təsdiqlə
+                    </S_Button>
+                </div>
+            }
+        >
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <S_Input
+                    label="Yeni şifrə"
+                    value={newPassword}
+                    onChange={handleInput}
+                    errorText={error}
+                    placeholder="Yeni şifrəni daxil edin"
+                />
+            </form>
+        </Modal>
     );
 }

@@ -46,6 +46,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     const [errorText, setErrorText] = useState('');
 
+    const { filterDataState } = useTableContext();
+
     const location = useLocation();
     const selectRef = useRef<HTMLDivElement | null>(null);
     const [mainWidth, setMainWidth] = useState<string>('200px');
@@ -65,8 +67,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     useEffect(() => {
         handleResize();
     }, []);
-
-    const { filterDataState } = useTableContext();
 
     const hasInitialized = useRef(false);
 
@@ -190,7 +190,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     };
 
     const renderFilter = (filter: any) => {
-        // console.log(filter, 'renderFilter');
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1

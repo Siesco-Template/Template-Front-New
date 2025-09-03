@@ -97,7 +97,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                             }}
                             disabled={!hasAnyVisibleSelected}
                         >
-                            <FloppyDiskIcon color="var(--content-brand-light)" />
+                            <FloppyDiskIcon color="var(--clr-content-brand-light)" />
                         </S_Button>
                     </div>
                     <ul className={styles.visibilityColumns}>
