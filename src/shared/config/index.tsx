@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { flushSync } from 'react-dom';
 import toast from 'react-hot-toast';
 
 import { configService } from '@/services/configuration/configuration.service';
 
 import { S_Button } from '@/ui';
+import Modal from '@/ui/dialog';
 
 import { FloppyDiskIcon, PlusIcon, RedoIcon } from '../icons';
 import { useTableConfig } from '../table/tableConfigContext';
 import HeaderConfigSection from './basliq';
-import { RefreshIcon, TickIcon } from './icons';
 import { ConfirmModal } from './modal/confirm/ConfirmModal';
 import RowConfigSection from './setir';
 import styles from './style.module.css';
@@ -170,13 +169,32 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 )}
             </div>
 
-            <ConfirmModal
+            <Modal
                 open={isConfirmResetOpen}
                 onOpenChange={setIsConfirmResetOpen}
-                onSubmit={doResetConfig}
-                email=""
-                isLoading={isResetting}
-            />
+                size="xs"
+                title="Xəbərdarlıq"
+                footer={
+                    <div
+                        className={styles.modalContent}
+                    >
+                        <S_Button
+                            tabIndex={1}
+                            type="button"
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => setIsConfirmResetOpen(false)}
+                        >
+                            Ləğv et
+                        </S_Button>
+                        <S_Button tabIndex={2} type="button" variant="primary" color="primary">
+                            Təsdiqlə
+                        </S_Button>
+                    </div>
+                }
+            >
+                <h1>Konfiqurasiyanı sıfırlamaq istədiyinizdən əminsiniz mi?</h1>
+            </Modal>
         </div>
     );
 };

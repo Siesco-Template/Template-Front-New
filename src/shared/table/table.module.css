@@ -141,19 +141,16 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin: 0;
-    gap: 6px;
+    gap: 10px;
     padding: 6px 0;
     max-height: 160px;
     overflow-y: auto;
 }
 
 .visibilityDropdown {
-    background: hsl(var(--clr-background));
-    border-radius: var(--r-200);
-    border: 1px solid hsl(var(--clr-primary-50));
-    -webkit-box-shadow: 0px 18px 22px -2px hsl(var(--clr-grey-200));
-    -moz-box-shadow: 0px 18px 22px -2px hsl(var(--clr-grey-200));
-    box-shadow: 0px 18px 22px -2px hsl(var(--clr-grey-200));
+    background: var(--background-primary, #fff);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -186,15 +183,24 @@
     width: 100%;
 }
 .visibilityDropdown > .visibilityDropdownItem {
-    padding: var(--pm-200);
-    border-radius: var(--r-200);
+    padding: 10px 8px;
+    gap: 8px;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
 }
 
 .visibilityDropdownItem span {
-    color: var(--Sand-12, #21201c);
+    color: var(--content-secondary, #333);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+    font-family: Poppins;
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-16, 14px); /* 116.667% */
 }
 
 .visibilityDropdown > .visibilityDropdownItem:hover {
@@ -383,5 +389,5 @@ ul[class*='MuiMenu-list'] {
 .filterRowLikeTable {
     display: flex;
     width: 100%;
-    align-items: stretch; /* bütün filter inputlar eyni hündürlükdə olsun */
+    align-items: stretch;
 }

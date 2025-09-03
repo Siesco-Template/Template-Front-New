@@ -298,3 +298,16 @@ input[type='number'] {
         transform: translateX(0);
     }
 }
+
+.modalContent {
+    display: 'flex';
+    gap: 8;
+    justify-content: 'flex-end';
+}
+.modalContent h1 {
+    color: var(--content-tertiary, #666) !important;
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+}

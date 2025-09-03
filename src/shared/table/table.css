@@ -3,12 +3,6 @@
     box-shadow: none !important;
     border-radius: 12px !important;
 }
-
-.ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-    border-radius: 12px;
-    border: 1px solid var(--foundation-surface-normal-active, #ebeef2);
-    background: var(--Foundation-surface-White, #fff);
-}
 :where(.css-dev-only-do-not-override-1a3rktk).ant-color-picker-trigger .ant-color-picker-color-block {
     width: 90% !important;
     height: 85% !important;
@@ -26,19 +20,6 @@
     backdrop-filter: blur(0); /* varsa silinsin */
 }
 
-.ant-color-picker .ant-color-picker-inner .ant-color-picker-input-container .ant-color-picker-input {
-    gap: 4px;
-    align-items: center;
-    flex: 1;
-    width: 0;
-    justify-content: center;
-    display: flex;
-}
-.ant-color-picker .ant-color-picker-inner .ant-color-picker-input-container {
-    display: flex !important;
-    align-items: center !important;
-}
-
 .MuiTypography-root {
     font-family: Poppins !important;
     font-size: 16px !important;
@@ -51,9 +32,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.ant-picker-input input {
-    font-weight: 500;
-    /* color: #aaa; */
 }
