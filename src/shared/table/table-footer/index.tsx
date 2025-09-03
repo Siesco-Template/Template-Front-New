@@ -191,7 +191,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
             {!isInfiniteScroll && totalPages > 1 && (
                 <div className={styles.centerSide}>
                     <button onClick={handlePrev} className={styles.iconBtn} disabled={currentPage === 0}>
-                        <LeftIcon width={16} height={16} color="#5E6C79" />
+                        <LeftIcon width={16} height={16} color="var(--content-secondary)" />
                     </button>
 
                     {getPageNumbers().map((page, idx) =>
@@ -214,7 +214,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                     )}
 
                     <button onClick={handleNext} className={styles.iconBtn} disabled={currentPage >= totalPages - 1}>
-                        <RightIcon width={16} height={16} color="#5E6C79" />
+                        <RightIcon width={16} height={16} color="var(--content-secondary)" />
                     </button>
                 </div>
             )}

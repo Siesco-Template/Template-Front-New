@@ -139,10 +139,14 @@
 
 /* item name (grid) */
 .itemName {
-    font-size: var(--fs-100);
     text-align: center;
-    color: hsl(var(--clr-grey-600));
     word-break: break-all;
+
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Flh-20, 20px); /* 142.857% */
 }
 
 /* list row extra cells */

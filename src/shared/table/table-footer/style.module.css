@@ -122,8 +122,7 @@
     color: var(--content-tertiary, #666);
 }
 .activePage {
-    color: var(--content-primary-inverse, #fff);
-    border-radius: 12px;
+    color: var(--content-primary-inverse, #fff) !important;
     background: var(--background-brand, #0d3caf);
 }
 

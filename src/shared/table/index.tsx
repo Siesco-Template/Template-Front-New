@@ -679,7 +679,7 @@ function Table<T extends Record<string, any>>({
             const mergedCell = rowCfg.cell || {};
             const mergedBorder = rowCfg.border || {};
 
-            const selectedBg = rowCfg?.selected?.backgroundColor ?? '#E6F0FF';
+            const selectedBg = rowCfg?.selected?.backgroundColor ?? 'var(--background-selected)';
 
             const getBackgroundColor = () => {
                 if (isRowSelected) return selectedBg;

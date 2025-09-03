@@ -1,10 +1,12 @@
 .container {
     display: flex;
     align-items: center;
-    gap: var(--pm-200);
-    padding: var(--pm-50) var(--pm-200);
-    background: hsl(var(--clr-white-700));
-    border-radius: var(--r-300);
+
+    padding: var(--space-200, 4px) var(--space-250, 12px);
+    gap: var(--space-250, 12px);
+
+    border-radius: var(--br-2xl, 12px);
+    background: var(--background-secondary-brand, #ecedee);
     height: var(--wh-375);
 }
 

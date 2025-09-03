@@ -126,7 +126,7 @@ const SettingsPageLayout = () => {
                                     useViewAndContentStore.getState().saveViewAndContent();
                                     useThemeStore.getState().saveTheme();
 
-                                    showToast({ label: 'Konfiqurasiya uğurla sıfırlandı', type: 'success' });
+                                    showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
                                     setHasChange(false);
                                 }}
                             />
