@@ -11,7 +11,7 @@
 }
 
 .configPanel {
-    /* overflow-y: auto; */
+    overflow-y: auto;
     width: 100%;
     padding: 16px;
 }
@@ -21,6 +21,7 @@
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    width: 100%;
 }
 
 .configPanelHeader h1 {
@@ -44,7 +45,7 @@
 
     padding: 10px 4px 10px 12px;
     margin-top: 10px;
-
+    width: 100%;
     transition: all 0.3s ease;
 }
 
@@ -61,7 +62,7 @@
 }
 
 .sectionContent {
-    padding: 12px 0;
+    padding: 12px;
     width: 100%;
 }
 
@@ -299,11 +300,6 @@ input[type='number'] {
     }
 }
 
-.modalContent {
-    display: 'flex';
-    gap: 8;
-    justify-content: 'flex-end';
-}
 .modalContent h1 {
     color: var(--content-tertiary, #666) !important;
     font-size: var(--fs-14, 14px);

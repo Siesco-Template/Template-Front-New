@@ -4,6 +4,8 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 import { filterService } from '@/services/filter/filter.service';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon } from '../icons';
 import styles from './style.module.css';
 
@@ -61,10 +63,9 @@ const ActionsDropdown = ({
 
         try {
             await filterService.setDefaultFilter(filter.id);
-            toast.success('Varsayılan filter uğurla təyin edildi');
+            showToast({ label: 'Varsayılan filter uğurla təyin edildi', type: 'success' });
         } catch (e) {
             console.error(e);
-            toast.error('Varsayılan filter serverdə saxlanmadı');
         }
     };
 
@@ -73,7 +74,7 @@ const ActionsDropdown = ({
             filterService
                 .removeDefaultFilter(filter.id)
                 .then((response) => {
-                    toast.success('Varsayılan filter uğurla sıfırlandı');
+                    showToast({ label: 'Varsayılan filter uğurla sıfırlandı', type: 'success' });
                     onToggle(null);
 
                     setSavedFilters((prevFilters: any) =>

@@ -6,11 +6,12 @@ import { filterService } from '@/services/filter/filter.service';
 import { SearchIcon } from '@/shared/icons';
 
 import { S_Button, S_Input } from '@/ui';
+import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import SearchHeader from '../../layout/searchHeader';
 import ActionsDropdown from '../../shared/actions/Actions';
 import { ArrowLeftIcon, DiskIcon, EditIcon, TrashIcon } from '../../shared/icons';
-import ConfirmModal from '../../shared/modal';
 import { FilterConfig } from '../../types';
 import styles from './style.module.css';
 
@@ -77,7 +78,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                     setSavedFilters(updatedFilters);
                     setShowDeleteModal(false);
                     setFilterToDelete(null);
-                    toast.success('Filter uğurla silindi');
+                    showToast({ label: 'Filter uğurla silindi', type: 'success' });
                 })
                 .catch((error) => {
                     console.error('Filter silinərkən xəta baş verdi:', error);
@@ -344,15 +345,27 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                         </ul>
                     </>
                 )}
-                <ConfirmModal
+
+                <Modal
                     open={showDeleteModal}
                     onOpenChange={setShowDeleteModal}
-                    description={`${filterToDelete?.filterTitle} filterini silmək istədiyinizdən əminsiniz mi?`}
-                    confirmText="Təsdiqlə"
-                    cancelText="Ləğv et"
-                    onConfirm={handleConfirmDelete}
-                    onCancel={handleCancelDelete}
-                />
+                    title="Xəbərdarlıq"
+                    size="xs"
+                    footer={
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                            <S_Button variant="primary" color="secondary" onClick={handleCancelDelete}>
+                                Ləğv et
+                            </S_Button>
+                            <S_Button variant="primary" color="primary" onClick={handleConfirmDelete}>
+                                Təsdiqlə
+                            </S_Button>
+                        </div>
+                    }
+                >
+                    <h1 className={styles.description}>
+                        <span>{filterToDelete?.filterTitle}</span> filterini silmək istədiyinizdən əminsiniz mi?
+                    </h1>
+                </Modal>
             </>
         </ul>
     );

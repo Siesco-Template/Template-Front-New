@@ -24,22 +24,7 @@ const Header_Content = () => {
         'notifications'
     );
 
-    // const logoSrc = logo_img as string;
-
-    const { user } = useAuthStore();
-
     const [downloadItems, setDownloadItems] = useState<any[]>([]);
-
-    const handleNotificationClick = useCallback((notificationId: string) => {
-        setIsPanelOpen(false);
-        navigate(APP_URLS.notifications('', { notificationId }));
-    }, []);
-
-    const handleNotificationDelete = useCallback((notificationId: string) => {
-        setNotifications((prevNotifications) =>
-            prevNotifications.filter((notification: any) => notification.id !== notificationId)
-        );
-    }, []);
 
     const fetchItems = async () => {
         try {
@@ -114,67 +99,9 @@ const Header_Content = () => {
             <S_SidePanel
                 open={isPanelOpen}
                 onOpenChange={(open) => setIsPanelOpen(open)}
-                title={
-                    selectedPanel === 'notifications'
-                        ? 'Bildirişlər'
-                        : selectedPanel === 'history'
-                          ? 'Tarixçə'
-                          : selectedPanel === 'favorites'
-                            ? 'Seçilmişlər'
-                            : 'Endirilənlər'
-                }
-            >
-                <>
-                    {selectedPanel === 'downloads' && (
-                        <section className={styles.panel}>
-                            <div className={styles.downloadItems}>
-                                <h2 className={styles.label}>Bu gün</h2>
-                                <div className={styles.downloadItemsGroup}>
-                                    {downloadItems.length === 0 ? (
-                                        <p style={{ padding: '1rem', textAlign: 'center' }}>Heç bir fayl tapılmadı.</p>
-                                    ) : (
-                                        downloadItems.map((item, index) => {
-                                            const createdAt = new Date(item.createdAt);
-                                            const time = createdAt.toLocaleTimeString('az-AZ', {
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            });
-
-                                            const datePart = createdAt.toLocaleDateString('az-AZ').replace(/\./g, '-');
-                                            const timePart = createdAt.toTimeString().slice(0, 5).replace(':', '-');
-                                            const generatedFileName = `Hesabat_${datePart}_${timePart}`;
-
-                                            return (
-                                                <div className={styles.downloadItem} key={index}>
-                                                    <p>
-                                                        {generatedFileName}
-                                                        {item.extension}
-                                                    </p>
-                                                    <div className={styles.itemBtnGroup}>
-                                                        <span>{time}</span>
-                                                        <a
-                                                            href={item.fileUrl}
-                                                            download={`${generatedFileName}${item.extension}`}
-                                                            style={{
-                                                                background: 'transparent',
-                                                                border: 'none',
-                                                                cursor: 'pointer',
-                                                                padding: 0,
-                                                            }}
-                                                        >
-                                                            <DownloadIconn color="#0D3CAF" width={16} height={16} />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })
-                                    )}
-                                </div>
-                            </div>
-                        </section>
-                    )}
-                </>
-            </S_SidePanel>
+                title="Endirilənlər"
+                children=""
+            />
         </>
     );
 };

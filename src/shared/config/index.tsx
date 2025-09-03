@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { configService } from '@/services/configuration/configuration.service';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
+import S_Toast from '@/ui/toast/S_Toast';
+import { showToast } from '@/ui/toast/showToast';
 
 import { FloppyDiskIcon, PlusIcon, RedoIcon } from '../icons';
 import { useTableConfig } from '../table/tableConfigContext';
 import HeaderConfigSection from './basliq';
-import { ConfirmModal } from './modal/confirm/ConfirmModal';
 import RowConfigSection from './setir';
 import styles from './style.module.css';
 import ColumnConfigSection from './sutun';
@@ -72,11 +72,13 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 await new Promise((resolve) => setTimeout(resolve, delay));
             }
 
-            toast.success('Konfiqurasiya uğurla tətbiq olundu');
+            showToast({
+                label: 'Konfiqurasiya uğurla tətbiq olundu',
+                type: 'success',
+            });
             await loadConfigFromApi();
         } catch (error) {
             console.error('Config göndərilərkən xəta:', error);
-            toast.error('Xəta baş verdi!');
         } finally {
             setIsSaving(false);
         }
@@ -112,7 +114,10 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
             setIsResetting(true);
             await configService.resetConfig(table_key);
 
-            toast.success('Konfiqurasiya uğurla sıfırlandı');
+            showToast({
+                label: 'Konfiqurasiya uğurla sıfırlandı',
+                type: 'success',
+            });
             loadConfigFromApi();
         } catch (error) {
             console.error('Sıfırlama zamanı xəta:', error);
@@ -132,6 +137,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                             variant="primary"
                             color="secondary"
                             aria-label="Sıfırla"
+                            isLoading={isResetting}
                             onClick={() => setIsConfirmResetOpen(true)}
                         >
                             {isResetting ? (
@@ -140,7 +146,13 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                                 <RedoIcon color="var(--clr-content-secondary-bold)" width={16} height={16} />
                             )}
                         </S_Button>
-                        <S_Button variant="primary" color="primary" aria-label="Təsdiqlə" onClick={handleSave}>
+                        <S_Button
+                            variant="primary"
+                            color="primary"
+                            aria-label="Təsdiqlə"
+                            isLoading={isSaving}
+                            onClick={handleSave}
+                        >
                             {isSaving ? (
                                 <span className={styles.spinner} />
                             ) : (
@@ -176,6 +188,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 title="Xəbərdarlıq"
                 footer={
                     <div
+                        style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}
                         className={styles.modalContent}
                     >
                         <S_Button
@@ -187,7 +200,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                         >
                             Ləğv et
                         </S_Button>
-                        <S_Button tabIndex={2} type="button" variant="primary" color="primary">
+                        <S_Button tabIndex={2} type="button" variant="primary" color="primary" onClick={doResetConfig}>
                             Təsdiqlə
                         </S_Button>
                     </div>

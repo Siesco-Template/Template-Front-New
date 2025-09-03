@@ -151,3 +151,19 @@
         transform: rotate(360deg);
     }
 }
+
+.description {
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px);
+}
+
+.description span {
+    color: var(--content-brand-bold, #061d55);
+    font-size: var(--fs-14, 14px);
+    font-style: italic;
+    font-weight: 600;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+}

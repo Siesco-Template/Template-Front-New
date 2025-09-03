@@ -6,6 +6,7 @@ import { getFullConfigDiff, useTableConfig } from '@/shared/table/tableConfigCon
 import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
 
 import SectionHeader from '../components/section-header';
 import { useLayoutStore } from '../layout/layout.store';
@@ -125,7 +126,7 @@ const SettingsPageLayout = () => {
                                     useViewAndContentStore.getState().saveViewAndContent();
                                     useThemeStore.getState().saveTheme();
 
-                                    toast.success('Konfiqurasiya uğurla yadda saxlanıldı');
+                                    showToast({ label: 'Konfiqurasiya uğurla sıfırlandı', type: 'success' });
                                     setHasChange(false);
                                 }}
                             />

@@ -83,17 +83,17 @@ li {
 
 /* Scrollbar */
 *::-webkit-scrollbar {
-    width: var(--wh-50);
-    height: var(--wh-50);
+    width: 4px;
+    height: 4px;
 }
 *::-webkit-scrollbar-track {
-    background: hsl(var(--clr-background));
-    border-radius: var(--r-100);
+    background: var(--background-secondary, #f3f3f3);
+    border-radius: 4px;
 }
 *::-webkit-scrollbar-thumb {
-    background: hsl(var(--clr-grey-100));
-    border-radius: var(--r-200);
-    transition: all var(--animation);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    background: var(--background-strong, #bfbfbf);
 }
 *::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--clr-primary-600));
@@ -163,41 +163,7 @@ li {
     }
 }
 
-/* React Quill */
-.ql-container {
-    color: hsl(var(--clr-grey-300)) !important;
-    font-size: 14px !important;
-    font-style: normal !important;
-    font-weight: 400 !important;
-    line-height: var(--wh-250) !important;
 
-    border-radius: var(--r-300) !important;
-    border: 1px solid hsl(var(--clr-grey-300)) !important;
-
-    padding: 16px;
-}
-
-.ql-editor {
-    padding: 0px !important;
-    min-height: var(--wh-600);
-    max-height: var(--wh-650);
-    max-width: 580px;
-    color: hsl(var(--clr-primary-900));
-}
-.ql-editor.ql-blank::before {
-    color: hsl(var(--clr-grey-300)) !important;
-}
-.customToolbar button.ql-bold::before,
-.customToolbar button.ql-italic::before,
-.customToolbar button.ql-underline::before {
-    content: none !important;
-}
-
-.customToolbar button svg {
-    display: block;
-    width: 1em !important;
-    height: 1em !important;
-}
 
 /* Date Picker (RSuit) */
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {

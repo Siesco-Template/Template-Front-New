@@ -13,7 +13,7 @@ import {
 } from '@/shared/config/icons';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
-import { S_Checkbox } from '@/ui';
+import { S_Checkbox, S_Switch } from '@/ui';
 
 import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
@@ -42,10 +42,9 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
         <>
             <div className={styles.configRow}>
                 <label>Sabitlə</label>
-                <S_Checkbox
+                <S_Switch
                     checked={!!header.pinned}
                     size="16"
-                    className={styles.checkbox}
                     onCheckedChange={({ checked }) => updateConfig(tableKey, 'header.pinned', !!checked)}
                 />
             </div>
@@ -101,7 +100,10 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
                 <label>Stil</label>
                 <div className={styles.buttonGroup}>
                     {[
-                        { value: 'italic', icon: <ItalicIcon width={18} height={18} color="var(--content-secondary)" /> },
+                        {
+                            value: 'italic',
+                            icon: <ItalicIcon width={18} height={18} color="var(--content-secondary)" />,
+                        },
                         { value: 'bold', icon: <BoldIcon width={18} height={18} color="var(--content-secondary)" /> },
                     ].map((item) => {
                         const isActive =
@@ -143,8 +145,8 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
                 <label>Stil</label>
                 <div className={styles.buttonGroup}>
                     {[
-                        { value: 'solid', icon: <SolidIcon color="var(--content-secondary)"/> },
-                        { value: 'dashed', icon: <DashedIcon color="var(--content-secondary)"/> },
+                        { value: 'solid', icon: <SolidIcon color="var(--content-secondary)" /> },
+                        { value: 'dashed', icon: <DashedIcon color="var(--content-secondary)" /> },
                     ].map((item) => (
                         <button
                             key={item.value}

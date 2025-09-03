@@ -87,7 +87,7 @@ const Themes = () => {
                     );
                 })}
 
-                {!newThemeId && (
+                {/* {!newThemeId && (
                     <div className={cls(styles.themeCardWrapper)} onClick={newTheme}>
                         <CustomThemeBackground />
 
@@ -95,7 +95,7 @@ const Themes = () => {
                             <p>Custom</p>
                         </div>
                     </div>
-                )}
+                )} */}
             </div>
 
             {newThemeId && (

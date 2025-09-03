@@ -21,6 +21,7 @@ import { useTableOrdering } from '@/shared/table/table-ordering';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import { S_Button } from '@/ui';
+import Modal from '@/ui/dialog';
 
 import BottomModal from '../modal/bottomModal';
 import styles from '../style.module.css';
@@ -286,48 +287,53 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                 </div>
             )}
 
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <PanelDialog open={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
-                    <PanelDialogContent style={paperStyle}>
-                        {modalType && (
-                            <>
-                                <div className={styles.header}>
-                                    <h3 className={styles.title}>Ümumi reyestr</h3>
-
-                                    <div className={styles.modalBtnGroup}>
-                                        <button
-                                            onClick={async () => {
-                                                try {
-                                                    setIsSaving(true);
-                                                    await modalTypeConfigs[modalType].onSave();
-                                                } finally {
-                                                    setIsSaving(false);
-                                                    setIsModalOpen(false);
-                                                }
-                                            }}
-                                            className={styles.saveBtn}
-                                            disabled={isSaving}
-                                        >
-                                            {isSaving ? <span className={styles.spinner} /> : 'Yadda saxla'}
-                                        </button>
-                                        <button onClick={() => setIsModalOpen(false)} className={styles.cancelBtn}>
-                                            Ləğv et
-                                        </button>
-                                    </div>
-                                </div>
-                                <div style={{ height: '90vh', paddingBottom: '20px' }}>
-                                    <Table
-                                        columns={modalTableColumns}
-                                        data={modalTableData}
-                                        tableKey={tableKey}
-                                        {...modalTypeConfigs[modalType].tableProps}
-                                    />
-                                </div>
-                            </>
-                        )}
-                    </PanelDialogContent>
-                </PanelDialog>
-            </div>
+            <Modal
+                open={isModalOpen}
+                onOpenChange={() => setIsModalOpen(false)}
+                size="xl"
+                title="Ümumi reyestr"
+                footer={
+                    <>
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                            <S_Button
+                                variant="primary"
+                                color="primary"
+                                onClick={async () => {
+                                    try {
+                                        setIsSaving(true);
+                                        await modalTypeConfigs[modalType].onSave();
+                                    } finally {
+                                        setIsSaving(false);
+                                        setIsModalOpen(false);
+                                    }
+                                }}
+                                disabled={isSaving}
+                            >
+                                {isSaving ? <span className={styles.spinner} /> : 'Yadda saxla'}
+                            </S_Button>
+                            <S_Button
+                                variant="primary"
+                                color="secondary"
+                                onClick={() => setIsModalOpen(false)}
+                                className={styles.cancelBtn}
+                            >
+                                Ləğv et
+                            </S_Button>
+                        </div>
+                    </>
+                }
+            >
+                {modalType && (
+                    <>
+                        <Table
+                            columns={modalTableColumns}
+                            data={modalTableData}
+                            tableKey={tableKey}
+                            {...modalTypeConfigs[modalType].tableProps}
+                        />
+                    </>
+                )}
+            </Modal>
         </>
     );
 };

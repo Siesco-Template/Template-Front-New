@@ -25,8 +25,8 @@ const FilterHeader: React.FC<Props> = ({ onSortClick, sortMode, onSaveSort, onSa
                     </S_Button>
 
                     {!sortMode && (
-                        <S_Button color="secondary" variant="primary" onClick={onSaveFilters} disabled={disableSave}>
-                            <DiskIcon width={16} height={16} color="var(--content-secondary-brand-bold, #ECEDEE)" />
+                        <S_Button color="primary" variant="primary" onClick={onSaveFilters} disabled={disableSave}>
+                            <DiskIcon width={16} height={16} color="var(--clr-content-brand-light)" />
                         </S_Button>
                     )}
                 </div>

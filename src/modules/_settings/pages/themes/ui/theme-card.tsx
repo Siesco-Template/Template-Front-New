@@ -52,7 +52,7 @@ const ThemeCard: FC<IThemeCardProps> = ({
             case 'Sistem':
                 return <SystemThemeBackground />;
             default:
-                return <CustomThemeBackground />; // Custom theme icon
+                return <CustomThemeBackground />;
         }
     };
 

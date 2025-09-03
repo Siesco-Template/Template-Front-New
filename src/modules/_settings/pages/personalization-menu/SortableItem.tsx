@@ -47,14 +47,14 @@ export default function SortableItem({ item, level = 0, onToggleVisible, contain
             </div>
 
             {item.show ? (
-                <EyeSlashIcon
+                <EyeIcon
                     width={15}
                     height={15}
                     color="var(--content-brand)"
                     onClick={() => item.id && onToggleVisible(item.id)}
                 />
             ) : (
-                <EyeIcon
+                <EyeSlashIcon
                     width={15}
                     height={15}
                     color="var(--content-brand)"
