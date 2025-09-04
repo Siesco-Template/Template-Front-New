@@ -1,5 +1,5 @@
 .panelWrapper {
-    width: 270px;
+    width: 280px;
     transition: all 0.3s ease;
     height: 100%;
     border-radius: 16px 16px;
@@ -7,19 +7,21 @@
     display: flex;
     flex-direction: column;
     user-select: none;
+    overflow-y: auto;
 }
 
 .configPanel {
     overflow-y: auto;
-    width: 270px;
+    width: 100%;
     padding: 16px;
 }
 
 .configPanelHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     height: 40px;
+    width: 100%;
 }
 
 .configPanelHeader h1 {
@@ -43,7 +45,7 @@
 
     padding: 10px 4px 10px 12px;
     margin-top: 10px;
-
+    width: 100%;
     transition: all 0.3s ease;
 }
 
@@ -60,7 +62,7 @@
 }
 
 .sectionContent {
-    padding: 12px 0;
+    padding: 12px;
     width: 100%;
 }
 
@@ -119,18 +121,27 @@
 .configRow input[type='number'] {
     padding: 6px 6px;
     outline: none;
-    font-size: 13px;
     border-radius: var(--Corner-Small, 8px);
-    border: 1px solid var(--Foundation-Blue-Lighter, #b2bbc6);
-    background: var(--Foundation-Blue-White, #fff);
     width: 100px;
+
+    border-radius: var(--br-2xl, 12px);
+    background: var(--background-secondary, #f3f3f3);
+
+    color: var(--content-tertiary, #666);
+
+    font-size: var(--fs, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .colorPickerWrapper {
     width: 64px;
     height: 28px;
-    border: 2px solid #d0d5dd;
-    border-radius: 8px;
+
+    border-radius: var(--br-2xl, 12px);
+    border: 2px solid var(--border-secondary, #999);
+
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -142,20 +153,16 @@
     position: absolute;
     right: 12px;
 
-    color: #000;
-    font-feature-settings:
-        'liga' off,
-        'clig' off;
-    font-family: Poppins;
-    font-size: 12px;
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: 24px; /* 200% */
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .bottomBorder {
     padding-bottom: 15px;
-    border-bottom: 1px solid var(--foundation-surface-normal-active, #ebeef2);
+    border-bottom: 1px solid var(--border-subtle, #ebebeb);
 }
 
 .buttonGroup {
@@ -165,9 +172,7 @@
 
 .buttonGroup button {
     cursor: pointer;
-    transition: background 0.2s ease;
-    border-radius: var(--Corner-Small, 8px);
-    background: var(--foundation-blue-white-active, #f5f7f9);
+    transition: all 0.3s ease;
     display: flex;
     padding: 8px 10px;
     justify-content: center;
@@ -175,6 +180,10 @@
     gap: 8px;
     height: 30px;
     height: 30px;
+
+    border-radius: var(--br-2xl);
+    border: 1px solid var(--border-inverse, #fff);
+    background: var(--background-secondary-brand, #ecedee);
 }
 
 .buttonGroup button:hover {
@@ -185,72 +194,30 @@
     margin: 8px 0;
 
     color: var(--content-secondary, #f3f3f3);
-
     font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 500;
     line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
-.actionButton {
-    border-radius: var(--Corner-Small, 8px);
-    background: var(--foundation-blue-white-active, #f5f7f9);
-    display: flex;
-    height: 28px;
-    padding: 8px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    color: var(--Foundation-Blue-blue-900, #002c68);
-    font-family: Poppins;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
 .isActive {
-    border: 2px solid #0068f7;
-    background-color: #f0f8ff;
-    border-radius: 4px;
+    border: 2px solid var(--border-focus, #0d3caf) !important;
+    background: var(--background-secondary-brand, #ecedee) !important;
 }
 
 .isActiveBtn {
-    border: 3px solid #0068f7;
-    background-color: #0068f7;
-    border-radius: 11px;
+    border-radius: var(--br-2xl);
+    border: 3px solid var(--border-focus, #0d3caf);
+    background: var(--background-secondary-brand, #ecedee);
     height: 34px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.checkbox :global(.ant-checkbox-inner) {
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    border: 1px solid #d9d9d9;
-    background-color: white;
-    transition: all 0.2s;
-    position: absolute;
-    right: -10px;
-}
-
-.checkbox :global(.ant-checkbox-checked .ant-checkbox-inner) {
-    background-color: #1890ff;
-    border-color: #1890ff;
-}
-
-.checkbox :global(.ant-checkbox-inner::after) {
-    top: 45%;
-    left: 25%;
-    width: 6px;
-    height: 10px;
-    border-width: 2px;
-}
-
-.checkbox :global(.ant-checkbox:hover .ant-checkbox-inner) {
-    border-color: #40a9ff;
+.checkbox {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .spinner {
@@ -258,7 +225,7 @@
     width: 16px;
     height: 16px;
     border: 2px solid #ffffff;
-    border-top: 2px solid hsl(var(--clr-primary-900));
+    border-top: 2px solid var(--border-focus);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
     margin: 0 auto;
@@ -270,40 +237,6 @@
     gap: 10px;
     justify-content: flex-start;
     padding: 10px 0;
-}
-.cancelBtn {
-    border-radius: 12px;
-    border: 1px solid hsl(var(--clr-primary-900));
-    display: flex;
-    height: 36px;
-    padding: 8px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    color: hsl(var(--clr-primary-900));
-    font-family: Poppins;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-
-.saveBtn {
-    display: flex;
-    height: 36px;
-    padding: 8px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 12px;
-    border: 1px solid var(--Foundation-Blue-blue-200, #8abafb);
-    background: hsl(var(--clr-primary-900));
-    color: var(--Foundation-Blue-White, #fff);
-    font-family: Poppins;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
 }
 
 .header {
@@ -343,30 +276,6 @@ input[type='number'] {
     gap: 5px;
     align-items: center;
 }
-.resetBtn {
-    color: #0068f7;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    border-radius: 12px;
-    border: 1px solid var(--Foundation-Blue-blue-500, #0068f7);
-
-    display: flex;
-    height: 36px;
-    padding: 8px 10px;
-    justify-content: center;
-    align-items: center;
-}
-
-.resetBtn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-.disabled {
-    background-color: #d1d5db;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
 
 .invalid {
     border: 1px solid red !important;
@@ -389,4 +298,12 @@ input[type='number'] {
     100% {
         transform: translateX(0);
     }
+}
+
+.title {
+    color: var(--content-tertiary, #666) !important;
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }

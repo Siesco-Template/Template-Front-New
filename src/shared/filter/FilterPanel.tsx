@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useLocation } from 'react-router';
 
 import dayjs from 'dayjs';
@@ -9,11 +8,13 @@ import { filterService } from '@/services/filter/filter.service';
 import { SearchIcon } from '@/shared/icons';
 
 import { S_Button, S_Input } from '@/ui';
+import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import Catalog from '../catalog';
 import { useTableContext } from '../table/table-context';
 import { useDebounce } from '../table/useDebounce';
-import { applyFiltersToUrl, parseFiltersFromUrl } from './config/filterHelpers';
+import { applyFiltersToUrl } from './config/filterHelpers';
 import { FilterKey } from './config/filterTypeEnum';
 import DateIntervalFilter from './filters/DateIntervalFilter';
 import DraggableItems from './filters/Draggable';
@@ -22,8 +23,6 @@ import SavedFilters from './filters/SavedFilters';
 import FilterHeader from './layout/filterHeader';
 import Header from './layout/header';
 import SearchHeader from './layout/searchHeader';
-import Button from './shared/button';
-import ConfirmModal from './shared/modal';
 import styles from './styles/filter.module.css';
 import { FilterConfig } from './types';
 
@@ -45,6 +44,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [filterName, setFilterName] = useState('');
 
+    const [errorText, setErrorText] = useState('');
+
+    const { filterDataState } = useTableContext();
+
     const location = useLocation();
     const selectRef = useRef<HTMLDivElement | null>(null);
     const [mainWidth, setMainWidth] = useState<string>('200px');
@@ -64,8 +67,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     useEffect(() => {
         handleResize();
     }, []);
-
-    const { filterDataState } = useTableContext();
 
     const hasInitialized = useRef(false);
 
@@ -186,11 +187,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         console.log(key, value, 'handleUpdateFilter');
         const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
         setSavedFilters(updatedFilters);
-        // onChange(key, value);
     };
 
     const renderFilter = (filter: any) => {
-        // console.log(filter, 'renderFilter');
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
@@ -204,7 +203,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                             placeholder={filter.placeholder || filter.column}
                             onChange={(e) => _onChange(filter.key, e.target.value)}
                             readOnly={filter.readOnly}
-                            inputSize="36"
+                            size="36"
                             style={{ width: '100%' }}
                             icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                             iconPosition="right"
@@ -325,7 +324,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     const handleResetOrder = () => {};
 
     const handleSaveFilter = async (name?: string) => {
-        if (!name) return;
+        if (!name) return setErrorText('Filter adını daxil edin');
 
         const newFilter: any = {
             tableId: table_key,
@@ -349,8 +348,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
         try {
             const response = await filterService.createFilter(newFilter);
-            toast.success('Filter uğurla yaradıldı');
-
+            showToast({ label: 'Filter uğurla yaradıldı', type: 'success' });
             setFilterName('');
             setIsSaveModalOpen(false);
         } catch (error) {
@@ -359,7 +357,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     };
 
     const handleSaveAndApplyFilter = async (name?: string) => {
-        if (!name) return;
+        if (!name) setErrorText('Filter adını daxil edin');
 
         const newFilter: any = {
             tableId: table_key,
@@ -437,6 +435,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
             console.error('Filteri yaratmaqda xəta baş verdi:', error);
         }
     };
+
     return (
         <>
             <div className={styles.wrapper}>
@@ -493,13 +492,36 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     </div>
                 </div>
             </div>
-            <ConfirmModal
+
+            <Modal
                 open={isSaveModalOpen}
                 onOpenChange={setIsSaveModalOpen}
-                onSave={handleSaveFilter}
-                onSaveAndUse={handleSaveAndApplyFilter}
-                mode="create"
-            />
+                title="Filteri yadda saxla"
+                size="xs"
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => handleSaveAndApplyFilter(filterName)}
+                        >
+                            Yadda saxla və istifadə et
+                        </S_Button>
+                        <S_Button variant="primary" color="primary" onClick={() => handleSaveFilter(filterName)}>
+                            Yadda saxla
+                        </S_Button>
+                    </div>
+                }
+            >
+                <S_Input
+                    label="Ad"
+                    placeholder="Ad daxil edin"
+                    value={filterName}
+                    onChange={(e) => setFilterName(e.target.value)}
+                    size="36"
+                    errorText={errorText}
+                />
+            </Modal>
         </>
     );
 };

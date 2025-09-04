@@ -2,8 +2,8 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: var(--pm-600);
-    padding: var(--pm-200) var(--pm-400) var(--pm-400) var(--pm-400);
+    padding: 8px 16px 16px 16px;
+    gap: 24px;
     justify-content: space-between;
     height: 50px;
 }
@@ -16,18 +16,19 @@
 
 .titleContainer > *,
 .sectionHeader > * {
-    color: hsl(var(--clr-primary-900));
-    font-size: var(--fs-200);
+    overflow: hidden;
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-16, 16px);
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    line-height: var(--lh-20, 20px); /* 125% */
 }
 
 .titleContainer > svg {
-    width: var(--wh-400);
-    height: var(--wh-400);
+    width: 16px;
+    height: 16px;
     border-radius: 999999909px;
-    color: hsl(var(--clr-primary-600));
+    color: var(--content-primary);
     background: hsl(var(--clr-primary-200));
     border: 6px solid hsl(var(--clr-primary-100));
     display: flex;

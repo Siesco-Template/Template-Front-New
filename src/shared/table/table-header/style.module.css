@@ -62,9 +62,9 @@
     right: 0;
 
     border-radius: 12px;
-    background: var(--Foundation-Blue-White, #fff);
+    background: var(--background-primary, #fff);
 
-    box-shadow: 0px 4px 8px 0px rgba(91, 118, 168, 0.12);
+    box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
 
     display: flex;
     width: 96px;
@@ -79,18 +79,18 @@
     width: 100%;
     text-align: left;
 
-    color: var(--foundation-dark-normal-active, #3d4c5e);
-    font-size: 14px;
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-14, 14px);
     font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px);
 
     padding: 8px;
     border-radius: 8px;
 }
 
 .dropdownItem:hover {
-    background-color: #f3f7ff;
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .downloadMain {
@@ -102,10 +102,9 @@
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 500;
-    line-height: var(--lh-20, 20px); /* 142.857% */
+    line-height: var(--lh-20, 20px);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
-
     transition: all 0.3s ease;
 }
 
@@ -113,7 +112,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 36px; /* kvadrat hissə */
+    width: 36px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -121,6 +120,7 @@
     overflow: hidden;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
+    transition: all 0.3s ease;
 }
 
 .downloadArrow::before {
@@ -132,16 +132,25 @@
     background: var(--Foundation-Blue-White, #e5e7eb);
 }
 
-.downloadMain:hover,
+.downloadMain:hover {
+    background: var(--background-secondary-brand-hover, #9cb0c4);
+    color: var(--content-inverse-secondary-brand-bold, #f5f7f9);
+}
+
 .downloadArrow:hover {
     background: var(--background-secondary-brand-hover, #9cb0c4);
+}
+
+.downloadArrow:hover svg {
     color: var(--content-inverse-secondary-brand-bold, #f5f7f9);
 }
 
 .downloadArrow[aria-expanded='true'] svg {
     transform: rotate(180deg);
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
 }
+
 .downloadArrow svg {
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
+    color: var(--content-secondary-brand-bold, #f5f7f9);
 }

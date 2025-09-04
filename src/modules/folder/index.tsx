@@ -330,7 +330,7 @@ export function Folder({
                         )}
                         {showFilesOnlyButton && (
                             <S_Button
-                                variant="main-10"
+                                variant="primary"
                                 color="secondary"
                                 onClick={() => setShowFilesOnly(!showFilesOnly)}
                             >

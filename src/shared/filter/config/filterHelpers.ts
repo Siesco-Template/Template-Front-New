@@ -131,7 +131,7 @@ export const applyFiltersToUrl = (
     const newFilterData: any = { filter: validFilters, skip, take, sort };
 
     const currentHash = window.location.hash || '';
-    const base = currentHash.split('?')[0]; // mövcud route hissəsi (#/table)
+    const base = currentHash.split('?')[0];
     const nextHash = `${base}?filterData=${JSON.stringify(newFilterData)}`;
 
     if (currentHash === nextHash) return false;

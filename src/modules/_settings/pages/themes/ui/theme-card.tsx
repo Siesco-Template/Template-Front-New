@@ -1,18 +1,13 @@
 import { FC, MouseEvent } from 'react';
 
-import {
-    CustomThemeBackground,
-    DarkThemeBackground,
-    EditIcon,
-    LightThemeBackground,
-    SystemThemeBackground,
-    TrashIcon,
-} from '@/shared/icons';
+import { DarkThemeBackground, EditIcon, LightThemeBackground, TrashIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';
 
 import { Theme } from '../../../theme/theme.store';
+import CustomThemeCard from './custom/custom-theme-card';
+import SystemThemeCard from './system/system-theme';
 import styles from './themes.module.css';
 
 interface IThemeCardProps {
@@ -50,9 +45,9 @@ const ThemeCard: FC<IThemeCardProps> = ({
             case 'Dark':
                 return <DarkThemeBackground />;
             case 'Sistem':
-                return <SystemThemeBackground />;
+                return <SystemThemeCard />;
             default:
-                return <CustomThemeBackground />; // Custom theme icon
+                return <CustomThemeCard />;
         }
     };
 
@@ -70,10 +65,10 @@ const ThemeCard: FC<IThemeCardProps> = ({
                 <p>{theme.name}</p>
                 {isEditable && (
                     <div className={styles.themeCardBtns}>
-                        <S_Button isIcon variant="ghost-10" iconBtnSize="10" onClick={handleDelete}>
+                        <S_Button variant="primary" color="secondary" onClick={handleDelete}>
                             <TrashIcon />
                         </S_Button>
-                        <S_Button isIcon variant="ghost-10" iconBtnSize="10" onClick={handleEdit}>
+                        <S_Button variant="primary" color="secondary" onClick={handleEdit}>
                             <EditIcon />
                         </S_Button>
                     </div>

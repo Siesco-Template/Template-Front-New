@@ -9,7 +9,9 @@ import ConfigPanel from '@/shared/config';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
+import { PencilIcon, PencilPaperIcon, TrashIcon } from '@/shared/icons';
 import { CustomMRTColumn, Table } from '@/shared/table';
+import TableActions from '@/shared/table/table-actions';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
@@ -185,15 +187,25 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             maxSize: 36,
             Cell: ({ row }: any) => {
                 if (row.original?.isSummaryRow) return null;
-                const onClick = (action: 'edit' | 'delete' | 'block' | 'permissions' | 'resetPassword') => {
-                    // ...
-                };
                 return (
                     <div
                         data-row-actions
-                        onClick={(e) => e.stopPropagation()}
-                        onDoubleClick={(e) => e.stopPropagation()}
-                    ></div>
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                        onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                    >
+                        <TableActions
+                            edit={<PencilIcon width={14} height={14} />}
+                            delete={<TrashIcon width={14} height={14} />}
+                            onClickEdit={() => console.log('Edit', row.original)}
+                            onClickDelete={() => console.log('Delete', row.original)}
+                        />
+                    </div>
                 );
             },
         },
@@ -358,13 +370,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 actions={['create', 'exportFile']}
                 table_key="customer_table"
                 notification={isFilterApplied}
-                onClickRightBtn={()=>{}}
+                onClickRightBtn={() => {}}
             />
 
             <div className={styles.wrapper}>
                 <div
                     className={styles.tableArea}
-                    style={{ marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px' }}
+                    style={{ marginRight: (isFilterCollapsed ? 0 : 290) + (isConfigCollapsed ? 0 : 290) + 'px' }}
                 >
                     <div className={styles.tableScrollWrapper}>
                         <Table

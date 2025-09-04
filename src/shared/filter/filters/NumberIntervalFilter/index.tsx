@@ -101,7 +101,7 @@ const NumberIntervalFilter = ({
                 {label && <label className={styles.label}>{label}</label>}
                 {!readOnly && (
                     <button onClick={toggleMode} className={styles.switchButton}>
-                        <ArrowTransferIcon color="#005A9E" width={18} height={18} />
+                        <ArrowTransferIcon color="var(--content-brand)" width={18} height={18} />
                     </button>
                 )}
             </div>

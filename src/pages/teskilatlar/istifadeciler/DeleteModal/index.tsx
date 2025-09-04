@@ -4,9 +4,7 @@ import toast from 'react-hot-toast';
 import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
-
-import styles from './style.module.css';
+import Modal from '@/ui/dialog';
 
 interface Props {
     open: boolean;
@@ -34,35 +32,36 @@ export function DeleteModal({ open, onOpenChange, onSubmit, selectedUserId }: Pr
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.modalContent}>
-                <DialogHeader>
-                    <DialogTitle>Xəbərdarlıq</DialogTitle>
-                </DialogHeader>
-                <div className={styles.body}>
-                    <p>İstifadəçini silmək istədiyinizə əminsiniz?</p>
-
-                    <DialogFooter>
-                        <S_Button
-                            type="button"
-                            variant="outlined-10"
-                            onClick={() => onOpenChange(false)}
-                            disabled={false}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button
-                            type="submit"
-                            variant="main-10"
-                            disabled={isDeleting}
-                            isLaoding={isDeleting}
-                            onClick={() => handleDelete(selectedUserId || '')}
-                        >
-                            Təsdiqlə
-                        </S_Button>
-                    </DialogFooter>
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            title="Xəbərdarlıq"
+            size="xs"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={false}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        type="submit"
+                        variant="primary"
+                        color="primary"
+                        disabled={isDeleting}
+                        isLoading={isDeleting}
+                        onClick={() => handleDelete(selectedUserId || '')}
+                    >
+                        Təsdiqlə
+                    </S_Button>
                 </div>
-            </DialogContent>
-        </Dialog>
+            }
+        >
+            <p>İstifadəçini silmək istədiyinizə əminsiniz?</p>
+        </Modal>
     );
 }

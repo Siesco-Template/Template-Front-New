@@ -5,10 +5,12 @@ import toast from 'react-hot-toast';
 import { authService } from '@/modules/auth/services/auth.service';
 import { CreateUserBody, UpdateUserBody } from '@/modules/auth/services/auth.service.types';
 
+import Catalog from '@/shared/catalog';
 import { UserRole, userRoleOptions } from '@/shared/constants/enums';
 import { cls } from '@/shared/utils';
 
 import { S_Button, S_Input } from '@/ui';
+import Modal from '@/ui/dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 import S_Select_Simple from '@/ui/select/select-simple';
 
@@ -123,89 +125,118 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
             });
         }
     };
+    const roleItems = userRoleOptions.map((o) => ({
+        ...o,
+        value: typeof o.value === 'string' ? Number(o.value) : o.value,
+    }));
+    const selectedRole = watch('userRole');
+    const selectedRoleObj = roleItems.find((i) => i.value === Number(selectedRole)) || null;
 
     return (
         <>
-            <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent className={cls(styles.modalContent, isConfirmOpen ? styles.hidden : styles.visible)}>
-                    <DialogHeader>
-                        <DialogTitle>{mode === 'create' ? 'Yeni istifadəçi' : 'Düzəliş'}</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleSubmit(handleFormSubmit)}>
-                        <div className={styles.formContent}>
-                            <div className={styles.leftColumn}>
-                                <S_Input
-                                    {...register('firstName', {
-                                        required: true,
-                                    })}
-                                    label="Ad"
-                                    placeholder="Adınızı daxil edin"
-                                    errorText={errors.firstName ? 'Ad sahəsi tələb olunur' : undefined}
-                                />
+            <Modal
+                open={open}
+                onOpenChange={onOpenChange}
+                className={cls(styles.modalContent, isConfirmOpen ? styles.hidden : styles.visible)}
+                title={mode === 'create' ? 'Yeni istifadəçi' : 'Düzəliş'}
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            type="button"
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => onOpenChange(false)}
+                            disabled={false}
+                        >
+                            Ləğv et
+                        </S_Button>
+                        <S_Button
+                            type="submit"
+                            variant="primary"
+                            color="primary"
+                            disabled={isProcessing}
+                            isLoading={isProcessing}
+                        >
+                            Yadda saxla
+                        </S_Button>
+                    </div>
+                }
+            >
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
+                    <div className={styles.formContent}>
+                        <div className={styles.leftColumn}>
+                            <S_Input
+                                {...register('firstName', {
+                                    required: true,
+                                })}
+                                label="Ad"
+                                placeholder="Adınızı daxil edin"
+                                errorText={errors.firstName ? 'Ad sahəsi tələb olunur' : undefined}
+                            />
 
-                                <S_Input
-                                    {...register('phoneNumber', {
-                                        required: true,
-                                        validate: (value) => {
-                                            const isPhone = /^(?:\+\d{1,3})?\d{1,4}\d{7,10}$/i.test(value);
-                                            return isPhone || 'Düzgün format daxil edin';
-                                        },
-                                    })}
-                                    label="Əlaqə nömrəsi"
-                                    placeholder="+994 xx xxx-xx-xx"
-                                    errorText={
-                                        errors.phoneNumber
-                                            ? errors.phoneNumber.message || 'Telefon nömrəsi tələb olunur'
-                                            : undefined
-                                    }
-                                />
-                                <S_Input
-                                    {...register('email', {
-                                        required: true,
-                                        validate: (value) => {
-                                            const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-                                            return isEmail || 'Düzgün e-mail daxil edin';
-                                        },
-                                    })}
-                                    label="E-mail"
-                                    placeholder="namesurname@gmail.com"
-                                    errorText={errors.email ? errors.email.message || 'E-mail tələb olunur' : undefined}
-                                />
-                            </div>
-                            <div className={styles.rightColumn}>
-                                <S_Input
-                                    {...register('lastName', {
-                                        required: true,
-                                    })}
-                                    label="Soyad"
-                                    placeholder="Soyadınızı daxil edin"
-                                    errorText={errors.lastName ? 'Soyad sahəsi tələb olunur' : undefined}
-                                />
-                                <S_Select_Simple
-                                    items={userRoleOptions}
-                                    value={[watch('userRole').toString()]}
-                                    setSelectedItems={(value) => setValue('userRole', Number(value[0].value))}
-                                    itemsContentMinWidth={200}
-                                    label="Vəzifə"
-                                />
-                            </div>
+                            <S_Input
+                                {...register('phoneNumber', {
+                                    required: true,
+                                    validate: (value) => {
+                                        const isPhone = /^(?:\+\d{1,3})?\d{1,4}\d{7,10}$/i.test(value);
+                                        return isPhone || 'Düzgün format daxil edin';
+                                    },
+                                })}
+                                label="Əlaqə nömrəsi"
+                                placeholder="+994 xx xxx-xx-xx"
+                                errorText={
+                                    errors.phoneNumber
+                                        ? errors.phoneNumber.message || 'Telefon nömrəsi tələb olunur'
+                                        : undefined
+                                }
+                            />
+                            <S_Input
+                                {...register('email', {
+                                    required: true,
+                                    validate: (value) => {
+                                        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                                        return isEmail || 'Düzgün e-mail daxil edin';
+                                    },
+                                })}
+                                label="E-mail"
+                                placeholder="namesurname@gmail.com"
+                                errorText={errors.email ? errors.email.message || 'E-mail tələb olunur' : undefined}
+                            />
                         </div>
-                        <DialogFooter>
-                            <S_Button
-                                type="button"
-                                variant="outlined-10"
-                                onClick={() => onOpenChange(false)}
-                                disabled={false}
-                            >
-                                Ləğv et
-                            </S_Button>
-                            <S_Button type="submit" variant="main-10" disabled={isProcessing} isLaoding={isProcessing}>
-                                Yadda saxla
-                            </S_Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
+                        <div className={styles.rightColumn}>
+                            <S_Input
+                                {...register('lastName', {
+                                    required: true,
+                                })}
+                                label="Soyad"
+                                placeholder="Soyadınızı daxil edin"
+                                errorText={errors.lastName ? 'Soyad sahəsi tələb olunur' : undefined}
+                            />
+                            <Catalog
+                                key="userRole"
+                                items={roleItems}
+                                getLabel={(i: any) => i?.label}
+                                getRowId={(i: any) => String(i?.value)}
+                                value={selectedRoleObj ? [selectedRoleObj] : []}
+                                onChange={(sel) => {
+                                    const picked = Array.isArray(sel) ? sel[0] : sel;
+                                    const newVal = picked ? Number((picked as any).value) : '';
+                                    setValue('userRole', Number(newVal), { shouldDirty: true, shouldValidate: true });
+                                }}
+                                multiple={false}
+                                enableModal={false}
+                                sizePreset="md-lg"
+                                totalItemCount={roleItems.length}
+                                onRefetch={undefined}
+                                onClickNew={undefined}
+                                isLoading={false}
+                                label="Vəzifə"
+                                showMoreColumns={[]}
+                            />
+                        </div>
+                    </div>
+                </form>
+            </Modal>
             {isConfirmOpen && (
                 <ConfirmModal
                     open={isConfirmOpen}

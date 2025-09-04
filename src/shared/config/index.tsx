@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { flushSync } from 'react-dom';
-import toast from 'react-hot-toast';
 
 import { configService } from '@/services/configuration/configuration.service';
 
 import { S_Button } from '@/ui';
+import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import { FloppyDiskIcon, PlusIcon, RedoIcon } from '../icons';
 import { useTableConfig } from '../table/tableConfigContext';
 import HeaderConfigSection from './basliq';
-import { RefreshIcon, TickIcon } from './icons';
-import { ConfirmModal } from './modal/confirm/ConfirmModal';
 import RowConfigSection from './setir';
 import styles from './style.module.css';
 import ColumnConfigSection from './sutun';
@@ -73,11 +71,13 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 await new Promise((resolve) => setTimeout(resolve, delay));
             }
 
-            toast.success('Konfiqurasiya uğurla tətbiq olundu');
+            showToast({
+                label: 'Konfiqurasiya uğurla tətbiq olundu',
+                type: 'success',
+            });
             await loadConfigFromApi();
         } catch (error) {
             console.error('Config göndərilərkən xəta:', error);
-            toast.error('Xəta baş verdi!');
         } finally {
             setIsSaving(false);
         }
@@ -94,7 +94,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 >
                     <span>{label}</span>
                     <button className={isOpen ? styles.rotate : ''}>
-                        <PlusIcon width={18} height={18} color="#3D4C5E" />
+                        <PlusIcon width={18} height={18} color="var(--content-primary)" />
                     </button>
                 </div>
                 <div className={`${styles.sectionBody} ${!isOpen ? styles.hidden : ''}`}>
@@ -113,7 +113,10 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
             setIsResetting(true);
             await configService.resetConfig(table_key);
 
-            toast.success('Konfiqurasiya uğurla sıfırlandı');
+            showToast({
+                label: 'Konfiqurasiya uğurla sıfırlandı',
+                type: 'success',
+            });
             loadConfigFromApi();
         } catch (error) {
             console.error('Sıfırlama zamanı xəta:', error);
@@ -131,21 +134,28 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                     <div className={styles.btns}>
                         <S_Button
                             variant="primary"
-                            color="primary"
+                            color="secondary"
                             aria-label="Sıfırla"
+                            isLoading={isResetting}
                             onClick={() => setIsConfirmResetOpen(true)}
                         >
                             {isResetting ? (
                                 <span className={styles.spinner} />
                             ) : (
-                                <RedoIcon color="hsl(var(--clr-primary-500))" width={16} height={16} />
+                                <RedoIcon color="var(--clr-content-secondary-bold)" width={16} height={16} />
                             )}
                         </S_Button>
-                        <S_Button variant="primary" color="primary" aria-label="Təsdiqlə" onClick={handleSave}>
+                        <S_Button
+                            variant="primary"
+                            color="primary"
+                            aria-label="Təsdiqlə"
+                            isLoading={isSaving}
+                            onClick={handleSave}
+                        >
                             {isSaving ? (
                                 <span className={styles.spinner} />
                             ) : (
-                                <FloppyDiskIcon color="#fff" width={16} height={16} />
+                                <FloppyDiskIcon color="var(--clr-content-brand-light)" width={16} height={16} />
                             )}
                         </S_Button>
                     </div>
@@ -170,13 +180,30 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 )}
             </div>
 
-            <ConfirmModal
+            <Modal
                 open={isConfirmResetOpen}
                 onOpenChange={setIsConfirmResetOpen}
-                onSubmit={doResetConfig}
-                email=""
-                isLoading={isResetting}
-            />
+                size="xs"
+                title="Xəbərdarlıq"
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            tabIndex={1}
+                            type="button"
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => setIsConfirmResetOpen(false)}
+                        >
+                            Ləğv et
+                        </S_Button>
+                        <S_Button tabIndex={2} type="button" variant="primary" color="primary" onClick={doResetConfig}>
+                            Təsdiqlə
+                        </S_Button>
+                    </div>
+                }
+            >
+                <h1 className={styles.title}>Konfiqurasiyanı sıfırlamaq istədiyinizdən əminsiniz mi?</h1>
+            </Modal>
         </div>
     );
 };

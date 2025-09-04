@@ -18,15 +18,15 @@ const FilterHeader: React.FC<Props> = ({ onSortClick, sortMode, onSaveSort, onSa
                 <div className={styles.filterHeaderButtons}>
                     <S_Button onClick={onSortClick} color="secondary" variant="primary">
                         {sortMode ? (
-                            <TickIcon width={16} height={16} color="var(--background-secondary-brand, #ECEDEE)" />
+                            <TickIcon width={16} height={16} color="var(--content-secondary-brand-bold)" />
                         ) : (
-                            <SortCircle width={16} height={16} color="var(--background-secondary-brand, #ECEDEE)" />
+                            <SortCircle width={16} height={16} color="var(--content-secondary-brand-bold)" />
                         )}
                     </S_Button>
 
                     {!sortMode && (
-                        <S_Button color="secondary" variant="primary" onClick={onSaveFilters} disabled={disableSave}>
-                            <DiskIcon width={16} height={16} color="var(--background-secondary-brand, #ECEDEE)" />
+                        <S_Button color="primary" variant="primary" onClick={onSaveFilters} disabled={disableSave}>
+                            <DiskIcon width={16} height={16} color="var(--clr-content-brand-light)" />
                         </S_Button>
                     )}
                 </div>

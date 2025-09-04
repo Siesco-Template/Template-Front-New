@@ -42,9 +42,8 @@ const SortableItem: React.FC<{
             className={`${styles.savedFilterRow} ${isDragging ? styles.draggingItem : ''}`}
             style={style}
         >
-            {/* Drag handle yalnız ikon zonası olsun */}
             <div className={styles.dragIcon} {...attributes} {...listeners}>
-                <DragIcon color="#546881" />
+                <DragIcon color="var(--content-tertiary)" />
                 <span
                     dangerouslySetInnerHTML={{
                         __html: highlightMatch(String(item.label ?? item.column), searchText),
@@ -58,9 +57,9 @@ const SortableItem: React.FC<{
                 onClick={() => onToggleVisibility(item.key)}
             >
                 {item.visible !== false ? (
-                    <EyeIcon color="#909DAD" width={18} height={18} />
+                    <EyeIcon color="var(--content-brand)" width={18} height={18} />
                 ) : (
-                    <EyeOffIcon color="#909DAD" width={18} height={18} />
+                    <EyeOffIcon color="var(--content-brand)" width={18} height={18} />
                 )}
             </div>
         </div>

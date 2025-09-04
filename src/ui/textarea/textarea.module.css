@@ -24,6 +24,7 @@
     font-style: normal;
     font-weight: 600;
     line-height: var(--lh-14);
+    margin-bottom: 4px;
 }
 
 .labelInfo {
@@ -43,6 +44,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-16);
+    margin-bottom: 4px;
 }
 
 .fieldWrapper {
@@ -53,16 +55,13 @@
     width: 100%;
     border: 1px solid transparent;
     outline: none;
-
     border-radius: var(--br-3xl);
-    background: var(--background-tertiary);
+    background: var(--background-primary, #fff);
     transition: all 0.3s ease;
+    border: 1px solid var(--border-tertiary, #ccc);
 
-    font-size: var(--fs-200);
-    padding: 10px var(--pm-400);
-
-    padding-right: calc(var(--pm-400) + 22px);
-    padding-bottom: calc(10px + 12px);
+    font-size: var(--fs-14);
+    padding: 10px 10px;
 }
 
 .textareaField[data-height='100'] {

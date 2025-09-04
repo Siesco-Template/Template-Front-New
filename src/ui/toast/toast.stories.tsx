@@ -12,40 +12,66 @@ const meta: Meta<typeof S_Toast> = {
         layout: 'centered',
     },
     argTypes: {
+        visibleToasts: {
+            control: { type: 'number' },
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 3 },
+                category: 'Toaster Props',
+                description: 'Eyni anda maksimum neçə toast görünə bilər. Yeni toast gəldikcə köhnələr sıradan silinir.',
+            },
+        },
+        position: {
+            control: { type: 'select' },
+            options: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'top-right' },
+                category: 'Toaster Props',
+                description: 'Toast-ların ekranda harada çıxacağını təyin edir.',
+            },
+        },
+        expand: {
+            control: 'boolean',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+                category: 'Toaster Props',
+                description: 'Eyni tip toast-lar birləşdirilərək genişləndirilmiş şəkildə göstərilsinmi.',
+            },
+        },
+        duration: {
+            control: { type: 'number' },
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 3000 },
+                category: 'Toaster Props',
+                description: 'Toast-un neçə millisekund ekranda qalacağını təyin edir.',
+            },
+        },
         label: {
             control: 'text',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '-' },
+                category: 'Toast Content',
+                description: 'Toast içində əsas başlıq/mesaj.',
             },
         },
         description: {
             control: 'text',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '-' },
+                category: 'Toast Content',
+                description: 'Başlığın altında əlavə məlumat olaraq görünən alt yazı.',
             },
         },
         type: {
-            control: 'radio',
+            control: 'select',
             options: ['success', 'error', 'warning', 'info'],
             table: {
-                type: { summary: `'success' | 'error' | 'warning' | 'info'` },
-                defaultValue: { summary: 'info' },
-            },
-        },
-        icon: {
-            control: false,
-            table: {
-                type: { summary: 'ReactNode' },
-                defaultValue: { summary: 'default icon' },
-            },
-        },
-        duration: {
-            control: 'number',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 3000 },
+                type: { summary: 'success | error | warning | info' },
+                category: 'Toast Content',
+                description: 'Toast-un tipi. Rəng və ikon buna görə dəyişir.',
             },
         },
     },
@@ -57,8 +83,12 @@ type Story = StoryObj<typeof S_Toast>;
 export const Default: Story = {
     args: {
         label: 'This is a toast message',
+        description: 'Extra description',
         type: 'info',
         duration: 3000,
+        visibleToasts: 3,
+        position: 'top-right',
+        expand: false,
     },
     render: (args: any) => {
         return (
@@ -73,7 +103,14 @@ export const Default: Story = {
                     gap: 16,
                 }}
             >
-                <S_Toast />
+                <S_Toast
+                    position={args.position}
+                    closeButton={args.closeButton}
+                    expand={args.expand}
+                    duration={args.duration}
+                    visibleToasts={args.visibleToasts}
+                />
+
                 <S_Button
                     children="Show Toast"
                     onClick={() =>
@@ -88,76 +125,4 @@ export const Default: Story = {
             </div>
         );
     },
-};
-
-export const Success: Story = {
-    args: {
-        label: 'Success!',
-        type: 'success',
-        duration: 3000,
-    },
-    render: (args: any) => (
-        <div style={{ width: 600, height: 300 }}>
-            <S_Toast />
-            <S_Button
-                onClick={() =>
-                    showToast({
-                        label: args.label,
-                        type: 'success',
-                        duration: args.duration,
-                    })
-                }
-            >
-                Show Success Toast
-            </S_Button>
-        </div>
-    ),
-};
-
-export const Warning: Story = {
-    args: {
-        label: 'Warning!',
-        type: 'warning',
-        duration: 3000,
-    },
-    render: (args: any) => (
-        <div style={{ width: 600, height: 300 }}>
-            <S_Toast />
-            <S_Button
-                onClick={() =>
-                    showToast({
-                        label: args.label,
-                        type: 'warning',
-                        duration: args.duration,
-                    })
-                }
-            >
-                Show Warning Toast
-            </S_Button>
-        </div>
-    ),
-};
-
-export const Error: Story = {
-    args: {
-        label: 'Error!',
-        type: 'error',
-        duration: 3000,
-    },
-    render: (args: any) => (
-        <div style={{ width: 600, height: 300 }}>
-            <S_Toast />
-            <S_Button
-                onClick={() =>
-                    showToast({
-                        label: args.label,
-                        type: 'error',
-                        duration: args.duration,
-                    })
-                }
-            >
-                Show Error Toast
-            </S_Button>
-        </div>
-    ),
 };

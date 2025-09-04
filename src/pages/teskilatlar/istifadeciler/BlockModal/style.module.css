@@ -6,5 +6,5 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: var(--pm-500);
+    gap: 10px;
 }

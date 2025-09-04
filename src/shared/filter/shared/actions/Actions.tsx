@@ -4,7 +4,8 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 import { filterService } from '@/services/filter/filter.service';
 
-import { clearUrlParams, toUrlFilterData } from '../../config/filterHelpers';
+import { showToast } from '@/ui/toast/showToast';
+
 import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon } from '../icons';
 import styles from './style.module.css';
 
@@ -62,10 +63,9 @@ const ActionsDropdown = ({
 
         try {
             await filterService.setDefaultFilter(filter.id);
-            toast.success('Varsayılan filter uğurla təyin edildi');
+            showToast({ label: 'Varsayılan filter uğurla təyin edildi', type: 'success' });
         } catch (e) {
             console.error(e);
-            toast.error('Varsayılan filter serverdə saxlanmadı');
         }
     };
 
@@ -74,7 +74,7 @@ const ActionsDropdown = ({
             filterService
                 .removeDefaultFilter(filter.id)
                 .then((response) => {
-                    toast.success('Varsayılan filter uğurla sıfırlandı');
+                    showToast({ label: 'Varsayılan filter uğurla sıfırlandı', type: 'success' });
                     onToggle(null);
 
                     setSavedFilters((prevFilters: any) =>
@@ -103,22 +103,22 @@ const ActionsDropdown = ({
             {isOpen && (
                 <ul className={styles.dropdownMenu}>
                     <li onClick={onView} className={styles.dropdownItem}>
-                        <EyeIcon /> Bax
+                        <EyeIcon color="var(--content-tertiary)" /> Bax
                     </li>
                     <li onClick={onEdit} className={styles.dropdownItem}>
-                        <EditIcon /> Düzəliş et
+                        <EditIcon color="var(--content-tertiary)" /> Düzəliş et
                     </li>
                     <li onClick={onDelete} className={styles.dropdownItem}>
-                        <TrashIcon /> Sil
+                        <TrashIcon color="var(--content-tertiary)" /> Sil
                     </li>
                     <li onClick={handleDefaultToggle} className={styles.dropdownItem}>
                         {filter.isDefault ? (
                             <>
-                                <ReloadIcon /> Varsayılanı sıfırla
+                                <ReloadIcon color="var(--content-tertiary)" /> Varsayılanı sıfırla
                             </>
                         ) : (
                             <>
-                                <CopyCheckIcon /> Varsayılan et
+                                <CopyCheckIcon color="var(--content-tertiary)" /> Varsayılan et
                             </>
                         )}
                     </li>

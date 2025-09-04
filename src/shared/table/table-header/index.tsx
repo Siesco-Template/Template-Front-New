@@ -129,7 +129,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                             onClickExport?.();
                         }}
                     >
-                        <XlsIcon width={14} height={14} color="var(--content-secondary-brand-bold)" /> Endir
+                        <XlsIcon width={14} height={14} /> Endir
                     </button>
 
                     <button
@@ -138,7 +138,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                         aria-expanded={open}
                         onClick={() => setOpen(!open)}
                     >
-                        <DownIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
+                        <DownIcon width={14} height={14} />
                     </button>
 
                     {open && (
@@ -198,12 +198,12 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                     page && actions?.includes('create') ? (
                         <PermissionGuard permissionKey={`${page}/create`}>
                             <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
-                                <NewItemIcon color="#fff" /> Yeni
+                                <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
                             </S_Button>
                         </PermissionGuard>
                     ) : (
                         <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
-                            <NewItemIcon color="#fff" /> Yeni
+                            <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
                         </S_Button>
                     )
                 ) : null}

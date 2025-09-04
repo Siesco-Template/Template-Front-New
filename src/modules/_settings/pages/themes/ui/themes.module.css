@@ -1,7 +1,7 @@
 .cardContainer {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: var(--pm-200);
+    gap: 16px;
 }
 
 @media (max-width: 1700px) {
@@ -31,23 +31,24 @@
 }
 
 .themeCardWrapper {
-    transition: all var(--animation);
+    transition: all 0.3s ease;
     position: relative;
     display: flex;
     width: 189.2px;
-    padding: var(--pm-500);
+    padding: 12px;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: var(--pm-500);
-    border-radius: var(--r-300);
-    border: var(--wh-25) solid #fff;
-    background: hsl(var(--clr-white-800));
+    gap: 12px;
+
+    border-radius: var(--br-2xl);
+    border: 2px solid var(--border-inverse, #fff);
+    background: var(--background-secondary-brand, #ecedee);
     cursor: pointer;
 }
 
 .themeCardWrapper.selected {
-    border-color: hsl(var(--clr-primary-500));
+    border: 2px solid var(--border-brand, #0d3caf);
 }
 
 .themeCardWrapper.disabled {
@@ -64,17 +65,22 @@
 }
 
 .themeCardFooter p {
-    color: hsl(var(--clr-primary-900)) !important;
-    margin: 0;
-    font-size: var(--fs-50);
+    color: var(--content-primary, #1a1a1a);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+    /* 12/Medium */
+    font-family: Poppins;
+    font-size: var(--fs-12, 12px);
     font-style: normal;
-    font-weight: 500 !important;
-    line-height: normal;
+    font-weight: 500;
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .themeCardBtns {
     display: flex;
-    gap: var(--pm-50);
+    gap: 4px;
     align-items: center;
     z-index: 2;
 }

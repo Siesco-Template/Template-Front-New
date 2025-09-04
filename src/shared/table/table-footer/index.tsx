@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
+import Catalog from '@/shared/catalog';
+
 import S_Select_Simple from '@/ui/select/select-simple';
 
 import { LeftIcon, RightIcon } from '../icons';
@@ -136,9 +138,8 @@ const Table_Footer: React.FC<TableFooterProps> = ({
         <div className={styles.paginationWrapper}>
             <div className={styles.leftSide}>
                 <span className={styles.label}>Səhifədə göstər:</span>
-                <div style={{ width: '70px' }}>
-                    <S_Select_Simple
-                        value={[pageSize === -1 ? 'infinite' : pageSize.toString()]}
+                <div style={{ width: '90px' }}>
+                    <Catalog
                         items={[
                             { label: '10', value: '10' },
                             { label: '20', value: '20' },
@@ -146,8 +147,18 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                             { label: '100', value: '100' },
                             { label: 'Auto', value: 'infinite' },
                         ]}
-                        setSelectedItems={(items: any) => {
-                            const val = items[0].value;
+                        getLabel={(i) => i.label}
+                        getRowId={(i) => i.value}
+                        value={[
+                            {
+                                label: pageSize === -1 ? 'Auto' : pageSize.toString(),
+                                value: pageSize === -1 ? 'infinite' : pageSize.toString(),
+                            },
+                        ]}
+                        onChange={(sel) => {
+                            const picked = Array.isArray(sel) ? sel[0] : sel;
+                            const val: any = picked?.value;
+
                             if (val === 'infinite') {
                                 hasUserChanged.current = true;
                                 setPageSize(-1);
@@ -166,6 +177,13 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                                 handlePageSizeChange(parsed);
                             }
                         }}
+                        multiple={false}
+                        enableModal={false}
+                        sizePreset="md-lg"
+                        totalItemCount={5}
+                        isLoading={false}
+                        searchItems={false}
+                        clearable={false}
                     />
                 </div>
             </div>
@@ -173,7 +191,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
             {!isInfiniteScroll && totalPages > 1 && (
                 <div className={styles.centerSide}>
                     <button onClick={handlePrev} className={styles.iconBtn} disabled={currentPage === 0}>
-                        <LeftIcon width={16} height={16} color="#5E6C79" />
+                        <LeftIcon width={16} height={16} color="var(--content-secondary)" />
                     </button>
 
                     {getPageNumbers().map((page, idx) =>
@@ -196,7 +214,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                     )}
 
                     <button onClick={handleNext} className={styles.iconBtn} disabled={currentPage >= totalPages - 1}>
-                        <RightIcon width={16} height={16} color="#5E6C79" />
+                        <RightIcon width={16} height={16} color="var(--content-secondary)" />
                     </button>
                 </div>
             )}

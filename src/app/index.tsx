@@ -4,6 +4,8 @@ import { useAuthStore } from '@/store/authStore';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import S_Toast from '@/ui/toast/S_Toast';
+
 import './globals.css';
 import './helper-styles.css';
 import Providers from './providers';
@@ -22,6 +24,7 @@ const App = () => {
 
     return (
         <Providers>
+            <S_Toast expand={true} visibleToasts={4} position="top-right" />
             <AppInitializer config={config} />
             <Routing />
         </Providers>

@@ -2,7 +2,7 @@ import { Checkbox, Dropdown } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { flushSync } from 'react-dom';
 
-import { S_Button, S_Input } from '@/ui';
+import { S_Button, S_Checkbox, S_Input } from '@/ui';
 
 import { FloppyDiskIcon } from '../icons';
 import { VisibilityIcon } from './icons';
@@ -84,13 +84,11 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                             placeholder="Axtar"
                             value={searchTerm ?? ''}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            inputSize="small"
+                            size="36"
                         />
                         <S_Button
-                            variant="main-20"
                             color="primary"
-                            isIcon
-                            iconBtnSize="15"
+                            variant="primary"
                             aria-label="Təsdiq et"
                             onClick={(e) => {
                                 e.preventDefault();
@@ -99,12 +97,12 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                             }}
                             disabled={!hasAnyVisibleSelected}
                         >
-                            <FloppyDiskIcon />
+                            <FloppyDiskIcon color="var(--clr-content-brand-light)" />
                         </S_Button>
                     </div>
                     <ul className={styles.visibilityColumns}>
                         <li className={styles.visibilityDropdownItem} onClick={toggleAll}>
-                            <Checkbox indeterminate={isIndeterminate} checked={isAllChecked} />
+                            <S_Checkbox indeterminate={isIndeterminate} checked={isAllChecked} />
                             <span style={{ marginLeft: 8 }}>Hamısını göstər</span>
                         </li>
                         {visibleColumns.map((column) => (
@@ -118,7 +116,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                                     }))
                                 }
                             >
-                                <Checkbox checked={localVisibility[column.accessorKey]} />
+                                <S_Checkbox checked={localVisibility[column.accessorKey]} />
                                 <span style={{ marginLeft: 8 }}>{column.header}</span>
                             </li>
                         ))}
@@ -126,9 +124,11 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                 </div>
             )}
         >
-            <S_Button variant="primary" color="secondary" aria-label="Görünürlük">
-                <VisibilityIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
-            </S_Button>
+            <span>
+                <S_Button variant="primary" color="secondary">
+                    <VisibilityIcon width={14} height={14} color="hsl(var(--clr-primary-900))" />
+                </S_Button>
+            </span>
         </Dropdown>
     );
 };

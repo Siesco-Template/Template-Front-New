@@ -41,23 +41,23 @@ export default function SortableItem({ item, level = 0, onToggleVisible, contain
         >
             <div className="flex items-center gap-2">
                 <span {...listeners} role="button" tabIndex={0} aria-label="Drag handle">
-                    <DragIcon width={16} height={16} color="hsl(var(--clr-grey-300))" />
+                    <DragIcon width={16} height={16} color="var(--content-tertiary)" />
                 </span>
                 <span className={cls(styles.label, labelClassName)}>{item.title}</span>
             </div>
 
             {item.show ? (
-                <EyeSlashIcon
-                    width={15}
-                    height={15}
-                    color="hsl(var(--clr-primary-500))"
-                    onClick={() => item.id && onToggleVisible(item.id)}
-                />
-            ) : (
                 <EyeIcon
                     width={15}
                     height={15}
-                    color="hsl(var(--clr-primary-500))"
+                    color="var(--content-brand)"
+                    onClick={() => item.id && onToggleVisible(item.id)}
+                />
+            ) : (
+                <EyeSlashIcon
+                    width={15}
+                    height={15}
+                    color="var(--content-brand)"
                     onClick={() => item.id && onToggleVisible(item.id)}
                 />
             )}

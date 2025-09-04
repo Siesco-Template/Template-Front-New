@@ -6,15 +6,17 @@
 }
 
 .label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: hsl(var(--clr-grey-700));
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .valueText {
     font-size: 0.875rem;
     font-weight: 500;
-    color: hsl(var(--clr-grey-500));
+    color: hsl(218, 11%, 50%);
     min-width: 2rem;
     text-align: right;
 }
@@ -23,10 +25,6 @@
     width: 100%;
     touch-action: none;
     -webkit-tap-highlight-color: transparent;
-    --track-height: 4px;
-    --thumb-size: var(--wh-200);
-    --marker-dot-size: calc(var(--track-height) * 0.75);
-    --marker-dot-position: calc((var(--thumb-size) / 2) + (var(--track-height) / 2) + 7px);
 }
 
 .control {
@@ -36,206 +34,42 @@
     height: 28px;
 }
 
-/* Track Styles */
 .track {
-    height: 4px;
+    height: 6px;
     width: 100%;
     border-radius: 999px;
-    background-color: hsl(var(--clr-grey-200));
+    background: var(--background-selected, #e7eefd);
     cursor: pointer;
     overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* Track background colors - should be lighter than the range */
-.track-primary {
-    background-color: hsl(var(--clr-primary-100));
-}
-
-.track-secondary {
-    background-color: hsl(var(--clr-secondary-100));
-}
-
-.track-red {
-    background-color: hsl(var(--clr-red-100));
-}
-
-.track-green {
-    background-color: hsl(var(--clr-green-100));
-}
-
-/* Range Styles */
 .range {
     height: 100%;
     border-radius: 999px;
+    background-color: var(--background-brand);
+    pointer-events: none;
 }
 
-/* Range colors - should be darker for better contrast */
-.range-primary {
-    background-color: hsl(var(--clr-primary-500));
-}
-
-.range-secondary {
-    background-color: hsl(var(--clr-secondary-500));
-}
-
-.range-red {
-    background-color: hsl(var(--clr-red-500));
-}
-
-.range-green {
-    background-color: hsl(var(--clr-green-500));
-}
-
-/* Thumb Styles */
 .thumb {
-    /* all: unset; */
-    background-color: white;
-    box-shadow:
-        0 1px 3px 0 rgba(0, 0, 0, 0.1),
-        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    background-color: var(--background-brand);
     border-radius: 999px;
     cursor: grab;
     transition:
-        transform var(--animation),
-        box-shadow var(--animation);
-    z-index: 1;
-    border-width: 2px;
-    border-style: solid;
-}
-
-.thumb:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-    box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.thumb:focus-visible {
-    box-shadow: 0 0 0 3px hsl(var(--clr-primary-200, 214 95% 85%));
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    z-index: 3;
+    border: none;
+    width: 14px;
+    height: 14px;
+    pointer-events: auto;
     outline: none;
 }
 
-.thumb-primary {
-    border-color: hsl(var(--clr-primary-500, 217 91% 60%));
-}
-
-.thumb-primary:focus-visible {
-    box-shadow: 0 0 0 3px hsl(var(--clr-primary-200, 214 95% 85%));
-}
-
-.thumb-secondary {
-    border-color: hsl(var(--clr-secondary-500, 270 95% 65%));
-}
-
-.thumb-secondary:focus-visible {
-    box-shadow: 0 0 0 3px hsl(var(--clr-secondary-200, 214 95% 85%));
-}
-
-.thumb-red {
-    border-color: hsl(var(--clr-red-500, 0 84% 60%));
-}
-
-.thumb-red:focus-visible {
-    box-shadow: 0 0 0 3px hsl(var(--clr-red-200, 214 95% 85%));
-}
-
-.thumb-green {
-    border-color: hsl(var(--clr-green-500, 142 71% 45%));
-}
-
-.thumb-green:focus-visible {
-    box-shadow: 0 0 0 3px hsl(var(--clr-green-200, 214 95% 85%));
-}
-
-.thumb-disabled {
-    cursor: not-allowed;
-    border-color: hsl(var(--clr-grey-400));
-    background-color: hsl(var(--clr-grey-100));
-}
-
-/* Size Variants */
-.size-10 {
-    --track-height: 4px;
-    --thumb-size: var(--wh-100);
-}
-
-.size-15 {
-    --track-height: 6px;
-    --thumb-size: var(--wh-150);
-}
-
-.size-20 {
-    --track-height: 8px;
-    --thumb-size: var(--wh-200);
-}
-
-.size-30 {
-    --track-height: 10px;
-    --thumb-size: var(--wh-250);
-}
-
-/* Update track heights to use the variable */
-.size-10 .track {
-    height: var(--track-height);
-}
-
-.size-15 .track {
-    height: var(--track-height);
-}
-
-.size-20 .track {
-    height: var(--track-height);
-}
-
-.size-30 .track {
-    height: var(--track-height);
-}
-
-/* Update thumb sizes to use the variable */
-.size-10 .thumb {
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-}
-
-.size-15 .thumb {
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-}
-
-.size-20 .thumb {
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-}
-
-.size-30 .thumb {
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-}
-
-/* Disabled State */
-.slider[data-disabled] {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-.slider[data-disabled] .track {
-    cursor: not-allowed;
-    background-color: hsl(var(--clr-grey-200));
-}
-
-.slider[data-disabled] .range {
-    background-color: hsl(var(--clr-grey-400));
-}
-
-.slider[data-disabled] .thumb {
-    cursor: not-allowed;
-    border-color: hsl(var(--clr-grey-400));
-    background-color: hsl(var(--clr-grey-100));
-}
-
-.marker {
+/* .marker {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: red;
 }
 
 .marker::before {
@@ -246,8 +80,8 @@
     border-radius: 50%;
     z-index: 2;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-    width: var(--marker-dot-size);
-    height: var(--marker-dot-size);
+    width: 20px;
+    height: 20px;
     top: -14px;
     transform: translate(-50%, -50%);
-}
+} */

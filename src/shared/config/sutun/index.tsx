@@ -20,6 +20,9 @@ import { useTableContext } from '@/shared/table/table-context';
 import { useTableOrdering } from '@/shared/table/table-ordering';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import { S_Button } from '@/ui';
+import Modal from '@/ui/dialog';
+
 import BottomModal from '../modal/bottomModal';
 import styles from '../style.module.css';
 
@@ -141,7 +144,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={tableConfig.italic ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <ItalicIcon width={18} height={18} color="#28303F" />
+                        <ItalicIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
 
                     <button
@@ -155,7 +158,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.bold ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <BoldIcon width={18} height={18} color="#28303F" />
+                        <BoldIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                 </div>
             </div>
@@ -176,7 +179,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.alignment === 'left' ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <AlignLeftIcon width={18} height={18} color="#28303F" />
+                        <AlignLeftIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                     <button
                         onClick={() => {
@@ -191,7 +194,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.alignment === 'center' ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <AlignCenterIcon width={18} height={18} color="#28303F" />
+                        <AlignCenterIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                     <button
                         onClick={() => {
@@ -206,7 +209,7 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                         className={styleConfig.alignment === 'right' ? styles.isActive : ''}
                         disabled={isDisabled}
                     >
-                        <AlignRightIcon width={18} height={18} color="#28303F" />
+                        <AlignRightIcon width={18} height={18} color="var(--content-secondary)" />
                     </button>
                 </div>
             </div>
@@ -230,28 +233,30 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
 
             <div className={styles.configRow}>
                 <label>Sıralamanı dəyiş</label>
-                <button
-                    className={styles.actionButton}
+                <S_Button
+                    color="secondary"
+                    variant="primary"
                     onClick={() => {
                         setModalType('order');
                         setIsModalOpen(true);
                     }}
                 >
                     Tənzimlə
-                </button>
+                </S_Button>
             </div>
 
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Ölçüləri dəyiş</label>
-                <button
-                    className={styles.actionButton}
+                <S_Button
+                    color="secondary"
+                    variant="primary"
                     onClick={() => {
                         setModalType('resize');
                         setIsModalOpen(true);
                     }}
                 >
                     Tənzimlə
-                </button>
+                </S_Button>
             </div>
 
             {isRowSum && <div className={styles.sectionSubHeader}>Cəmləmə sətri</div>}
@@ -264,66 +269,71 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
                             onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'hidden')}
                             className={currentSummary === 'hidden' ? styles.isActive : ''}
                         >
-                            <ViewOffIcon width={18} height={18} color="#28303F" />
+                            <ViewOffIcon width={18} height={18} color="var(--content-secondary)" />
                         </button>
                         <button
                             onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'bottom')}
                             className={currentSummary === 'bottom' ? styles.isActive : ''}
                         >
-                            <AlignBottomIcon width={18} height={18} color="#28303F" />
+                            <AlignBottomIcon width={18} height={18} color="var(--content-secondary)" />
                         </button>
                         <button
                             onClick={() => updateConfig(tableKey, `columns.summaryRow.mode`, 'top')}
                             className={currentSummary === 'top' ? styles.isActive : ''}
                         >
-                            <AlignTopIcon width={18} height={18} color="#28303F" />
+                            <AlignTopIcon width={18} height={18} color="var(--content-secondary)" />
                         </button>
                     </div>
                 </div>
             )}
 
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <PanelDialog open={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
-                    <PanelDialogContent style={paperStyle}>
-                        {modalType && (
-                            <>
-                                <div className={styles.header}>
-                                    <h3 className={styles.title}>Ümumi reyestr</h3>
-
-                                    <div className={styles.modalBtnGroup}>
-                                        <button
-                                            onClick={async () => {
-                                                try {
-                                                    setIsSaving(true);
-                                                    await modalTypeConfigs[modalType].onSave();
-                                                } finally {
-                                                    setIsSaving(false);
-                                                    setIsModalOpen(false);
-                                                }
-                                            }}
-                                            className={styles.saveBtn}
-                                            disabled={isSaving}
-                                        >
-                                            {isSaving ? <span className={styles.spinner} /> : 'Yadda saxla'}
-                                        </button>
-                                        <button onClick={() => setIsModalOpen(false)} className={styles.cancelBtn}>
-                                            Ləğv et
-                                        </button>
-                                    </div>
-                                </div>
-                                <div style={{ height: '90vh', paddingBottom: '20px' }}>
-                                    <Table
-                                        columns={modalTableColumns}
-                                        data={modalTableData}
-                                        tableKey={tableKey}
-                                        {...modalTypeConfigs[modalType].tableProps}
-                                    />
-                                </div>
-                            </>
-                        )}
-                    </PanelDialogContent>
-                </PanelDialog>
-            </div>
+            <Modal
+                open={isModalOpen}
+                onOpenChange={() => setIsModalOpen(false)}
+                size="xl"
+                title="Ümumi reyestr"
+                footer={
+                    <>
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                            <S_Button
+                                variant="primary"
+                                color="primary"
+                                onClick={async () => {
+                                    try {
+                                        setIsSaving(true);
+                                        await modalTypeConfigs[modalType].onSave();
+                                    } finally {
+                                        setIsSaving(false);
+                                        setIsModalOpen(false);
+                                    }
+                                }}
+                                disabled={isSaving}
+                            >
+                                {isSaving ? <span className={styles.spinner} /> : 'Yadda saxla'}
+                            </S_Button>
+                            <S_Button
+                                variant="primary"
+                                color="secondary"
+                                onClick={() => setIsModalOpen(false)}
+                                className={styles.cancelBtn}
+                            >
+                                Ləğv et
+                            </S_Button>
+                        </div>
+                    </>
+                }
+            >
+                {modalType && (
+                    <>
+                        <Table
+                            columns={modalTableColumns}
+                            data={modalTableData}
+                            tableKey={tableKey}
+                            {...modalTypeConfigs[modalType].tableProps}
+                        />
+                    </>
+                )}
+            </Modal>
         </>
     );
 };

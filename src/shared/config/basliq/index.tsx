@@ -13,6 +13,8 @@ import {
 } from '@/shared/config/icons';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import { S_Checkbox, S_Switch } from '@/ui';
+
 import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
 
@@ -40,10 +42,10 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
         <>
             <div className={styles.configRow}>
                 <label>Sabitlə</label>
-                <Checkbox
-                    checked={header.pinned ?? false}
-                    className={styles.checkbox}
-                    onChange={(e) => updateConfig(tableKey, 'header.pinned', e.target.checked)}
+                <S_Switch
+                    checked={!!header.pinned}
+                    size="16"
+                    onCheckedChange={({ checked }) => updateConfig(tableKey, 'header.pinned', !!checked)}
                 />
             </div>
 
@@ -98,8 +100,11 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
                 <label>Stil</label>
                 <div className={styles.buttonGroup}>
                     {[
-                        { value: 'italic', icon: <ItalicIcon width={18} height={18} color="#28303F" /> },
-                        { value: 'bold', icon: <BoldIcon width={18} height={18} color="#28303F" /> },
+                        {
+                            value: 'italic',
+                            icon: <ItalicIcon width={18} height={18} color="var(--content-secondary)" />,
+                        },
+                        { value: 'bold', icon: <BoldIcon width={18} height={18} color="var(--content-secondary)" /> },
                     ].map((item) => {
                         const isActive =
                             (item.value === 'italic' && text.italic) || (item.value === 'bold' && text.bold);
@@ -140,8 +145,8 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
                 <label>Stil</label>
                 <div className={styles.buttonGroup}>
                     {[
-                        { value: 'solid', icon: <SolidIcon /> },
-                        { value: 'dashed', icon: <DashedIcon /> },
+                        { value: 'solid', icon: <SolidIcon color="var(--content-secondary)" /> },
+                        { value: 'dashed', icon: <DashedIcon color="var(--content-secondary)" /> },
                     ].map((item) => (
                         <button
                             key={item.value}

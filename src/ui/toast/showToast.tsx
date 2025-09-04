@@ -12,13 +12,13 @@ type ToastType = 'success' | 'error' | 'warning' | 'info';
 interface ShowToastProps {
     label: string;
     description?: string;
-    type?: ToastType;
+    type: ToastType;
     icon?: ReactNode;
     rightIcon?: ReactNode;
     duration?: number;
 }
 
-export const showToast = ({ label, description, type = 'info', icon, rightIcon, duration = 3000 }: ShowToastProps) => {
+export const showToast = ({ label, description, type = 'info', icon, rightIcon, duration = 1700 }: ShowToastProps) => {
     const fallbackIcon = getDefaultIcon(type);
 
     toast.custom(

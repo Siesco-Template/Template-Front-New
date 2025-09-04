@@ -17,6 +17,7 @@ import { FilterKey } from '../filter/config/filterTypeEnum';
 import DateIntervalFilter from '../filter/filters/DateIntervalFilter';
 import NumberIntervalFilter from '../filter/filters/NumberIntervalFilter';
 import { ArrowDownIcon, MoreVerticalIcon } from '../icons';
+import { toCssColor } from '../utils/color.utils';
 import CustomColumnMenu from './customColumnMenu';
 import { FilterIcon, FilterSolidIcon } from './icons';
 import { useTableContext } from './table-context';
@@ -261,7 +262,7 @@ function Table<T extends Record<string, any>>({
                             placeholder={filter.placeholder || filter.column}
                             onChange={(e) => _onChange(filter.key, e.target.value)}
                             readOnly={filter.readOnly}
-                            inputSize="36"
+                            size="36"
                             style={{ width: '100%' }}
                         />
                     </div>
@@ -326,6 +327,7 @@ function Table<T extends Record<string, any>>({
                             onClickNew={undefined}
                             isLoading={false}
                             showMoreColumns={filter.showMoreColumns || []}
+                            searchItems
                         />
                     </div>
                 );
@@ -406,7 +408,7 @@ function Table<T extends Record<string, any>>({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        color: isSelected ? '#0068F7' : headerTextStyle.color,
+                        color: isSelected ? 'var(--background-brand)' : toCssColor(headerTextStyle.color),
                         cursor: 'pointer',
                         height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
                         lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
@@ -482,26 +484,6 @@ function Table<T extends Record<string, any>>({
             renderColumnActionsMenuItems: undefined,
         };
     });
-
-    function lightenColor(hex: string, percent: number): string {
-        const num = parseInt(hex.replace('#', ''), 16);
-        const amt = Math.round(2.55 * percent);
-        const R = (num >> 16) + amt;
-        const G = ((num >> 8) & 0x00ff) + amt;
-        const B = (num & 0x0000ff) + amt;
-
-        return (
-            '#' +
-            (
-                0x1000000 +
-                (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
-                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
-                (B < 255 ? (B < 1 ? 0 : B) : 255)
-            )
-                .toString(16)
-                .slice(1)
-        );
-    }
 
     const getNestedValue = (obj: any, path: string): any => path.split('.').reduce((acc, key) => acc?.[key], obj);
 
@@ -677,20 +659,20 @@ function Table<T extends Record<string, any>>({
             const mergedCell = rowCfg.cell || {};
             const mergedBorder = rowCfg.border || {};
 
-            const selectedBg = rowCfg?.selected?.backgroundColor ?? '#E6F0FF';
+            const selectedBg = 'var(--background-selected)';
 
             const getBackgroundColor = () => {
+                console.log(isRowSelected, 'isRowSelected');
                 if (isRowSelected) return selectedBg;
 
-                if (props.highlightedRowIds?.includes(row.id)) return '#E6F0FF';
-
-                const baseColor = mergedCell.backgroundColor ?? '#ffffff';
-                const altColor = mergedCell.alternateBackgroundColor ?? lightenColor(baseColor, 20);
+                const baseColor = toCssColor(mergedCell.backgroundColor) ?? '#ffffff';
+                const altColor = 'var(--background-secondary, #F3F3F3)';
 
                 if (hoveredRowId === row.id) {
-                    if (stripeStyle === 'plain') return altColor;
-                    const isOdd = row.index % 2 === 1;
-                    return isOdd ? altColor : baseColor;
+                    // if (stripeStyle === 'plain') return altColor;
+                    // const isOdd = row.index % 2 === 1;
+                    // return isOdd ? altColor : baseColor;
+                    return 'var(--background-selected)';
                 }
 
                 if (styleConfig.backgroundColor) return styleConfig.backgroundColor;
@@ -699,15 +681,17 @@ function Table<T extends Record<string, any>>({
                 return baseColor;
             };
 
+            getBackgroundColor();
+
             const style: React.CSSProperties = {
                 backgroundColor: getBackgroundColor(),
-                color: styleConfig.color ?? mergedText.color ?? '#000',
+                color: toCssColor(styleConfig.color) ?? toCssColor(mergedText.color) ?? '#000',
                 fontSize: styleConfig.fontSize ?? mergedText.fontSize,
                 fontStyle: (styleConfig.italic ?? rowCfg?.text?.italic) ? 'italic' : undefined,
                 fontWeight: (styleConfig.bold ?? rowCfg?.text?.bold) ? 'bold' : undefined,
                 textAlign: styleConfig.alignment ?? mergedText.alignment ?? 'left',
                 borderBottomStyle: mergedBorder.style || 'solid',
-                borderBottomColor: mergedBorder.color || 'transparent',
+                borderBottomColor: toCssColor(mergedBorder.color) || 'transparent',
                 borderBottomWidth: mergedBorder.thickness ? `${mergedBorder.thickness}px` : '1px',
                 transform: isColSelected ? 'scale(1.05)' : 'scale(1)',
                 opacity: selectedColumnKey ? (isColSelected ? 1 : 0.5) : 1,
@@ -718,9 +702,9 @@ function Table<T extends Record<string, any>>({
                 textOverflow: 'ellipsis',
 
                 ...(isRowSelected && {
-                    borderLeftColor: ' #0068F7',
-                    ...(isFirst && { borderLeft: '1px solid #0068F7' }),
-                    ...(isLast && { borderRight: '1px solid #0068F7' }),
+                    borderLeftColor: 'var(--background-selected)',
+                    ...(isFirst && { borderLeft: '2px solid "var(--background-selected)"' }),
+                    ...(isLast && { borderRight: '2px solid "var(--background-selected)"' }),
                     zIndex: 1,
                 }),
             };
@@ -772,7 +756,7 @@ function Table<T extends Record<string, any>>({
                         zIndex: 111,
                     }),
                     zIndex: isPinned ? 101 : 100,
-                    backgroundColor: headerConfig?.cell?.backgroundColor || 'hsl(var(--clr-grey-50))',
+                    backgroundColor: toCssColor(headerConfig?.cell?.backgroundColor),
                     transform: isSelected ? 'scale(1.05)' : 'scale(1)',
                     opacity: selectedColumnKey ? (isSelected ? 1 : 0.5) : 1,
                     transition: 'all 0.2s ease-in-out',

@@ -363,18 +363,19 @@
 .highlight-titles h4,
 .highlight-titles h5,
 .highlight-titles h6 {
-    padding: 0px var(--pm-50) !important;
-    border-radius: var(--r-100) !important;
-    background: var(--clr-grey-600) !important;
-    color: #fff !important;
-    font-size: var(--fs-100) !important;
+    padding: 0px 6px !important;
+    font-size: var(--fs-14) !important;
     font-style: normal !important;
     font-weight: 500 !important;
     line-height: normal !important;
     width: fit-content !important;
+
+    border-radius: 4px !important;
+    background: var(--background-secondary-brand-pressed, #484c51) !important;
+    color: var(--content-primary-inverse, #fff) !important;
 }
 
-[data-theme='dark'].highlight-titles h1,
+/* [data-theme='dark'].highlight-titles h1,
 [data-theme='dark'].highlight-titles h2,
 [data-theme='dark'].highlight-titles h3,
 [data-theme='dark'].highlight-titles h4,
@@ -382,7 +383,7 @@
 [data-theme='dark'].highlight-titles h6 {
     background: var(--clr-white-400) !important;
     color: var(--clr-grey-100) !important;
-}
+} */
 
 .highlight-links a {
     text-decoration: underline;

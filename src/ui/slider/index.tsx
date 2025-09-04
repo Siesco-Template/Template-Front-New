@@ -15,8 +15,6 @@ interface SliderProps extends Omit<UseSliderProps, 'children'> {
     thumbClassName?: string;
     trackClassName?: string;
     rangeClassName?: string;
-    size?: '10' | '15' | '20' | '30';
-    color?: 'primary' | 'secondary' | 'red' | 'green';
     onChange?: (value: number[]) => void;
     'aria-label'?: string[];
     showLabel?: boolean;
@@ -38,8 +36,6 @@ const S_Slider: FC<SliderProps> = ({
     thumbClassName = '',
     trackClassName = '',
     rangeClassName = '',
-    size = '20',
-    color = 'primary',
     onChange,
     'aria-label': ariaLabel,
     showLabel = false,
@@ -70,7 +66,6 @@ const S_Slider: FC<SliderProps> = ({
         }
     }, []);
 
-    // Format the value for display
     const formatValue = (val: number[]) => {
         if (val.length === 1) {
             return `${valuePrefix}${val[0]}${valueSuffix}`;
@@ -79,33 +74,19 @@ const S_Slider: FC<SliderProps> = ({
     };
 
     return (
-        <ArkSlider.RootProvider className={cls(styles.slider, styles[`size-${size}`])} value={slider}>
+        <ArkSlider.RootProvider className={cls(styles.slider)} value={slider}>
             {showLabel && (
                 <div className={styles.labelContainer}>
                     <ArkSlider.Label className={styles.label}>{label}</ArkSlider.Label>
-                    {showValue && (
-                        <ArkSlider.ValueText className={styles.valueText}>
-                            {formatValue(slider.value)}
-                        </ArkSlider.ValueText>
-                    )}
                 </div>
             )}
 
             <ArkSlider.Control className={styles.control}>
-                <ArkSlider.Track className={cls(styles.track, styles[`track-${color}`], trackClassName)}>
-                    <ArkSlider.Range className={cls(styles.range, styles[`range-${color}`], rangeClassName)} />
+                <ArkSlider.Track className={cls(styles.track, trackClassName)}>
+                    <ArkSlider.Range className={cls(styles.range, rangeClassName)} />
                 </ArkSlider.Track>
                 {slider.value.map((_, index) => (
-                    <ArkSlider.Thumb
-                        key={index}
-                        index={index}
-                        className={cls(
-                            styles.thumb,
-                            styles[`thumb-${color}`],
-                            disabled && styles['thumb-disabled'],
-                            thumbClassName
-                        )}
-                    >
+                    <ArkSlider.Thumb key={index} index={index} className={cls(styles.thumb, thumbClassName)}>
                         <ArkSlider.HiddenInput />
                     </ArkSlider.Thumb>
                 ))}

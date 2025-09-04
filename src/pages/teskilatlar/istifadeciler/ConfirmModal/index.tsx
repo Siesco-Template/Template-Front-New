@@ -1,5 +1,5 @@
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 import styles from './style.module.css';
 
@@ -14,47 +14,49 @@ interface Props {
 
 export function ConfirmModal({ open, onOpenChange, onSubmit, mode, email, isLoading }: Props) {
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.modalContent}>
-                <DialogHeader>
-                    <DialogTitle>Xəbərdarlıq</DialogTitle>
-                </DialogHeader>
-                <div className={styles.body}>
-                    {mode === 'create' ? (
-                        <div className={styles.createWarning}>
-                            <p>
-                                Avtomatik şifrə sistem tərəfindən yaradılacaq və istifadəçiyə{' '}
-                                <span className={styles.strong}>{email}</span> elektron poçtu vasitəsilə göndəriləcək.
-                            </p>
-                            <p>Mövcud şifrə dərhal etibarsız olacaq. Davam etmək istədiyinizə əminsiniz?</p>
-                        </div>
-                    ) : (
-                        <p className={styles.editWarning}>
-                            İstifadəçi dəyişikliklərini yadda saxlamaq istədiyinizə əminsiniz?
-                        </p>
-                    )}
-
-                    <DialogFooter>
-                        <S_Button
-                            type="button"
-                            variant="outlined-10"
-                            onClick={() => onOpenChange(false)}
-                            disabled={false}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button
-                            type="submit"
-                            variant="main-10"
-                            disabled={isLoading}
-                            isLaoding={isLoading}
-                            onClick={onSubmit}
-                        >
-                            Təsdiqlə
-                        </S_Button>
-                    </DialogFooter>
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            title="Blokla"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={false}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        type="submit"
+                        variant="primary"
+                        color="primary"
+                        disabled={isLoading}
+                        isLoading={isLoading}
+                        onClick={onSubmit}
+                    >
+                        Təsdiqlə
+                    </S_Button>
                 </div>
-            </DialogContent>
-        </Dialog>
+            }
+        >
+            <div className={styles.body}>
+                {mode === 'create' ? (
+                    <div className={styles.createWarning}>
+                        <p>
+                            Avtomatik şifrə sistem tərəfindən yaradılacaq və istifadəçiyə{' '}
+                            <span className={styles.strong}>{email}</span> elektron poçtu vasitəsilə göndəriləcək.
+                        </p>
+                        <p>Mövcud şifrə dərhal etibarsız olacaq. Davam etmək istədiyinizə əminsiniz?</p>
+                    </div>
+                ) : (
+                    <p className={styles.editWarning}>
+                        İstifadəçi dəyişikliklərini yadda saxlamaq istədiyinizə əminsiniz?
+                    </p>
+                )}
+            </div>
+        </Modal>
     );
 }

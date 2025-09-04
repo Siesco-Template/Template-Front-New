@@ -1,4 +1,3 @@
-import { error } from 'console';
 import React, { useEffect, useState } from 'react';
 
 import CustomDatePicker from '@/ui/datepicker/date-picker';
@@ -44,7 +43,7 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
         setIsRangeMode(next);
     };
 
-    console.log(value, 'value in date interval');
+    // console.log(value, 'value in date interval');
 
     const toDate = (v: string | Date | null | undefined) =>
         v == null || v === ''
@@ -85,7 +84,7 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
                 <label className={styles.label}>{label}</label>
                 {!readOnly && (
                     <button onClick={toggleMode} className={styles.switchButton}>
-                        <ArrowTransferIcon color="#005A9E" width={18} height={18} />
+                        <ArrowTransferIcon color="var(--content-brand)" width={18} height={18} />
                     </button>
                 )}
             </div>
@@ -93,6 +92,7 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
             <div className={styles.inputWrapper}>
                 {isRangeMode ? (
                     <CustomDateRangePicker
+                        // @ts-expect-error
                         value={internalValue}
                         onChange={handleChange}
                         placeholder={placeholder}
@@ -100,15 +100,17 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
                         style={{ width: '100%' }}
                         showHeader={false}
                         error={errorMsg}
+                        placement="leftEnd"
                     />
                 ) : (
-                    <CustomDatePicker
+                    <CustomDatePicker // @ts-expect-error
                         value={internalValue}
                         onChange={handleChange}
                         placeholder={singlePlaceholder}
                         format="dd.MM.yyyy"
                         style={{ width: '100%' }}
                         error={errorMsg}
+                        placement="leftEnd"
                         oneTap
                     />
                 )}

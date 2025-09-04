@@ -20,7 +20,7 @@ export function ViewStyleSelector({ currentMode, onChange, className }: ViewStyl
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
-                <S_Button variant="main-10" color="secondary" className={className}>
+                <S_Button variant="primary" color="secondary" className={className}>
                     Görünüş
                     <DirectionDownIcon />
                 </S_Button>

@@ -13,6 +13,7 @@ import { cls } from '@/shared/utils';
 import styles from './switch.module.css';
 
 type SwitchSize = '14' | '16' | '20';
+type LabelPosition = 'left' | 'right';
 
 interface I_SwitchProps extends SwitchRootProps {
     label?: string;
@@ -20,6 +21,7 @@ interface I_SwitchProps extends SwitchRootProps {
     controlProps?: SwitchControlProps;
     thumbProps?: SwitchThumbProps;
     size?: SwitchSize;
+    labelPosition?: LabelPosition; 
 }
 
 const S_Switch: FC<I_SwitchProps> = ({
@@ -29,14 +31,16 @@ const S_Switch: FC<I_SwitchProps> = ({
     thumbProps,
     className,
     size = '16',
+    labelPosition = 'right',
     ...props
 }) => {
     return (
         <S.Root className={cls(styles.switch, className)} data-size={size} {...props}>
+            {label && labelPosition === 'left' && <S.Label {...labelProps}>{label}</S.Label>}
             <S.Control {...controlProps}>
                 <S.Thumb {...thumbProps} />
             </S.Control>
-            {label && <S.Label {...labelProps}>{label}</S.Label>}
+            {label && labelPosition === 'right' && <S.Label {...labelProps}>{label}</S.Label>}
             <S.HiddenInput className={styles.hiddenInputFixed} />
         </S.Root>
     );

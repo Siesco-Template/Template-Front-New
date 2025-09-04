@@ -6,6 +6,7 @@ import { getFullConfigDiff, useTableConfig } from '@/shared/table/tableConfigCon
 import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
 
 import SectionHeader from '../components/section-header';
 import { useLayoutStore } from '../layout/layout.store';
@@ -98,7 +99,7 @@ const SettingsPageLayout = () => {
                     hasChange ? (
                         <div className={styles.buttonContainer}>
                             <S_Button
-                                variant="main-10"
+                                variant="primary"
                                 color="secondary"
                                 children={'Ləğv et'}
                                 onClick={() => {
@@ -109,7 +110,8 @@ const SettingsPageLayout = () => {
                                 }}
                             />
                             <S_Button
-                                variant="main-10"
+                                variant="primary"
+                                color="primary"
                                 children={'Yadda Saxla'}
                                 onClick={async () => {
                                     const mergedDiff = getFullConfigDiff(undefined, defaultConfig, config);
@@ -124,7 +126,7 @@ const SettingsPageLayout = () => {
                                     useViewAndContentStore.getState().saveViewAndContent();
                                     useThemeStore.getState().saveTheme();
 
-                                    toast.success('Konfiqurasiya uğurla yadda saxlanıldı');
+                                    showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
                                     setHasChange(false);
                                 }}
                             />

@@ -12,6 +12,7 @@ import CreateTheme from './ui/create-theme';
 import EditTheme from './ui/edit-theme';
 import ThemeCard from './ui/theme-card';
 import styles from './ui/themes.module.css';
+import CustomThemeCard from './ui/custom/custom-theme-card';
 
 const Themes = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -86,10 +87,10 @@ const Themes = () => {
                         />
                     );
                 })}
-
+                {/* onClick={newTheme} */}
                 {!newThemeId && (
-                    <div className={cls(styles.themeCardWrapper)} onClick={newTheme}>
-                        <CustomThemeBackground />
+                    <div className={cls(styles.themeCardWrapper)}>
+                        <CustomThemeCard />
 
                         <div className={styles.themeCardFooter}>
                             <p>Custom</p>

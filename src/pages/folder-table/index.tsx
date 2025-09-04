@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Folder_Table = () => {
-  return (
-    <div>FolderTable</div>
-  )
-}
+    return <></>;
+};
 
-export default Folder_Table
+export default Folder_Table;
