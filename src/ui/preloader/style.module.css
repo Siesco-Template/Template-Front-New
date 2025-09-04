@@ -1,0 +1,116 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--background-secondary, #f3f3f3);
+    z-index: 9999;
+}
+
+.inline {
+    width: 100%;
+    height: 100%;
+    background: var(--background-secondary, #f3f3f3);
+}
+
+/* src/ui/preloader/style.module.css */
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+.spinner {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot-carousel {
+    position: relative;
+    left: -9990px;
+    width: 7px;
+    height: 7px;
+    border-radius: 100%;
+    animation: dot-carousel 1.5s infinite linear;
+    background-color: var(--background-brand, #0d3caf) !important;
+}
+
+@keyframes dot-carousel {
+    0% {
+        box-shadow:
+            9980px 0 0 -1px var(--background-brand, #0d3caf),
+            9990px 0 0 1px var(--background-brand, #0d3caf),
+            10000px 0 0 -1px var(--background-brand, #0d3caf);
+    }
+    50% {
+        box-shadow:
+            10000px 0 0 -1px var(--background-brand, #0d3caf),
+            9980px 0 0 -1px var(--background-brand, #0d3caf),
+            9990px 0 0 1px var(--background-brand, #0d3caf);
+    }
+    100% {
+        box-shadow:
+            9990px 0 0 1px var(--background-brand, #0d3caf),
+            10000px 0 0 -1px var(--background-brand, #0d3caf),
+            9980px 0 0 -1px var(--background-brand, #0d3caf);
+    }
+}
+
+/* Inline */
+
+.InlineWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.lineWrapper {
+    position: relative;
+    width: 200px;
+    height: 4px;
+    background-color: var(--background-teritary, #ebebeb);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.loadingBar {
+    position: absolute;
+    height: 100%;
+    width: 40%;
+    background-color: var(--background-brand, #0d3caf);
+    animation: loadingFlow 1.2s infinite ease-in-out;
+    border-radius: 5px;
+}
+
+@keyframes loadingFlow {
+    0% {
+        left: -50%;
+    }
+    100% {
+        left: 100%;
+    }
+}

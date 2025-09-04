@@ -76,6 +76,7 @@ const Navbar_Content = () => {
                         item={item}
                         isOpen={openIndex === index}
                         onToggle={() => handleToggle(index)}
+                        pathname={location.pathname}
                     />
                 ))}
             </ul>
@@ -83,15 +84,29 @@ const Navbar_Content = () => {
     );
 };
 
-const NavItem = ({ item, isOpen, onToggle }: { item: any; isOpen: boolean; onToggle: () => void }) => {
-    const { position } = useLayoutStore();
+const NavItem = ({
+    item,
+    isOpen,
+    onToggle,
+    pathname,
+}: {
+    item: any;
+    isOpen: boolean;
+    onToggle: () => void;
+    pathname: string;
+}) => {
+    const isActive = (href: string, pathname: string) => {
+        return pathname === href || pathname.startsWith(href + '/');
+    };
 
+    const { position } = useLayoutStore();
     const directionClass = position === 'bottom' ? styles.subMenuUp : styles.subMenuDown;
 
+    const isItemActive = isActive(item.href, pathname);
     return (
         <li className={styles.navItem}>
             {item.subLinks ? (
-                <div className={styles.navButton} onClick={onToggle}>
+                <div className={`${styles.navButton} ${isItemActive ? styles.active : ''}`} onClick={onToggle}>
                     {item.title}
                     <span className={`${styles.arrow} ${isOpen ? styles.rotated : ''}`}>
                         {position === 'bottom' ? (
@@ -102,18 +117,23 @@ const NavItem = ({ item, isOpen, onToggle }: { item: any; isOpen: boolean; onTog
                     </span>
                 </div>
             ) : (
-                <Link to={item.href} className={styles.navButton}>
+                <Link to={item.href} className={`${styles.navButton} ${isItemActive ? styles.active : ''}`}>
                     {item.title}
                 </Link>
             )}
 
             {item.subLinks && (
                 <ul className={`${styles.subMenu} ${directionClass} ${isOpen ? styles.open : ''}`}>
-                    {item.subLinks.map((sub: any, i: number) => (
-                        <li key={i} className={styles.subMenuItem}>
-                            <Link to={sub.href}>{sub.title}</Link>
-                        </li>
-                    ))}
+                    {item.subLinks.map((sub: any, i: number) => {
+                        const isSubActive = isActive(sub.href, pathname);
+                        return (
+                            <li key={i} className={styles.subMenuItem}>
+                                <Link to={sub.href} className={isSubActive ? styles.active : ''}>
+                                    {sub.title}
+                                </Link>
+                            </li>
+                        );
+                    })}
                 </ul>
             )}
         </li>

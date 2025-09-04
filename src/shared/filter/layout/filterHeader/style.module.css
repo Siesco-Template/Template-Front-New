@@ -10,7 +10,7 @@
     font-size: var(--fs-16, 16px);
     font-style: normal;
     font-weight: 500;
-    line-height: var(--lh-20, 20px); /* 125% */
+    line-height: var(--lh-20, 20px);
 }
 
 .filterHeaderButtons {

@@ -46,6 +46,7 @@ type ThemeAction = {
     getCurrentTheme: () => Theme;
     setTheme: (theme: Theme) => void;
     discardEditedTheme: () => void;
+    discardTheme: () => void;
     getThemeDiff: () => Record<string, any>;
 };
 
@@ -82,7 +83,6 @@ function getThemeChanges(defaults: Theme[], current: Theme[]) {
         const defaultTheme = defaults[index];
 
         if (!defaultTheme) {
-            // Yeni əlavə olunubsa, bütünlükdə qeyd et
             changes[`extraConfig.visualSettings.themes[${index}]`] = theme;
         } else {
             const diff = deepDiff(defaultTheme, theme, `extraConfig.visualSettings.themes[${index}]`);
@@ -95,6 +95,31 @@ function getThemeChanges(defaults: Theme[], current: Theme[]) {
 
 export const useThemeStore = create<ThemeState & ThemeAction>()(
     devtools((set, get) => ({
+        discardTheme: () => {
+            console.log('disk');
+            const { newThemeId, previousTheme, currentTheme } = get();
+
+            console.log(newThemeId, previousTheme, currentTheme, 'c')
+            if (newThemeId && currentTheme === newThemeId) {
+                set((state) => ({
+                    currentTheme: previousTheme!,
+                    themes: state.themes.filter((theme) => theme.id !== newThemeId),
+                    newThemeId: undefined,
+                    editedTheme: undefined,
+                }));
+            } else if (get().editedTheme) {
+                const editedTheme = get().editedTheme;
+                set((state) => ({
+                    themes: state.themes.map((theme) => (theme.id === editedTheme?.id ? editedTheme : theme)),
+                    editedTheme: undefined,
+                }));
+
+                if (currentTheme === editedTheme?.id) {
+                    addThemeOnHtmlRoot(transformThemeToCss(editedTheme));
+                }
+            }
+        },
+
         addNewTheme: (theme) =>
             set((state) => ({
                 themes: [...state.themes, theme],
@@ -194,6 +219,7 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
         },
 
         discardEditedTheme: () => {
+            console.log('disk');
             const editedTheme = get().editedTheme;
 
             if (get().currentTheme === editedTheme?.id) {

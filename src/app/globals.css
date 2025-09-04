@@ -1,6 +1,11 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+* {
+    letter-spacing: var(--letter-spacing) !important;
+    word-spacing: var(--letter-spacing) !important;
+}
+
 :root {
     /* Font/Size */
     --fs-base: 1rem; /* 16px */

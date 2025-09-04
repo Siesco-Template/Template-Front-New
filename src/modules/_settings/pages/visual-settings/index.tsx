@@ -57,7 +57,7 @@ function VisualSettings() {
             if (initial) initialThemeSnapshot.current = initial;
         }
 
-        const currentThemeObj = getThemes().find((t) => t.id === currentTheme);
+        const currentThemeObj = getThemes()?.find((t) => t.id === currentTheme);
         const themeHasChanged = JSON.stringify(currentThemeObj) !== JSON.stringify(initialThemeSnapshot.current);
 
         const changedSizes = cursorVariant !== previousCursorVariant || cursorSize !== previousCursorSize;

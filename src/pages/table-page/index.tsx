@@ -254,20 +254,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     useEffect(() => {
         const generated = generateFiltersFromColumns(filterColumns);
         setFilters(generated);
-
-        // loadConfigFromApi();
+        setFiltersReady(true);
     }, []);
 
     console.log(config, 'config in table');
 
     const fetchData = useCallback(
         (isLoadMore = false, reason: string = 'unknown') => {
-            if (!allowFetchRef.current) {
-                console.log('[fetchData] BLOCKED (allowFetchRef=false). reason=', reason);
-                return;
-            }
-            if (loading) return;
-
             setLoading(true);
             console.log('[fetchData] GO. isLoadMore=', isLoadMore, 'reason=', reason);
 
@@ -322,7 +315,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 .catch(console.error)
                 .finally(() => setLoading(false));
         },
-        [loading, isInfinite, currentPage, columnVisibility]
+        [loading, isInfinite, currentPage, columnVisibility, location.search]
     );
 
     const handleLoadMore = useCallback(() => fetchData(true, 'table-loadMore'), [fetchData]);
@@ -336,13 +329,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     }, []);
 
     useEffect(() => {
-        if (!filtersReady) return;
-        fetchData(false, 'deps-change');
-    }, [filtersReady, location.search, isInfinite]);
-
-    useEffect(() => {
-        if (!filtersReady) return;
-
         if (!didMountColVis.current) {
             didMountColVis.current = true;
             return;
@@ -350,6 +336,11 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
         fetchData(false, 'column-visibility-change');
     }, [colVisJson, filtersReady]);
+
+    useEffect(() => {
+        if (!allowFetchRef.current) return; 
+        fetchData(false, 'url-change');
+    }, [location.search, hashKey]);
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
@@ -426,8 +417,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         onToggleCollapse={onToggleCollapse}
                         table_key="reports"
                         onReady={() => {
-                            allowFetchRef.current = true;
-                            setFiltersReady(true);
+                            allowFetchRef.current = true; // ✅ burada true et
+                            setFiltersReady(true); // ✅ bu da lazım
                         }}
                     />
                 </div>
