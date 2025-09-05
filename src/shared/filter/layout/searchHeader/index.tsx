@@ -18,8 +18,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onReset, onSearchChange, se
                 placeholder="Axtar"
                 value={searchText}
                 onChange={(e) => onSearchChange?.(e.target.value)}
-                inputSize="36"
-                label=""
+                size="36"
                 icon={<SearchIcon width={20} height={20} style={{ marginLeft: 2 }} />}
                 iconPosition="right"
             />

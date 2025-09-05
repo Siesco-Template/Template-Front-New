@@ -149,14 +149,14 @@
 }
 .sidebarLink.linkActive {
     background: var(--background-brand, #0d3caf);
-    color: var(--content-primary-inverse, #fff);
+    color: #fff;
 }
 
 .sidebarLink.linkActive svg ellipse,
 .sidebarLink.linkActive svg path,
 .sidebarLink.linkActive svg g path,
 .sidebarLink.linkActive svg rect {
-    stroke: var(--content-primary-inverse) !important;
+    stroke: #fff !important;
 }
 .sidebarSubLink {
     width: 100%;
@@ -297,13 +297,15 @@
     box-shadow:
         0 4px 8px 0 rgba(0, 0, 0, 0.1),
         0 0 4px 0 rgba(0, 0, 0, 0.08);
+
+        transition: all .3s ease;
 }
 .subLinkItemsContainer .pinnedLink {
     padding: 12px 16px;
     border-radius: var(--r-200);
 }
 .subLinkItemsContainer .pinnedLink:hover {
-    background-color: red;
+    /* background-color: ; */
 }
 
 .sublinkTimeline {
@@ -322,7 +324,6 @@
     position: absolute;
     width: 5px;
     height: 5px;
-    background: red;
     top: 0;
     left: 0;
     border-radius: 99999px;

@@ -7,6 +7,7 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
+import { resolveCssVariable } from '../color.utils';
 import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
 
@@ -17,16 +18,6 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
     const cellConfig = rowConfig.cell || {};
     const borderConfig = rowConfig.border || {};
     const textConfig = rowConfig.text || {};
-
-    const [textColor, setTextColor] = useState('#D9D9D9');
-    const [backgroundColor, setBackgroundColor] = useState('#D9D9D9');
-    const [borderColor, setBorderColor] = useState('#D9D9D9');
-
-    useEffect(() => {
-        if (backgroundColor) setBackgroundColor(cellConfig.backgroundColor);
-        if (borderColor) setBorderColor(borderConfig.color);
-        if (textColor) setTextColor(textConfig.color);
-    }, [cellConfig.backgroundColor, borderConfig.color, textConfig.color]);
 
     const [selectedValue, setSelectedValue] = useState<string>('20');
 
@@ -118,10 +109,9 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Arxa fon</label>
                 <ColorPicker
-                    value={backgroundColor}
+                    value={resolveCssVariable(cellConfig?.backgroundColor)}
                     onChangeComplete={(color) => {
                         const hex = color.toHexString();
-                        setBackgroundColor(hex);
                         updateConfig(tableKey, `row.cell.backgroundColor`, hex);
                     }}
                     className={styles.colorPickerWrapper}
@@ -150,10 +140,9 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             <div className={styles.configRow}>
                 <label>Rəng</label>
                 <ColorPicker
-                    value={borderColor}
+                    value={resolveCssVariable(borderConfig.color)}
                     onChangeComplete={(color) => {
                         const hex = color.toHexString();
-                        setBorderColor(hex);
                         updateConfig(tableKey, `row.border.color`, hex);
                     }}
                     className={styles.colorPickerWrapper}
@@ -215,10 +204,9 @@ const RowConfigSection = ({ tableKey, setPendingTake }: any) => {
             <div className={styles.configRow}>
                 <label>Rəng</label>
                 <ColorPicker
-                    value={textColor}
+                    value={resolveCssVariable(textConfig.color)}
                     onChangeComplete={(color) => {
                         const hex = color.toHexString();
-                        setTextColor(hex);
                         updateConfig(tableKey, `row.text.color`, hex);
                     }}
                     className={styles.colorPickerWrapper}

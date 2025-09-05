@@ -1,6 +1,7 @@
-/* Navbar.module.css */
 .navbar {
+    width: 100%;
     padding: 16px;
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .navList {
@@ -11,7 +12,24 @@
 
 .navItem {
     position: relative;
-    color: hsl(var(--clr-grey-700));
+    color: var(--content-tertiary, #666);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+    font-family: Poppins;
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+
+    transition: all 0.3s ease;
+
+    border-radius: 12px;
+}
+
+.navItem:hover {
+    background: var(--background-primary, #fff) !important;
+    color: var(--content-primary, #1a1a1a) !important;
 }
 
 .navButton {
@@ -41,10 +59,15 @@
     position: absolute;
     left: 0;
     margin-top: 35px;
-    background: hsl(var(--clr-background));
-    color: hsl(var(--clr-grey-700));
-    border-radius: 4px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+    border-radius: 12px;
+    background: var(--background-primary);
+
+    /* Shadow/L2 */
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.1),
+        0 0 4px 0 rgba(0, 0, 0, 0.08);
+
     width: 150px;
     opacity: 0;
     transform: translateY(-10px);
@@ -58,6 +81,16 @@
     justify-content: flex-start;
     align-items: center;
     z-index: 10;
+
+    overflow: hidden;
+}
+
+.active {
+    color: var(--content-brand, #0d3caf);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .subMenu.open {
@@ -84,7 +117,25 @@
     cursor: pointer;
     padding: 8px 16px;
     width: 100%;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+
+    color: var(--content-tertiary, #666);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+    /* 14/Medium */
+    font-family: Poppins;
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+}
+
+.subMenuItem:hover {
+    background: var(--background-primary, #fff) !important;
+    color: var(--content-primary, #1a1a1a) !important;
 }
 
 .arrow {

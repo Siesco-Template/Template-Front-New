@@ -1,20 +1,12 @@
-import { Checkbox, ColorPicker } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { ColorPicker } from 'antd';
+import React from 'react';
 
-import {
-    AlignCenterIcon,
-    AlignLeftIcon,
-    AlignRightIcon,
-    BoldIcon,
-    DashedIcon,
-    ItalicIcon,
-    SolidIcon,
-    TextIcon,
-} from '@/shared/config/icons';
+import { BoldIcon, DashedIcon, ItalicIcon, SolidIcon } from '@/shared/config/icons';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
-import { S_Checkbox, S_Switch } from '@/ui';
+import { S_Switch } from '@/ui';
 
+import { resolveCssVariable } from '../color.utils';
 import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
 
@@ -25,18 +17,6 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
     const cell = header.cell || {};
     const text = header.text || {};
     const border = header.border || {};
-
-    const [textColor, setTextColor] = useState('#D9D9D9');
-    const [borderColor, setBorderColor] = useState('#D9D9D9');
-    const [backgroundColor, setBackgroundColor] = useState('#D9D9D9');
-
-    const [fontSizeError, setFontSizeError] = useState(false);
-
-    useEffect(() => {
-        if (text.color) setTextColor(text.color);
-        if (border.color) setBorderColor(border.color);
-        if (cell.backgroundColor) setBackgroundColor(cell.backgroundColor);
-    }, [text.color, border.color, cell.backgroundColor]);
 
     return (
         <>
@@ -69,10 +49,9 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Rəng</label>
                 <ColorPicker
-                    value={backgroundColor}
+                    value={resolveCssVariable(cell.backgroundColor)}
                     onChangeComplete={(color) => {
                         const hex = color.toHexString();
-                        setBackgroundColor(hex);
                         updateConfig(tableKey, 'header.cell.backgroundColor', hex);
                     }}
                     className={styles.colorPickerWrapper}
@@ -130,10 +109,9 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
             <div className={`${styles.configRow} ${styles.bottomBorder}`}>
                 <label>Rəng</label>
                 <ColorPicker
-                    value={textColor}
+                    value={resolveCssVariable(text.color)}
                     onChangeComplete={(color) => {
                         const hex = color.toHexString();
-                        setTextColor(hex);
                         updateConfig(tableKey, 'header.text.color', hex);
                     }}
                     className={styles.colorPickerWrapper}
@@ -177,10 +155,9 @@ const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
             <div className={styles.configRow}>
                 <label>Rəng</label>
                 <ColorPicker
-                    value={borderColor}
+                    value={resolveCssVariable(border.color)}
                     onChangeComplete={(c) => {
                         const hex = c.toHexString();
-                        setBorderColor(hex);
                         updateConfig(tableKey, 'header.border.color', hex);
                     }}
                     className={styles.colorPickerWrapper}

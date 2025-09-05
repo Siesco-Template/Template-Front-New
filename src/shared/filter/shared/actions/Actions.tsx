@@ -53,17 +53,17 @@ const ActionsDropdown = ({
         onToggle(null);
 
         if (filter?.filterValues?.length) {
-            onApplyFilter?.(filter.filterValues);
+            onApplyFilter?.(filter.filterValues, true);
         } else {
             try {
                 const resp = await filterService.getFilterById(filter.id);
-                onApplyFilter?.(resp?.filterValues ?? []);
+                onApplyFilter?.(filter.filterValues, true);
             } catch {}
         }
 
         try {
             await filterService.setDefaultFilter(filter.id);
-            showToast({ label: 'Varsayılan filter uğurla təyin edildi', type: 'success' });
+            showToast({ label: 'Default  filter uğurla təyin edildi', type: 'success' });
         } catch (e) {
             console.error(e);
         }
@@ -74,7 +74,7 @@ const ActionsDropdown = ({
             filterService
                 .removeDefaultFilter(filter.id)
                 .then((response) => {
-                    showToast({ label: 'Varsayılan filter uğurla sıfırlandı', type: 'success' });
+                    showToast({ label: 'Default filter uğurla sıfırlandı', type: 'success' });
                     onToggle(null);
 
                     setSavedFilters((prevFilters: any) =>
@@ -83,7 +83,7 @@ const ActionsDropdown = ({
                     clearAllQueryParams();
                 })
                 .catch((error) => {
-                    console.error('Varsayılan filter sıfırlanarkən xəta baş verdi', error);
+                    console.error('Default filter sıfırlanarkən xəta baş verdi', error);
                 });
         }
     };
@@ -114,11 +114,11 @@ const ActionsDropdown = ({
                     <li onClick={handleDefaultToggle} className={styles.dropdownItem}>
                         {filter.isDefault ? (
                             <>
-                                <ReloadIcon color="var(--content-tertiary)" /> Varsayılanı sıfırla
+                                <ReloadIcon color="var(--content-tertiary)" /> Default filteri sıfırla
                             </>
                         ) : (
                             <>
-                                <CopyCheckIcon color="var(--content-tertiary)" /> Varsayılan et
+                                <CopyCheckIcon color="var(--content-tertiary)" /> Default filter et
                             </>
                         )}
                     </li>

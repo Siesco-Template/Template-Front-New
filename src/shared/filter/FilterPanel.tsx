@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router';
 
 import dayjs from 'dayjs';
 
@@ -13,7 +12,6 @@ import { showToast } from '@/ui/toast/showToast';
 
 import Catalog from '../catalog';
 import { useTableContext } from '../table/table-context';
-import { useDebounce } from '../table/useDebounce';
 import { applyFiltersToUrl } from './config/filterHelpers';
 import { FilterKey } from './config/filterTypeEnum';
 import DateIntervalFilter from './filters/DateIntervalFilter';
@@ -48,104 +46,66 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     const { filterDataState } = useTableContext();
 
-    const location = useLocation();
     const selectRef = useRef<HTMLDivElement | null>(null);
-    const [mainWidth, setMainWidth] = useState<string>('200px');
 
     const [defaultSnapshot, setDefaultSnapshot] = useState<FilterConfig[] | null>(null);
     const [hasDefault, setHasDefault] = useState(false);
 
-    const handleResize = () => {
-        if (selectRef.current) {
-            const width = selectRef.current.offsetWidth - 20;
-            setMainWidth(`${width}px`);
-        }
+    const getEmptyValue = (f: FilterConfig): any => {
+        if (f.type === 'number-interval') return { min: '', max: '' };
+        if (f.type === 'date-interval') return [null, null];
+        if (f.type === 'multi-select') return [];
+        return '';
     };
 
-    useDebounce(mainWidth, 200, handleResize);
-
     useEffect(() => {
-        handleResize();
-    }, []);
-
-    const hasInitialized = useRef(false);
-
-    useEffect(() => {
-        if (filters.length === 0 || activeTab !== 'default') return;
-
-        const hash = window.location.hash;
-        const params = new URLSearchParams(hash.split('?')[1] || '');
-        const raw = params.get('filterData');
-
-        const getEmptyValue = (f: FilterConfig) => {
-            if (f.type === 'number-interval') return { min: '', max: '' };
-            if (f.type === 'date-interval') {
-                return Array.isArray(f.value) ? ['', ''] : '';
-            }
-            if (f.type === 'multi-select') return [];
-            return '';
-        };
-
-        const applyFilterSet = (filtersToApply: FilterConfig[]) => {
-            setSavedFilters(filtersToApply);
-            filtersToApply.forEach((f: any) => onChange(f.key, f.value));
-
-            const cleaned = filtersToApply
-                .filter((f) => !isEmpty(f.value))
-                .map((f) => ({ id: f.key || f.column, value: f.value }));
-
-            applyFiltersToUrl(cleaned, filterDataState.skip, filterDataState.take, filterDataState.sort, {
-                replace: true,
-            });
-        };
+        if (filters.length === 0) return;
 
         const init = async () => {
             try {
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    const urlFilters: { id: string; value: any }[] = parsed.filter || [];
+                const res = await filterService.getDefaultFilter(table_key);
+                const defVals = Array.isArray(res?.filterValues) ? res.filterValues : [];
 
-                    const updated = filters.map((f) => {
-                        const id = f.key || f.column;
-                        const match = urlFilters.find((u) => u.id === id);
-                        const value = match?.value ?? getEmptyValue(f);
-                        return { ...f, value };
-                    });
+                const fullFilterList: FilterConfig[] = filters.map((f) => {
+                    const matched = defVals.find((d: any) => d.column === (f.key || f.column));
+                    return {
+                        ...f,
+                        value: matched?.value ?? getEmptyValue(f),
+                    };
+                });
 
-                    applyFilterSet(updated);
-                } else if (!hasInitialized.current) {
-                    const res = await filterService.getDefaultFilter(table_key);
-                    const defVals = Array.isArray(res?.filterValues) ? res.filterValues : [];
+                setSavedFilters(fullFilterList);
+                setDefaultSnapshot(fullFilterList);
 
-                    const mergedDefault = filters.map((f) => {
-                        const df = defVals.find((d: any) => d.column === (f.key || f.column));
-                        return { ...f, value: df?.value !== undefined ? df.value : getEmptyValue(f) };
-                    });
+                const hasDefaultsApplied = defVals.length > 0;
+                setHasDefault(hasDefaultsApplied);
+                setActiveTab('default');
 
-                    setDefaultSnapshot(mergedDefault);
-                    setHasDefault(defVals.length > 0);
-                    applyFilterSet(mergedDefault);
+                fullFilterList.forEach((f: any) => onChange(f.key, f.value));
+
+                if (hasDefaultsApplied) {
+                    const cleaned = fullFilterList
+                        .filter((f) => !isEmpty(f.value))
+                        .map((f) => ({ id: f.key || f.column, value: f.value }));
+
+                    applyFiltersToUrl(cleaned, filterDataState.skip, filterDataState.take, filterDataState.sort, true);
+                } else {
+                    const base = window.location.hash.split('?')[0];
+                    window.location.hash = base;
                 }
             } catch (e) {
-                console.warn('Filter initialization error:', e);
-
-                const emptyFilters = filters.map((f) => ({ ...f, value: getEmptyValue(f) }));
-                setSavedFilters(emptyFilters);
-                emptyFilters.forEach((f: any) => onChange(f.key, f.value));
-
-                const base = window.location.hash.split('?')[0];
-                window.history.replaceState(null, '', base);
-
+                console.warn('Filter init error:', e);
+                setSavedFilters([]);
                 setDefaultSnapshot(null);
                 setHasDefault(false);
+                setActiveTab('default');
             } finally {
-                hasInitialized.current = true;
                 onReady?.();
             }
         };
 
         init();
-    }, [activeTab, filters]);
+    }, [filters]);
 
     const isEmpty = (v: any) =>
         v == null ||
@@ -153,8 +113,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         (Array.isArray(v) && v.length === 0) ||
         (typeof v === 'object' && 'min' in v && 'max' in v && v.min === '' && v.max === '');
 
+    // urldeki butun filterleri temizleyir, eger default varsa onu saxliyir ama
     const handleResetFilters = () => {
         setSearchText('');
+
+        console.log(hasDefault, defaultSnapshot, 'hasdefault');
 
         if (hasDefault && defaultSnapshot) {
             setSavedFilters(defaultSnapshot);
@@ -164,7 +127,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                 .filter((f) => !isEmpty(f.value))
                 .map((f) => ({ id: f.key || f.column, value: f.value }));
 
-            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort);
+            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort, true);
             return;
         }
 
@@ -183,12 +146,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         window.location.hash = base;
     };
 
+    // hansisa filterde yeni value secende state vurur, ama tetbiq etmir helem
     const handleUpdateFilter = (key: string, value: any) => {
         console.log(key, value, 'handleUpdateFilter');
         const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
         setSavedFilters(updatedFilters);
     };
 
+    // filterKey gore filterleri ui cixardir
     const renderFilter = (filter: any) => {
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
@@ -221,18 +186,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                         placeholder={filter.placeholder || filter.column}
                     />
                 );
-            // case FilterKey.MultiSelect: // 5
-            //     return (
-            //         <DropdownMultiSelect
-            //             key={filter.key}
-            //             label={filter.label}
-            //             filterKey={filter.key}
-            //             options={filter.options || []}
-            //             value={filter.value || []}
-            //             onChange={(key, values) => _onChange(key, values)}
-            //             disabled={filter.readOnly}
-            //         />
-            //     );
             case FilterKey.Select: // 4
                 const items = (filter.options || []).map((opt: any) => ({
                     value: opt.value,
@@ -287,6 +240,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         }
     };
 
+    // filterlerin orderini ve visibilty yadda saxlayir
     const handleSaveSort = () => {
         setSortMode(false);
     };
@@ -295,22 +249,27 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         setIsSaveModalOpen(true);
     };
 
-    const handleApplySavedFilter = (filters: FilterConfig[]) => {
+    // ****
+
+    // save olunan filteri tetbiq edir
+
+    const handleApplySavedFilter = (filters: FilterConfig[], isDefault?: boolean) => {
         const cleanedFilters = filters?.map((f) => ({
             id: f.key || f.column,
             value: f.value,
         }));
 
-        applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort);
+        applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort, isDefault);
     };
 
+    // filteri tetbiq edir
     const handleApplyFilters = () => {
         const filterItems = savedFilters?.map((f) => ({
             id: f.key || f.column,
             value: f.value,
         }));
 
-        applyFiltersToUrl(filterItems, filterDataState.skip, filterDataState.take, filterDataState.sort);
+        applyFiltersToUrl(filterItems, filterDataState.skip, filterDataState.take, filterDataState.sort, false);
     };
 
     const filteredSavedFilters = savedFilters
@@ -323,6 +282,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     const handleResetOrder = () => {};
 
+    // yeni filter save edir
     const handleSaveFilter = async (name?: string) => {
         if (!name) return setErrorText('Filter adını daxil edin');
 
@@ -356,8 +316,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         }
     };
 
+    // hem yaradir hemde save edir
     const handleSaveAndApplyFilter = async (name?: string) => {
-        if (!name) setErrorText('Filter adını daxil edin');
+        if (!name) return setErrorText('Filter adını daxil edin');
 
         const newFilter: any = {
             tableId: table_key,

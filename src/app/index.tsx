@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/authStore';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import SplashScreen from '@/ui/preloader/SplashScreen';
 import S_Toast from '@/ui/toast/S_Toast';
 
 import './globals.css';
@@ -20,7 +21,10 @@ const App = () => {
         loadConfigFromApi();
     }, [user]);
 
-    console.log(config, 'config');
+    // console.log(config, 'config');
+    if (!config || Object.keys(config).length === 0) {
+        return <SplashScreen />;
+    }
 
     return (
         <Providers>

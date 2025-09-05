@@ -62,12 +62,6 @@
     pointer-events: none;
 }
 
-.expanded.collapseButton {
-    left: -13px;
-}
-
-
-
 .filtersMain {
     display: flex;
     flex-direction: column;

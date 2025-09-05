@@ -662,7 +662,7 @@ function Table<T extends Record<string, any>>({
             const selectedBg = 'var(--background-selected)';
 
             const getBackgroundColor = () => {
-                console.log(isRowSelected, 'isRowSelected');
+                // console.log(isRowSelected, 'isRowSelected');
                 if (isRowSelected) return selectedBg;
 
                 const baseColor = toCssColor(mergedCell.backgroundColor) ?? '#ffffff';

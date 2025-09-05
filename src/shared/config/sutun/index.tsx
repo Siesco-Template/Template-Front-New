@@ -1,9 +1,6 @@
 import { ColorPicker } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { PRESET_SIZES } from '@/shared/catalog';
-import { Dialog, DialogContent } from '@/shared/catalog/shared/dialog/dialog';
-import { PanelDialog, PanelDialogContent } from '@/shared/catalog/shared/dialog/panel-dialog';
 import {
     AlignBottomIcon,
     AlignCenterIcon,
@@ -12,7 +9,6 @@ import {
     AlignTopIcon,
     BoldIcon,
     ItalicIcon,
-    TextIcon,
     ViewOffIcon,
 } from '@/shared/config/icons';
 import { Table } from '@/shared/table';
@@ -23,7 +19,7 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
 
-import BottomModal from '../modal/bottomModal';
+import { resolveCssVariable } from '../color.utils';
 import styles from '../style.module.css';
 
 const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumns, onSave, isRowSum }: any) => {
@@ -113,15 +109,11 @@ const ColumnConfigSection = ({ tableKey, modalTableData, initialModalTableColumn
     useEffect(() => {
         if (selectedColumnKey) {
             const currentBg = config.tables?.[tableKey]?.columns?.[selectedColumnKey]?.config?.style?.backgroundColor;
-            setTextColor(currentBg || '#D9D9D9');
+            setTextColor(resolveCssVariable(currentBg) || '#D9D9D9');
         } else {
             setTextColor('#D9D9D9');
         }
     }, [selectedColumnKey, config, tableKey]);
-
-    const sizePreset = 'xxl';
-
-    const paperStyle = PRESET_SIZES[sizePreset];
 
     return (
         <>

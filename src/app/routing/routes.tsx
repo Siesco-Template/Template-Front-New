@@ -226,7 +226,7 @@ export const AppInitializer = ({ config }: { config: any }) => {
                 foreground: t?.foreground ?? '',
             }));
 
-            const currentTheme = normalizedThemeList?.find((t: any) => t.id === currentThemeId);
+            const currentTheme: any = normalizedThemeList?.find((t: any) => t.id === currentThemeId);
             const cssTheme = transformThemeToCss(currentTheme);
             if (cssTheme) {
                 addThemeOnHtmlRoot(cssTheme);

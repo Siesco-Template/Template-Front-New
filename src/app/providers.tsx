@@ -7,6 +7,7 @@ import { composeProviders } from '@/shared/utils';
 
 import { ConfirmProvider } from '@/ui/modal/confirm';
 
+// @ts-expect-error
 const CombinedProviders = composeProviders([ConfirmProvider, PermissionProvider, ...SettingsProvider]);
 
 const Providers = ({ children }: PropsWithChildren) => {

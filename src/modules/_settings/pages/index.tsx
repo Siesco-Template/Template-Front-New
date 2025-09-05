@@ -92,6 +92,8 @@ const SettingsPageLayout = () => {
 
     const { saveChangesOnLayout, discardChangesOnLayout } = useLayoutStore();
 
+    const { discardTheme } = useThemeStore();
+
     return (
         <div className={styles.settingsPageLayout}>
             <SettingsPageHeader
@@ -106,6 +108,7 @@ const SettingsPageLayout = () => {
                                     discardSizes();
                                     discardViewAndContent();
                                     discardChangesOnLayout();
+                                    discardTheme();
                                     setHasChange(false);
                                 }}
                             />
