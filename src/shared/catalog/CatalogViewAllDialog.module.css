@@ -9,7 +9,6 @@
     flex-direction: row;
     width: 100%;
     overflow: hidden;
-
     background: hsl(var(--clr-white-200));
     padding: 8px;
     padding-right: 0;

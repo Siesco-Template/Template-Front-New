@@ -1,7 +1,7 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--pm-500);
+    gap: 20px;
     height: 100%;
 }
 
@@ -11,8 +11,8 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: var(--pm-400);
-    max-height: var(--wh-375);
+    gap: 20px;
+    max-height: 300px;
 }
 
 /* Right side controls (Search + buttons) */
@@ -20,17 +20,18 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--pm-200);
+    gap: 6px;
 }
 
 /* Group for view selector + files-only button */
 .controlsInline {
     display: flex;
+    gap: 6px;
 }
 
 /* Forces right margin like "!mr-2" */
 .mr2Important {
-    margin-right: var(--pm-200) !important;
+    margin-right: 4pxs !important;
 }
 
 /* Grid area container */

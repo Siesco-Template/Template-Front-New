@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { S_Button, S_Input } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
+
+import styles from './style.module.css';
 
 const ICONS = [
     '#EF4444', // red
@@ -56,59 +58,73 @@ export function NewFolderDialog({ open, onOpenChange, onSubmit }: NewFolderDialo
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-xl">
-                <DialogHeader>
-                    <DialogTitle className="!text-2xl !font-extrabold !mb-4">Yeni qovluq</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="flex flex-col !gap-6">
-                    <div className="w-full">
-                        <div className="text-lg !font-semibold !text-blue-900 !mb-2">Qovluq adı</div>
-                        <S_Input
-                            placeholder="Qovluq adı daxil edin"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            disabled={isLoading}
-                            maxLength={100}
-                            autoFocus
-                        />
-                        {error && <div className="!text-red-500 !text-sm !mt-2">{error}</div>}
+        <Modal
+            title="Yeni qovluq"
+            open={open}
+            onOpenChange={onOpenChange}
+            size="sm"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isLoading}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        type="submit"
+                        onClick={handleSubmit}
+                        disabled={!formData.name.trim()}
+                        variant="primary"
+                        color="primary"
+                    >
+                        Təsdiqlə
+                    </S_Button>
+                </div>
+            }
+        >
+            <form className="flex flex-col !gap-6">
+                <div className="w-full">
+                    <div className={styles.title}>Qovluq adı</div>
+                    <S_Input
+                        placeholder="Qovluq adı daxil edin"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        disabled={isLoading}
+                        maxLength={100}
+                        errorText={error}
+                        autoFocus
+                    />
+                    {/* {error && <div className="!text-red-500 !text-sm !mt-2">{error}</div>} */}
+                </div>
+                <div>
+                    <div className={styles.title}>Qovluq iconu</div>
+                    <div className="flex flex-row flex-nowrap !gap-4 !items-center !justify-start">
+                        {ICONS.map((c) => (
+                            <button
+                                type="button"
+                                key={c}
+                                className="focus:outline-none"
+                                onClick={() => setFormData({ ...formData, icon: c })}
+                                aria-label={`Select icon ${c}`}
+                            >
+                                <span
+                                    className="!w-6 !h-6 !rounded-full !inline-block !border-4"
+                                    style={{
+                                        background: c,
+                                        borderColor: formData.icon === c ? 'white' : 'transparent',
+                                        borderWidth: formData.icon === c ? '2px' : '0px',
+                                        boxShadow: formData.icon === c ? '0 0 0 2px rgba(0,0,0,0.5)' : 'none',
+                                        boxSizing: 'border-box',
+                                    }}
+                                />
+                            </button>
+                        ))}
                     </div>
-                    <div>
-                        <div className="!text-lg !font-semibold !text-blue-900 !mb-2">Qovluq iconu</div>
-                        <div className="flex flex-row flex-nowrap !gap-4 !items-center !justify-start">
-                            {ICONS.map((c) => (
-                                <button
-                                    type="button"
-                                    key={c}
-                                    className="focus:outline-none"
-                                    onClick={() => setFormData({ ...formData, icon: c })}
-                                    aria-label={`Select icon ${c}`}
-                                >
-                                    <span
-                                        className="!w-6 !h-6 !rounded-full !inline-block !border-4"
-                                        style={{
-                                            background: c,
-                                            borderColor: formData.icon === c ? 'white' : 'transparent',
-                                            borderWidth: formData.icon === c ? '2px' : '0px',
-                                            boxShadow: formData.icon === c ? '0 0 0 2px rgba(0,0,0,0.5)' : 'none',
-                                            boxSizing: 'border-box',
-                                        }}
-                                    />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <S_Button variant="outlined-20" onClick={() => onOpenChange(false)} disabled={isLoading}>
-                            Ləğv et
-                        </S_Button>
-                        <S_Button type="submit" disabled={!formData.name.trim()} variant="main-20">
-                            Ok
-                        </S_Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+                </div>
+            </form>
+        </Modal>
     );
 }

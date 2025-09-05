@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 import { Folder } from '..';
 import { folderService } from '../services/folder.service';
@@ -62,35 +62,41 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-4xl !h-[80vh] !flex !flex-col">
-                <DialogHeader>
-                    <DialogTitle>{moveOption === 'Move' ? 'Move to folder' : 'Copy to folder'}</DialogTitle>
-                </DialogHeader>
-                <div className="!flex-1 !overflow-hidden">
-                    <Folder
-                        items={items}
-                        setItems={setItems}
-                        currentPath={currentPath}
-                        setCurrentPath={setCurrentPath}
-                        className="h-full"
-                        hideContextMenu={true}
-                        allowMultipleSelection={false}
-                        viewMode={viewMode}
-                        onViewModeChange={setViewMode}
-                        showFilesOnlyButton={false}
-                        showViewModeSelector={false}
-                    />
+        <Modal
+            title={moveOption === 'Move' ? 'Qovluğa köçür' : 'Qovluğu kopyala'}
+            open={open}  size="sm"
+            onOpenChange={onOpenChange}
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isLoading}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button onClick={handleSubmit} disabled={!currentPath} variant="primary" color="primary">
+                        {moveOption === 'Move' ? 'Köçür' : 'Kopyala'}
+                    </S_Button>
                 </div>
-                <DialogFooter>
-                    <S_Button variant="outlined-20" onClick={() => onOpenChange(false)} disabled={isLoading}>
-                        Cancel
-                    </S_Button>
-                    <S_Button onClick={handleSubmit} disabled={!currentPath} variant="main-20">
-                        {moveOption === 'Move' ? 'Move here' : 'Copy here'}
-                    </S_Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+            }
+        >
+            <div className="!flex-1 !overflow-hidden">
+                <Folder
+                    items={items}
+                    setItems={setItems}
+                    currentPath={currentPath}
+                    setCurrentPath={setCurrentPath}
+                    className="h-full"
+                    hideContextMenu={true}
+                    allowMultipleSelection={false}
+                    viewMode={viewMode}
+                    onViewModeChange={setViewMode}
+                    showFilesOnlyButton={false}
+                    showViewModeSelector={false}
+                />
+            </div>
+        </Modal>
     );
 }

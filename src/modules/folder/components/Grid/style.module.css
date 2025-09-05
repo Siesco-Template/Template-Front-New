@@ -146,24 +146,27 @@
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--Flh-20, 20px); /* 142.857% */
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 /* list row extra cells */
 .typeLabel {
-    font-size: var(--fs-100);
-    color: hsl(var(--clr-grey-500));
+    color: var(--content-secondary, #333);
+    font-size: var(--fa-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
     text-align: left;
-    width: var(--wh-500);
-    padding: 0 var(--pm-200);
+    width: 100px;
+    padding: 0 4px;
     margin-right: 6px;
 }
 
 .pathLabel {
-    font-size: var(--fs-100);
-    color: hsl(var(--clr-grey-500));
+    font-size: var(--fs-14, 14px);
+    color: var(--content-secondary, #333);
     text-align: left;
-    padding: 0 var(--pm-200);
+    padding: 0 4px;
     display: block;
     width: fit-content;
     overflow: hidden;
@@ -180,11 +183,14 @@
 }
 
 .dateLabel {
-    font-size: var(--fs-100);
-    color: hsl(var(--clr-grey-500));
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
     text-align: left;
     width: fit-content;
-    padding: 0 var(--pm-200);
+    padding: 0 4px;
     margin-right: 6px;
 }
 @media (min-width: 1024px) {

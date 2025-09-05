@@ -29,7 +29,7 @@ export function SearchBar({ onSearch, className }: SearchBarProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Axtar"
-                inputSize="default"
+                size="36"
             />
         </form>
     );
