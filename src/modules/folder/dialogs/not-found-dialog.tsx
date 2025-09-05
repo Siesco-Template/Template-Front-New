@@ -1,5 +1,5 @@
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 interface NotFoundDialogProps {
     open: boolean;
@@ -9,24 +9,26 @@ interface NotFoundDialogProps {
 
 export function NotFoundDialog({ open, onOpenChange, path }: NotFoundDialogProps) {
     return (
-        <Dialog open={open} onOpenChange={onOpenChange} modal>
-            <DialogContent className="!max-w-xl">
-                <DialogHeader>
-                    <DialogTitle>Məlumat tapılmadı</DialogTitle>
-                </DialogHeader>
-                <div className="!mb-4 !text-gray-500">
-                    <span className="italic !text-gray-600">{path}</span> ünvanı tapılmadı. Zəhmət olmasa daxil
-                    etdiyiniz ünvanı yenidən yoxlayın
-                </div>
-                <DialogFooter autoFocus={false}>
-                    <S_Button variant="outlined-20" onClick={() => onOpenChange(false)}>
+        <Modal
+            title="Məlumat tapılmadı"
+            open={open}
+            size="sm"
+            onOpenChange={onOpenChange}
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button variant="primary" color="secondary" onClick={() => onOpenChange(false)}>
                         Ləğv et
                     </S_Button>
-                    <S_Button variant="main-20" onClick={() => onOpenChange(false)}>
+                    <S_Button variant="primary" color="primary" onClick={() => onOpenChange(false)}>
                         Ok
                     </S_Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </div>
+            }
+        >
+            <div className="!mb-4 !text-gray-500">
+                <span className="italic !text-gray-600">{path}</span> ünvanı tapılmadı. Zəhmət olmasa daxil etdiyiniz
+                ünvanı yenidən yoxlayın
+            </div>
+        </Modal>
     );
 }

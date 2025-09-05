@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { S_Input } from '@/ui';
 import S_Button from '@/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 import { FolderItem } from '../types';
-
+import styles from './style.module.css'
 interface RenameDialogProps {
     item: FolderItem;
     open: boolean;
@@ -30,39 +30,47 @@ export function RenameDialog({ item, open, onOpenChange, onRename }: RenameDialo
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-xl">
-                <DialogHeader>
-                    <DialogTitle>Adını dəyiş</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="!space-y-4">
-                    <div className="">
-                        <label htmlFor="name" className="!text-sm !font-medium block !text-blue-900 !mb-1">
-                            {item.type === 'folder' ? 'Qovluq adı' : 'Fayl adı'}
-                        </label>
-                        <S_Input
-                            id="name"
-                            value={newName}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
-                            placeholder={item.type === 'folder' ? 'Qovluq adı daxil edin' : 'Fayl adı daxil edin'}
-                            autoFocus
-                        />
-                    </div>
-                    <DialogFooter>
-                        <S_Button
-                            type="button"
-                            variant="outlined-20"
-                            onClick={() => onOpenChange(false)}
-                            disabled={isLoading}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button type="submit" disabled={!newName.trim() || newName === item.name} variant="main-20">
-                            Ok
-                        </S_Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+        <Modal
+            title="Adını dəyiş"
+            open={open}
+            size="sm"
+            onOpenChange={onOpenChange}
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isLoading}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        type="submit"
+                        disabled={!newName.trim() || newName === item.name}
+                        variant="primary"
+                        color="primary"
+                    >
+                        Ok
+                    </S_Button>
+                </div>
+            }
+        >
+            <form onSubmit={handleSubmit} className="!space-y-4">
+                <div className="">
+                    <label htmlFor="name" className={styles.title}>
+                        {item.type === 'folder' ? 'Qovluq adı' : 'Fayl adı'}
+                    </label>
+                    <S_Input
+                        id="name"
+                        value={newName}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
+                        placeholder={item.type === 'folder' ? 'Qovluq adı daxil edin' : 'Fayl adı daxil edin'}
+                        autoFocus
+                    />
+                </div>
+            </form>
+        </Modal>
     );
 }

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
 import { S_Button } from '@/ui';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 import { FolderItem } from '../types';
+import styles from './style.module.css';
 
 interface DeleteDialogProps {
     items: FolderItem[];
@@ -26,27 +27,32 @@ export function DeleteDialog({ items, open, onOpenChange, onDelete }: DeleteDial
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-xl">
-                <DialogHeader>
-                    <DialogTitle className="!mb-4">Xəbərdarlıq</DialogTitle>
-                    <DialogDescription className="!text-sm text-gray-700">
-                        {isMultiple
-                            ? `Siesco qovluğunu silmək istədiyinizdən əminsiniz mi? (${itemCount} element)`
-                            : `${
-                                  items[0]?.type === 'folder' ? 'Qovluğu' : 'Faylı'
-                              } silmək istədiyinizdən əminsiniz mi?`}
-                    </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                    <S_Button variant="outlined-20" onClick={() => onOpenChange(false)} disabled={isLoading}>
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            title="Xəbərdarlıq"
+            size="sm"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isLoading}
+                    >
                         Ləğv et
                     </S_Button>
-                    <S_Button variant="main-20" onClick={handleSubmit} disabled={isLoading}>
-                        Ok
+                    <S_Button variant="primary" color="primary" onClick={handleSubmit} disabled={isLoading}>
+                        Təsdiqlə
                     </S_Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </div>
+            }
+        >
+            <p className={styles.title}>
+                {isMultiple
+                    ? `Siesco qovluğunu silmək istədiyinizdən əminsiniz mi? (${itemCount} element)`
+                    : `${items[0]?.type === 'folder' ? 'Qovluğu' : 'Faylı'} silmək istədiyinizdən əminsiniz mi?`}
+            </p>
+        </Modal>
     );
 }

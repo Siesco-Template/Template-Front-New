@@ -1,0 +1,24 @@
+.title {
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--lh-14, 14px); /* 116.667% */
+    margin-bottom: 4px;
+}
+
+.key {
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-14, 20px); /* 142.857% */
+}
+
+.value {
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 20px); /* 142.857% */
+}

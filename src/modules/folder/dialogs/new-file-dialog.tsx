@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { S_Input } from '@/ui';
 import S_Button from '@/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
@@ -54,65 +54,69 @@ export function NewFileDialog({ open, onOpenChange, onSubmit, itemToCopy }: NewF
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-2xl">
-                <DialogHeader>
-                    <DialogTitle className="!text-2xl !font-extrabold !mb-4">Yeni istifadəçi</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="!flex !flex-col gap-4">
-                    <div>
-                        <div className="text-lg !font-semibold !text-blue-900 mb-2">Ad</div>
-                        <S_Input
-                            placeholder="Ad daxil edin"
-                            value={formData?.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            disabled={isLoading}
-                            maxLength={100}
-                            autoFocus
-                        />
-                    </div>
-                    <div>
-                        <div className="text-lg !font-semibold !text-blue-900 mb-2">Soyad</div>
-                        <S_Input
-                            placeholder="Soyad daxil edin"
-                            value={formData?.surname}
-                            onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
-                            disabled={isLoading}
-                            maxLength={100}
-                            autoFocus
-                        />
-                    </div>
-                    <div>
-                        <div className="text-lg !font-semibold !text-blue-900 mb-2">Email</div>
-                        <S_Input
-                            placeholder="Email daxil edin"
-                            value={formData?.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            disabled={isLoading}
-                            maxLength={100}
-                            autoFocus
-                        />
-                    </div>
-
-                    <DialogFooter className="!mt-4">
-                        <S_Button
-                            type="button"
-                            variant="outlined-20"
-                            onClick={() => onOpenChange(false)}
-                            disabled={isLoading}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button
-                            variant="main-20"
-                            type="submit"
-                            disabled={!formData?.name?.trim() || !formData?.surname?.trim() || !formData?.email?.trim()}
-                        >
-                            Ok
-                        </S_Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            size="sm"
+            title="Yeni istifadəçi"
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isLoading}
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        variant="primary"
+                        color="primary"
+                        type="submit"
+                        onSubmit={handleSubmit}
+                        disabled={!formData?.name?.trim() || !formData?.surname?.trim() || !formData?.email?.trim()}
+                    >
+                        Təsdiqlə
+                    </S_Button>
+                </div>
+            }
+        >
+            <form className="!flex !flex-col gap-4">
+                <div>
+                    <S_Input
+                        placeholder="Ad daxil edin"
+                        value={formData?.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        disabled={isLoading}
+                        maxLength={100}
+                        label="Ad"
+                        autoFocus
+                    />
+                </div>
+                <div>
+                    <S_Input
+                        placeholder="Soyad daxil edin"
+                        value={formData?.surname}
+                        onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
+                        disabled={isLoading}
+                        label="Soyad"
+                        maxLength={100}
+                        autoFocus
+                    />
+                </div>
+                <div>
+                    <S_Input
+                        placeholder="Email daxil edin"
+                        value={formData?.email}
+                        label="Email"
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        disabled={isLoading}
+                        maxLength={100}
+                        autoFocus
+                    />
+                </div>
+            </form>
+        </Modal>
     );
 }

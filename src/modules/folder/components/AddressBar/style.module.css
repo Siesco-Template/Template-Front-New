@@ -12,11 +12,11 @@
 
 /* Home button + icon (group hover) */
 .homeBtn {
-    padding: var(--pm-100);
+    padding: 10px;
 }
 .homeIcon {
-    color: hsl(var(--clr-grey-400));
-    transition: color var(--animation) ease;
+    color: var(--content-secondary-brand-bold);
+    transition: color 0.3s ease;
 }
 
 .homeBtn:hover .homeIcon {
@@ -38,7 +38,7 @@
 .path {
     display: flex;
     align-items: center;
-    gap: var(--pm-200);
+    gap: 4px;
     user-select: none;
 }
 
@@ -47,13 +47,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--pm-200);
+    gap: 4px;
 }
 
 /* Chevron in segments */
 .chevron {
-    color: hsl(var(--clr-grey-400));
-    transition: color var(--animation) ease;
+    color: var(--content-secondary-brand-bold);
+    transition: color 0.3s ease;
 }
 .segmentGroup:hover .chevron {
     color: hsl(var(--clr-primary-900));
@@ -64,12 +64,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--pm-200);
-    font-size: var(--fs-100);
-    line-height: var(--wh-200);
-    color: hsl(var(--clr-grey-400));
+    gap: 4px;
+
+    color: var(--content-secondary-brand-bold, #484c51);
+    text-align: center;
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+    font-family: Poppins;
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+
     padding: var(--pm-100) var(--pm-200);
-    transition: color var(--animation) ease;
+    transition: color 0.3s ease;
 }
 .segmentGroup:hover .segmentBtn {
     color: hsl(var(--clr-primary-900));
@@ -89,10 +98,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--pm-200);
+    gap: 4px;
 }
 .tailChevron {
-    color: hsl(var(--clr-grey-400));
+    color: var(--content-secondary-brand-bold);
+    transition: color 0.3s ease;
 }
 .tailBtn {
     font-size: var(--fs-100);

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { S_Button, S_Textarea } from '@/ui';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import Modal from '@/ui/dialog';
 
 import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
@@ -39,38 +39,44 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
         onOpenChange(false);
         setIsLoading(false);
     };
-
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="!max-w-xl">
-                <DialogHeader>
-                    <DialogTitle className="!text-2xl !font-extrabold">Komment əlavə et</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="!space-y-4">
-                    <S_Textarea
-                        id="comment"
-                        className=" !text-black "
-                        placeholder="Komment əlavə et"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
+        <Modal
+            title="Komment əlavə et"
+            open={open}  size="sm"
+            onOpenChange={onOpenChange}
+            footer={
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        onClick={() => onOpenChange(false)}
                         disabled={loading}
-                        maxLength={1000}
-                    />
-                    <DialogFooter>
-                        <S_Button
-                            type="button"
-                            variant="outlined-20"
-                            onClick={() => onOpenChange(false)}
-                            disabled={loading}
-                        >
-                            Ləğv et
-                        </S_Button>
-                        <S_Button type="submit" disabled={loading || !value.trim()} variant="main-20">
-                            Ok
-                        </S_Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+                    >
+                        Ləğv et
+                    </S_Button>
+                    <S_Button
+                        onClick={handleSubmit}
+                        disabled={loading || !value.trim()}
+                        variant="primary"
+                        color="primary"
+                    >
+                        Təsdiqlə
+                    </S_Button>
+                </div>
+            }
+        >
+            <form className="!space-y-4">
+                <S_Textarea
+                    id="comment"
+                    className=" !text-black "
+                    placeholder="Komment əlavə et"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    disabled={loading}
+                    maxLength={1000}
+                />
+            </form>
+        </Modal>
     );
 }
