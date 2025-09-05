@@ -1,9 +1,9 @@
 .content {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 8px;
-    border-radius: 12px;
+    gap: var(--space-250);
+    padding: var(--space-300);
+    border-radius: var(--br-2xl);
     background: var(--background-primary, #fff);
     box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
 }
@@ -11,13 +11,9 @@
 .item {
     cursor: pointer;
     outline: none;
-    border-radius: 8px;
-    padding: 8px;
+    border-radius: var(--br-2xl);
+    padding: var(--space-300);
     color: var(--content-tertiary, #666);
-    font-feature-settings:
-        'liga' off,
-        'clig' off;
-    font-family: Poppins;
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;

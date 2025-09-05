@@ -380,15 +380,6 @@
     color: var(--content-primary-inverse, #fff) !important;
 }
 
-/* [data-theme='dark'].highlight-titles h1,
-[data-theme='dark'].highlight-titles h2,
-[data-theme='dark'].highlight-titles h3,
-[data-theme='dark'].highlight-titles h4,
-[data-theme='dark'].highlight-titles h5,
-[data-theme='dark'].highlight-titles h6 {
-    background: var(--clr-white-400) !important;
-    color: var(--clr-grey-100) !important;
-} */
 
 .highlight-links a {
     text-decoration: underline;

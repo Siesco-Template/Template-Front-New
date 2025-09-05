@@ -95,9 +95,6 @@ li {
     transition: all 0.3s ease;
     background: var(--background-strong, #bfbfbf);
 }
-*::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--clr-primary-600));
-}
 
 .header-menu {
     border: none;

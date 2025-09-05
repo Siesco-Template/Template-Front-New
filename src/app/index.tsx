@@ -21,10 +21,6 @@ const App = () => {
         loadConfigFromApi();
     }, [user]);
 
-    // console.log(config, 'config');
-    if (!config || Object.keys(config).length === 0) {
-        return <SplashScreen />;
-    }
 
     return (
         <Providers>

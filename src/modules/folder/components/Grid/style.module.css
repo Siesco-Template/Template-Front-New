@@ -79,9 +79,9 @@
 .itemList {
     display: flex;
     align-items: center;
-    padding: var(--pm-300) 0;
+    padding: var(--space-300) 0;
     height: 54px !important;
-    padding: 0 var(--pm-200);
+    padding: 0 var(--space-200);
     border-bottom: 1px solid hsl(var(--clr-white-800));
 }
 .itemSmall,
@@ -108,8 +108,8 @@
 .itemTree {
     display: flex;
     align-items: center;
-    gap: var(--pm-100);
-    padding: var(--pm-100) var(--pm-200);
+    gap: var(--space-100);
+    padding: var(--space-100) var(--space-200);
 }
 
 /* icon sizes by mode */
@@ -120,16 +120,16 @@
 }
 
 .iconSmall {
-    width: var(--wh-350);
-    height: var(--wh-350);
+    width: 32px;
+    height: 32px;
 }
 .iconMedium {
-    width: var(--wh-400);
-    height: var(--wh-400);
+    width: 40px;
+    height: 40px;
 }
 .iconLarge {
-    width: var(--wh-500);
-    height: var(--wh-500);
+    width: 64px;
+    height: 64px;
 }
 
 /* common grid item container */
@@ -231,7 +231,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-20, 20px); /* 142.857% */
-    padding: 6px;
+    padding: var(--space-250);
     display: block;
 }
 .treeHeaderNameFlex {
@@ -243,7 +243,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-20, 20px); /* 142.857% */
-    padding: 6px;
+    padding: var(--space-250);
     width: 64px;
     display: block;
 }
@@ -253,7 +253,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-14, 14px); /* 116.667% */
-    padding: 4px;
+    padding: var(--space-200);
     width: 128px;
     display: block;
 }
@@ -261,7 +261,7 @@
 /* —— non-tree grid wrapper —— */
 .gridWrap {
     display: flex;
-    gap: 6px;
+    gap: var(--space-250);
     position: relative;
     overflow: auto;
     flex-wrap: wrap;
