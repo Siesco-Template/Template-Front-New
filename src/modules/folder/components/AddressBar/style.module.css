@@ -1,10 +1,8 @@
 .container {
     display: flex;
     align-items: center;
-
     padding: var(--space-200, 4px) var(--space-250, 12px);
     gap: var(--space-250, 12px);
-
     border-radius: var(--br-2xl, 12px);
     background: var(--background-secondary-brand, #ecedee);
     height: var(--wh-375);
@@ -12,16 +10,16 @@
 
 /* Home button + icon (group hover) */
 .homeBtn {
-    padding: 10px;
+    padding: var(--space-250);
 }
 .homeIcon {
     color: var(--content-secondary-brand-bold);
     transition: color 0.3s ease;
 }
 
-.homeBtn:hover .homeIcon {
+/* .homeBtn:hover .homeIcon {
     color: hsl(var(--clr-primary-900));
-}
+} */
 
 /* Edit input */
 .input {
@@ -29,8 +27,8 @@
     border: none;
     outline: none;
     background: transparent;
-    color: hsl(var(--clr-grey-400)); /* !text-[#8E8E93] */
-    font-size: var(--fs-100); /* !text-[14px] */
+    color: var(--content-secondary-brand-bold, #484c51);
+    font-size: var(--fs-14, 14px);
     line-height: var(--wh-200); /* !leading-5 */
 }
 
@@ -47,7 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: var(--space-200);
 }
 
 /* Chevron in segments */
@@ -64,7 +62,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: var(--space-200);
 
     color: var(--content-secondary-brand-bold, #484c51);
     text-align: center;
@@ -77,21 +75,20 @@
     font-weight: 500;
     line-height: var(--lh-20, 20px); /* 142.857% */
 
-    padding: var(--pm-100) var(--pm-200);
     transition: color 0.3s ease;
 }
-.segmentGroup:hover .segmentBtn {
+/* .segmentGroup:hover .segmentBtn {
     color: hsl(var(--clr-primary-900));
-}
+} */
 
 /* Folder icon in segment */
 .folderIcon {
     color: hsl(var(--clr-grey-400));
     transition: color var(--animation) ease;
 }
-.segmentGroup:hover .folderIcon {
+/* .segmentGroup:hover .folderIcon {
     color: hsl(var(--clr-primary-900));
-}
+} */
 
 /* Tail bar ("Type...") group */
 .tailGroup {
@@ -107,10 +104,10 @@
 .tailBtn {
     font-size: var(--fs-100);
     line-height: var(--wh-200);
-    color: #8e8e93;
-    transition: color var(--animation) ease;
-    padding: var(--pm-100) var(--pm-200);
+    color: var(--content-secondary-brand-bold, #484c51);
+    transition: color 0.3s ease;
+    padding: var(--space-200) var(--space-200);
 }
-.tailGroup:hover .tailBtn {
+/* .tailGroup:hover .tailBtn {
     color: hsl(var(--clr-primary-900));
-}
+} */

@@ -480,7 +480,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                     value={filterName}
                     onChange={(e) => setFilterName(e.target.value)}
                     size="36"
-                    errorText={errorText}
                 />
             </Modal>
         </>

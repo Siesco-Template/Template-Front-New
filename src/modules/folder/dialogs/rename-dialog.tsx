@@ -5,7 +5,8 @@ import S_Button from '@/ui/button';
 import Modal from '@/ui/dialog';
 
 import { FolderItem } from '../types';
-import styles from './style.module.css'
+import styles from './style.module.css';
+
 interface RenameDialogProps {
     item: FolderItem;
     open: boolean;
@@ -51,13 +52,14 @@ export function RenameDialog({ item, open, onOpenChange, onRename }: RenameDialo
                         disabled={!newName.trim() || newName === item.name}
                         variant="primary"
                         color="primary"
+                        onClick={handleSubmit}
                     >
                         Ok
                     </S_Button>
                 </div>
             }
         >
-            <form onSubmit={handleSubmit} className="!space-y-4">
+            <form className="!space-y-4">
                 <div className="">
                     <label htmlFor="name" className={styles.title}>
                         {item.type === 'folder' ? 'Qovluq adı' : 'Fayl adı'}

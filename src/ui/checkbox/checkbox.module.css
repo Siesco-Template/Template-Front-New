@@ -8,7 +8,6 @@
 [data-part='root'] [data-part='control'] {
     border-style: solid;
     border-color: var(--border-brand, #0d3caf);
-    background: var(--background-primary, #fff);
     transition: all 0.2s ease-in-out;
 }
 

@@ -4,7 +4,7 @@
     font-style: normal;
     font-weight: 600;
     line-height: var(--lh-14, 14px); /* 116.667% */
-    margin-bottom: 4px;
+    margin-bottom: var(--size-100);
 }
 
 .key {
