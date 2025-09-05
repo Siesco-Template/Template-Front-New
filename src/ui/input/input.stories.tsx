@@ -1,19 +1,20 @@
-import { ChangeEvent, useState } from 'react';
+import React from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 import { EyeIcon, SearchIcon } from 'lucide-react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import S_Input, { type I_InputProps, type InputSize } from './index';
+import S_Input, { type I_InputProps, type InputSize, type InputState } from './index';
 
-const sizes: InputSize[] = ['36', '44', '48', '52'];
+const sizes: InputSize[] = ['32', '36', '44', '48', '52'];
+const states: InputState[] = ['default', 'error', 'success'];
 
 const meta: Meta<typeof S_Input> = {
     title: 'UI/Input',
     component: S_Input,
     tags: ['autodocs'],
     args: {
-        inputSize: '36',
         placeholder: 'Type here...',
         label: '',
         description: '',
@@ -21,12 +22,14 @@ const meta: Meta<typeof S_Input> = {
         icon: undefined,
         iconPosition: 'right',
         disabled: false,
-        errorText: '',
         type: 'text',
         autoComplete: 'off',
+        size: '36',
+        state: 'default',
     } as I_InputProps,
     argTypes: {
         size: { control: 'inline-radio', options: sizes },
+        state: { control: 'inline-radio', options: states },
         iconPosition: { control: 'inline-radio', options: ['left', 'right'] },
         type: {
             control: 'select',
@@ -62,7 +65,7 @@ export const WithLabelAndDetails: Story = {
     },
 };
 
-/** With helper description under the field (no error) */
+/** With helper description under the field (informational) */
 export const WithDescription: Story = {
     args: {
         label: 'Email',
@@ -72,12 +75,23 @@ export const WithDescription: Story = {
     },
 };
 
-/** Error state (HelperText switches to errorText) */
+/** Error state (use `state="error"` and show message via `description`) */
 export const ErrorState: Story = {
     args: {
         label: 'Username',
-        errorText: 'Username is already taken',
+        state: 'error',
+        description: 'Username is already taken',
         placeholder: 'choose-unique-name',
+    },
+};
+
+/** Success state (style only; description is optional) */
+export const SuccessState: Story = {
+    args: {
+        label: 'Username',
+        state: 'success',
+        description: 'Great choice!',
+        placeholder: 'unique-name',
     },
 };
 
@@ -104,7 +118,6 @@ export const WithIconLeft: Story = {
 /** Password input with eye icon (demo icon click handler) */
 export const PasswordWithIcon: Story = {
     render: (args) => {
-        // demo-only: toggles local password visibility
         const [visible, setVisible] = useState(false);
         return (
             <S_Input
@@ -143,7 +156,7 @@ export const SizesShowcase: Story = {
         return (
             <div style={{ display: 'grid', gap: 12, width: 360 }}>
                 {sizes.map((sz) => (
-                    <S_Input key={sz} {...args} label={`Size ${sz}`} size={sz} placeholder={`inputSize="${sz}"`} />
+                    <S_Input key={sz} {...args} label={`Size ${sz}`} size={sz} placeholder={`size="${sz}"`} />
                 ))}
             </div>
         );
@@ -154,9 +167,8 @@ export const SizesShowcase: Story = {
 export const Controlled: Story = {
     render: (args) => {
         const [value, setValue] = useState('');
-        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-            setValue(e.target.value);
-        };
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
+
         return (
             <div style={{ width: 360 }}>
                 <S_Input

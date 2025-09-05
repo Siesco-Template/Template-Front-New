@@ -50,12 +50,12 @@
     outline: none;
     transition: all 0.2s ease-in-out;
 
-    color: var(--content-secondary, #333);
+    color: var(--content-tertiary, #666);
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-20, 20px);
-    border: 1px solid transparent;
+    border: 1px solid var(--border-tertiary, #ccc);
 }
 
 .inputContainer .input::placeholder {
@@ -68,7 +68,8 @@
 }
 
 .inputContainer .input:not(:disabled):not(:focus-within):hover {
-    background: var(--background-disabled, #f3f3f3);
+    background: var(--background-secondary, #f3f3f3);
+    color: var(--content-secondary, #333);
 }
 
 .inputContainer .input:not(:disabled):not(:focus-within):hover::placeholder {
@@ -78,6 +79,7 @@
 .inputContainer .input:focus-within {
     border: 1px solid var(--border-brand, #0d3caf);
     background: var(--background-primary, #fff);
+    color: var(--content-tertiary, #666);
 }
 
 .inputContainer .input:focus-within::placeholder {
@@ -87,14 +89,21 @@
 .inputContainer .input:not(:focus):not(:placeholder-shown):not(.error) {
     border: 1px solid var(--border-tertiary, #ccc);
     background: var(--background-secondary, #f3f3f3);
+    color: var(--content-secondary, #333);
 }
+
+.inputContainer .input:not(:focus):not(:placeholder-shown):not(.error)::placeholder {
+    color: var(--content-secondary, #333);
+}
+
+/* ------------------------------ */
 
 .inputContainer .input:disabled {
     background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
+    border: 1px solid var(--border-disabled, #ccc);
 }
 .inputContainer .input:disabled::placeholder {
-    background: var(--background-disabled, #f3f3f3);
     color: var(--content-disabled, #a6a6a6);
 }
 
@@ -103,17 +112,33 @@
     border: 1px solid var(--border-negative, #f44336);
 }
 
+.inputContainer .input.success {
+    background: var(--background-primary, #fff);
+    border: 1px solid var(--border-positive, #38c172);
+}
+
 /* Size */
+.input.size-32 {
+    height: 32px;
+    border-radius: var(--br-2xl, 12px);
+    padding: var(--space-300, 8px);
+}
+.input.size-32.icon-position-right {
+    padding-right: var(--space-650, 40px);
+}
+.input.size-32.icon-position-left {
+    padding-left: var(--space-650, 40px);
+}
+
 .input.size-36 {
     border-radius: var(--br-2xl, 12px);
-    /* padding: var(--space-300, 8px); */
-    padding: 8px;
+    padding: var(--space-300, 8px);
 }
 .input.size-36.icon-position-right {
-    padding-right: 40px;
+    padding-right: var(--space-650, 40px);
 }
 .input.size-36.icon-position-left {
-    padding-left: 40px;
+    padding-left: var(--space-650, 40px);
 }
 
 .input.size-44 {
@@ -122,10 +147,10 @@
     padding: var(--space-400, 14px) var(--space-450, 16px);
 }
 .input.size-44.icon-position-right {
-    padding-right: 40px;
+    padding-right: var(--space-650, 40px);
 }
 .input.size-44.icon-position-left {
-    padding-left: 40px;
+    padding-left: var(--space-650, 40px);
 }
 
 .input.size-48 {
@@ -133,10 +158,10 @@
     padding: var(--space-400, 14px) var(--space-450, 16px);
 }
 .input.size-48.icon-position-right {
-    padding-right: 40px;
+    padding-right: var(--space-650, 40px);
 }
 .input.size-48.icon-position-left {
-    padding-left: 40px;
+    padding-left: var(--space-650, 40px);
 }
 
 .input.size-52 {
@@ -145,10 +170,10 @@
     padding: var(--space-450, 16px);
 }
 .input.size-52.icon-position-right {
-    padding-right: 40px;
+    padding-right: var(--space-650, 40px);
 }
 .input.size-52.icon-position-left {
-    padding-left: 40px;
+    padding-left: var(--space-650, 40px);
 }
 
 /* Icon */
@@ -184,10 +209,10 @@
     color: var(--content-disabled, #a6a6a6);
 }
 
-.errorText {
+.root:has(.input:not(:disabled).error) .helperText {
     color: var(--content-negative, #f44336);
-    font-size: var(--fs-10, 10px);
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--lh-12, 12px);
+}
+
+.root:has(.input:not(:disabled).success) .helperText {
+    color: var(--content-positive, #38c172);
 }
