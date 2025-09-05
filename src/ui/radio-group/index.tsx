@@ -2,8 +2,6 @@ import { FC } from 'react';
 
 import { RadioGroup as RGroup, RadioGroupRootProps } from '@ark-ui/react/radio-group';
 
-import { cls } from '@/shared/utils';
-
 import styles from './radio-group.module.css';
 
 export type RadioGroupSize = '14' | '16' | '20';
@@ -37,7 +35,7 @@ const S_RadioGroup: FC<I_RadioGroupProps> = ({
     ...props
 }) => {
     return (
-        <RGroup.Root className={className} data-orientation={orientation} {...props}>
+        <RGroup.Root className={className} data-orientation={orientation} data-size={size} {...props}>
             {label && <RGroup.Label>{label}</RGroup.Label>}
 
             <div className={styles.itemsWrapper}>
@@ -49,7 +47,7 @@ const S_RadioGroup: FC<I_RadioGroupProps> = ({
                     const disabled = typeof item !== 'string' && item?.disabled;
 
                     return (
-                        <RGroup.Item key={value} value={value} disabled={disabled} className={styles[`size-${size}`]}>
+                        <RGroup.Item key={value} value={value} disabled={disabled}>
                             <RGroup.ItemControl />
                             <RGroup.ItemText>{itemLabel}</RGroup.ItemText>
                             <RGroup.ItemHiddenInput />

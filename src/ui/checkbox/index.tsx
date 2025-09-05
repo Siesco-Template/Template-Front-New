@@ -1,10 +1,8 @@
 import { FC } from 'react';
 
 import { Checkbox, CheckboxLabelProps, CheckboxRootProps } from '@ark-ui/react/checkbox';
-import { Remove } from '@mui/icons-material';
 
-import { TickIconn } from '@/shared/icons';
-import { cls } from '@/shared/utils';
+import { MinusIcon, TickIconn } from '@/shared/icons';
 
 import styles from './checkbox.module.css';
 
@@ -32,23 +30,17 @@ const S_Checkbox: FC<I_CheckboxProps> = ({
     return (
         <Checkbox.Root
             {...props}
-            className={cls(styles.checkbox, disabled && styles.disabled, className)}
+            className={className}
             data-size={size}
             disabled={disabled}
             checked={checked}
             onCheckedChange={onCheckedChange}
         >
-            <Checkbox.Control data-part="control" className={styles.control}>
-                <Checkbox.Indicator data-part="indicator" className={styles.indicator}>
-                    {indeterminate ? <Remove /> : <TickIconn width="currentWidth" />}
-                </Checkbox.Indicator>
+            <Checkbox.Control>
+                <Checkbox.Indicator>{indeterminate ? <MinusIcon /> : <TickIconn />}</Checkbox.Indicator>
             </Checkbox.Control>
 
-            {label && (
-                <Checkbox.Label data-part="label" className={styles.label} {...labelProps}>
-                    {label}
-                </Checkbox.Label>
-            )}
+            {label && <Checkbox.Label {...labelProps}>{label}</Checkbox.Label>}
 
             <Checkbox.HiddenInput className={styles.hiddenInputFixed} />
         </Checkbox.Root>
