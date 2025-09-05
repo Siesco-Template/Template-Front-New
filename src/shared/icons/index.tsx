@@ -67,6 +67,7 @@ import MenuLineHorizontalIcon from './menu-line-horizontal.svg?react';
 import MenuNotificationIcon from './menu-notification.svg?react';
 import MenuReportIcon from './menu-report.svg?react';
 import MenuIcon from './menuIcon.svg?react';
+import MinusIcon from './minus.svg?react';
 import MoreVerticalIcon from './more-vertical.svg?react';
 import MoreIcon from './moreIcon.svg?react';
 import NotesIcon from './notes.svg?react';
@@ -215,4 +216,5 @@ export {
     DragIcon,
     EyeSlashIcon,
     MenuLineHorizontalIcon,
+    MinusIcon,
 };

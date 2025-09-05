@@ -43,7 +43,6 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease-in-out;
-    position: relative;
 }
 
 [data-part='item'] [data-part='item-text'] {
