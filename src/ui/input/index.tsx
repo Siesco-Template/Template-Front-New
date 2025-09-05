@@ -6,7 +6,9 @@ import { cls } from '@/shared/utils';
 
 import styles from './input.module.css';
 
-export type InputSize = '36' | '44' | '48' | '52';
+export type InputSize = '32' | '36' | '44' | '48' | '52';
+
+export type InputState = 'default' | 'error' | 'success';
 export interface I_InputProps extends Omit<Field.InputProps, 'size'> {
     label?: string;
     labelProps?: Field.LabelProps;
@@ -14,12 +16,12 @@ export interface I_InputProps extends Omit<Field.InputProps, 'size'> {
     detailsProps?: DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
     description?: string;
     descriptionProps?: Field.HelperTextProps;
-    errorText?: string;
     size?: InputSize;
     rootProps?: Field.RootProps;
     icon?: any;
     iconPosition?: 'left' | 'right';
     onClickIcon?: () => void;
+    state?: InputState;
 }
 
 const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
@@ -31,26 +33,25 @@ const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
         detailsProps,
         description,
         descriptionProps,
-        errorText,
         className,
         rootProps,
         autoComplete = 'off',
         icon,
         iconPosition = 'right',
         onClickIcon,
+        state = 'default',
         ...inputProps
     } = props;
-    const isError = errorText ? 'true' : 'false';
 
     const inputClasses = cls(
         styles.input,
         styles[`size-${size}`],
         icon && styles['icon-position-' + iconPosition],
-        errorText && styles.error
+        state !== 'default' && styles[state]
     );
 
     return (
-        <Field.Root {...rootProps} aria-invalid={isError} className={cls(styles.root, className)}>
+        <Field.Root {...rootProps} aria-invalid={state === 'error'} className={cls(styles.root, className)}>
             {(label || details) && (
                 <div className={styles.inputHeader}>
                     {label && (
@@ -92,14 +93,9 @@ const S_Input = forwardRef<HTMLInputElement, I_InputProps>((props, ref) => {
                 )}
             </div>
 
-            {!errorText && description && (
+            {description && (
                 <Field.HelperText {...descriptionProps} className={cls(styles.helperText, descriptionProps?.className)}>
                     {description}
-                </Field.HelperText>
-            )}
-            {errorText && (
-                <Field.HelperText className={cls(styles.errorText, descriptionProps?.className)}>
-                    {errorText}
                 </Field.HelperText>
             )}
         </Field.Root>
