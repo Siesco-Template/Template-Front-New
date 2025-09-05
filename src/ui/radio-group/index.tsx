@@ -6,6 +6,8 @@ import { cls } from '@/shared/utils';
 
 import styles from './radio-group.module.css';
 
+export type RadioGroupSize = '14' | '16' | '20';
+
 interface IRadioGroupItemValue {
     id: string | number;
     label: string | number;
@@ -23,19 +25,22 @@ interface I_RadioGroupProps extends RadioGroupRootProps {
     label?: string;
     className?: string;
     orientation?: 'horizontal' | 'vertical';
+    size?: RadioGroupSize;
 }
 
-const S_RadioGroup: FC<I_RadioGroupProps> = ({ label, groupData, className, orientation = 'vertical', ...props }) => {
+const S_RadioGroup: FC<I_RadioGroupProps> = ({
+    label,
+    groupData,
+    className,
+    orientation = 'vertical',
+    size,
+    ...props
+}) => {
     return (
-        <div className={cls(styles.wrapper, className)}>
-            {label && <label className={styles.label}>{label}</label>}
+        <RGroup.Root className={className} data-orientation={orientation} {...props}>
+            {label && <RGroup.Label>{label}</RGroup.Label>}
 
-            <RGroup.Root
-                className={cls(styles.radioGroup)}
-                data-orientation={orientation}
-                orientation={orientation}
-                {...props}
-            >
+            <div className={styles.itemsWrapper}>
                 {groupData.map((item) => {
                     const value =
                         typeof item === 'string' ? item : 'id' in item ? item.id.toString() : item.value.toString();
@@ -44,15 +49,15 @@ const S_RadioGroup: FC<I_RadioGroupProps> = ({ label, groupData, className, orie
                     const disabled = typeof item !== 'string' && item?.disabled;
 
                     return (
-                        <RGroup.Item key={value} value={value} disabled={disabled}>
+                        <RGroup.Item key={value} value={value} disabled={disabled} className={styles[`size-${size}`]}>
                             <RGroup.ItemControl />
                             <RGroup.ItemText>{itemLabel}</RGroup.ItemText>
                             <RGroup.ItemHiddenInput />
                         </RGroup.Item>
                     );
                 })}
-            </RGroup.Root>
-        </div>
+            </div>
+        </RGroup.Root>
     );
 };
 
