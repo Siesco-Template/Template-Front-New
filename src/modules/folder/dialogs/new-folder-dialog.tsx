@@ -94,10 +94,9 @@ export function NewFolderDialog({ open, onOpenChange, onSubmit }: NewFolderDialo
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         disabled={isLoading}
                         maxLength={100}
-                        errorText={error}
                         autoFocus
                     />
-                    {/* {error && <div className="!text-red-500 !text-sm !mt-2">{error}</div>} */}
+                    {error && <div className="!text-red-500 !text-sm !mt-2">{error}</div>}
                 </div>
                 <div>
                     <div className={styles.title}>Qovluq iconu</div>

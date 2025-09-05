@@ -1,10 +1,8 @@
 .container {
     display: flex;
     align-items: center;
-
     padding: var(--space-200, 4px) var(--space-250, 12px);
     gap: var(--space-250, 12px);
-
     border-radius: var(--br-2xl, 12px);
     background: var(--background-secondary-brand, #ecedee);
     height: var(--wh-375);
@@ -12,7 +10,7 @@
 
 /* Home button + icon (group hover) */
 .homeBtn {
-    padding: 10px;
+    padding: 6px;
 }
 .homeIcon {
     color: var(--content-secondary-brand-bold);

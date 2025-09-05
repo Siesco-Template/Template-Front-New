@@ -14,12 +14,12 @@
     align-items: center;
     cursor: pointer;
     user-select: none;
-    background: hsl(var(--clr-white-50));
-    height: var(--wh-400);
+    height: 40px;
+    transition: all 0.3s ease;
 }
 
 .treeRow:hover:not(.treeRowSelected) {
-    background: hsl(var(--clr-white-200));
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .treeRowSelected {
@@ -38,32 +38,41 @@
 
 /* tree: icon size */
 .iconTree {
-    width: var(--wh-200);
-    height: var(--wh-200);
+    width: 20px;
+    height: 20px;
 }
 
 /* tree: title + columns */
 .treeName {
-    color: hsl(var(--clr-primary-900));
-    font-size: var(--fs-50);
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-14, 14px); /* 116.667% */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-left: var(--pm-150);
+    margin-left: 12px;
 }
 .treeType {
-    font-size: var(--fs-50);
-    color: hsl(var(--clr-primary-900));
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
     text-align: center;
-    width: var(--wh-500);
-    padding: 0 var(--pm-200);
+    width: 64px;
+    padding: 0 4px;
 }
 .treeDate {
-    font-size: var(--fs-50);
-    color: hsl(var(--clr-primary-900));
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
     text-align: center;
-    width: var(--wh-550);
-    padding: 0 var(--pm-200);
+    width: 128px;
+    padding: 0 4px;
 }
 
 /* —— list/small/medium/large item shells —— */
@@ -125,16 +134,16 @@
 
 /* common grid item container */
 .gridItem {
-    border-radius: var(--r-100);
+    border-radius: 4px;
     cursor: pointer;
     user-select: none;
     height: fit-content;
 }
 .gridItem:hover {
-    background: hsl(var(--clr-white-200));
+    background: var(--background-secondary, #f3f3f3);
 }
 .gridItemSelected {
-    background: hsl(var(--clr-white-200));
+    background: var(--background-selected, #e7eefd);
 }
 
 /* item name (grid) */
@@ -205,49 +214,54 @@
 .treeWrap {
     min-width: 100%;
     overflow: auto;
-    padding-right: var(--pm-400);
+    padding-right: 8px;
 }
 .treeHeader {
     display: flex;
     align-items: center;
-    padding: var(--pm-200) 0;
+    padding: 4px 0;
     position: sticky;
     top: 0;
     z-index: 0;
-    background: hsl(var(--clr-white-50));
 }
 
 .treeHeaderName {
-    font-size: var(--fs-50);
-    font-weight: 500;
-    color: hsl(var(--clr-grey-600));
-    padding: var(--pm-200);
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+    padding: 6px;
     display: block;
 }
 .treeHeaderNameFlex {
     flex: 1 1 auto;
 }
 .treeHeaderType {
-    font-size: var(--fs-50);
-    font-weight: 500;
-    color: hsl(var(--clr-grey-600));
-    padding: var(--pm-200);
-    width: var(--wh-500);
+    color: var(--content-secondary, #333);
+    font-size: var(--fa-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+    padding: 6px;
+    width: 64px;
     display: block;
 }
 .treeHeaderDate {
-    font-size: var(--fs-50);
-    font-weight: 500;
-    color: hsl(var(--clr-grey-600));
-    padding: var(--pm-200);
-    width: var(--wh-550);
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
+    padding: 4px;
+    width: 128px;
     display: block;
 }
 
 /* —— non-tree grid wrapper —— */
 .gridWrap {
     display: flex;
-    gap: var(--pm-300);
+    gap: 6px;
     position: relative;
     overflow: auto;
     flex-wrap: wrap;

@@ -25,13 +25,11 @@
     transition: all 0.3s ease;
 }
 
-/* :focus utilities */
 .item:focus:not(.itemSelected) {
     background: var(--background-secondary, #f3f3f3);
     color: var(--content-primary, #1a1a1a);
 }
 
-/* Selected state (mode === currentMode) */
 .itemSelected {
     background: var(--background-selected, #e7eefd);
     color: var(--content-brand, #0d3caf);

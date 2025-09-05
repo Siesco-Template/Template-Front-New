@@ -74,7 +74,7 @@ export function NewFileDialog({ open, onOpenChange, onSubmit, itemToCopy }: NewF
                         variant="primary"
                         color="primary"
                         type="submit"
-                        onSubmit={handleSubmit}
+                        onClick={handleSubmit}
                         disabled={!formData?.name?.trim() || !formData?.surname?.trim() || !formData?.email?.trim()}
                     >
                         Təsdiqlə
