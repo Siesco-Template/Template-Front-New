@@ -1,9 +1,12 @@
+import { visualizer } from 'rollup-plugin-visualizer';
+
 import path from 'path';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
-import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+
 export default defineConfig({
     plugins: [
         svgr({
@@ -11,9 +14,14 @@ export default defineConfig({
         }),
         react(),
         tailwindcss(),
+        visualizer({
+            open: false,
+            gzipSize: true,
+            brotliSize: true,
+        }),
     ],
     server: {
-        open: '/', 
+        open: '/',
     },
     build: {
         target: 'esnext',

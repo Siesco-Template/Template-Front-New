@@ -116,6 +116,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSummary: true,
         },
         {
+            accessorKey: 'Organization.ShortName',
+            header: 'Short Name',
+            filterVariant: 'text',
+            placeholder: 'Short Name',
+            enableSummary: true,
+        },
+        {
             accessorKey: 'CompileDate',
             header: 'Tərtib tarixi',
             // @ts-expect-error
@@ -257,12 +264,9 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         setFiltersReady(true);
     }, []);
 
-    console.log(config, 'config in table');
-
     const fetchData = useCallback(
         (isLoadMore = false, reason: string = 'unknown') => {
             setLoading(true);
-            console.log('[fetchData] GO. isLoadMore=', isLoadMore, 'reason=', reason);
 
             const raw: any = filterDataForFetch();
             const nextPage = isLoadMore ? currentPage + 1 : 1;
@@ -300,15 +304,32 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 .then((res: any) => {
                     if (isInfinite) {
                         if (isLoadMore) {
-                            setData((prev) => [...prev, ...res.items]);
+                            const items = res.items;
+                            const newItems = items.map((item: any, index: number) => ({
+                                ...item,
+                                'Organization.ShortName': item['ShortName'],
+                            }));
+                            setData((prev) => [...prev, ...newItems]);
                             setCurrentPage(nextPage);
                         } else {
-                            setData(res.items);
+                            const items = res.items;
+                            const newItems = items.map((item: any, index: number) => ({
+                                ...item,
+                                'Organization.ShortName': item['ShortName'],
+                            }));
+                            setData(newItems);
                             setCurrentPage(1);
                         }
                         console.log('[fetchData] infinite branch');
                     } else {
-                        setData(res.items);
+                        const newItems = res.items.map((item: any, index: number) => ({
+                            ...item,
+                            // 'Organization.ShortName': item['ShortName'],
+                            Organization: {
+                                ShortName: item['ShortName'],
+                            },
+                        }));
+                        setData(newItems);
                     }
                     setTotalItems(res.totalCount);
                 })
@@ -338,7 +359,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     }, [colVisJson, filtersReady]);
 
     useEffect(() => {
-        if (!allowFetchRef.current) return; 
+        if (!allowFetchRef.current) return;
         fetchData(false, 'url-change');
     }, [location.search, hashKey]);
 
@@ -346,6 +367,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
+    console.log(data);
 
     return (
         <>

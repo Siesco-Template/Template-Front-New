@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Checkbox, CheckboxLabelProps, CheckboxRootProps } from '@ark-ui/react/checkbox';
 
 import { MinusIcon, TickIconn } from '@/shared/icons';
+import { cls } from '@/shared/utils';
 
 import styles from './checkbox.module.css';
 
@@ -30,7 +31,7 @@ const S_Checkbox: FC<I_CheckboxProps> = ({
     return (
         <Checkbox.Root
             {...props}
-            className={className}
+            className={cls(styles.checkbox, className)}
             data-size={size}
             disabled={disabled}
             checked={checked}

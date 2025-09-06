@@ -44,10 +44,12 @@ const S_Button: FC<I_ButtonComponentProps> = ({
     const [fixedWidth, setFixedWidth] = useState<number | undefined>();
 
     useEffect(() => {
-        if (btnRef.current && !fixedWidth) {
+        if (btnRef.current) {
             setFixedWidth(btnRef.current.offsetWidth);
         }
-    }, [btnRef?.current]);
+    }, [btnRef?.current, children]);
+
+    console.log('fixedWidth', fixedWidth);
 
     const buttonClasses = cls(
         styles.btn,

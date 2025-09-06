@@ -8,6 +8,8 @@ import {
     SwitchThumbProps,
 } from '@ark-ui/react/switch';
 
+import { cls } from '@/shared/utils';
+
 import styles from './switch.module.css';
 
 type SwitchSize = '14' | '16' | '20';
@@ -33,7 +35,7 @@ const S_Switch: FC<I_SwitchProps> = ({
     ...props
 }) => {
     return (
-        <S.Root className={className} data-size={size} {...props}>
+        <S.Root className={cls(styles.switch, className)} data-size={size} {...props}>
             {label && labelPosition === 'left' && <S.Label {...labelProps}>{label}</S.Label>}
             <S.Control {...controlProps}>
                 <S.Thumb {...thumbProps} />
