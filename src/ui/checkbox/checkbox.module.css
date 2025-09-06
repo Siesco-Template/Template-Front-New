@@ -67,6 +67,10 @@
     stroke: var(--content-brand) !important;
 }
 
+[data-part='root'][data-state='checked']:not([data-disabled]):active [data-part='label'] {
+    color: var(--content-tertiary, #666) !important;
+}
+
 /* State-Disabled */
 [data-part='root'][data-disabled] [data-part='control'] {
     border-color: var(--border-disabled, #ccc);
