@@ -12,7 +12,7 @@ type CustomDatePickerProps = Omit<DatePickerProps, 'as'> & {
 export default function CustomDatePicker(props: CustomDatePickerProps) {
     const { error, label, style, ...rest } = props;
 
-    console.log(error, 'error');
+    // console.log(error, 'error');
     return (
         <div className={styles.wrapper}>
             {label && <label className={styles.label}>{label}</label>}

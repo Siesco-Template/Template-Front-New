@@ -188,7 +188,7 @@ export default function PersonalizationMenu() {
             >
                 <SortableContext items={links.map((l) => l.id!)} strategy={verticalListSortingStrategy}>
                     {links.map((section) => (
-                        <div key={section.id} style={{ marginBottom: '16px' }}>
+                        <div key={section.id} style={{ marginBottom: '14px' }}>
                             <SortableItem
                                 item={section}
                                 level={0}

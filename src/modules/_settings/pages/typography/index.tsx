@@ -106,7 +106,7 @@ const Typography = () => {
                         <p>Başlıqların və keçidlərin vizual vurğusunu tənzimləyin.</p>
                     </div>
                     <div className={styles.switchesContainer}>
-                        <div>
+                        <div style={{ borderBottom: '1px solid var(--background-tertiary)' }}>
                             <span>Başlıqları vurğula</span>
                             <S_Switch size="20" checked={highlightTitles} onCheckedChange={toggleHighlightTitles} />
                         </div>

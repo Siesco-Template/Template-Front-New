@@ -16,6 +16,7 @@ import { inputDescriptionStyles } from '../components/input/input.styles';
 import IconDefault from '../shared/icons/validation default.svg?react';
 import IconError from '../shared/icons/validation error.svg?react';
 import IconSuccess from '../shared/icons/validation success.svg?react';
+import { showToast } from '@/ui/toast/showToast';
 
 interface IData {
     userId: string;
@@ -104,7 +105,7 @@ const ResetUserPasswordModal = ({
                 throw new Error('Əməliyyat uğursuz oldu');
             }
             handleClose();
-            toast.success('Şifrə uğurla sıfırlandı');
+            showToast({'Şifrə uğurla sıfırlandı', 'success'});
         } catch (error) {
             toast.error('Əməliyyat uğursuz oldu');
             console.error(error);

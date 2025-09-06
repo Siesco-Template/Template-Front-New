@@ -39,28 +39,30 @@ export default function SortableItem({ item, level = 0, onToggleVisible, contain
             tabIndex={0}
             aria-label={`Drag to reorder ${item.title}`}
         >
-            <div className="flex items-center gap-2">
-                <span {...listeners} role="button" tabIndex={0} aria-label="Drag handle">
-                    <DragIcon width={16} height={16} color="var(--content-tertiary)" />
-                </span>
-                <span className={cls(styles.label, labelClassName)}>{item.title}</span>
-            </div>
+            <div className={styles.submenuItem}>
+                <div className="flex items-center gap-2">
+                    <span {...listeners} role="button" tabIndex={0} aria-label="Drag handle">
+                        <DragIcon width={16} height={16} color="var(--content-tertiary)" />
+                    </span>
+                    <span className={cls(styles.label, labelClassName)}>{item.title}</span>
+                </div>
 
-            {item.show ? (
-                <EyeIcon
-                    width={15}
-                    height={15}
-                    color="var(--content-brand)"
-                    onClick={() => item.id && onToggleVisible(item.id)}
-                />
-            ) : (
-                <EyeSlashIcon
-                    width={15}
-                    height={15}
-                    color="var(--content-brand)"
-                    onClick={() => item.id && onToggleVisible(item.id)}
-                />
-            )}
+                {item.show ? (
+                    <EyeIcon
+                        width={15}
+                        height={15}
+                        color="var(--content-brand)"
+                        onClick={() => item.id && onToggleVisible(item.id)}
+                    />
+                ) : (
+                    <EyeSlashIcon
+                        width={15}
+                        height={15}
+                        color="var(--content-brand)"
+                        onClick={() => item.id && onToggleVisible(item.id)}
+                    />
+                )}
+            </div>
         </div>
     );
 }

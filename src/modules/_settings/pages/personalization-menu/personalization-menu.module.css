@@ -24,7 +24,7 @@
 
 .sortableItem {
     display: flex;
-    padding: 16px;
+    padding: 10px 16px;
     justify-content: space-between;
     align-items: center;
     align-self: stretch;
@@ -62,4 +62,15 @@
 .subLinksContainer {
     max-height: 200px;
     overflow-y: auto;
+}
+
+.submenuItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle, #ebebeb);
+    background: var(--background-primary, #fff);
 }
