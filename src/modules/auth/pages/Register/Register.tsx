@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import { authService } from '../../services/auth.service';
 import RegisterForm from './RegisterForm';
@@ -56,11 +58,10 @@ const Register = () => {
                 ...data,
             });
 
-            toast.success('Uğurla qeydiyyatdan keçdiniz');
+            showToast({ label: 'Uğurla qeydiyyatdan keçdiniz', type: 'success' });
             setIsFinish(true);
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Qeydiyyat uğursuz oldu');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Qeydiyyat uğursuz oldu', type: 'success' });
         } finally {
             setLoading(false);
         }

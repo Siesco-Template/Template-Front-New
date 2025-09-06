@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+
 import LockIcon from '../../shared/icons/lock.svg?react';
 import WarningIcon from '../../shared/icons/warning-error.svg?react';
 import { useCountdownToDate, useFormattedTimer } from '../../utils/hooks/Countdown';
 
-const exampleDate = new Date(Date.now() + 8 * 60 * 60 * 1000); // for test
+const exampleDate = new Date(Date.now() + 8 * 60 * 60 * 1000);
 
 enum BlockReason {
     MultipleFailedLogin = 1,
@@ -63,11 +63,9 @@ const BlockUser = () => {
             <div className="w-full !p-[20px] bg-[#FFF] rounded-[16px] flex flex-col gap-[20px]">
                 <p className="w-full text-center text-[#05194AB3] leading-[21px]">{getBlockNote()}</p>
 
-                <Link to={APP_URLS.login()} className="w-full">
-                    <Button type="button" variant="secondary" className="w-full">
-                        Giriş səhifəsinə qayıt
-                    </Button>
-                </Link>
+                <S_Button type="button" variant="primary" color="secondary" as="link" to={APP_URLS.login()}>
+                    Giriş səhifəsinə qayıt
+                </S_Button>
             </div>
         </div>
     );

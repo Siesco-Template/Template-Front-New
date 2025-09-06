@@ -6,7 +6,6 @@ import { Table } from '@/shared/table';
 import { TableProvider } from '@/shared/table/table-context';
 import Table_Header from '@/shared/table/table-header';
 
-import TableOptions from '../../components/TableOptions/TableOptions';
 import BlockUserModal from '../../modals/BlockUserModal';
 import EditUserModal from '../../modals/EditUserModal';
 import ResetUserPasswordModal from '../../modals/ResetUserPasswordModal';
@@ -187,7 +186,7 @@ const AdminAuth = () => {
             </TableProvider>
 
             <div className="admin__users--auth">
-                <TableOptions
+                {/* <TableOptions
                     id={optionID}
                     top={Math.floor(optionPosition.top)}
                     left={Math.floor(optionPosition.left)}
@@ -206,7 +205,7 @@ const AdminAuth = () => {
                         setOptionID(null);
                     }}
                     isBlock={data?.find((item: any) => item?.id == optionID)?.isBlock}
-                />
+                /> */}
 
                 <BlockUserModal
                     blockDataID={blockDataID}
@@ -232,15 +231,6 @@ const AdminAuth = () => {
                     }}
                     refreshData={() => getAllUsers()}
                 />
-
-                {/* <ResetUserPasswordWithEmailModal
-          resetPasswordDataID={resetPasswordDataID}
-          closeModal={() => {
-            setResetPasswordDataID(null)
-          }}
-          refreshData={() => getAllUsers()}
-          email={data?.find((item: any) => item?.id == resetPasswordDataID)?.email}
-        /> */}
             </div>
         </>
     );

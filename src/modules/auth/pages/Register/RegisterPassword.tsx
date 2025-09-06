@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+
 import InputPassword from '../../components/input/input.password';
 import { inputDescriptionStyles } from '../../components/input/input.styles';
 import IconDefault from '../../shared/icons/validation default.svg?react';
@@ -154,12 +155,18 @@ const RegisterPassword = ({ onPrevStep, onRegister, initialData, loading }: Regi
             </div>
 
             <div className="w-full flex items-center gap-[12px] !mt-[24px]">
-                <Button type="button" variant="secondary" className="w-full flex-1" onClick={handlePrevStep}>
+                <S_Button
+                    type="button"
+                    variant="primary"
+                    color="secondary"
+                    className="w-full flex-1"
+                    onClick={handlePrevStep}
+                >
                     Əvvəlki səhifəyə qayıt
-                </Button>
-                <Button type="submit" variant="primary" className="w-full flex-1" loading={loading}>
+                </S_Button>
+                <S_Button type="submit" variant="primary" color="primary" className="w-full flex-1" isLoading={loading}>
                     Təsdiqlə
-                </Button>
+                </S_Button>
             </div>
         </form>
     );

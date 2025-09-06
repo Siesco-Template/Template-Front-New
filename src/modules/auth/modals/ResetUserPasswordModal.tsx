@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../components/Button';
 import {
     Dialog,
@@ -104,9 +106,9 @@ const ResetUserPasswordModal = ({
                 throw new Error('Əməliyyat uğursuz oldu');
             }
             handleClose();
-            toast.success('Şifrə uğurla sıfırlandı');
+            showToast({ label: 'Şifrə uğurla sıfırlandı', type: 'success' });
         } catch (error) {
-            toast.error('Əməliyyat uğursuz oldu');
+            showToast({ label: 'Əməliyyat uğursuz oldu', type: 'error' });
             console.error(error);
         } finally {
             setLoading(false);

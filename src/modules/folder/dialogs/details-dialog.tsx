@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
@@ -33,9 +34,8 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
                 setIsLoading(true);
                 const data = await folderService.getFolderDetail(item?.path || '');
                 setItemDetails(data);
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
             } finally {
                 setIsLoading(false);
             }
@@ -46,9 +46,8 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
                 setIsLoading(true);
                 const data = await folderService.getUserDetail(item?.path || '');
                 setItemDetails(data);
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
             } finally {
                 setIsLoading(false);
             }

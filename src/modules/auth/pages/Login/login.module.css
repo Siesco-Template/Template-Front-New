@@ -3,42 +3,57 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--pm-700);
+    gap: 30px;
 }
 
 .title {
     text-align: center;
-    color: hsl(var(--clr-blue-900));
-    font-size: var(--fs-300);
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-20, 20px);
+    font-style: normal;
     font-weight: 500;
+    line-height: var(--lh-28, 28px); /* 140% */
 }
 
 .subtitle {
     text-align: center;
-    color: hsl(var(--clr-primary-900));
-    font-size: var(--fs-100);
-    line-height: normal;
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .form {
     width: 100%;
     padding: 20px;
-    background-color: hsl(var(--clr-white-50));
-    border-radius: var(--r-400);
+    border-radius: var(--br-3xl);
+    background: var(--background-primary, #fff);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--space-200);
 }
 
 .inputs {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--pm-300)
+    gap: var(--space-300);
 }
 
 .forgotPassword {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-top: var(--pm-100);
+    margin: var(--space-400) 0;
+
+    color: var(--content-brand, #0d3caf);
+    text-align: right;
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .loginButton {

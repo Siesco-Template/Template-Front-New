@@ -7,6 +7,7 @@ import { UserPermissions } from '@/services/permission/permission.service.types'
 
 import S_Pagination from '@/ui/pagination';
 import S_Select_Simple from '@/ui/select/select-simple';
+import { showToast } from '@/ui/toast/showToast';
 
 import PermissionTable from './PermissionTable';
 import styles from './style.module.css';
@@ -42,7 +43,7 @@ function PermissionsPage() {
                 }
 
                 if (!res) {
-                    toast.error('Xəta baş verdi, yenidən cəhd edin');
+                    showToast({ label: 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                     return;
                 }
 
@@ -54,17 +55,15 @@ function PermissionsPage() {
                     setTotalCount(res.totalCount);
                 } else {
                     setTableData([]);
-                    toast.error('Xəta baş verdi, yenidən cəhd edin');
+                    showToast({ label: 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                     return;
                 }
-            } catch (error) {
-                // @ts-expect-error
+            } catch (error: any) {
                 if (error.status === 403) {
-                    toast.error('Bu səhifəyə giriş icazəniz yoxdur.');
+                    showToast({ label: error?.data?.message || 'Bu səhifəyə giriş icazəniz yoxdur.', type: 'error' });
                     return;
                 }
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
             }
         };
         fetchTableRows();

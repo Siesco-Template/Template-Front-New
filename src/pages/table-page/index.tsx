@@ -1,10 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
 
+import { catalogService } from '@/services/catalog/catalog.service';
 import { reportService } from '@/services/reports/reports.service';
 
+import { Folder } from '@/modules/folder';
+import { folderService } from '@/modules/folder/services/folder.service';
+import { FolderItem, ViewMode } from '@/modules/folder/types';
+
+import Catalog from '@/shared/catalog';
 import ConfigPanel from '@/shared/config';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
@@ -17,6 +23,9 @@ import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
 import { useTableConfig } from '@/shared/table/tableConfigContext';
+
+import { S_Button } from '@/ui';
+import Modal from '@/ui/dialog';
 
 import styles from './style.module.css';
 
@@ -72,7 +81,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const allowFetchRef = useRef(false);
 
+    const [isOpen, setIsOpen] = useState(false);
+    const [selected, setSelected] = useState<any | null>(null);
+
     const { loadConfigFromApi, config } = useTableConfig();
+
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<BudceTableData[]>([]);
@@ -83,6 +97,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [currentPage, setCurrentPage] = useState(1);
 
     const [filtersReady, setFiltersReady] = useState(false);
+
+    const [catalogs, setCatalogs] = useState([]);
 
     const handleCustomExport = () => setIsExcelModalOpen(true);
 
@@ -264,6 +280,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         setFiltersReady(true);
     }, []);
 
+    // console.log(config, 'config in table');
+
     const fetchData = useCallback(
         (isLoadMore = false, reason: string = 'unknown') => {
             setLoading(true);
@@ -360,6 +378,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     useEffect(() => {
         if (!allowFetchRef.current) return;
+        if (!allowFetchRef.current) return;
         fetchData(false, 'url-change');
     }, [location.search, hashKey]);
 
@@ -367,14 +386,123 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
-    console.log(data);
 
+    useEffect(() => {
+        catalogService
+            .getCatalogsByTableId('reports')
+            .then((res: any) => {
+                console.log(res, 'response');
+                setCatalogs(res ?? []);
+            })
+            .catch((err: any) => {
+                console.error('Fetch error:', err);
+            });
+    }, [isOpen]);
+
+    const [searchParams] = useSearchParams();
+
+    const [showCatalogView, setShowCatalogView] = useState(false);
+
+    // Folder üçün state-lər
+    const [items, setItems] = useState<FolderItem[]>([]);
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Users');
+    const [viewMode, setViewMode] = useState<ViewMode>('medium');
+
+    // seçilən kataloqu tətbiq et
+    const applyCatalog = (item: any) => {
+        if (!item) return;
+        setSelected(item);
+        setCurrentPath(item.value);
+        setShowCatalogView(true);
+        setIsOpen(false);
+
+        // URL-ə yaz
+        const params = new URLSearchParams(window.location.search);
+        params.set('path', item.value);
+        navigate(`?${params.toString()}`);
+    };
+
+    // Folder data fetch
+    const fetchItems = useCallback(async (path: string) => {
+        try {
+            const data = await folderService.getFoldersAndFiles(path);
+            if (!data) return [];
+
+            const itemsList = [
+                ...data.folders.map((folder: any) => ({
+                    id: crypto.randomUUID(),
+                    name: folder.name,
+                    type: 'folder' as FolderItem['type'],
+                    path: folder.path,
+                    icon: folder.icon,
+                    permissions: {
+                        canView: true,
+                        canEdit: true,
+                        canDelete: true,
+                        canMove: true,
+                        canCopy: true,
+                        canDownload: true,
+                        canComment: true,
+                        canChangeIcon: true,
+                    },
+                    children: [],
+                    createDate: folder.createDate,
+                })),
+                ...data.files.map((file: any) => ({
+                    id: file.id,
+                    name: file.fileName,
+                    type: 'file' as FolderItem['type'],
+                    path: path,
+                    permissions: {
+                        canView: true,
+                        canEdit: true,
+                        canDelete: true,
+                        canMove: true,
+                        canCopy: true,
+                        canDownload: true,
+                        canComment: true,
+                        canChangeIcon: true,
+                    },
+                    createDate: file.createDate,
+                })),
+            ];
+            return itemsList;
+        } catch (err) {
+            console.error('Fetch error:', err);
+            return [];
+        }
+    }, []);
+
+    const handleItemsChange = useCallback(
+        async (path: string) => {
+            const newItems = await fetchItems(path);
+            setItems(newItems);
+        },
+        [fetchItems]
+    );
+
+    // currentPath dəyişəndə URL-ə yaz və data yüklə
+    useEffect(() => {
+        if (currentPath !== searchParams.get('path')) {
+            const params = new URLSearchParams(window.location.search);
+            params.set('path', currentPath);
+            navigate(`?${params.toString()}`);
+        }
+        handleItemsChange(currentPath);
+    }, [currentPath]);
+
+    // searchParams dəyişəndə sync et
+    useEffect(() => {
+        if (searchParams.get('path') !== currentPath) {
+            setCurrentPath(searchParams.get('path') || '/Users');
+        }
+    }, [searchParams]);
     return (
         <>
             <Table_Header
                 columns={columns}
                 data={data}
-                title={'Table Demo'}
+                title={'Demo'}
                 onToggleFilter={onToggleCollapse}
                 onToggleConfig={onToggleConfigCollapse}
                 onRefresh={() => fetchData(false, 'header-refresh')}
@@ -384,84 +512,157 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 table_key="customer_table"
                 notification={isFilterApplied}
                 onClickRightBtn={() => {}}
+                onClickShowAsFolder={() => setIsOpen(true)}
+                isCatalogView={showCatalogView}
             />
 
             <div className={styles.wrapper}>
-                <div
-                    className={styles.tableArea}
-                    style={{ marginRight: (isFilterCollapsed ? 0 : 290) + (isConfigCollapsed ? 0 : 290) + 'px' }}
-                >
-                    <div className={styles.tableScrollWrapper}>
-                        <Table
-                            columns={columns}
-                            data={data}
-                            enableColumnResizing={false}
-                            enableMultiSelect={true}
-                            enableColumnOrdering={false}
-                            isLoading={loading}
-                            isConfigCollapsed={isConfigCollapsed}
-                            selectedRowIds={selectedRowIds}
-                            tableKey="customer_table"
-                            onSelectedRowsChange={(ids, rows) => {
-                                setSelectedRowIds(ids);
-                                setSelectedRows(rows);
-                            }}
-                            enableCheckbox
-                            getRowId={(r) => String((r as any).Id)}
-                            totalDBRowCount={totalItems}
-                            fetchh={handleLoadMore}
-                            totalFetched={data?.length}
-                            isInfinite={isInfinite}
+                {showCatalogView ? (
+                    <div className={styles.tableArea}>
+                        <Folder
+                            items={items}
+                            setItems={setItems}
+                            currentPath={currentPath}
+                            setCurrentPath={setCurrentPath}
+                            onItemsChange={handleItemsChange}
+                            className={styles.folder}
+                            viewMode={viewMode}
+                            onViewModeChange={setViewMode}
                         />
-                        <div ref={sentinelRef} style={{ height: 1 }} />
                     </div>
-                    <Table_Footer
-                        totalItems={totalItems}
-                        table_key="customer_table"
-                        isInfiniteScroll={isInfinite}
-                        onInfiniteChange={setIsInfinite}
-                        filtersReady={filtersReady}
-                    />
-                </div>
+                ) : (
+                    <>
+                        <div
+                            className={styles.tableArea}
+                            style={{
+                                marginRight: (isFilterCollapsed ? 0 : 290) + (isConfigCollapsed ? 0 : 290) + 'px',
+                            }}
+                        >
+                            <div className={styles.tableScrollWrapper}>
+                                <Table
+                                    columns={columns}
+                                    data={data}
+                                    enableColumnResizing={false}
+                                    enableMultiSelect={true}
+                                    enableColumnOrdering={false}
+                                    isLoading={loading}
+                                    isConfigCollapsed={isConfigCollapsed}
+                                    selectedRowIds={selectedRowIds}
+                                    tableKey="customer_table"
+                                    onSelectedRowsChange={(ids, rows) => {
+                                        setSelectedRowIds(ids);
+                                        setSelectedRows(rows);
+                                    }}
+                                    enableCheckbox
+                                    getRowId={(r) => String((r as any).Id)}
+                                    totalDBRowCount={totalItems}
+                                    fetchh={handleLoadMore}
+                                    totalFetched={data?.length}
+                                    isInfinite={isInfinite}
+                                />
+                                <div ref={sentinelRef} style={{ height: 1 }} />
+                            </div>
+                            <Table_Footer
+                                totalItems={totalItems}
+                                table_key="customer_table"
+                                isInfiniteScroll={isInfinite}
+                                onInfiniteChange={setIsInfinite}
+                                filtersReady={filtersReady}
+                            />
+                        </div>
 
-                <div
-                    className={[
-                        styles.panel,
-                        styles.filterPanel,
-                        isFilterCollapsed ? styles.collapsed : styles.expanded,
-                    ].join(' ')}
-                >
-                    <FilterPanel
-                        filters={filters}
-                        storageKey="customer_table"
-                        onChange={handleFilterPanelChange}
-                        isCollapsed={isFilterCollapsed}
-                        onToggleCollapse={onToggleCollapse}
-                        table_key="reports"
-                        onReady={() => {
-                            allowFetchRef.current = true; // ✅ burada true et
-                            setFiltersReady(true); // ✅ bu da lazım
-                        }}
-                    />
-                </div>
+                        <div
+                            className={[
+                                styles.panel,
+                                styles.filterPanel,
+                                isFilterCollapsed ? styles.collapsed : styles.expanded,
+                            ].join(' ')}
+                        >
+                            <FilterPanel
+                                filters={filters}
+                                storageKey="customer_table"
+                                onChange={handleFilterPanelChange}
+                                isCollapsed={isFilterCollapsed}
+                                onToggleCollapse={onToggleCollapse}
+                                table_key="reports"
+                                onReady={() => {
+                                    allowFetchRef.current = true;
+                                    setFiltersReady(true);
+                                }}
+                            />
+                        </div>
 
-                <div
-                    className={[
-                        styles.panel,
-                        styles.configPanel,
-                        isConfigCollapsed ? styles.collapsed : styles.expanded,
-                    ].join(' ')}
-                >
-                    <ConfigPanel
-                        isCollapsed={isConfigCollapsed}
-                        onToggleCollapse={onToggleConfigCollapse}
-                        modalTableData={data}
-                        table_key="customer_table"
-                        modalTableColumns={columns}
-                        isRowSum={true}
-                    />
-                </div>
+                        <div
+                            className={[
+                                styles.panel,
+                                styles.configPanel,
+                                isConfigCollapsed ? styles.collapsed : styles.expanded,
+                            ].join(' ')}
+                        >
+                            <ConfigPanel
+                                isCollapsed={isConfigCollapsed}
+                                onToggleCollapse={onToggleConfigCollapse}
+                                modalTableData={data}
+                                table_key="customer_table"
+                                modalTableColumns={columns}
+                                isRowSum={true}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
+
+            <Modal
+                title="Kataloq seçin"
+                open={isOpen}
+                size="sm"
+                onOpenChange={setIsOpen}
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            tabIndex={1}
+                            type="button"
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Ləğv et
+                        </S_Button>
+                        <S_Button
+                            tabIndex={2}
+                            type="button"
+                            variant="primary"
+                            color="primary"
+                            onClick={() => applyCatalog(selected)}
+                        >
+                            Təsdiqlə
+                        </S_Button>
+                    </div>
+                }
+            >
+                <Catalog
+                    items={catalogs.map((i: any) => ({
+                        label: i.catalogId,
+                        value: i.catalogPath,
+                    }))}
+                    getLabel={(i: any) => i?.label}
+                    getRowId={(i: any) => String(i?.value)}
+                    value={selected ? [selected] : []}
+                    onChange={(sel) => {
+                        const picked = Array.isArray(sel) ? sel[0] : sel;
+                        if (picked) {
+                            setSelected(picked);
+                        }
+                    }}
+                    multiple={false}
+                    enableModal={false}
+                    sizePreset="md-lg"
+                    totalItemCount={catalogs.length}
+                    isLoading={loading}
+                    showMoreColumns={[]}
+                    searchItems
+                />
+            </Modal>
         </>
     );
 };

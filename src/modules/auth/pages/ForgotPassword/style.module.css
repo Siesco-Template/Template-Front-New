@@ -3,35 +3,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--pm-700);
+    gap: var(--space-600);
 }
 
 .title {
     text-align: center;
-    color: hsl(var(--clr-blue-900));
-    font-size: var(--fs-300) !important;
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-20, 20px);
+    font-style: normal;
     font-weight: 500;
+    line-height: var(--lh-28, 28px); /* 140% */
 }
 
 .description {
     width: 74%;
     text-align: center;
-    color: hsl(var(--clr-primary-900));
-    line-height: 21px;
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
 }
 
 .form {
     width: 100%;
-    padding: var(--pm-500) !important;
-    background: #FFF;
-    border-radius: var(--r-400);
+    padding: var(--space-500) !important;
+    border-radius: var(--br-2xl);
+    gap: var(--space-500);
+    background: var(--background-primary, #fff);
 }
 
 .inputContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--pm-300);
 }
 
 .buttonGroup {
@@ -39,10 +44,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: var(--pm-300);
-    margin-top: var(--pm-600) !important;
-}
-
-.button {
-    width: 100%;
+    gap: var(--space-350, 12px);
+    margin-top: var(--space-600);
 }

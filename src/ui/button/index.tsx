@@ -49,8 +49,6 @@ const S_Button: FC<I_ButtonComponentProps> = ({
         }
     }, [btnRef?.current, children]);
 
-    console.log('fixedWidth', fixedWidth);
-
     const buttonClasses = cls(
         styles.btn,
         !disableAnimation && styles.animation,
@@ -87,7 +85,7 @@ const S_Button: FC<I_ButtonComponentProps> = ({
                 tabIndex={effectiveTabIndex}
                 className={buttonClasses}
                 disabled={disabled}
-                style={{ width: isLoading ? fixedWidth : undefined }}
+                style={{ minWidth: isLoading ? fixedWidth : undefined }}
             >
                 {isLoading ? <div className={styles['dot-carousel']} /> : children}
                 {notification && <div className={styles.notification} />}

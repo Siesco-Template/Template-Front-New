@@ -12,6 +12,8 @@ const GATEWAY = {
     userFiles: `${BASE_URL}/template/UserFiles`,
     userFolders: `${BASE_URL}/template/UserFolders`,
     users: `${BASE_URL}/template/Users`,
+    catalog: `${BASE_URL}/template/Catalog`,
+
 } as const;
 
 const API_CONTROLLER = {
@@ -26,6 +28,7 @@ const API_CONTROLLER = {
     userFiles: (url = '') => `${GATEWAY.userFiles}${url}`,
     userFolders: (url = '') => `${GATEWAY.userFolders}${url}`,
     users: (url = '') => `${GATEWAY.users}${url}`,
+    catalog: (url = '') => `${GATEWAY.catalog}${url}`,
 };
 
 export default API_CONTROLLER;

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
+
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
 import { inputDescriptionStyles } from '../../components/input/input.styles';
@@ -90,12 +91,10 @@ const SetPassword = () => {
                 newPassword: data.password,
                 confirmNewPassword: data.confirmPassword,
             });
-
-            toast.success('Şifrə uğurla yeniləndi');
+            showToast({ label: 'Şifrə uğurla yeniləndi', type: 'success' });
             setIsFinish(true);
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Əməliyyat uğursuz oldu');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Əməliyyat uğursuz oldu', type: 'success' });
         } finally {
             setLoading(false);
         }
@@ -193,14 +192,18 @@ const SetPassword = () => {
                 </div>
 
                 <div className="w-full flex items-center gap-[12px] !mt-[24px]">
-                    <Link to={APP_URLS.login()} className="w-full">
-                        <Button type="button" variant="secondary" className="w-full">
-                            Giriş səhifəsinə qayıt
-                        </Button>
-                    </Link>
-                    <Button type="submit" variant="primary" className="w-full" loading={loading}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        className="w-full"
+                        to={APP_URLS.login()}
+                    >
+                        Giriş səhifəsinə qayıt
+                    </S_Button>
+                    <S_Button type="submit" variant="primary" color="primary" isLoading={loading}>
                         Şifrəni yenilə
-                    </Button>
+                    </S_Button>
                 </div>
             </form>
         </div>

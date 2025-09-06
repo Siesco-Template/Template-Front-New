@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 import { authService } from '@/modules/auth/services/auth.service';
 import { CreateUserBody, UpdateUserBody } from '@/modules/auth/services/auth.service.types';
@@ -11,8 +10,7 @@ import { cls } from '@/shared/utils';
 
 import { S_Button, S_Input } from '@/ui';
 import Modal from '@/ui/dialog';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
-import S_Select_Simple from '@/ui/select/select-simple';
+import { showToast } from '@/ui/toast/showToast';
 
 import { ConfirmModal } from '../ConfirmModal';
 import styles from './style.module.css';
@@ -66,7 +64,7 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
                 reset(userData);
             } catch (error) {
                 // @ts-expect-error
-                toast.error(error?.data?.message || 'İşçi məlumatları alınarkən xəta baş verdi');
+                console.log(error?.data?.message || 'İşçi məlumatları alınarkən xəta baş verdi');
             }
         };
 
@@ -78,9 +76,11 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
         try {
             await authService.updateUser(data);
             onSubmit?.();
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Işçi yenilənərkən xəta baş verdi');
+        } catch (error: any) {
+            showToast({
+                label: error?.data?.message || 'Işçi yenilənərkən xəta baş verdi',
+                type: 'error',
+            });
         } finally {
             setIsProcessing(false);
         }
@@ -91,9 +91,8 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
         try {
             await authService.createUser(data);
             onSubmit?.();
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Işçi yaradılarkən xəta baş verdi');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Işçi yaradılarkən xəta baş verdi', type: 'success' });
         } finally {
             setIsProcessing(false);
             setIsConfirmOpen(false);

@@ -22,6 +22,8 @@ import Table_Header from '@/shared/table/table-header';
 import { FilterTypeEnum, filterDataForFetch } from '@/shared/table/table-helpers';
 import TableRowActions from '@/shared/table/tableRowActions';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { BlockModal } from './BlockModal';
 import { DeleteModal } from './DeleteModal';
 import { ResetPasswordModal } from './ResetPasswordModal';
@@ -137,14 +139,18 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
             }
             setTableData(res?.items || []);
             setTotalCount(res?.totalCount || 0);
-        } catch (error) {
-            // @ts-expect-error
+        } catch (error: any) {
             if (error?.status === 403) {
-                toast.error('Bu səhifəyə giriş icazəniz yoxdur.');
+                showToast({
+                    label: 'Bu səhifəyə giriş icazəniz yoxdur.',
+                    type: 'error',
+                });
                 return;
             }
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'İşçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.');
+            showToast({
+                label: error?.data?.message || 'İşçilər yüklənmədi. Xahiş edirik yenidən cəhd edin.',
+                type: 'error',
+            });
             setTableData([]);
         } finally {
             setIsLoading(false);

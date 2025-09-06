@@ -5,6 +5,7 @@ import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 interface Props {
     open: boolean;
@@ -23,9 +24,11 @@ export function DeleteModal({ open, onOpenChange, onSubmit, selectedUserId }: Pr
         try {
             await authService.deleteUser(id);
             onSubmit?.();
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Silmə əməliyyatı uğursuz oldu');
+        } catch (error: any) {
+            showToast({
+                label: error?.data?.message || 'Silmə əməliyyatı uğursuz oldu',
+                type: 'error',
+            });
         } finally {
             setIsDeleting(false);
         }

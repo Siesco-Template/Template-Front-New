@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import Cookies from 'universal-cookie';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
+
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
 import { authService } from '../../services/auth.service';
@@ -87,11 +88,11 @@ const ChangePassword = () => {
                 newConfirmPassword: data.newConfirmPassword,
             });
 
-            toast.success('Şifrə uğurla dəyişdirildi');
+            showToast({ label: 'Şifrə uğurla dəyişdirildi', type: 'success' });
             setIsFinish(true);
         } catch (error) {
             // @ts-expect-error
-            toast.error(res?.data?.message || 'Şifrə dəyişdirmək uğursuz oldu');
+            showToast({ label: res?.data?.message || 'Şifrə dəyişdirmək uğursuz oldu', type: 'error' });
         } finally {
             setLoading(false);
         }
@@ -202,14 +203,12 @@ const ChangePassword = () => {
                 </div>
 
                 <div className={styles.buttonsWrapper}>
-                    <Link to={APP_URLS.login()} className="w-full">
-                        <Button type="button" variant="secondary" className="w-full">
-                            Giriş səhifəsinə qayıt
-                        </Button>
-                    </Link>
-                    <Button type="submit" variant="primary" className="w-full" loading={loading}>
+                    <S_Button type="button" variant="primary" color="secondary" to={APP_URLS.login()} as="link">
+                        Giriş səhifəsinə qayıt
+                    </S_Button>
+                    <S_Button type="submit" variant="primary" color="primary" isLoading={loading}>
                         Göndər
-                    </Button>
+                    </S_Button>
                 </div>
             </form>
         </div>

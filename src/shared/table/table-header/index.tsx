@@ -40,6 +40,8 @@ interface TableHeaderProps {
     table_key?: string;
     notification?: boolean;
     headerClassName?: string;
+    onClickShowAsFolder?: () => void;
+    isCatalogView?: boolean;
 }
 
 const Table_Header: React.FC<TableHeaderProps> = ({
@@ -61,7 +63,9 @@ const Table_Header: React.FC<TableHeaderProps> = ({
     actions,
     notification,
     tableVisibiltyColumn = true,
+    onClickShowAsFolder,
     headerClassName,
+    isCatalogView = false,
 }) => {
     const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
@@ -96,121 +100,142 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                 <h1>{renderTitle(title)}</h1>
             </div>
             <div className={styles.table_header_btn}>
-                <S_Button variant="primary" color="secondary" aria-label="Faq">
-                    <QuestionIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
-                </S_Button>
-                {tableVisibiltyColumn && <TableVisibilityChangeMenu table_key={table_key} />}
-                <S_Button variant="primary" color="secondary" aria-label="Yenilə" onClick={onRefresh}>
-                    <RefreshIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
-                </S_Button>
-                {onToggleFilter && (
-                    <S_Button
-                        variant="primary"
-                        color="secondary"
-                        aria-label="Filter"
-                        onClick={onToggleFilter}
-                        notification={notification}
-                    >
-                        <FilterIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
+                {isCatalogView ? (
+                    <S_Button variant="primary" color="secondary">
+                        Cədvəl kimi göstər
                     </S_Button>
-                )}
+                ) : (
+                    <>
+                        <S_Button variant="primary" color="secondary" aria-label="Faq">
+                            <QuestionIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
+                        </S_Button>
+                        {tableVisibiltyColumn && <TableVisibilityChangeMenu table_key={table_key} />}
+                        <S_Button variant="primary" color="secondary" aria-label="Yenilə" onClick={onRefresh}>
+                            <RefreshIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
+                        </S_Button>
+                        {onToggleFilter && (
+                            <S_Button
+                                variant="primary"
+                                color="secondary"
+                                aria-label="Filter"
+                                onClick={onToggleFilter}
+                                notification={notification}
+                            >
+                                <FilterIcon width={14} height={14} color="var(--content-secondary-brand-bold)" />
+                            </S_Button>
+                        )}
 
-                {onToggleConfig && (
-                    <S_Button variant="primary" color="secondary" aria-label="Konfiqurasiya" onClick={onToggleConfig}>
-                        <FilterIconn width={14} height={14} color="var(--content-secondary-brand-bold)" />
-                    </S_Button>
-                )}
+                        {onToggleConfig && (
+                            <S_Button
+                                variant="primary"
+                                color="secondary"
+                                aria-label="Konfiqurasiya"
+                                onClick={onToggleConfig}
+                            >
+                                <FilterIconn width={14} height={14} color="var(--content-secondary-brand-bold)" />
+                            </S_Button>
+                        )}
 
-                <div className={styles.downloadButtonGroup} ref={dropdownRef}>
-                    <button
-                        className={styles.downloadMain}
-                        onClick={() => {
-                            setOpen(false);
-                            onClickExport?.();
-                        }}
-                    >
-                        <XlsIcon width={14} height={14} /> Endir
-                    </button>
-
-                    <button
-                        className={styles.downloadArrow}
-                        aria-haspopup="menu"
-                        aria-expanded={open}
-                        onClick={() => setOpen(!open)}
-                    >
-                        <DownIcon width={14} height={14} />
-                    </button>
-
-                    {open && (
-                        <div className={styles.dropdownMenu}>
+                        <div className={styles.downloadButtonGroup} ref={dropdownRef}>
                             <button
-                                className={styles.dropdownItem}
+                                className={styles.downloadMain}
                                 onClick={() => {
                                     setOpen(false);
                                     onClickExport?.();
                                 }}
                             >
-                                Endir
+                                <XlsIcon width={14} height={14} /> Endir
                             </button>
+
                             <button
-                                className={styles.dropdownItem}
-                                onClick={() => {
-                                    setOpen(false);
-                                    onClickCustomExport?.();
-                                }}
+                                className={styles.downloadArrow}
+                                aria-haspopup="menu"
+                                aria-expanded={open}
+                                onClick={() => setOpen(!open)}
                             >
-                                Özəlləşdir
+                                <DownIcon width={14} height={14} />
                             </button>
+
+                            {open && (
+                                <div className={styles.dropdownMenu}>
+                                    <button
+                                        className={styles.dropdownItem}
+                                        onClick={() => {
+                                            setOpen(false);
+                                            onClickExport?.();
+                                        }}
+                                    >
+                                        Endir
+                                    </button>
+                                    <button
+                                        className={styles.dropdownItem}
+                                        onClick={() => {
+                                            setOpen(false);
+                                            onClickCustomExport?.();
+                                        }}
+                                    >
+                                        Özəlləşdir
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
 
-                {importFromExcel ? (
-                    page && actions?.includes('uploadFile') ? (
-                        <PermissionGuard permissionKey={`${page}/uploadFile`}>
-                            <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
-                                <ExcelIconImport width={14} height={14} color="var(--content-secondary-brand-bold)" />{' '}
-                                Excel şablondan yüklə
-                            </S_Button>
-                        </PermissionGuard>
-                    ) : (
-                        <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
-                            <ExcelIconImport width={14} height={14} color="var(--content-secondary-brand-bold)" /> Excel
-                            şablondan yüklə
-                        </S_Button>
-                    )
-                ) : null}
+                        {importFromExcel ? (
+                            page && actions?.includes('uploadFile') ? (
+                                <PermissionGuard permissionKey={`${page}/uploadFile`}>
+                                    <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
+                                        <ExcelIconImport
+                                            width={14}
+                                            height={14}
+                                            color="var(--content-secondary-brand-bold)"
+                                        />{' '}
+                                        Excel şablondan yüklə
+                                    </S_Button>
+                                </PermissionGuard>
+                            ) : (
+                                <S_Button variant="primary" color="secondary" onClick={importFromExcel}>
+                                    <ExcelIconImport
+                                        width={14}
+                                        height={14}
+                                        color="var(--content-secondary-brand-bold)"
+                                    />{' '}
+                                    Excel şablondan yüklə
+                                </S_Button>
+                            )
+                        ) : null}
 
-                <S_Button variant="primary" color="secondary">
-                    Qovluq kimi göstər
-                </S_Button>
-                {onClickCancelBtn && (
-                    <S_Button variant="primary" color="secondary" onClick={onClickCancelBtn}>
-                        Ləğv et
-                    </S_Button>
-                )}
-                {onClickSaveBtn && (
-                    <S_Button variant="primary" color="secondary" onClick={onClickSaveBtn}>
-                        Yadda saxla
-                    </S_Button>
-                )}
-                {onClickRightBtn ? (
-                    page && actions?.includes('create') ? (
-                        <PermissionGuard permissionKey={`${page}/create`}>
-                            <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
-                                <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
-                            </S_Button>
-                        </PermissionGuard>
-                    ) : (
-                        <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
-                            <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
+                        <S_Button variant="primary" color="secondary" onClick={onClickShowAsFolder}>
+                            Qovluq kimi göstər
                         </S_Button>
-                    )
-                ) : null}
-                {onClickSaveandApplyBtn && (
-                    <S_Button variant="primary" color="primary" onClick={onClickSaveandApplyBtn}>
-                        Yadda saxla və təsdiqlə
-                    </S_Button>
+                        {onClickCancelBtn && (
+                            <S_Button variant="primary" color="secondary" onClick={onClickCancelBtn}>
+                                Ləğv et
+                            </S_Button>
+                        )}
+                        {onClickSaveBtn && (
+                            <S_Button variant="primary" color="secondary" onClick={onClickSaveBtn}>
+                                Yadda saxla
+                            </S_Button>
+                        )}
+                        {onClickRightBtn ? (
+                            page && actions?.includes('create') ? (
+                                <PermissionGuard permissionKey={`${page}/create`}>
+                                    <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
+                                        <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
+                                    </S_Button>
+                                </PermissionGuard>
+                            ) : (
+                                <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
+                                    <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
+                                </S_Button>
+                            )
+                        ) : null}
+                        {onClickSaveandApplyBtn && (
+                            <S_Button variant="primary" color="primary" onClick={onClickSaveandApplyBtn}>
+                                Yadda saxla və təsdiqlə
+                            </S_Button>
+                        )}
+                    </>
                 )}
             </div>
             <ExportColumnModal

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
+
 import Input from '../../components/input/input';
 import { authService } from '../../services/auth.service';
 
@@ -48,9 +49,8 @@ const RegisterForm = ({ onNextStep, initialData }: RegisterFormProps) => {
             });
 
             onNextStep(data);
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Qeydiyyat uğursuz oldu');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Qeydiyyat uğursuz oldu', type: 'success' });
         } finally {
             setLoading(false);
         }
@@ -116,9 +116,9 @@ const RegisterForm = ({ onNextStep, initialData }: RegisterFormProps) => {
                 />
             </div>
 
-            <Button type="submit" variant="primary" className="w-full !mt-[24px]" loading={loading}>
+            <S_Button type="submit" variant="primary" isLoading={loading}>
                 Qeydiyyatdan keç
-            </Button>
+            </S_Button>
             <div className="w-full flex justify-center gap-[4px] !mt-[6px]">
                 <span className="text-[14px] !text-[#05194AB3] font-normal">Artıq hesabınız var?</span>
                 <Link to={APP_URLS.login()} className="text-[14px] !text-[#003988] font-semibold">
