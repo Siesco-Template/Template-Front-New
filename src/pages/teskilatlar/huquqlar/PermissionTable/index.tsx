@@ -5,6 +5,7 @@ import { permissionService } from '@/services/permission/permission.service';
 import { ActionOption, PageActions, Permission, UserPermissions } from '@/services/permission/permission.service.types';
 
 import { S_Checkbox } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
 
@@ -52,13 +53,15 @@ function PermissionTable({ tableData, setTableData, currentPage, itemPerPage }: 
                 const data = await permissionService.getAllPagesAndActions();
 
                 if (!data) {
-                    toast.error('İcazə səhifələri və əməliyyatları alınmadı!');
+                    showToast({ label: 'İcazə səhifələri və əməliyyatları alınmadı!', type: 'error' });
                     return;
                 }
                 setPagesActionsData(data);
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'İcazə səhifələri və əməliyyatları alınmadı!');
+            } catch (error: any) {
+                showToast({
+                    label: error?.data?.message || 'İcazə səhifələri və əməliyyatları alınmadı!',
+                    type: 'error',
+                });
                 console.error('Error fetching table data:', error);
             }
         };
@@ -81,7 +84,10 @@ function PermissionTable({ tableData, setTableData, currentPage, itemPerPage }: 
                     })),
                 },
             ]);
-            toast.success('İcazələr uğurla yeniləndi!');
+            showToast({
+                label: 'İcazələr uğurla yeniləndi!',
+                type: 'success',
+            });
             setTableData(newRows);
         } catch (error) {
             console.error('Error updating user permissions:', error);

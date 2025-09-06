@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router';
 import { APP_URLS } from '@/services/config/url.config';
 
 import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
 
 import ResendMail from '../../components/ResendMail/ResendMail';
 import Input from '../../components/input/input';
@@ -80,12 +81,10 @@ const ForgotPassword = () => {
 
         try {
             await authService.forgetPassword(data.login);
-
-            toast.success('E-mail ünvanınıza məlumatlar göndərildi');
+            showToast({ label: 'E-mail ünvanınıza məlumatlar göndərildi', type: 'success' });
             !mailSent && handleNavigate();
         } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Əməliyyat uğursuz oldu');
+            showToast({ label: 'Əməliyyat uğursuz oldu', type: 'error' });
         } finally {
             setLoading(false);
         }
@@ -145,12 +144,10 @@ const ForgotPassword = () => {
                 </div>
 
                 <div className={styles.buttonGroup}>
-                    <Link to={APP_URLS.login()} className={styles.button}>
-                        <S_Button type="button" variant="main-20" color="secondary" className={styles.button}>
-                            Giriş səhifəsinə qayıt
-                        </S_Button>
-                    </Link>
-                    <S_Button type="submit" variant="main-20" className={styles.button}>
+                    <S_Button type="button" variant="primary" color="secondary" as="link" to={APP_URLS.login()}>
+                        Giriş səhifəsinə qayıt
+                    </S_Button>
+                    <S_Button type="submit" variant="primary" color="primary">
                         Göndər
                     </S_Button>
                 </div>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../components/Button';
 import {
     Dialog,
@@ -70,10 +72,13 @@ const BlockUserModal = ({ blockDataID, closeBlockModal, refreshData, isBlock }: 
                 throw new Error('Əməliyyat uğursuz oldu');
             }
             handleClose();
-            toast.success(isBlock ? 'İstifadəçi uğurla blokdan çıxarıldı' : 'İstifadəçi uğurla bloklandı');
+            showToast({
+                label: isBlock ? 'İstifadəçi uğurla blokdan çıxarıldı' : 'İstifadəçi uğurla bloklandı',
+                type: 'success',
+            });
             refreshData();
         } catch (error) {
-            toast.error('Əməliyyat uğursuz oldu');
+            showToast({ label: 'Əməliyyat uğursuz oldu', type: 'error' });
             console.error(error);
         } finally {
             setLoading(false);

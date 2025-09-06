@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { folderService } from '../services/folder.service';
 import { FolderItem, ViewMode } from '../types';
 
@@ -198,9 +200,8 @@ function useDialogState({
                             newFileName: newName,
                         });
                     }
-                } catch (error) {
-                    // @ts-expect-error
-                    toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+                } catch (error: any) {
+                    showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                     return;
                 }
 
@@ -284,9 +285,8 @@ function useDialogState({
                     icon,
                     parentPath: currentPath,
                 });
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                 return;
             }
 
@@ -329,9 +329,8 @@ function useDialogState({
                     folderPath: newFilePath,
                     phoneNumber: '',
                 });
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                 return;
             }
 
@@ -450,9 +449,8 @@ function useDialogState({
                     };
                     await folderService.moveFoldersAndFiles(requestBody);
                 }
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
             }
 
             if (viewMode === 'tree') {

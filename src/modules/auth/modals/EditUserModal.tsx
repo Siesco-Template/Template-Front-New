@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../components/Button';
 import {
     Dialog,
@@ -96,9 +98,9 @@ const EditUserModal = ({ editDataID, userData, closeEditModal, refreshData }: Bl
             }
             refreshData();
             handleClose();
-            toast.success('Əməliyyat uğurla yerinə yetirildi');
+            showToast({ label: 'Əməliyyat uğurla yerinə yetirildi', type: 'success' });
         } catch (error) {
-            toast.error('Əməliyyat uğursuz oldu');
+            showToast({ label: 'Əməliyyat uğursuz oldu', type: 'error' });
             console.error(error);
         } finally {
             setLoading(false);

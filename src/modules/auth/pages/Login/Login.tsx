@@ -9,6 +9,7 @@ import Cookies from 'universal-cookie';
 import { APP_URLS } from '@/services/config/url.config';
 
 import { S_Button } from '@/ui';
+import { showToast } from '@/ui/toast/showToast';
 
 import Input from '../../components/input/input';
 import InputPassword from '../../components/input/input.password';
@@ -60,11 +61,10 @@ const Login = () => {
 
             login(resData);
 
-            toast.success('Hesaba uğurla giriş olundu');
+            showToast({ label: 'Hesaba uğurla giriş olundu', type: 'success' });
             navigate(APP_URLS.anaSehife());
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Giriş uğursuz oldu');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Giriş uğursuz oldu', type: 'error' });
         } finally {
             setLoading(false);
         }
@@ -111,24 +111,11 @@ const Login = () => {
                 </div>
 
                 <div className={styles.forgotPassword}>
-                    <Link to={APP_URLS.forgot_password()}>
-                        <S_Button variant="none" color="none" type="button">
-                            Şifrəmi unutdum
-                        </S_Button>
-                    </Link>
+                    <Link to={APP_URLS.forgot_password()}>Şifrəmi unutdum</Link>
                 </div>
-                <S_Button type="submit" variant="main-20" className={styles.loginButton} isLaoding={loading}>
+                <S_Button type="submit" variant="primary" color="primary" isLoading={loading}>
                     Daxil ol
                 </S_Button>
-
-                {/* {allowRegister && (
-                    <div className={styles.registerWrapper}>
-                        <span className={styles.registerText}>Hələ də hesabın yoxdur?</span>
-                        <Link to={APP_URLS.register()} className={styles.registerLink}>
-                            Qeydiyyatdan keç
-                        </Link>
-                    </div>
-                )} */}
             </form>
         </div>
     );

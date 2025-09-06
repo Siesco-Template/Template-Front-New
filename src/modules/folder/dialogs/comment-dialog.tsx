@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 
 import { S_Button, S_Textarea } from '@/ui';
 import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import { folderService } from '../services/folder.service';
 import { FolderItem } from '../types';
@@ -24,9 +25,8 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
             try {
                 const data = await folderService.getFolderDetail(item?.path || '');
                 setValue(data?.comment || '');
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'success' });
             }
         };
         fetchItem();
@@ -42,7 +42,8 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
     return (
         <Modal
             title="Komment əlavə et"
-            open={open}  size="sm"
+            open={open}
+            size="sm"
             onOpenChange={onOpenChange}
             footer={
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>

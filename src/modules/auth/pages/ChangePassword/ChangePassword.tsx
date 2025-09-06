@@ -7,6 +7,8 @@ import Cookies from 'universal-cookie';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
@@ -87,11 +89,11 @@ const ChangePassword = () => {
                 newConfirmPassword: data.newConfirmPassword,
             });
 
-            toast.success('Şifrə uğurla dəyişdirildi');
+            showToast({ label: 'Şifrə uğurla dəyişdirildi', type: 'success' });
             setIsFinish(true);
         } catch (error) {
             // @ts-expect-error
-            toast.error(res?.data?.message || 'Şifrə dəyişdirmək uğursuz oldu');
+            showToast({ label: res?.data?.message || 'Şifrə dəyişdirmək uğursuz oldu', type: 'error' });
         } finally {
             setLoading(false);
         }

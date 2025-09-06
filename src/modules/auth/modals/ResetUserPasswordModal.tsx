@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../components/Button';
 import {
     Dialog,
@@ -16,7 +18,6 @@ import { inputDescriptionStyles } from '../components/input/input.styles';
 import IconDefault from '../shared/icons/validation default.svg?react';
 import IconError from '../shared/icons/validation error.svg?react';
 import IconSuccess from '../shared/icons/validation success.svg?react';
-import { showToast } from '@/ui/toast/showToast';
 
 interface IData {
     userId: string;
@@ -105,9 +106,9 @@ const ResetUserPasswordModal = ({
                 throw new Error('Əməliyyat uğursuz oldu');
             }
             handleClose();
-            showToast({'Şifrə uğurla sıfırlandı', 'success'});
+            showToast({ label: 'Şifrə uğurla sıfırlandı', type: 'success' });
         } catch (error) {
-            toast.error('Əməliyyat uğursuz oldu');
+            showToast({ label: 'Əməliyyat uğursuz oldu', type: 'error' });
             console.error(error);
         } finally {
             setLoading(false);

@@ -7,6 +7,8 @@ import { FolderItem, ViewMode } from '@/modules/folder/types';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import styles from './style.module.css';
 
 function FolderPage() {
@@ -64,9 +66,8 @@ function FolderPage() {
                     })),
                 ];
                 return itemsList;
-            } catch (error) {
-                // @ts-expect-error
-                toast.error(error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin');
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                 return [];
             }
         },

@@ -5,7 +5,7 @@ import { authService } from '@/modules/auth/services/auth.service';
 
 import { S_Button, S_Input } from '@/ui';
 import Modal from '@/ui/dialog';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
+import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
 
@@ -37,11 +37,12 @@ export function ResetPasswordModal({ open, onOpenChange, onSubmit, selectedUserI
 
         try {
             await authService.resetPassword({ userId: id, newPassword });
-        } catch (error) {
-            toast.error(
-                // @ts-expect-error
-                error?.data?.message || 'Şifrə sıfırlama əməliyyatı uğursuz oldu. Xahiş edirik yenidən cəhd edin.'
-            );
+        } catch (error: any) {
+            showToast({
+                label:
+                    error?.data?.message || 'Şifrə sıfırlama əməliyyatı uğursuz oldu. Xahiş edirik yenidən cəhd edin.',
+                type: 'error',
+            });
         } finally {
             setIsLoading(false);
         }

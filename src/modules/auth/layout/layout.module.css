@@ -15,6 +15,7 @@
     align-items: center;
     gap: 80px;
     padding-block: 72px;
+    background: var(--background-secondary, #f3f3f3);
 }
 
 .logoWrapper img {

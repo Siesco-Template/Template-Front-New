@@ -5,6 +5,8 @@ import { Link, useNavigate, useParams } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
@@ -85,12 +87,10 @@ const ResetPassword = () => {
                 newPassword: data.password,
                 confirmNewPassword: data.confirmPassword,
             });
-
-            toast.success('Şifrə uğurla yeniləndi');
+            showToast({ label: 'Şifrə uğurla yeniləndi', type: 'success' });
             setIsFinish(true);
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Əməliyyat uğursuz oldu');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Əməliyyat uğursuz oldu', type: 'error' });
         } finally {
             setLoading(false);
         }

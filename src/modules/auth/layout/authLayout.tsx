@@ -26,15 +26,10 @@ const AuthLayout = () => {
 
     if (loading) return null;
 
-    const logoSrc = mainLogo as string;
-
     return (
         <main className={styles.authContainer}>
             <section className={styles.leftSection}>
                 <div className={styles.logoWrapper}>
-                    {/* <Link to={APP_URLS.root()}>
-                        <img src={logoSrc} alt="Site Logo" />
-                    </Link> */}
                     <h2>Template</h2>
                 </div>
                 <div className={styles.outletWrapper}>

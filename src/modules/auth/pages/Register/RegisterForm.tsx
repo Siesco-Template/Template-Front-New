@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { showToast } from '@/ui/toast/showToast';
+
 import { Button } from '../../components/Button';
 import Input from '../../components/input/input';
 import { authService } from '../../services/auth.service';
@@ -48,9 +50,8 @@ const RegisterForm = ({ onNextStep, initialData }: RegisterFormProps) => {
             });
 
             onNextStep(data);
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Qeydiyyat uğursuz oldu');
+        } catch (error: any) {
+            showToast({ label: error?.data?.message || 'Qeydiyyat uğursuz oldu', type: 'success' });
         } finally {
             setLoading(false);
         }

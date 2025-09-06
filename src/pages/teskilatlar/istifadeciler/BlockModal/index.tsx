@@ -7,6 +7,7 @@ import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog/shared';
 import S_Textarea from '@/ui/textarea';
+import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
 
@@ -38,9 +39,11 @@ export function BlockModal({ open, onOpenChange, onSubmit, selectedUserId }: Pro
 
         try {
             await authService.toggleBlockUser({ userId: id, blockInformation: reason });
-        } catch (error) {
-            // @ts-expect-error
-            toast.error(error?.data?.message || 'Bloklama əməliyyatı uğursuz oldu. Xahiş edirik yenidən cəhd edin.');
+        } catch (error: any) {
+            showToast({
+                label: error?.data?.message || 'Bloklama əməliyyatı uğursuz oldu. Xahiş edirik yenidən cəhd edin.',
+                type: 'error',
+            });
         } finally {
             setIsBlocking(false);
         }
