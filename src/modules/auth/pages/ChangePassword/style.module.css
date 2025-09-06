@@ -24,7 +24,7 @@
 .form {
     width: 100%;
     padding: 20px !important;
-    background: #fff;
+    background: var(--background-primary, #fff);
     border-radius: var(--pm-500);
 }
 

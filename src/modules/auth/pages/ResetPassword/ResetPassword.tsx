@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { S_Button } from '@/ui';
 import { showToast } from '@/ui/toast/showToast';
 
-import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
 import { inputDescriptionStyles } from '../../components/input/input.styles';
@@ -192,13 +191,13 @@ const ResetPassword = () => {
 
                 <div className="w-full flex items-center gap-[12px] !mt-[24px]">
                     <Link to={APP_URLS.login()} className="w-full">
-                        <Button type="button" variant="secondary" className="w-full">
+                        <S_Button type="button" variant="primary" color="secondary">
                             Giriş səhifəsinə qayıt
-                        </Button>
+                        </S_Button>
                     </Link>
-                    <Button type="submit" variant="primary" className="w-full" loading={loading} disabled={loading}>
+                    <S_Button type="submit" variant="primary" color="primary" isLoading={loading} disabled={loading}>
                         Göndər
-                    </Button>
+                    </S_Button>
                 </div>
             </form>
         </div>

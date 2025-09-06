@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { S_Button } from '@/ui';
 
 import { useCountdownFromSeconds, useFormattedTimer } from '../../utils/hooks/Countdown';
-import { Button } from '../Button';
 
 const resendInterval = 360000;
 
@@ -35,7 +34,7 @@ const ResendMail = ({ onClick, loading }: ResendMailProps) => {
                     <span className="!text-[14px] text-[#0068F7] font-medium">{timer}</span>
                 </div>
 
-                <Button
+                <S_Button
                     type="button"
                     variant="primary"
                     color="primary"
@@ -43,7 +42,7 @@ const ResendMail = ({ onClick, loading }: ResendMailProps) => {
                     disabled={timeLeft > 0 || loading}
                 >
                     Yenidən göndər
-                </Button>
+                </S_Button>
             </div>
         </div>
     );

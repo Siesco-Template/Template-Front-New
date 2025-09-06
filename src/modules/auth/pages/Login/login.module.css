@@ -28,7 +28,7 @@
     width: 100%;
     padding: 20px;
     border-radius: var(--br-3xl);
-    background: var(--Background-Primary, #fff);
+    background: var(--background-primary, #fff);
     display: flex;
     justify-content: center;
     flex-direction: column;

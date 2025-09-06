@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { S_Button } from '@/ui';
 import { showToast } from '@/ui/toast/showToast';
 
-import { Button } from '../../components/Button';
 import SuccessSection from '../../components/SuccessSection/SuccessSection';
 import InputPassword from '../../components/input/input.password';
 import { inputDescriptionStyles } from '../../components/input/input.styles';
@@ -193,14 +192,18 @@ const SetPassword = () => {
                 </div>
 
                 <div className="w-full flex items-center gap-[12px] !mt-[24px]">
-                    <Link to={APP_URLS.login()} className="w-full">
-                        <Button type="button" variant="secondary" className="w-full">
-                            Giriş səhifəsinə qayıt
-                        </Button>
-                    </Link>
-                    <Button type="submit" variant="primary" className="w-full" loading={loading}>
+                    <S_Button
+                        type="button"
+                        variant="primary"
+                        color="secondary"
+                        className="w-full"
+                        to={APP_URLS.login()}
+                    >
+                        Giriş səhifəsinə qayıt
+                    </S_Button>
+                    <S_Button type="submit" variant="primary" color="primary" isLoading={loading}>
                         Şifrəni yenilə
-                    </Button>
+                    </S_Button>
                 </div>
             </form>
         </div>

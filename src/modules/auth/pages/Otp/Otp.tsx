@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { Button } from '../../components/Button';
+import { S_Button } from '@/ui';
+
 import OTPInput from '../../components/OtpInput/OtpInput';
 
 const otpLength = 4;
@@ -67,17 +68,17 @@ const Otp = () => {
                     />
                 </div>
 
-                <Button type="submit" variant="primary" className="w-full !mt-[20px]">
+                <S_Button type="submit" variant="primary" className="w-full !mt-[20px]">
                     Təsdiqlə
-                </Button>
+                </S_Button>
 
                 <div className="flex justify-end items-center gap-[4px] !mt-[4px]">
                     <p className="!text-[#546881] !text-[14px] font-normal font-plus-jakarta">
                         {otpLength}-rəqəmli kod əldə etdinizmi?
                     </p>
-                    <Button type="button" variant="primary" color="primary" onClick={() => reSend()}>
+                    <S_Button type="button" variant="primary" color="primary" onClick={() => reSend()}>
                         Yenidən göndər
-                    </Button>
+                    </S_Button>
                 </div>
             </form>
         </div>

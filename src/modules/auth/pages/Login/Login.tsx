@@ -1,22 +1,16 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 
 import { useAuthStore } from '@/store/authStore';
-import Cookies from 'universal-cookie';
 
 import { APP_URLS } from '@/services/config/url.config';
 
-import { S_Button } from '@/ui';
+import { S_Button, S_Input } from '@/ui';
 import { showToast } from '@/ui/toast/showToast';
 
-import Input from '../../components/input/input';
-import InputPassword from '../../components/input/input.password';
 import { authService } from '../../services/auth.service';
 import styles from './login.module.css';
-
-const allowRegister = true; // Qeydiyyat butonu olsun?
 
 interface UserData {
     userId: string;
@@ -31,8 +25,6 @@ interface ILoginInputs {
     emailOrUserName: string;
     password: string;
 }
-
-const cookies = new Cookies();
 
 const Login = () => {
     const {
@@ -80,11 +72,12 @@ const Login = () => {
             </p>
             <form className={styles.form} onSubmit={handleSubmit(handleLogin)}>
                 <div className={styles.inputs}>
-                    <Input
+                    <S_Input
                         type="text"
                         label="Telefon nömrəsi və ya email"
-                        labelClassName="font-inter"
                         placeholder="Telefon nömrəsi və ya email"
+                        state={errors.emailOrUserName ? 'error' : 'default'}
+                        description={errors.emailOrUserName?.message}
                         {...register('emailOrUserName', {
                             required: 'Telefon nömrəsi və ya email daxil edin',
                             validate: (value) => {
@@ -93,20 +86,17 @@ const Login = () => {
                                 return isPhone || isEmail || 'Düzgün format daxil edin';
                             },
                         })}
-                        description={errors.emailOrUserName?.message}
-                        state={errors.emailOrUserName?.message ? 'error' : 'default'}
                     />
 
-                    <InputPassword
+                    <S_Input
+                        type="password"
                         label="Şifrə"
-                        labelClassName="font-inter"
                         placeholder="********"
-                        isPasswordInputWithEye
+                        state={errors.password ? 'error' : 'default'}
+                        description={errors.password?.message}
                         {...register('password', {
                             required: 'Şifrə daxil edin',
                         })}
-                        description={errors.password?.message}
-                        state={errors.password?.message ? 'error' : 'default'}
                     />
                 </div>
 
