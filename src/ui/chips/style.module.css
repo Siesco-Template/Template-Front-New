@@ -1,56 +1,58 @@
 .chip {
     display: inline-flex;
     align-items: center;
-    font-size: var(--fs-16);
-    padding: var(--space-300) var(--space-450);
-    border-radius: 999px;
-    cursor: pointer;
+    padding: var(--space-200, 4px) var(--space-250, 6px);
+    border-radius: var(--br-xl, 8px);
+    cursor: default;
     user-select: none;
     transition: all 0.2s ease-in-out;
-    padding: var(--space-200, 4px) var(--space-250, 6px);
     gap: var(--space-100, 2px);
-    border-radius: var(--br-xl);
     height: 22px;
 }
 
+.chip.clickable {
+    cursor: pointer;
+}
+
 .outline {
-    border: 1px solid var(--border-brand);
-    color: var(--content-tertiary);
-    font-size: var(--fs-14);
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--lh-20);
+    border: 1px solid var(--border-brand, #0d3caf);
 }
 
 .fill {
-    background: var(--background-brand);
-    color: var(--content-secondary-inverse);
-    border: 1px solid var(--border-brand);
-    font-size: var(--fs-14);
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--lh-20);
+    background: var(--background-brand, #0d3caf);
 }
 
 .outlined-fill {
-    border: 1px solid var(--border-brand);
-    background: var(--background-selected);
-    color: var(--content-brand);
-    font-size: var(--fs-14);
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--lh-20);
+    border: 1px solid var(--border-brand, #0d3caf);
+    background: var(--background-selected, #e7eefd);
+}
+
+.avatar {
+    width: 14px;
+    height: 14px;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .left,
 .right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
+    padding: var(--space-200, 4px);
+    cursor: pointer;
+}
+
+.left svg,
+.right svg {
+    width: 6px;
+    height: 6px;
 }
 
 .label {
-    white-space: nowrap;
     font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 400;
@@ -58,13 +60,25 @@
 }
 
 .chip.outline .label {
-    color: var(--content-tertiary);
+    color: var(--content-tertiary, #666);
+}
+.chip.outline svg {
+    stroke: var(--content-tertiary, #666);
+    color: var(--content-tertiary, #666);
 }
 
 .chip.fill .label {
-    color: var(--content-secondary-inverse);
+    color: var(--content-secondary-inverse, #f3f3f3);
+}
+.chip.fill svg {
+    stroke: var(--content-secondary-inverse, #f3f3f3);
+    color: var(--content-secondary-inverse, #f3f3f3);
 }
 
 .chip.outlined-fill .label {
-    color: var(--content-brand);
+    color: var(--content-brand, #0d3caf);
+}
+.chip.outlined-fill svg {
+    stroke: var(--content-brand, #0d3caf);
+    color: var(--content-brand, #0d3caf);
 }

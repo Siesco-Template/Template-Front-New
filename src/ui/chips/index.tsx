@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { XIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
 import styles from './style.module.css';
@@ -12,8 +11,10 @@ interface S_ChipsProps {
     type?: ChipType;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
+    onLeftIconClick?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+    onRightIconClick?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
     onClick?: () => void;
-    onRightIconClick?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+    photoUrl?: string;
 }
 
 const S_Chips: React.FC<S_ChipsProps> = ({
@@ -21,19 +22,28 @@ const S_Chips: React.FC<S_ChipsProps> = ({
     type = 'outline',
     leftIcon,
     rightIcon,
-    onClick,
+    onLeftIconClick,
     onRightIconClick,
+    onClick,
+    photoUrl,
 }) => {
-    const showRightIcon = rightIcon ? rightIcon : <XIcon width={16} />;
-
     return (
-        <div className={cls(styles.chip, styles[type])} onClick={onClick}>
-            {leftIcon && <span className={styles.left}>{leftIcon}</span>}
+        <div className={cls(styles.chip, styles[type], onClick && styles.clickable)} onClick={onClick}>
+            {photoUrl && (
+                <div className={styles.avatar}>
+                    <img src={photoUrl} />
+                </div>
+            )}
+            {leftIcon && (
+                <button className={styles.left} onClick={onLeftIconClick}>
+                    {leftIcon}
+                </button>
+            )}
             <span className={styles.label}>{label}</span>
-            {showRightIcon && (
-                <span className={styles.right} onClick={onRightIconClick}>
-                    {showRightIcon}
-                </span>
+            {rightIcon && (
+                <button className={styles.right} onClick={onRightIconClick}>
+                    {rightIcon}
+                </button>
             )}
         </div>
     );
