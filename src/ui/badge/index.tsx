@@ -31,8 +31,8 @@ const S_Badge: FC<I_BadgeProps> = ({
         if (type === 1) {
             if (!showIcon) return null;
 
-            const finalTimeIcon = icon ?? <TimeIcon width="14" height="14" color="currentColor" />;
-            const finalQuarterIcon = icon ?? <TimeQuarterIconn width="14" height="14" color="currentColor" />;
+            const finalTimeIcon = icon ?? <TimeIcon width={16} height={16} color="currentColor" />;
+            const finalQuarterIcon = icon ?? <TimeQuarterIconn width={16} height={16} color="currentColor" />;
 
             switch (status) {
                 case 'success':

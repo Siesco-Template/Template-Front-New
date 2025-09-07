@@ -3,12 +3,12 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-200, 4px);
-    border-radius: 999px;
+    border-radius: var(--br-pill, 9999px);
     padding: var(--space-200, 4px) var(--space-300, 8px);
+    height: 24px;
 }
 
 .badge span {
-    font-weight: 500;
     font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 500;
@@ -16,23 +16,21 @@
 }
 
 .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
 }
 
 .iconType2 {
-    width: 6px !important;
-    height: 6px !important;
-    border-radius: 9999px;
+    width: 4px !important;
+    height: 4px !important;
+    border-radius: 50%;
     background-color: currentColor;
     box-shadow: 0 0 0 2px var(--badge-dot-stroke);
 }
 
 .iconType3 {
-    width: 6px !important;
-    height: 6px !important;
-    border-radius: 9999px;
+    width: 4px !important;
+    height: 4px !important;
+    border-radius: 50%;
     background-color: currentColor;
 }
 
