@@ -18,12 +18,15 @@ type Placement =
     | 'top-start'
     | 'top-end';
 
+type Size = 'default' | 'sm';
+
 type ITooltipAxis = { mainAxis?: number; crossAxis?: number };
 
 interface I_TooltipProps extends TooltipRootProps {
     position?: Placement;
     offset?: ITooltipAxis;
     content: ReactNode;
+    size?: Size;
 }
 
 const S_Tooltip: FC<I_TooltipProps> = ({
@@ -33,6 +36,7 @@ const S_Tooltip: FC<I_TooltipProps> = ({
     openDelay = 200,
     closeDelay = 200,
     children,
+    size = 'default',
     ...props
 }) => {
     return (
@@ -42,10 +46,10 @@ const S_Tooltip: FC<I_TooltipProps> = ({
             positioning={{ placement: position, offset }}
             {...props}
         >
-            <Tooltip.Trigger className={styles.trigger}>{children}</Tooltip.Trigger>
+            <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
 
             <Tooltip.Positioner>
-                <Tooltip.Content className={styles['tooltip-content']}>
+                <Tooltip.Content className={styles.tooltip} data-size={size}>
                     {content}
                     <Tooltip.Arrow>
                         <Tooltip.ArrowTip />
