@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import S_Button from '../button';
@@ -12,13 +14,15 @@ const meta: Meta<typeof S_Toast> = {
         layout: 'centered',
     },
     argTypes: {
+        // Toaster (host) props
         visibleToasts: {
             control: { type: 'number' },
             table: {
                 type: { summary: 'number' },
                 defaultValue: { summary: 3 },
                 category: 'Toaster Props',
-                description: 'Eyni anda maksimum neçə toast görünə bilər. Yeni toast gəldikcə köhnələr sıradan silinir.',
+                description:
+                    'Eyni anda maksimum neçə toast görünə bilər. Yeni toast gəldikcə köhnələr sıradan silinir.',
             },
         },
         position: {
@@ -49,20 +53,14 @@ const meta: Meta<typeof S_Toast> = {
                 description: 'Toast-un neçə millisekund ekranda qalacağını təyin edir.',
             },
         },
+
+        // Toast content (showToast) props
         label: {
             control: 'text',
             table: {
                 type: { summary: 'string' },
                 category: 'Toast Content',
                 description: 'Toast içində əsas başlıq/mesaj.',
-            },
-        },
-        description: {
-            control: 'text',
-            table: {
-                type: { summary: 'string' },
-                category: 'Toast Content',
-                description: 'Başlığın altında əlavə məlumat olaraq görünən alt yazı.',
             },
         },
         type: {
@@ -74,6 +72,15 @@ const meta: Meta<typeof S_Toast> = {
                 description: 'Toast-un tipi. Rəng və ikon buna görə dəyişir.',
             },
         },
+        showClose: {
+            control: 'boolean',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: true },
+                category: 'Toast Content',
+                description: 'Həmin toast üçün bağlama düyməsini göstər.',
+            },
+        },
     },
 };
 
@@ -82,13 +89,16 @@ type Story = StoryObj<typeof S_Toast>;
 
 export const Default: Story = {
     args: {
-        label: 'This is a toast message',
-        description: 'Extra description',
-        type: 'info',
-        duration: 3000,
+        // Toaster (host) defaults
         visibleToasts: 3,
         position: 'top-right',
         expand: false,
+        duration: 3000,
+
+        // Toast content defaults
+        label: 'This is a toast message',
+        type: 'info',
+        showClose: true,
     },
     render: (args: any) => {
         return (
@@ -105,23 +115,23 @@ export const Default: Story = {
             >
                 <S_Toast
                     position={args.position}
-                    closeButton={args.closeButton}
                     expand={args.expand}
                     duration={args.duration}
                     visibleToasts={args.visibleToasts}
                 />
 
                 <S_Button
-                    children="Show Toast"
                     onClick={() =>
                         showToast({
                             label: args.label,
-                            description: args.description,
                             type: args.type,
                             duration: args.duration,
+                            showClose: args.showClose,
                         })
                     }
-                />
+                >
+                    Show Toast
+                </S_Button>
             </div>
         );
     },
