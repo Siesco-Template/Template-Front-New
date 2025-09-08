@@ -20,9 +20,9 @@ interface I_AvatarProps extends AvatarRootProps {
 }
 
 const sizeMap: Record<AvatarSize, number> = {
-    xs: 20,
-    sm: 28,
-    md: 36,
+    xs: 24,
+    sm: 32,
+    md: 40,
     lg: 48,
     xl: 56,
     '2xl': 64,
@@ -35,6 +35,15 @@ const fontSizeMap: Record<AvatarSize, number> = {
     lg: 14,
     xl: 16,
     '2xl': 16,
+};
+
+const lineHeightMap: Record<AvatarSize, number> = {
+    xs: 12,
+    sm: 14,
+    md: 20,
+    lg: 20,
+    xl: 20,
+    '2xl': 20,
 };
 
 const S_Avatar: FC<I_AvatarProps> = ({
@@ -59,7 +68,12 @@ const S_Avatar: FC<I_AvatarProps> = ({
         <Avatar.Root
             {...props}
             className={cls(styles.avatar, styles[size], online && styles.online, className)}
-            style={{ width: pixelSize, height: pixelSize, ['--avatar-font' as any]: `${fontSizeMap[size]}px` }}
+            style={{
+                width: pixelSize,
+                height: pixelSize,
+                ['--avatar-font' as any]: `${fontSizeMap[size]}px`,
+                ['--avatar-line-height' as any]: `${lineHeightMap[size]}px`,
+            }}
             data-size={size}
         >
             {type === 'placeholder' && (
@@ -96,7 +110,7 @@ const AvatarImage = (props: { src: string; width: number; height: number; alt?: 
                 objectFit: 'cover',
                 width: props.width,
                 height: props.height,
-                borderRadius: '200px',
+                borderRadius: '50%',
             }}
         />
     );
