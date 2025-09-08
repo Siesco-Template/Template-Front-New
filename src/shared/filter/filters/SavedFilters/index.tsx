@@ -17,7 +17,7 @@ import styles from './style.module.css';
 
 interface SavedFiltersProps {
     renderFilter: (filter: FilterConfig) => React.ReactNode;
-    onApplyFilter: (filters: FilterConfig[]) => void;
+    onApplyFilter: any;
     table_key: string;
     filters: FilterConfig[];
     appliedFilterId?: string | null;
