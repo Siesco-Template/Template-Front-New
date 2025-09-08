@@ -1,8 +1,9 @@
 import { ReactNode, useState } from 'react';
 
-import { XIcon } from '@/shared/icons';
+import { XCloseIcon } from '@/shared/icons';
+import { cls } from '@/shared/utils';
 
-import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from '../toast/icons';
+import { ErrorIcon, InfoIcon, SuccessIcon, WarningWhiteIcon } from '../toast/icons';
 import styles from './style.module.css';
 
 type BannerType = 'success' | 'info' | 'warning' | 'error';
@@ -13,24 +14,24 @@ interface S_BannerProps {
     type?: BannerType;
     title: string;
     description?: string;
-    icon?: ReactNode;
     action?: ReactNode;
     closable?: boolean;
     onClose?: () => void;
     direction?: Direction;
     device?: Device;
+    showIcon?: boolean;
 }
 
 const S_Banner = ({
     type = 'info',
     title,
     description,
-    icon,
     action,
     closable = true,
     onClose,
     direction = 'horizontal',
     device = 'web',
+    showIcon = true,
 }: S_BannerProps) => {
     const [visible, setVisible] = useState(true);
     if (!visible) return null;
@@ -43,26 +44,23 @@ const S_Banner = ({
     };
 
     return (
-        <div className={`${styles.banner} ${styles[type]} ${styles[device]}`}>
-            <div className={styles.left}>
-                <span className={styles.icon}>{icon ?? defaultIcon}</span>
-            </div>
+        <div className={cls(styles.banner, styles[type], styles[device], styles[direction])}>
+            <div className={styles.main}>
+                <div className={styles.info}>
+                    {showIcon && <span className={styles.icon}>{defaultIcon}</span>}
 
-            <div className={styles.content}>
-                <div className={styles.title}>{title}</div>
-                {description && <div className={styles.description}>{description}</div>}
-            </div>
+                    <div className={styles.content}>
+                        <div className={styles.title}>{title}</div>
+                        {description && <p className={styles.description}>{description}</p>}
+                    </div>
+                </div>
 
-            {action && <div className={`${styles.action} ${styles[direction]}`}>{action}</div>}
+                {action && <div className={styles.action}>{action}</div>}
+            </div>
 
             {closable && (
-                <button
-                    className={styles.close}
-                    style={{ alignSelf: action ? 'center' : 'flex-start' }}
-                    onClick={handleClose}
-                    aria-label="Close"
-                >
-                    <XIcon width={16} height={16} color="var(--content-secondary, #333)" />
+                <button className={styles.close} onClick={handleClose} aria-label="Close">
+                    <XCloseIcon width={16} height={16} />
                 </button>
             )}
         </div>
@@ -76,7 +74,11 @@ const getDefaultIcon = (type: BannerType) => {
         case 'error':
             return <ErrorIcon width={20} height={20} />;
         case 'warning':
-            return <WarningIcon width={20} height={20} />;
+            return (
+                <div className={styles.warningIcon}>
+                    <WarningWhiteIcon width={20} height={20} />
+                </div>
+            );
         case 'info':
         default:
             return <InfoIcon width={20} height={20} />;

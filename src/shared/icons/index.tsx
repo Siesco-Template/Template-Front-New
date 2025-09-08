@@ -106,6 +106,7 @@ import UserIcon3 from './user-03.svg?react';
 import UserBlockIcon from './user-block.svg?react';
 import UserCardIcon from './user-card.svg?react';
 import UserRectangleIcon from './user-rectangle.svg?react';
+import XCloseIcon from './x-close.svg?react';
 
 export {
     BoldIcon,
@@ -217,4 +218,5 @@ export {
     EyeSlashIcon,
     MenuLineHorizontalIcon,
     MinusIcon,
+    XCloseIcon,
 };

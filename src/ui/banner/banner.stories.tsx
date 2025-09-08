@@ -1,23 +1,11 @@
+import React from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ArrowDown } from '@/shared/filter/shared/icons';
-import { ArrowDownIcon } from '@/shared/icons';
 
 import S_Banner from '.';
 import S_Button from '../button';
-
-const Btn = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-    <button
-        {...props}
-        style={{
-            padding: '8px 12px',
-            borderRadius: 8,
-            border: '1px solid #c9d1e6',
-            background: '#fff',
-            cursor: 'pointer',
-        }}
-    />
-);
 
 const meta: Meta<typeof S_Banner> = {
     title: 'UI/Banner',
@@ -37,9 +25,6 @@ const meta: Meta<typeof S_Banner> = {
         description: {
             control: 'text',
         },
-        icon: {
-            control: false,
-        },
         action: {
             control: false,
         },
@@ -57,6 +42,16 @@ const meta: Meta<typeof S_Banner> = {
         onClose: {
             action: 'onClose fired',
         },
+    },
+    args: {
+        action: (
+            <>
+                <S_Button variant="outlined" size="32" children={<ArrowDown height={16} width={16} />} />
+                <S_Button variant="primary" size="32">
+                    <ArrowDown width="16" height="16" /> Hi, I’m Button
+                </S_Button>
+            </>
+        ),
     },
 };
 
@@ -80,7 +75,7 @@ export const Success: Story = {
         title: 'Your changes have been saved!',
         description: 'Everything went as expected.',
         closable: true,
-        direction: 'vertical',
+        direction: 'horizontal',
         device: 'web',
     },
 };
@@ -103,12 +98,6 @@ export const Warning: Story = {
         closable: true,
         direction: 'horizontal',
         device: 'web',
-        action: (
-            <>
-                <S_Button variant="primary" children="Button" />
-                <S_Button variant="primary" children={<ArrowDown width="16" height="16" />} />
-            </>
-        ),
     },
 };
 
