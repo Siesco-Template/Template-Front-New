@@ -70,7 +70,6 @@ const Table_Footer: React.FC<TableFooterProps> = ({
 
     useEffect(() => {
         if (!table_key) return;
-        if (!filtersReady) return;
 
         const filterDataParam = searchParams.get('filterData');
         let parsed: any;

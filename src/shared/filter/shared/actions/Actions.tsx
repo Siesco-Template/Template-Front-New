@@ -52,14 +52,14 @@ const ActionsDropdown = ({
         setSavedFilters((prev: any) => prev.map((f: any) => ({ ...f, isDefault: f.id === filter.id })));
         onToggle(null);
 
-        if (filter?.filterValues?.length) {
-            onApplyFilter?.(filter.filterValues, true);
-        } else {
-            try {
-                const resp = await filterService.getFilterById(filter.id);
-                onApplyFilter?.(filter.filterValues, true);
-            } catch {}
-        }
+        // if (filter?.filterValues?.length) {
+        //     onApplyFilter?.(filter.filterValues, true);
+        // } else {
+        //     try {
+        //         const resp = await filterService.getFilterById(filter.id);
+        //         onApplyFilter?.(filter.filterValues, true);
+        //     } catch {}
+        // }
 
         try {
             await filterService.setDefaultFilter(filter.id);
@@ -80,13 +80,14 @@ const ActionsDropdown = ({
                     setSavedFilters((prevFilters: any) =>
                         prevFilters.map((f: any) => (f.id === filter.id ? { ...f, isDefault: false } : f))
                     );
-                    clearAllQueryParams();
+                    // clearAllQueryParams();
                 })
                 .catch((error) => {
                     console.error('Default filter sıfırlanarkən xəta baş verdi', error);
                 });
         }
     };
+    
     const handleDefaultToggle = () => {
         if (filter.isDefault) {
             handleRemoveDefaultFilter();

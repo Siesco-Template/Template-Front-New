@@ -302,10 +302,14 @@ function Table<T extends Record<string, any>>({
                     disabled: !!opt.disabled,
                 }));
 
+                console.log(items, 'i')
+
                 const selectedObj =
                     filter.value != null && filter.value !== ''
-                        ? (items.find((i: any) => i.value === filter.value) ?? null)
+                        ? (items.find((i: any) => i.value == filter.value) ?? null)
                         : null;
+
+                console.log(selectedObj,filter, 'onj');
                 return (
                     <div style={{ width: '160px' }}>
                         <Catalog
