@@ -198,7 +198,7 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                           const end = start.add(1, 'day');
                           return {
                               id,
-                              type: 7,
+                              type: 11,
                               value: `${start.format('YYYY-MM-DD')},${end.format('YYYY-MM-DD')}`,
                           };
                       }
