@@ -392,7 +392,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         <div
                             className={styles.tableArea}
                             style={{
-                                marginRight: (isFilterCollapsed ? 0 : 290) + (isConfigCollapsed ? 0 : 290) + 'px',
+                                marginRight: (isFilterCollapsed ? 0 : 320) + (isConfigCollapsed ? 0 : 320) + 'px',
                             }}
                         >
                             <div className={styles.tableScrollWrapper}>

@@ -153,15 +153,43 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                           Array.isArray(value) &&
                           value.length === 2 &&
                           typeof value[0] === 'string' &&
-                          typeof value[1] === 'string' &&
-                          isDateString(value[0]) &&
-                          isDateString(value[1])
+                          typeof value[1] === 'string'
                       ) {
-                          return {
-                              id,
-                              type: FilterTypeEnum.RangeNumberOrDate,
-                              value: `${dayjs(value[0], 'DD.MM.YYYY').format('YYYY-MM-DD')},${dayjs(value[1], 'DD.MM.YYYY').format('YYYY-MM-DD')}`,
-                          };
+                          const [from, to] = value;
+
+                          const isFromValid = isDateString(from);
+                          const isToValid = isDateString(to);
+
+                          if (isFromValid && isToValid) {
+                              console.log('bura dusdu');
+                              return {
+                                  id,
+                                  type: FilterTypeEnum.RangeNumberOrDate,
+                                  value: `${dayjs(from, 'DD.MM.YYYY').format('YYYY-MM-DD')},${dayjs(to, 'DD.MM.YYYY').format('YYYY-MM-DD')}`,
+                              };
+                          }
+
+                          // ✅ Yalnız from varsa — >=
+                          if (isFromValid && !isToValid) {
+                              console.log('bura dusdu 2');
+                              return {
+                                  id,
+                                  type: 7,
+                                  value: dayjs(from, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+                                  operationType: 7, // GreaterThanOrEqual
+                              };
+                          }
+
+                          // ✅ Yalnız to varsa — <=
+                          if (!isFromValid && isToValid) {
+                              console.log('bura dusdu 3');
+                              return {
+                                  id,
+                                  type: 8,
+                                  value: dayjs(to, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+                                  operationType: 8, // LessThanOrEqual
+                              };
+                          }
                       }
 
                       // 2. Tək tarix varsa, onu range kimi təyin et (today, today + 1 gün)
@@ -170,27 +198,10 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                           const end = start.add(1, 'day');
                           return {
                               id,
-                              type: FilterTypeEnum.RangeNumberOrDate,
+                              type: 7,
                               value: `${start.format('YYYY-MM-DD')},${end.format('YYYY-MM-DD')}`,
                           };
                       }
-
-                      //   if (isFilterTypeRangeOrDate) {
-                      //       //   console.log(isFilterTypeRangeOrDate, 'clg');
-                      //       const [start, end] = value as string[];
-                      //       //   console.log(start, end, 'stend');
-                      //       const isDateRange =
-                      //           dayjs(start, 'YYYY-MM-DD', true).isValid() && dayjs(end, 'YYYY-MM-DD', true).isValid();
-                      //       //   console.log(isDateRange, 'isdra');
-                      //       return {
-                      //           id,
-                      //           type: FilterTypeEnum.RangeNumberOrDate,
-                      //           value: {
-                      //               start,
-                      //               end,
-                      //           },
-                      //       };
-                      //   }
 
                       if (
                           typeof value === 'object' &&

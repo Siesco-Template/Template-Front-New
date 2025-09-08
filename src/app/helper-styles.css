@@ -175,13 +175,18 @@ li {
 }
 
 /* Date Picker (RSuit) */
+
+.rs-input-group {
+    background: var(--background-disabled, #f3f3f3);
+    border: 1px solid var(--border-tertiary, #ccc);
+}
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
     background-color: blue !important;
     color: white !important;
 }
 
 .rs-input-group.rs-input-group-inside {
-    border-color: transparent !important;
+    border: 1px solid var(--border-tertiary, #ccc);
 }
 
 .rs-input-group.rs-input-group-inside,
@@ -236,12 +241,19 @@ li {
     color: black !important;
 }
 
-.rs-input-group:not(.rs-input-group-focus):hover {
-    border-color: var(--background-secondary) !important;
+.rs-input-group:hover {
+    border-color: var(--border-tertiary, #ccc) !important;
+    box-shadow: none !important;
 }
 
 .rs-input-group-focus {
-    border-color: darkblue !important;
+    border-color: var(--border-brand, #0d3caf) !important;
+    outline: none !important;
+}
+
+.rs-input-group:not(.rs-input-group-disabled).rs-input-group-focus,
+.rs-input-group:focus-within {
+    border-color: var(--border-brand, #0d3caf) !important;
     outline: none !important;
 }
 
@@ -250,6 +262,17 @@ li {
 .rsuite-input-error:focus {
     border-color: transparent !important;
     box-shadow: none !important;
+}
+
+.rs-picker-date .rs-input-group,
+.rs-picker-date .rs-input-group:focus-within,
+.rs-picker-date .rs-input-group.rs-input-group-focus,
+.rs-picker-date .rs-input:active,
+.rs-picker-date .rs-input-group:active,
+.rs-picker-date .rs-input-group.rs-input-group-focus {
+    border-color: var(--border-tertiary, #ccc) !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 :where(.css-dev-only-do-not-override-1a3rktk).ant-color-picker-trigger .ant-color-picker-color-block {

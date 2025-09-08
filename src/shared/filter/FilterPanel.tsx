@@ -164,10 +164,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     // filterKey gore filterleri ui cixardir
     const renderFilter = (filter: any) => {
+        console.log(filter, 'f')
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
-                const v = typeof filter.value === 'string' ? filter.value : '';
+            const v = typeof filter.value === 'string' ? filter.value : '';
                 return (
                     <div style={{ width: '100%' }}>
                         <S_Input
