@@ -56,6 +56,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     }, []);
 
     const [appliedFilterId, setAppliedFilterId] = useState<string | null>(null);
+
     const parseFiltersFromUrl = (): { id: string; value: any }[] => {
         try {
             const hash = window.location.hash;
@@ -76,15 +77,19 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         const urlFilters = parseFiltersFromUrl();
 
         if (activeTab !== 'default') return;
-        console.log(urlFilters, 'url');
+
+        // console.log(urlFilters, 'url');
+
         const updated = filters.map((f) => {
             const match = urlFilters?.find((u) => u.id === f.key || u.id === f.column);
             return match ? { ...f, value: match.value } : { ...f, value: getEmptyValue(f) };
         });
-        console.log(updated, 'up');
+
+        // console.log(updated, 'up');
+
         setSavedFilters(updated);
-        updated.forEach((f) => onChange?.(f.key, f.value));
-    }, [window.location.hash, filters]);
+        updated.forEach((f: any) => onChange?.(f.key, f.value));
+    }, [window.location.hash, filters, defaultFilter]);
 
     useEffect(() => {
         (async () => {
@@ -164,11 +169,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     // filterKey gore filterleri ui cixardir
     const renderFilter = (filter: any) => {
-        console.log(filter, 'f')
+        console.log(filter, 'f');
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
-            const v = typeof filter.value === 'string' ? filter.value : '';
+                const v = typeof filter.value === 'string' ? filter.value : '';
                 return (
                     <div style={{ width: '100%' }}>
                         <S_Input

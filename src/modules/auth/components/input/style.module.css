@@ -1,0 +1,7 @@
+.label {
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--lh-14, 14px); /* 116.667% */
+}

@@ -155,13 +155,14 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
                             color="primary"
                             disabled={isProcessing}
                             isLoading={isProcessing}
+                            onClick={handleSubmit(handleFormSubmit)}
                         >
                             Yadda saxla
                         </S_Button>
                     </div>
                 }
             >
-                <form onSubmit={handleSubmit(handleFormSubmit)}>
+                <form>
                     <div className={styles.formContent}>
                         <div className={styles.leftColumn}>
                             <S_Input
@@ -170,7 +171,6 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
                                 })}
                                 label="Ad"
                                 placeholder="Adınızı daxil edin"
-                                errorText={errors.firstName ? 'Ad sahəsi tələb olunur' : undefined}
                             />
 
                             <S_Input
@@ -183,11 +183,6 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
                                 })}
                                 label="Əlaqə nömrəsi"
                                 placeholder="+994 xx xxx-xx-xx"
-                                errorText={
-                                    errors.phoneNumber
-                                        ? errors.phoneNumber.message || 'Telefon nömrəsi tələb olunur'
-                                        : undefined
-                                }
                             />
                             <S_Input
                                 {...register('email', {
@@ -199,7 +194,6 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
                                 })}
                                 label="E-mail"
                                 placeholder="namesurname@gmail.com"
-                                errorText={errors.email ? errors.email.message || 'E-mail tələb olunur' : undefined}
                             />
                         </div>
                         <div className={styles.rightColumn}>
@@ -209,7 +203,6 @@ export function UserRecordDialog({ open, onOpenChange, onSubmit, mode, selectedU
                                 })}
                                 label="Soyad"
                                 placeholder="Soyadınızı daxil edin"
-                                errorText={errors.lastName ? 'Soyad sahəsi tələb olunur' : undefined}
                             />
                             <Catalog
                                 key="userRole"

@@ -98,7 +98,7 @@ const Login = () => {
                         {...register('password', {
                             required: 'Şifrə daxil edin',
                         })}
-                        icon={<EyeIcon size={18} />}
+                        icon={<EyeIcon width={18} />}
                         iconPosition="right"
                         type="password"
                     />

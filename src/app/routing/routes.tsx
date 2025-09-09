@@ -2,7 +2,7 @@ import { lazy, useEffect } from 'react';
 import { Outlet } from 'react-router';
 
 import FolderPage from '@/pages/folder';
-import Folder_Table from '@/pages/folder-table';
+// import Folder_Table from '@/pages/folder-table';
 import Table_Page from '@/pages/table-page';
 
 import { APP_URLS } from '@/services/config/url.config';
@@ -65,12 +65,12 @@ export const routes: Route[] = [
                 isAuth: false,
                 roles: [],
             },
-            {
-                path: APP_URLS.folderAndTable(),
-                element: <LazyLoadable page={<Folder_Table />} />,
-                isAuth: false,
-                roles: [],
-            },
+            // {
+            //     path: APP_URLS.folderAndTable(),
+            //     element: <LazyLoadable page={<Folder_Table />} />,
+            //     isAuth: false,
+            //     roles: [],
+            // },
             {
                 path: APP_URLS.notifications(),
                 element: <LazyLoadable page={<NotificationPage />} />,

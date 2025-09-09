@@ -1,5 +1,5 @@
 // 1. Custom hook: Qalan saniyəni hesablamaq (verilən tarixə görə)
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export const useCountdownToDate = (targetDate: Date) => {
     const calculateRemaining = () => Math.max(0, Math.floor((targetDate.getTime() - new Date().getTime()) / 1000));
@@ -36,7 +36,7 @@ export const useCountdownFromSeconds = (initialSeconds: number) => {
 
 // 3. Custom hook: Saniyəni formatlanmış string kimi qaytarır
 export const useFormattedTimer = (seconds: number): string => {
-    const formatTime = () => {
+    return useMemo(() => {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
         const s = seconds % 60;
@@ -48,7 +48,5 @@ export const useFormattedTimer = (seconds: number): string => {
         }
 
         return `${format(m)}:${format(s)}`;
-    };
-
-    return formatTime();
+    }, [seconds]);
 };

@@ -107,27 +107,27 @@ const ChangePassword = () => {
     const renderPasswordValidation = () => {
         return (
             <div className="validationWrapper">
-                <div className="validationItem">
+                <div className={styles.validationItem}>
                     {validationIcons[passwordValidation.minLength]}
-                    <p className={`validationText ${passwordValidation.minLength ? 'valid' : 'invalid'}`}>
+                    <p className={`${styles.validationText} ${passwordValidation.minLength ? 'valid' : 'invalid'}`}>
                         Minimum 8 simvol
                     </p>
                 </div>
-                <div className="validationItem">
+                <div className={styles.validationItem}>
                     {validationIcons[passwordValidation.uppercase]}
-                    <p className={`validationText ${passwordValidation.uppercase ? 'valid' : 'invalid'}`}>
+                    <p className={`${styles.validationText}  ${passwordValidation.uppercase ? 'valid' : 'invalid'}`}>
                         Ən azı 1 böyük hərf (A–Z)
                     </p>
                 </div>
-                <div className="validationItem">
+                <div className={styles.validationItem}>
                     {validationIcons[passwordValidation.number]}
-                    <p className={`validationText ${passwordValidation.number ? 'valid' : 'invalid'}`}>
+                    <p className={`${styles.validationText} ${passwordValidation.number ? 'valid' : 'invalid'}`}>
                         Ən azı 1 rəqəm (0–9)
                     </p>
                 </div>
-                <div className="validationItem">
+                <div className={styles.validationItem}>
                     {validationIcons[passwordValidation.symbol]}
-                    <p className={`validationText ${passwordValidation.symbol ? 'valid' : 'invalid'}`}>
+                    <p className={`${styles.validationText} ${passwordValidation.symbol ? 'valid' : 'invalid'}`}>
                         1 xüsusi simvol (!@#$%^&*)
                     </p>
                 </div>
@@ -141,10 +141,12 @@ const ChangePassword = () => {
 
     return (
         <div className={styles.container}>
-            <h3 className={styles.title}>Şifrəni yenilə</h3>
-            <p className={styles.description}>
-                Şifrəni dəyişmək istəyirsiniz? Zəhmət olmasa köhnə şifrənizi və yeni şifrənizi aşağıda qeyd edin.
-            </p>
+            <div className={styles.titleContainer}>
+                <h3 className={styles.title}>Şifrəni yenilə</h3>
+                <p className={styles.description}>
+                    Şifrəni dəyişmək istəyirsiniz? Zəhmət olmasa köhnə şifrənizi və yeni şifrənizi aşağıda qeyd edin.
+                </p>
+            </div>
 
             <form className={styles.form} onSubmit={handleSubmit(handleFormSubmit)}>
                 <div className={styles.inputGroup}>

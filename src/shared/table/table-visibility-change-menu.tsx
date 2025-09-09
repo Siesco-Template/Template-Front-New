@@ -12,7 +12,7 @@ import { useTableConfig } from './tableConfigContext';
 
 export const TableVisibilityChangeMenu = ({ table_key }: any) => {
     const { columnVisibility, setColumnVisibility, columnsDatas } = useTableContext();
-    const { saveConfigToApi } = useTableConfig();
+    const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -48,7 +48,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
         return diff;
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const changes = Object.entries(localVisibility).filter(([key, vis]) => columnVisibility[key] !== vis);
         if (!changes.length) return;
 
@@ -61,6 +61,8 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
         setTimeout(() => {
             saveConfigToApi(buildDiff(table_key, updated, columnVisibility));
         }, 0);
+
+        await loadConfigFromApi();
     };
 
     const toggleAll = () => {
