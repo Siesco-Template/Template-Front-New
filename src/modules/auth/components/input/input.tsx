@@ -4,7 +4,7 @@ import { cls } from '@/shared/utils';
 
 import inputStyles from './input.styles';
 import type InputProps from './input.types';
-
+import styles from './style.module.css'
 const Input = forwardRef<HTMLInputElement, InputProps>((allProps, ref: ForwardedRef<HTMLInputElement>) => {
     const {
         label,
@@ -30,7 +30,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((allProps, ref: Forwarded
         (label || description) && (
             <div className="flex justify-between !text-[12px] font-semibold ">
                 {label && (
-                    <label htmlFor={name} className={`!text-[12px] text-[#002C68] ${labelClassName}`}>
+                    <label htmlFor={name} className={`${styles.label} ${labelClassName}`}>
                         {label}
                     </label>
                 )}

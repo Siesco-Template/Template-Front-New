@@ -105,7 +105,7 @@ const ForgotPassword = () => {
                         'Narahat olmayın! Aşağıdakı sahəyə e-poçt ünvanınızı və ya əlaqə nömrənizi daxil edin və sizə şifrəni sıfırlamaq üçün OTP kod göndərək.'}
             </p>
 
-            <form className={styles.form} onSubmit={handleSubmit(handleSendRequest)}>
+            <form className={styles.form}>
                 <div className={styles.inputContainer}>
                     <Input
                         type="text"
@@ -146,7 +146,7 @@ const ForgotPassword = () => {
                     <S_Button type="button" variant="primary" color="secondary" as="link" to={APP_URLS.login()}>
                         Giriş səhifəsinə qayıt
                     </S_Button>
-                    <S_Button type="submit" variant="primary" color="primary">
+                    <S_Button type="submit" variant="primary" color="primary" onClick={handleSubmit(handleSendRequest)}>
                         Göndər
                     </S_Button>
                 </div>

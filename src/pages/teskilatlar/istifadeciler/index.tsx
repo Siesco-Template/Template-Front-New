@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
@@ -219,7 +218,7 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                 <div
                     className={styles.tableArea}
                     style={{
-                        marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px',
+                        marginRight: (isFilterCollapsed ? 0 : 310) + (isConfigCollapsed ? 0 : 310) + 'px',
                     }}
                 >
                     <div className={styles.tableScrollWrapper}>

@@ -26,7 +26,7 @@ import { FilterConfig } from './types';
 
 interface FilterPanelProps {
     filters: FilterConfig[];
-    onChange: (key: string, value: any) => void;
+    onChange?: (key: string, value: any) => void;
     storageKey: string;
     isCollapsed?: boolean;
     onToggleCollapse?: () => void;
@@ -48,64 +48,88 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     const selectRef = useRef<HTMLDivElement | null>(null);
 
-    const [defaultSnapshot, setDefaultSnapshot] = useState<FilterConfig[] | null>(null);
+    const [defaultFilter, setDefaultFilter] = useState<FilterConfig[] | null>(null);
     const [hasDefault, setHasDefault] = useState(false);
 
-    const getEmptyValue = (f: FilterConfig): any => {
-        if (f.type === 'number-interval') return { min: '', max: '' };
-        if (f.type === 'date-interval') return [null, null];
-        if (f.type === 'multi-select') return [];
-        return '';
+    useEffect(() => {
+        setSavedFilters(filters);
+    }, []);
+
+    const [appliedFilterId, setAppliedFilterId] = useState<string | null>(null);
+
+    const parseFiltersFromUrl = (): { id: string; value: any }[] => {
+        try {
+            const hash = window.location.hash;
+            const queryString = hash.split('?')[1] || '';
+            const params = new URLSearchParams(queryString);
+            const raw = params.get('filterData');
+
+            const parsed = raw ? JSON.parse(decodeURIComponent(raw)) : [];
+            const filters = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.filter) ? parsed.filter : [];
+
+            return filters;
+        } catch {
+            return [];
+        }
     };
 
     useEffect(() => {
-        if (filters.length === 0) return;
+        const urlFilters = parseFiltersFromUrl();
 
-        const init = async () => {
+        if (activeTab !== 'default') return;
+
+        // console.log(urlFilters, 'url');
+
+        const updated = filters.map((f) => {
+            const match = urlFilters?.find((u) => u.id === f.key || u.id === f.column);
+            return match ? { ...f, value: match.value } : { ...f, value: getEmptyValue(f) };
+        });
+
+        // console.log(updated, 'up');
+
+        setSavedFilters(updated);
+        updated.forEach((f: any) => onChange?.(f.key, f.value));
+    }, [window.location.hash, filters, defaultFilter]);
+
+    useEffect(() => {
+        (async () => {
             try {
                 const res = await filterService.getDefaultFilter(table_key);
                 const defVals = Array.isArray(res?.filterValues) ? res.filterValues : [];
+                if (!defVals.length) {
+                    onReady?.();
+                    return;
+                }
 
-                const fullFilterList: FilterConfig[] = filters.map((f) => {
-                    const matched = defVals.find((d: any) => d.column === (f.key || f.column));
-                    return {
-                        ...f,
-                        value: matched?.value ?? getEmptyValue(f),
-                    };
+                const df = filters.map((f) => {
+                    const hit = defVals.find((d: any) => String(d.column ?? d.key) === String(f.key ?? f.column));
+                    return hit ? { ...f, value: hit.value } : { ...f, value: getEmptyValue(f) };
                 });
 
-                setSavedFilters(fullFilterList);
-                setDefaultSnapshot(fullFilterList);
+                const onlyFilled = df.filter((f) => !isEmpty(f.value));
+                setDefaultFilter(onlyFilled);
+                setHasDefault(true);
 
-                const hasDefaultsApplied = defVals.length > 0;
-                setHasDefault(hasDefaultsApplied);
-                setActiveTab('default');
-
-                fullFilterList.forEach((f: any) => onChange(f.key, f.value));
-
-                if (hasDefaultsApplied) {
-                    const cleaned = fullFilterList
-                        .filter((f) => !isEmpty(f.value))
-                        .map((f) => ({ id: f.key || f.column, value: f.value }));
-
-                    applyFiltersToUrl(cleaned, filterDataState.skip, filterDataState.take, filterDataState.sort, true);
+                const urlFilters = parseFiltersFromUrl();
+                if (urlFilters?.length === 0) {
+                    applyFiltersToUrl(
+                        onlyFilled.map((f) => ({ id: f.key || f.column, value: f.value })),
+                        filterDataState.skip,
+                        filterDataState.take,
+                        filterDataState.sort,
+                        true
+                    );
                 } else {
-                    const base = window.location.hash.split('?')[0];
-                    window.location.hash = base;
+                    onReady?.();
                 }
-            } catch (e) {
-                console.warn('Filter init error:', e);
-                setSavedFilters([]);
-                setDefaultSnapshot(null);
-                setHasDefault(false);
-                setActiveTab('default');
+            } catch (_) {
+                onReady?.();
             } finally {
+                // Failsafe: heç bir halda bloklanmasın
                 onReady?.();
             }
-        };
-
-        init();
-    }, [filters]);
+        })();
+    }, [table_key]);
 
     const isEmpty = (v: any) =>
         v == null ||
@@ -113,37 +137,37 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         (Array.isArray(v) && v.length === 0) ||
         (typeof v === 'object' && 'min' in v && 'max' in v && v.min === '' && v.max === '');
 
+    const getEmptyValue = (f: any) => {
+        if (f.type === 'number-interval') return { min: '', max: '' };
+        if (f.type === 'date-interval') return Array.isArray(f.value) ? [null, null] : null;
+        if (f.type === 'multi-select') return [];
+        return '';
+    };
     // urldeki butun filterleri temizleyir, eger default varsa onu saxliyir ama
     const handleResetFilters = () => {
         setSearchText('');
 
-        console.log(hasDefault, defaultSnapshot, 'hasdefault');
-
-        if (hasDefault && defaultSnapshot) {
-            setSavedFilters(defaultSnapshot);
-            defaultSnapshot.forEach((f: any) => onChange(f.key, f.value));
-
-            const cleanedDefaults = defaultSnapshot
-                .filter((f) => !isEmpty(f.value))
-                .map((f) => ({ id: f.key || f.column, value: f.value }));
-
-            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort, true);
-            return;
-        }
-
-        const resetFilters = filters.map((f) => {
-            let resetValue: any = '';
-            if (f.type === 'number-interval') resetValue = { min: '', max: '' };
-            else if (f.type === 'date-interval') resetValue = Array.isArray(f.value) ? [null, null] : null;
-            else if (f.type === 'multi-select') resetValue = [];
-            return { ...f, value: resetValue };
+        // Əgər defaultFilter varsa → onun dəyərlərini merge et, digərləri boş qalsın
+        const reset: any = filters.map((f) => {
+            const def = defaultFilter?.find((d) => d.key === f.key);
+            return { ...f, value: def?.value ?? getEmptyValue(f) };
         });
 
-        setSavedFilters(resetFilters);
-        resetFilters.forEach((f: any) => onChange(f.key, f.value));
+        setSavedFilters(reset);
+        reset.forEach((f: any) => onChange?.(f.key, f.value));
 
-        const base = window.location.hash.split('?')[0];
-        window.location.hash = base;
+        // URL-ə yalnız defaultFilter-dən gələn dolu dəyərlər getsin
+        const cleanedDefaults =
+            defaultFilter?.map((f) => ({
+                id: f.key || f.column,
+                value: f.value,
+            })) ?? [];
+
+        if (hasDefault) {
+            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort, true);
+        } else {
+            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort, false);
+        }
     };
 
     // hansisa filterde yeni value secende state vurur, ama tetbiq etmir helem
@@ -155,6 +179,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     // filterKey gore filterleri ui cixardir
     const renderFilter = (filter: any) => {
+        console.log(filter, 'f');
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
@@ -253,11 +278,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     // save olunan filteri tetbiq edir
 
-    const handleApplySavedFilter = (filters: FilterConfig[], isDefault?: boolean) => {
+    const handleApplySavedFilter = (filters: FilterConfig[], isDefault?: boolean, filterId?: string) => {
         const cleanedFilters = filters?.map((f) => ({
             id: f.key || f.column,
             value: f.value,
         }));
+        if (filterId) {
+            setAppliedFilterId(filterId);
+        }
 
         applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort, isDefault);
     };
@@ -451,6 +479,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                     onApplyFilter={handleApplySavedFilter}
                                     table_key={table_key}
                                     filters={filters}
+                                    appliedFilterId={appliedFilterId}
+                                    setAppliedFilterId={setAppliedFilterId}
                                 />
                             )}
                         </div>

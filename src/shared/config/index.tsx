@@ -117,7 +117,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 label: 'Konfiqurasiya uğurla sıfırlandı',
                 type: 'success',
             });
-            loadConfigFromApi();
+            await loadConfigFromApi();
         } catch (error) {
             console.error('Sıfırlama zamanı xəta:', error);
         } finally {

@@ -9,7 +9,7 @@ const inputSizeStyles: Record<InputSize, string> = {
 
 const inputStateStyles: Record<InputState, string> = {
   default:
-    "border border-[#B2BBC6] transition duration-300 outline outline-[transparent] focus-within:outline-[#0068F7]",
+    "border border-[#B2BBC6] transition duration-300 outline outline-[transparent] focus-within:outline-[#0D3CAF]",
   error: "border-[#FF3B30]",
   success: "border-[#039728]",
 };

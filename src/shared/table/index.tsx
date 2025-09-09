@@ -126,14 +126,19 @@ function Table<T extends Record<string, any>>({
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-                if (scrollHeight - scrollTop - clientHeight < 10 && totalFetched < totalDBRowCount && isInfinite) {
-                    console.log('table icindeyem');
+                if (
+                    !props.isLoading &&
+                    isInfinite &&
+                    totalFetched < totalDBRowCount &&
+                    scrollHeight - scrollTop - clientHeight < 10
+                ) {
                     fetchh();
                 }
             }
         },
-        [fetchh, totalFetched, totalDBRowCount]
+        [fetchh, totalFetched, totalDBRowCount, isInfinite, props.isLoading]
     );
+
     const isLoadingOverall = state === 'pending' || props.isLoading;
 
     useEffect(() => {
@@ -284,17 +289,6 @@ function Table<T extends Record<string, any>>({
                         placeholder={filter.placeholder || filter.column}
                     />
                 );
-            // case FilterKey.MultiSelect:
-            //     return (
-            //         <DropdownMultiSelect
-            //             key={filter.key}
-            //             filterKey={filter.key}
-            //             options={filter.options || []}
-            //             value={filter.value || []}
-            //             onChange={(key, values) => _onChange(key, values)}
-            //             disabled={filter.readOnly}
-            //         />
-            //     );
             case FilterKey.Select:
                 const items = (filter.options || []).map((opt: any) => ({
                     value: opt.value,
@@ -302,10 +296,14 @@ function Table<T extends Record<string, any>>({
                     disabled: !!opt.disabled,
                 }));
 
+                console.log(items, 'i');
+
                 const selectedObj =
                     filter.value != null && filter.value !== ''
-                        ? (items.find((i: any) => i.value === filter.value) ?? null)
+                        ? (items.find((i: any) => i.value == filter.value) ?? null)
                         : null;
+
+                console.log(selectedObj, filter, 'onj');
                 return (
                     <div style={{ width: '160px' }}>
                         <Catalog
@@ -518,13 +516,11 @@ function Table<T extends Record<string, any>>({
             });
     }
 
-    const finalData: any = isLoadingOverall
-        ? []
-        : [
-              ...(hasTopSummary ? [summaryTopRow] : []),
-              ...(Array.isArray(data) ? data : []),
-              ...(hasBottomSummary ? [summaryBottomRow] : []),
-          ];
+    const finalData: any = [
+        ...(hasTopSummary ? [summaryTopRow] : []),
+        ...(Array.isArray(data) ? data : []),
+        ...(hasBottomSummary ? [summaryBottomRow] : []),
+    ];
 
     const pinnedLeftColumns = [
         'mrt-row-select',
@@ -711,8 +707,8 @@ function Table<T extends Record<string, any>>({
 
             if (columnId === 'mrt-row-numbers') {
                 if (isSummaryRow) return { children: 'CƏM', style };
-                const displayIndex =
-                    row.index + 1 + filterDataState?.skip * filterDataState?.take - (hasTopSummary ? 1 : 0);
+                const base = isInfinite ? 0 : (filterDataState?.skip || 0) * (filterDataState?.take || 0);
+                const displayIndex = row.index + 1 + base - (hasTopSummary ? 1 : 0);
                 return { children: displayIndex, style };
             }
 
@@ -836,7 +832,7 @@ function Table<T extends Record<string, any>>({
             // showProgressBars: isRefetching,
             sorting: filterDataState?.sort ?? [],
             isLoading: state === 'pending' || props.isLoading,
-            showSkeletons: state === 'pending' || props.isLoading,
+            showSkeletons: (state === 'pending' || props.isLoading) && (!data || data.length === 0),
             showProgressBars: state === 'pending' || props.isLoading,
             showAlertBanner: state === 'error',
             columnPinning: {

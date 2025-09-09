@@ -17,12 +17,23 @@ import styles from './style.module.css';
 
 interface SavedFiltersProps {
     renderFilter: (filter: FilterConfig) => React.ReactNode;
-    onApplyFilter: (filters: FilterConfig[]) => void;
+    onApplyFilter: any;
     table_key: string;
     filters: FilterConfig[];
+    appliedFilterId?: string | null;
+    onClearAppliedFilter?: () => void;
+    setAppliedFilterId: any;
 }
 
-const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: SavedFiltersProps) => {
+const SavedFilters = ({
+    renderFilter,
+    onApplyFilter,
+    table_key,
+    filters,
+    appliedFilterId,
+    onClearAppliedFilter,
+    setAppliedFilterId,
+}: SavedFiltersProps) => {
     const [savedFilters, setSavedFilters] = useState<any[]>([]);
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const [selectedFilter, setSelectedFilter] = useState<any>(null);
@@ -61,6 +72,14 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
             })
             .finally(() => setLoading(false));
     }, []);
+
+    console.log(appliedFilterId, 'd');
+    useEffect(() => {
+        if (!appliedFilterId || selectedFilter) return;
+
+        const found = savedFilters.find((f) => f.id === appliedFilterId);
+        if (found) setSelectedFilter(found);
+    }, [appliedFilterId, savedFilters]);
 
     // delete metodu
     const handleDelete = (id: string) => {
@@ -106,7 +125,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 setSelectedFilter(response);
                 setEditing(false);
                 setOpenDropdownId(null);
-                onApplyFilter(response?.filterValues ?? []);
+                onApplyFilter(response?.filterValues ?? [], false, id);
             })
             .catch((error) => {
                 console.error('Filter əldə edərkən xəta baş verdi:', error);
@@ -207,17 +226,21 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
 
     // select filter for view
     const handleFilterClick = (id?: string) => {
-        if (!id) {
-            return;
-        }
+        if (!id) return;
         const selected = savedFilters.find((filter: any) => filter.id == id);
         setSelectedFilter(selected);
-        onApplyFilter(selected?.filterValues);
+        onApplyFilter(selected?.filterValues, false, id);
     };
 
     const handleBack = () => {
         setSelectedFilter(null);
         setEditing(false);
+        setSelectedFilterSearchText('');
+        setAppliedFilterId(null);
+        onClearAppliedFilter?.();
+
+        const currentHash = window.location.hash.split('?')[0];
+        window.location.hash = currentHash;
     };
     return (
         <ul className={styles.savedFilterList}>

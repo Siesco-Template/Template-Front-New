@@ -3,57 +3,72 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--pm-700);
-    margin-top: 80px !important;
+    gap: 32px;
 }
 
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .title {
     text-align: center;
-    color: hsl(var(--clr-blue-900));
-    font-size: var(--fs-300) !important;
+    color: var(--content-primary, #1a1a1a);
+    font-family: Poppins;
+    font-size: var(--fs-20);
+    font-style: normal;
     font-weight: 500;
+    line-height: normal;
 }
 
 .description {
     width: 74%;
-    text-align: center;
-    color: hsl(var(--clr-primary-900));
-    line-height: 21px;
+    color: var(--content-secondary, #333);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-20, 20px); /* 142.857% */
+    text-align: center !important;
 }
 
 .form {
     width: 100%;
     padding: 20px !important;
+    border-radius: var(--br-2xl);
     background: var(--background-primary, #fff);
-    border-radius: var(--pm-500);
 }
 
 .inputGroup {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--pm-300);
+    gap: 20px;
 }
 
 .validationMessage {
-    color: #e53e3e;
-    font-size: var(--fs-100);
-    margin-top: var(--pm-100);
+    color: var(--content-negative, #f44336);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
+    margin-top: 4px;
 }
 
 .buttonsWrapper {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: var(--pm-300);
-    margin-top: var(--pm-600) !important;
+    gap: 6px;
+    margin-top: 20px !important;
+    justify-content: space-between;
 }
 
 .validationWrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--pm-200);
-    margin-top: var(--pm-300);
+    gap: 4px;
+    margin-top: 6px;
     width: 100%;
     max-width: 400px;
     align-items: flex-start;
@@ -62,20 +77,26 @@
 .validationItem {
     display: flex;
     align-items: center;
-    gap: var(--pm-200);
+    gap: 4px;
 }
 
 .validationText {
     font-weight: 400;
-    font-size: var(--fs-100);
-    margin: 0;
+    font-size: var(--fs-12, 12px);
+    margin: 4px 0;
     user-select: none;
+
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px); /* 116.667% */
 }
 
 .validationText.valid {
-    color: #2f855a;
+    color: var(--content-positive, #38c172);
 }
 
 .validationText.invalid {
-    color: #e53e3e;
+    color: var(--content-negative, #f44336);
 }

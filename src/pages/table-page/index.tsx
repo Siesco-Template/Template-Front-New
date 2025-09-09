@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
+import { inertProps } from '@/lib/useInert';
 
 import { catalogService } from '@/services/catalog/catalog.service';
 import { reportService } from '@/services/reports/reports.service';
@@ -26,6 +27,7 @@ import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
 
@@ -79,49 +81,26 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const location = useLocation();
     const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-    const allowFetchRef = useRef(false);
-
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState<any | null>(null);
-
-    const { loadConfigFromApi, config } = useTableConfig();
 
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<BudceTableData[]>([]);
     const [totalItems, setTotalItems] = useState(0);
-    const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
+
+    const [defaultFilterReady, setDefaultFilterReady] = useState(false);
 
     const [isInfinite, setIsInfinite] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [filtersReady, setFiltersReady] = useState(false);
-
     const [catalogs, setCatalogs] = useState([]);
 
-    const handleCustomExport = () => setIsExcelModalOpen(true);
+    const [showCatalogView, setShowCatalogView] = useState(false);
 
-    const didMountColVis = useRef(false);
-    const colVisJson = JSON.stringify(columnVisibility);
-
-    const handleFilterPanelChange = useCallback(
-        (key: string, value: any) => {
-            const isEmpty =
-                value === '' ||
-                value == null ||
-                (Array.isArray(value) && value.length === 0) ||
-                (typeof value === 'object' && 'min' in value && 'max' in value && value.min === '' && value.max === '');
-
-            const next = [
-                ...(filterDataState?.filter ?? []).filter((f: any) => f.id !== key),
-                ...(!isEmpty ? [{ id: key, value }] : []),
-            ];
-
-            onColumnFiltersChange?.(next);
-        },
-        [filterDataState?.filter, onColumnFiltersChange]
-    );
+    const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
+    const [selectedRows, setSelectedRows] = useState<any>([]);
 
     const columns: CustomMRTColumn<BudceTableData>[] = [
         {
@@ -131,13 +110,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             placeholder: 'Unikal nömrə',
             enableSummary: true,
         },
-        {
-            accessorKey: 'Organization.ShortName',
-            header: 'Short Name',
-            filterVariant: 'text',
-            placeholder: 'Short Name',
-            enableSummary: true,
-        },
+        // {
+        //     accessorKey: 'Organization.ShortName',
+        //     header: 'Short Name',
+        //     filterVariant: 'text',
+        //     placeholder: 'Short Name',
+        //     enableSummary: true,
+        // },
         {
             accessorKey: 'CompileDate',
             header: 'Tərtib tarixi',
@@ -261,131 +240,72 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
         },
         {
-            accessorKey: 'Test',
-            header: 'Test',
-            filterVariant: 'number-interval',
-        },
-        {
             accessorKey: 'CompileDate',
             header: 'Tərtib tarixi',
             filterVariant: 'date-interval',
         },
     ];
 
-    const [filters, setFilters] = useState<FilterConfig[]>([]);
+    const [filters, setFilters] = useState<FilterConfig[]>(generateFiltersFromColumns(filterColumns));
 
-    useEffect(() => {
-        const generated = generateFiltersFromColumns(filterColumns);
-        setFilters(generated);
-        setFiltersReady(true);
-    }, []);
+    const fetchData = (isLoadMore = false) => {
+        if (loading) return;
+        setLoading(true);
 
-    // console.log(config, 'config in table');
+        console.log('budayammm');
+        const raw: any = filterDataForFetch();
 
-    const fetchData = useCallback(
-        (isLoadMore = false, reason: string = 'unknown') => {
-            setLoading(true);
+        const nextPage = isLoadMore ? currentPage + 1 : 1;
 
-            const raw: any = filterDataForFetch();
-            const nextPage = isLoadMore ? currentPage + 1 : 1;
+        const queryParams = isInfinite
+            ? buildQueryParamsFromTableRequest(raw, {
+                  isInfiniteScroll: true,
+                  page: nextPage,
+              })
+            : buildQueryParamsFromTableRequest(raw);
 
-            const queryParams = isInfinite
-                ? buildQueryParamsFromTableRequest(raw, { isInfiniteScroll: true, page: nextPage })
-                : buildQueryParamsFromTableRequest(raw);
+        const allowed = new Set(
+            columns
+                .filter(
+                    (c) =>
+                        typeof c.accessorKey === 'string' && c.accessorKey.trim() !== '' && c.accessorKey !== 'actions'
+                )
+                .map((c) => c.accessorKey as string)
+        );
 
-            const allowed = new Set(
-                columns
-                    .filter(
-                        (c) =>
-                            typeof c.accessorKey === 'string' &&
-                            c.accessorKey.trim() !== '' &&
-                            c.accessorKey !== 'actions'
-                    )
-                    .map((c) => c.accessorKey as string)
-            );
+        let visibleColumns = Object.entries(columnVisibility)
+            .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key))
+            .map(([key]) => key);
 
-            let visibleColumns = Object.entries(columnVisibility)
-                .filter(([key, isVisible]) => Boolean(isVisible) && allowed.has(key))
-                .map(([key]) => key);
+        visibleColumns = Array.from(new Set(visibleColumns));
 
-            visibleColumns = Array.from(new Set(visibleColumns));
-            const mandatoryHidden = ['Id'];
+        const mandatoryHidden = ['Id'];
 
-            if (visibleColumns.length > 0) {
-                queryParams.columns = [...new Set([...visibleColumns, ...mandatoryHidden])].join(',');
-            } else {
-                queryParams.columns = mandatoryHidden.join(',');
-            }
-
-            reportService
-                .getAllReports('reports', queryParams)
-                .then((res: any) => {
-                    if (isInfinite) {
-                        if (isLoadMore) {
-                            const items = res.items;
-                            const newItems = items.map((item: any, index: number) => ({
-                                ...item,
-                                'Organization.ShortName': item['ShortName'],
-                            }));
-                            setData((prev) => [...prev, ...newItems]);
-                            setCurrentPage(nextPage);
-                        } else {
-                            const items = res.items;
-                            const newItems = items.map((item: any, index: number) => ({
-                                ...item,
-                                'Organization.ShortName': item['ShortName'],
-                            }));
-                            setData(newItems);
-                            setCurrentPage(1);
-                        }
-                        console.log('[fetchData] infinite branch');
-                    } else {
-                        const newItems = res.items.map((item: any, index: number) => ({
-                            ...item,
-                            // 'Organization.ShortName': item['ShortName'],
-                            Organization: {
-                                ShortName: item['ShortName'],
-                            },
-                        }));
-                        setData(newItems);
-                    }
-                    setTotalItems(res.totalCount);
-                })
-                .catch(console.error)
-                .finally(() => setLoading(false));
-        },
-        [loading, isInfinite, currentPage, columnVisibility, location.search]
-    );
-
-    const handleLoadMore = useCallback(() => fetchData(true, 'table-loadMore'), [fetchData]);
-
-    const [hashKey, setHashKey] = useState<string>(() => window.location.hash);
-
-    useEffect(() => {
-        const onHash = () => setHashKey(window.location.hash);
-        window.addEventListener('hashchange', onHash);
-        return () => window.removeEventListener('hashchange', onHash);
-    }, []);
-
-    useEffect(() => {
-        if (!didMountColVis.current) {
-            didMountColVis.current = true;
-            return;
+        if (visibleColumns.length > 0) {
+            queryParams.columns = [...new Set([...visibleColumns, ...mandatoryHidden])].join(',');
+        } else {
+            queryParams.columns = mandatoryHidden.join(',');
         }
 
-        fetchData(false, 'column-visibility-change');
-    }, [colVisJson, filtersReady]);
-
-    useEffect(() => {
-        if (!allowFetchRef.current) return;
-        if (!allowFetchRef.current) return;
-        fetchData(false, 'url-change');
-    }, [location.search, hashKey]);
-
-    const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
-
-    const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
-    const [selectedRows, setSelectedRows] = useState<any>([]);
+        reportService
+            .getAllReports('reports', queryParams)
+            .then((res: any) => {
+                if (isInfinite) {
+                    if (isLoadMore) {
+                        setData((prev) => [...prev, ...res.items]);
+                        setCurrentPage(nextPage);
+                    } else {
+                        setData(res.items);
+                        setCurrentPage(1);
+                    }
+                } else {
+                    setData(res.items);
+                }
+                setTotalItems(res.totalCount);
+            })
+            .catch(console.error)
+            .finally(() => setLoading(false));
+    };
 
     useEffect(() => {
         catalogService
@@ -399,20 +319,10 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             });
     }, [isOpen]);
 
-    const [searchParams] = useSearchParams();
-
-    const [showCatalogView, setShowCatalogView] = useState(false);
-
-    // Folder üçün state-lər
-    const [items, setItems] = useState<FolderItem[]>([]);
-    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Users');
-    const [viewMode, setViewMode] = useState<ViewMode>('medium');
-
     // seçilən kataloqu tətbiq et
     const applyCatalog = (item: any) => {
         if (!item) return;
         setSelected(item);
-        setCurrentPath(item.value);
         setShowCatalogView(true);
         setIsOpen(false);
 
@@ -422,81 +332,161 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         navigate(`?${params.toString()}`);
     };
 
-    // Folder data fetch
-    const fetchItems = useCallback(async (path: string) => {
-        try {
-            const data = await folderService.getFoldersAndFiles(path);
-            if (!data) return [];
-
-            const itemsList = [
-                ...data.folders.map((folder: any) => ({
-                    id: crypto.randomUUID(),
-                    name: folder.name,
-                    type: 'folder' as FolderItem['type'],
-                    path: folder.path,
-                    icon: folder.icon,
-                    permissions: {
-                        canView: true,
-                        canEdit: true,
-                        canDelete: true,
-                        canMove: true,
-                        canCopy: true,
-                        canDownload: true,
-                        canComment: true,
-                        canChangeIcon: true,
-                    },
-                    children: [],
-                    createDate: folder.createDate,
-                })),
-                ...data.files.map((file: any) => ({
-                    id: file.id,
-                    name: file.fileName,
-                    type: 'file' as FolderItem['type'],
-                    path: path,
-                    permissions: {
-                        canView: true,
-                        canEdit: true,
-                        canDelete: true,
-                        canMove: true,
-                        canCopy: true,
-                        canDownload: true,
-                        canComment: true,
-                        canChangeIcon: true,
-                    },
-                    createDate: file.createDate,
-                })),
-            ];
-            return itemsList;
-        } catch (err) {
-            console.error('Fetch error:', err);
-            return [];
-        }
+    useEffect(() => {
+        const generatedFilters = generateFiltersFromColumns(filterColumns);
+        setFilters(generatedFilters);
     }, []);
 
-    const handleItemsChange = useCallback(
+    useEffect(() => {
+        const shouldFetch =
+            defaultFilterReady &&
+            Object.keys(columnVisibility).length > 0 &&
+            filterDataState &&
+            Array.isArray(filterDataState.filter);
+        console.log(
+            defaultFilterReady,
+            Object.keys(columnVisibility).length,
+            filterDataState,
+            Array.isArray(filterDataState.filter)
+        );
+        if (shouldFetch) {
+            fetchData();
+        }
+    }, [defaultFilterReady, columnVisibility, isInfinite, filterDataState]);
+
+    const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
+
+    // FOLDER VIEW
+
+    const [searchParams] = useSearchParams();
+    const [items, setItems] = useState<FolderItem[]>([]);
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Users');
+    const [viewMode, setViewMode] = useState<ViewMode>('medium');
+
+    const fetchItems = useCallback(
         async (path: string) => {
-            const newItems = await fetchItems(path);
-            setItems(newItems);
+            try {
+                const data = await folderService.getFoldersAndFiles(path);
+                if (!data) {
+                    return [];
+                }
+
+                const itemsList = [
+                    ...data.folders.map((folder: any) => ({
+                        id: crypto.randomUUID(),
+                        name: folder.name,
+                        type: 'folder' as FolderItem['type'],
+                        path: folder.path,
+                        icon: folder.icon,
+                        permissions: {
+                            canView: true,
+                            canEdit: true,
+                            canDelete: true,
+                            canMove: true,
+                            canCopy: true,
+                            canDownload: true,
+                            canComment: true,
+                            canChangeIcon: true,
+                        },
+                        children: [],
+                        createDate: folder.createDate,
+                    })),
+                    ...data.files.map((file: any) => ({
+                        id: file.id,
+                        name: file.fileName,
+                        type: 'file' as FolderItem['type'],
+                        path: path,
+                        permissions: {
+                            canView: true,
+                            canEdit: true,
+                            canDelete: true,
+                            canMove: true,
+                            canCopy: true,
+                            canDownload: true,
+                            canComment: true,
+                            canChangeIcon: true,
+                        },
+                        createDate: file.createDate,
+                    })),
+                ];
+                return itemsList;
+            } catch (error: any) {
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
+                return [];
+            }
         },
-        [fetchItems]
+        [currentPath]
     );
 
-    // currentPath dəyişəndə URL-ə yaz və data yüklə
+    const updateItemChildren = useCallback(
+        (items: FolderItem[], targetPath: string, isAppend: boolean, newChildren?: FolderItem[]): FolderItem[] => {
+            return items.map((item) => {
+                if (item.path === targetPath) {
+                    if (!isAppend) {
+                        return {
+                            ...item,
+                            children: [...(item.children || [])],
+                            isExpanded: !item.isExpanded,
+                        };
+                    }
+                    return {
+                        ...item,
+                        children: newChildren,
+                        isExpanded: true,
+                    };
+                } else if (item.children && item.children.length > 0) {
+                    return {
+                        ...item,
+                        children: updateItemChildren(item.children, targetPath, isAppend, newChildren),
+                    };
+                }
+                return item;
+            });
+        },
+        []
+    );
+
+    const handleItemsChange = useCallback(
+        async (path: string, isAppend: boolean = false) => {
+            if (viewMode === 'tree' && path !== currentPath) {
+                if (!isAppend) {
+                    setItems((prevItems) => {
+                        const updatedItems = updateItemChildren(prevItems, path, isAppend);
+                        return updatedItems;
+                    });
+                    return;
+                }
+                const newItems = await fetchItems(path);
+
+                setItems((prevItems) => {
+                    const updatedItems = updateItemChildren(prevItems, path, isAppend, newItems);
+                    return updatedItems;
+                });
+            } else {
+                const newItems = await fetchItems(path);
+                setItems(newItems);
+            }
+        },
+        [fetchItems, updateItemChildren, viewMode]
+    );
+
     useEffect(() => {
-        if (currentPath !== searchParams.get('path')) {
+        if (showCatalogView && currentPath !== searchParams.get('path')) {
             const params = new URLSearchParams(window.location.search);
             params.set('path', currentPath);
             navigate(`?${params.toString()}`);
         }
-        handleItemsChange(currentPath);
-    }, [currentPath]);
 
-    // searchParams dəyişəndə sync et
+        handleItemsChange(currentPath);
+    }, [currentPath, showCatalogView]);
+
     useEffect(() => {
-        if (searchParams.get('path') !== currentPath) {
-            setCurrentPath(searchParams.get('path') || '/Users');
+        const pathParam = searchParams.get('path');
+
+        if (showCatalogView && pathParam !== currentPath) {
+            setCurrentPath(pathParam || '/Users');
         }
-    }, [searchParams]);
+    }, [searchParams, showCatalogView]);
     return (
         <>
             <Table_Header
@@ -505,9 +495,9 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 title={'Demo'}
                 onToggleFilter={onToggleCollapse}
                 onToggleConfig={onToggleConfigCollapse}
-                onRefresh={() => fetchData(false, 'header-refresh')}
+                onRefresh={() => fetchData(false)}
                 page="report"
-                onClickCustomExport={handleCustomExport}
+                onClickCustomExport={() => {}}
                 actions={['create', 'exportFile']}
                 table_key="customer_table"
                 notification={isFilterApplied}
@@ -535,7 +525,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         <div
                             className={styles.tableArea}
                             style={{
-                                marginRight: (isFilterCollapsed ? 0 : 290) + (isConfigCollapsed ? 0 : 290) + 'px',
+                                marginRight: (isFilterCollapsed ? 0 : 320) + (isConfigCollapsed ? 0 : 320) + 'px',
                             }}
                         >
                             <div className={styles.tableScrollWrapper}>
@@ -556,7 +546,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                     enableCheckbox
                                     getRowId={(r) => String((r as any).Id)}
                                     totalDBRowCount={totalItems}
-                                    fetchh={handleLoadMore}
+                                    fetchh={fetchData.bind(null, true)}
                                     totalFetched={data?.length}
                                     isInfinite={isInfinite}
                                 />
@@ -567,7 +557,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 table_key="customer_table"
                                 isInfiniteScroll={isInfinite}
                                 onInfiniteChange={setIsInfinite}
-                                filtersReady={filtersReady}
+                                filtersReady={defaultFilterReady}
                             />
                         </div>
 
@@ -577,18 +567,15 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 styles.filterPanel,
                                 isFilterCollapsed ? styles.collapsed : styles.expanded,
                             ].join(' ')}
+                            {...inertProps(isFilterCollapsed)}
                         >
                             <FilterPanel
                                 filters={filters}
                                 storageKey="customer_table"
-                                onChange={handleFilterPanelChange}
                                 isCollapsed={isFilterCollapsed}
                                 onToggleCollapse={onToggleCollapse}
                                 table_key="reports"
-                                onReady={() => {
-                                    allowFetchRef.current = true;
-                                    setFiltersReady(true);
-                                }}
+                                onReady={() => setDefaultFilterReady(true)}
                             />
                         </div>
 
@@ -598,6 +585,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 styles.configPanel,
                                 isConfigCollapsed ? styles.collapsed : styles.expanded,
                             ].join(' ')}
+                            {...inertProps(isConfigCollapsed)}
                         >
                             <ConfigPanel
                                 isCollapsed={isConfigCollapsed}

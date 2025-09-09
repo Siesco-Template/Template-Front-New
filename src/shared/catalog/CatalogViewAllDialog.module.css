@@ -10,9 +10,9 @@
     width: 100%;
     overflow: hidden;
     background: hsl(var(--clr-white-200));
+    border: 1px solid var(--border-tertiary, #ccc);
     padding: 8px;
     padding-right: 0;
-    /* padding-left: 16px; */
     border-radius: 16px;
     position: relative;
 }

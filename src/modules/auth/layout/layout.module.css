@@ -47,11 +47,14 @@
 .logoWrapper {
     display: flex;
     align-items: center;
-    gap: var(--pm-200);
+    gap: 6px;
 }
 .logoWrapper h2 {
-    font-size: var(--fs-300);
-    color: hsl(var(--clr-primary-900));
+    color: var(--content-brand-bold, #061d55);
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
     font-weight: 500;
+    line-height: normal;
     margin-top: 10px;
 }

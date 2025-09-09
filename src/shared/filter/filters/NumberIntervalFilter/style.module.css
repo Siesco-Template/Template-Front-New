@@ -51,7 +51,7 @@
     transition: all 0.3s ease;
     outline: none;
     border-radius: var(--br-xxl, 12px);
-    border: 1px solid var(--background-secondary, #f3f3f3);
+    border: 1px solid var(--border-tertiary, #ccc);
 }
 
 .rangeWrapper {

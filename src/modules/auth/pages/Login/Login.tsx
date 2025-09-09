@@ -6,6 +6,8 @@ import { useAuthStore } from '@/store/authStore';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { EyeIcon } from '@/shared/icons';
+
 import { S_Button, S_Input } from '@/ui';
 import { showToast } from '@/ui/toast/showToast';
 
@@ -39,8 +41,12 @@ const Login = () => {
         },
     });
 
+    const [visible, setVisible] = useState(false);
+
     const navigate = useNavigate();
+
     const [loading, setLoading] = useState<boolean>(false);
+
     const { login } = useAuthStore();
 
     async function handleLogin(data: ILoginInputs) {
@@ -89,7 +95,6 @@ const Login = () => {
                     />
 
                     <S_Input
-                        type="password"
                         label="Şifrə"
                         placeholder="********"
                         state={errors.password ? 'error' : 'default'}
@@ -97,6 +102,9 @@ const Login = () => {
                         {...register('password', {
                             required: 'Şifrə daxil edin',
                         })}
+                        icon={<EyeIcon width={18} color="var(--content-tertiary)" />}
+                        iconPosition="right"
+                        type="password"
                     />
                 </div>
 
