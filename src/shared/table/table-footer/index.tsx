@@ -23,7 +23,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
     isInfiniteScroll = false,
     table_key,
     onInfiniteChange,
-    filtersReady = true,
+    filtersReady,
 }: any) => {
     const { filterDataState, onPaginationChange, setFilterDataState } = useTableContext();
     const { config } = useTableConfig();
@@ -69,7 +69,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
     const end = Math.min((currentPage + 1) * pageSize, totalItems);
 
     useEffect(() => {
-        if (!table_key) return;
+        if (!table_key || !filtersReady) return;
 
         const filterDataParam = searchParams.get('filterData');
         let parsed: any;

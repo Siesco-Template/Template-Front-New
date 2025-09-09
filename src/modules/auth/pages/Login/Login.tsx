@@ -41,8 +41,12 @@ const Login = () => {
         },
     });
 
+    const [visible, setVisible] = useState(false);
+
     const navigate = useNavigate();
+
     const [loading, setLoading] = useState<boolean>(false);
+
     const { login } = useAuthStore();
 
     async function handleLogin(data: ILoginInputs) {
@@ -98,7 +102,7 @@ const Login = () => {
                         {...register('password', {
                             required: 'Şifrə daxil edin',
                         })}
-                        icon={<EyeIcon width={18} />}
+                        icon={<EyeIcon width={18} color="var(--content-tertiary)" />}
                         iconPosition="right"
                         type="password"
                     />

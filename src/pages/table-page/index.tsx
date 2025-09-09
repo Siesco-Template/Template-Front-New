@@ -90,6 +90,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [data, setData] = useState<BudceTableData[]>([]);
     const [totalItems, setTotalItems] = useState(0);
 
+    const [defaultFilterReady, setDefaultFilterReady] = useState(false);
+
     const [isInfinite, setIsInfinite] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -246,14 +248,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [filters, setFilters] = useState<FilterConfig[]>(generateFiltersFromColumns(filterColumns));
 
-    const allowedKeys = useMemo(
-        () =>
-            columns
-                .filter((c) => typeof c.accessorKey === 'string' && c.accessorKey && c.accessorKey !== 'actions')
-                .map((c) => c.accessorKey as string),
-        [columns]
-    );
-
     const fetchData = (isLoadMore = false) => {
         if (loading) return;
         setLoading(true);
@@ -344,10 +338,21 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     }, []);
 
     useEffect(() => {
-        if (Object.keys(columnVisibility).length > 0) {
+        const shouldFetch =
+            defaultFilterReady &&
+            Object.keys(columnVisibility).length > 0 &&
+            filterDataState &&
+            Array.isArray(filterDataState.filter);
+        console.log(
+            defaultFilterReady,
+            Object.keys(columnVisibility).length,
+            filterDataState,
+            Array.isArray(filterDataState.filter)
+        );
+        if (shouldFetch) {
             fetchData();
         }
-    }, [columnVisibility, location.search, isInfinite]);
+    }, [defaultFilterReady, columnVisibility, isInfinite, filterDataState]);
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
@@ -490,7 +495,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 title={'Demo'}
                 onToggleFilter={onToggleCollapse}
                 onToggleConfig={onToggleConfigCollapse}
-                // onRefresh={() => fetchData(false, 'header-refresh')}
+                onRefresh={() => fetchData(false)}
                 page="report"
                 onClickCustomExport={() => {}}
                 actions={['create', 'exportFile']}
@@ -552,6 +557,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 table_key="customer_table"
                                 isInfiniteScroll={isInfinite}
                                 onInfiniteChange={setIsInfinite}
+                                filtersReady={defaultFilterReady}
                             />
                         </div>
 
@@ -569,6 +575,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 isCollapsed={isFilterCollapsed}
                                 onToggleCollapse={onToggleCollapse}
                                 table_key="reports"
+                                onReady={() => setDefaultFilterReady(true)}
                             />
                         </div>
 

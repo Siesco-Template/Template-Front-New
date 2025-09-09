@@ -187,6 +187,11 @@ li {
     color: white !important;
 }
 
+.rs-input-group-focus input {
+    border: none !important;
+    outline: none !important;
+}
+
 .rs-input-group.rs-input-group-inside,
 .rs-input {
     border-radius: var(--br-2xl, 12px) !important;
@@ -238,10 +243,6 @@ li {
     box-shadow: inset 0 0 0 1px blue !important;
 }
 
-.rs-stack-item .rs-btn {
-    color: black !important;
-}
-
 .rs-input-group:hover {
     border-color: var(--border-tertiary, #ccc) !important;
     box-shadow: none !important;
@@ -264,12 +265,8 @@ li {
     box-shadow: none !important;
 }
 
-.rs-picker-date .rs-input-group,
-.rs-picker-date .rs-input-group.rs-input-group-focus,
-.rs-picker-date .rs-input:active,
-.rs-picker-date .rs-input-group:active,
 .rs-picker-date .rs-input-group.rs-input-group-focus {
-    border-color: var(--border-tertiary, #ccc) !important;
+    border-color: transparent !important;
     box-shadow: none !important;
     outline: none !important;
 }

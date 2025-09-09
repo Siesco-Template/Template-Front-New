@@ -96,7 +96,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
             try {
                 const res = await filterService.getDefaultFilter(table_key);
                 const defVals = Array.isArray(res?.filterValues) ? res.filterValues : [];
-                if (!defVals.length) return;
+                if (!defVals.length) {
+                    onReady?.();
+                    return;
+                }
 
                 const df = filters.map((f) => {
                     const hit = defVals.find((d: any) => String(d.column ?? d.key) === String(f.key ?? f.column));
@@ -116,8 +119,15 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                         filterDataState.sort,
                         true
                     );
+                } else {
+                    onReady?.();
                 }
-            } catch (_) {}
+            } catch (_) {
+                onReady?.();
+            } finally {
+                // Failsafe: heç bir halda bloklanmasın
+                onReady?.();
+            }
         })();
     }, [table_key]);
 

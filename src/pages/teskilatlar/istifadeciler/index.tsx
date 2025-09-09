@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
