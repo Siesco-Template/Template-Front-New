@@ -20,6 +20,8 @@ export enum FilterTypeEnum {
     Like = 3, // `Contains` yerinə
     Equal = 1, // `Exact` yerinə
     RangeNumberOrDate = 11,
+    LessThanOrEqual = 8,
+    GreaterThanOrEqual = 7,
 }
 export type CurrentFilters = {
     filter: FilterItem[];
@@ -174,7 +176,7 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                               console.log('bura dusdu 2');
                               return {
                                   id,
-                                  type: 7,
+                                  type: FilterTypeEnum.GreaterThanOrEqual,
                                   value: dayjs(from, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                   operationType: 7, // GreaterThanOrEqual
                               };
@@ -185,7 +187,7 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                               console.log('bura dusdu 3');
                               return {
                                   id,
-                                  type: 8,
+                                  type: FilterTypeEnum.LessThanOrEqual,
                                   value: dayjs(to, 'DD.MM.YYYY').format('YYYY-MM-DD'),
                                   operationType: 8, // LessThanOrEqual
                               };
@@ -198,7 +200,7 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                           const end = start.add(1, 'day');
                           return {
                               id,
-                              type: 11,
+                              type: FilterTypeEnum.RangeNumberOrDate,
                               value: `${start.format('YYYY-MM-DD')},${end.format('YYYY-MM-DD')}`,
                           };
                       }

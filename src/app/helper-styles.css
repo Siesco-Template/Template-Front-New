@@ -178,15 +178,13 @@ li {
 
 .rs-input-group {
     background: var(--background-disabled, #f3f3f3);
-    border: 1px solid var(--border-tertiary, #ccc);
-}
-.rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
-    background-color: blue !important;
-    color: white !important;
+    border: 1px solid var(--border-tertiary, #ccc) !important;
+    border-radius: var(--br-2xl, 12px) !important;
 }
 
-.rs-input-group.rs-input-group-inside {
-    border: 1px solid var(--border-tertiary, #ccc);
+.rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
+    background-color: var(--border-brand, #0d3caf) !important;
+    color: white !important;
 }
 
 .rs-input-group.rs-input-group-inside,
@@ -211,20 +209,23 @@ li {
 }
 
 .rs-calendar-month-dropdown-cell:hover .rs-calendar-month-dropdown-cell-content {
-    background-color: blue !important;
+    background-color: var(--border-brand, #0d3caf) !important;
     color: white !important;
 }
 
 .rs-calendar-table-cell-selected .rs-calendar-table-cell-content {
-    background-color: darkblue !important;
+    background-color: var(--border-brand, #0d3caf) !important;
     color: white !important;
 }
 
 .rs-calendar-month-dropdown-cell-active .rs-calendar-month-dropdown-cell-content {
-    background-color: darkblue !important;
+    background-color: var(--border-brand, #0d3caf) !important;
     color: white !important;
 }
 
+.rs-picker-toolbar-right .rs-btn.rs-btn-primary {
+    color: var(--background-primary, #fff) !important;
+}
 .rs-calendar-header-title-date {
     color: black !important;
 }
@@ -258,14 +259,12 @@ li {
 }
 
 .rsuite-input-error,
-.rsuite-input-error:hover,
 .rsuite-input-error:focus {
     border-color: transparent !important;
     box-shadow: none !important;
 }
 
 .rs-picker-date .rs-input-group,
-.rs-picker-date .rs-input-group:focus-within,
 .rs-picker-date .rs-input-group.rs-input-group-focus,
 .rs-picker-date .rs-input:active,
 .rs-picker-date .rs-input-group:active,
@@ -277,6 +276,10 @@ li {
 
 :where(.css-dev-only-do-not-override-1a3rktk).ant-color-picker-trigger .ant-color-picker-color-block {
     border-radius: 8px !important;
+}
+
+.rs-picker-date.rs-picker-subtle .rs-input-group:focus {
+    border: none !important;
 }
 
 .ant-color-picker-trigger {

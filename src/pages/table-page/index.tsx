@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
+import { inertProps } from '@/lib/useInert';
 
 import { catalogService } from '@/services/catalog/catalog.service';
 import { reportService } from '@/services/reports/reports.service';
@@ -433,6 +434,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 styles.filterPanel,
                                 isFilterCollapsed ? styles.collapsed : styles.expanded,
                             ].join(' ')}
+                            {...inertProps(isFilterCollapsed)}
                         >
                             <FilterPanel
                                 filters={filters}
@@ -449,6 +451,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 styles.configPanel,
                                 isConfigCollapsed ? styles.collapsed : styles.expanded,
                             ].join(' ')}
+                            {...inertProps(isFilterCollapsed)}
                         >
                             <ConfigPanel
                                 isCollapsed={isConfigCollapsed}

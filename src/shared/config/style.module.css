@@ -1,5 +1,5 @@
 .panelWrapper {
-    width: 280px;
+    width: 300px;
     transition: all 0.3s ease;
     height: 100%;
     border-radius: 16px 16px;
@@ -8,6 +8,7 @@
     flex-direction: column;
     user-select: none;
     overflow-y: auto;
+    
 }
 
 .configPanel {

@@ -6,6 +6,8 @@ import { useAuthStore } from '@/store/authStore';
 
 import { APP_URLS } from '@/services/config/url.config';
 
+import { EyeIcon } from '@/shared/icons';
+
 import { S_Button, S_Input } from '@/ui';
 import { showToast } from '@/ui/toast/showToast';
 
@@ -89,7 +91,6 @@ const Login = () => {
                     />
 
                     <S_Input
-                        type="password"
                         label="Şifrə"
                         placeholder="********"
                         state={errors.password ? 'error' : 'default'}
@@ -97,6 +98,9 @@ const Login = () => {
                         {...register('password', {
                             required: 'Şifrə daxil edin',
                         })}
+                        icon={<EyeIcon size={18} />}
+                        iconPosition="right"
+                        type="password"
                     />
                 </div>
 
