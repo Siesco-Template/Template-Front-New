@@ -23,8 +23,8 @@ function Modal({ open, onOpenChange, children, title, size = 'md', footer }: Pro
                 <DialogHeader className={cls(styles.modalHeader, styles[size])}>
                     <DialogTitle className={cls(styles.modalTitle, styles[size])}>{title}</DialogTitle>
                 </DialogHeader>
-                <div className={styles.modalBody}>{children}</div>
-                <DialogFooter className={cls(styles.modalFooter, styles[size])}>{footer}</DialogFooter>
+                {children && <div className={styles.modalBody}>{children}</div>}
+                {footer && <DialogFooter className={cls(styles.modalFooter, styles[size])}>{footer}</DialogFooter>}
             </DialogContent>
         </Dialog>
     );

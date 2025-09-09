@@ -428,7 +428,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                         <>
                                             <div className={styles.filtersMain}>
                                                 <div className={styles.filterContent}>
-                                                    {filteredSavedFilters.map(renderFilter)}
+                                                    {filteredSavedFilters.map((filter) => (
+                                                        <React.Fragment key={filter.key || filter.column}>
+                                                            {renderFilter(filter)}
+                                                        </React.Fragment>
+                                                    ))}
                                                 </div>
                                                 <S_Button
                                                     variant="primary"

@@ -4,26 +4,32 @@ import { devtools } from 'zustand/middleware';
 import { DefaultThemes } from '../settings.contants';
 import { addThemeOnHtmlRoot, transformThemeToCss } from './theme.utils';
 
-export type ThemePalette = {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-};
+// export type ThemePalette = {
+//     '50': string;
+//     '100': string;
+//     '200': string;
+//     '300': string;
+//     '400': string;
+//     '500': string;
+//     '600': string;
+//     '700': string;
+//     '800': string;
+//     '900': string;
+// };
 
 export type Theme = {
     name: string;
-    type: 'dark' | 'light';
     id: string;
-    content: Record<string, string>;
-    background: Record<string, string>;
-    border: Record<string, string>;
+    isSystemDefault: boolean;
+    primary: Record<string, string>;
+    secondary: Record<string, string>;
+    yellow: Record<string, string>;
+    neutral: Record<string, string>;
+    green: Record<string, string>;
+    blue: Record<string, string>;
+    red: Record<string, string>;
+    white: Record<string, string>;
+    black: Record<string, string>;
 };
 
 export type ThemeState = {
@@ -47,7 +53,7 @@ type ThemeAction = {
     setTheme: (theme: Theme) => void;
     discardEditedTheme: () => void;
     discardTheme: () => void;
-    getThemeDiff: () => Record<string, any>;
+    getThemeDiff: (initialThemes: Theme[]) => Record<string, any>;
 };
 
 function deepDiff(obj1: any, obj2: any, basePath: string = ''): Record<string, any> {
@@ -76,17 +82,38 @@ function deepDiff(obj1: any, obj2: any, basePath: string = ''): Record<string, a
     return changes;
 }
 
-function getThemeChanges(defaults: Theme[], current: Theme[]) {
-    const changes: Record<string, any> = {};
+function flattenTheme(obj: Record<string, any>, parentKey = ''): Record<string, string> {
+    let result: Record<string, string> = {};
 
-    current.forEach((theme, index) => {
-        const defaultTheme = defaults[index];
+    for (const key in obj) {
+        const newKey = parentKey ? `${parentKey}.${key}` : key;
 
-        if (!defaultTheme) {
-            changes[`extraConfig.visualSettings.themes[${index}]`] = theme;
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+            Object.assign(result, flattenTheme(obj[key], newKey));
         } else {
+            result[newKey] = obj[key];
+        }
+    }
+
+    return result;
+}
+
+function getThemeChanges(defaults: Theme[], current: Theme[]) {
+    console.log(defaults);
+    let changes: Record<string, any> = {};
+
+    // current
+    //     .filter((theme) => defaults.findIndex((def) => def.id === theme.id) === -1)
+    //     .forEach((theme, index) => {
+    //         changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index + 1}]`) };
+    //     });
+    current.forEach((theme, index) => {
+        const defaultTheme = defaults.find((def) => def.id === theme.id);
+        if (defaultTheme) {
             const diff = deepDiff(defaultTheme, theme, `extraConfig.visualSettings.themes[${index}]`);
-            Object.assign(changes, diff);
+            changes = { ...changes, ...diff };
+        } else {
+            changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index}]`) };
         }
     });
 
@@ -96,10 +123,8 @@ function getThemeChanges(defaults: Theme[], current: Theme[]) {
 export const useThemeStore = create<ThemeState & ThemeAction>()(
     devtools((set, get) => ({
         discardTheme: () => {
-            console.log('disk');
             const { newThemeId, previousTheme, currentTheme } = get();
 
-            console.log(newThemeId, previousTheme, currentTheme, 'c')
             if (newThemeId && currentTheme === newThemeId) {
                 set((state) => ({
                     currentTheme: previousTheme!,
@@ -162,9 +187,9 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
             set(() => ({ newThemeId: undefined, editedTheme: undefined }));
         },
 
-        getThemeDiff: () => {
+        getThemeDiff: (initialThemes: Theme[]) => {
             const { currentTheme, previousTheme, themes } = get();
-            const diff: Record<string, any> = {};
+            let diff: Record<string, any> = {};
 
             if (previousTheme !== currentTheme) {
                 diff['extraConfig.visualSettings.currentTheme'] = currentTheme;
@@ -172,8 +197,9 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
 
             // themes array-ı boşdursa, heç nə göndərməyə ehtiyac yoxdur
             if (themes.length > 0) {
-                const themeChanges = getThemeChanges(DefaultThemes, themes);
-                Object.assign(diff, themeChanges);
+                const themeChanges = getThemeChanges(initialThemes, themes);
+                diff = { ...diff, ...themeChanges };
+                console.log(diff);
             }
 
             return diff;

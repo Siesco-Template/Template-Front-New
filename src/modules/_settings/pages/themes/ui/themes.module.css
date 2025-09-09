@@ -66,16 +66,10 @@
 
 .themeCardFooter p {
     color: var(--content-primary, #1a1a1a);
-    font-feature-settings:
-        'liga' off,
-        'clig' off;
-
-    /* 12/Medium */
-    font-family: Poppins;
     font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 500;
-    line-height: var(--lh-14, 14px); /* 116.667% */
+    line-height: var(--lh-14, 14px);
 }
 
 .themeCardBtns {
@@ -100,24 +94,20 @@
 
 /* Palette */
 
-.themePalettesWrapper {
+.themePalette {
     display: grid;
-    flex-direction: column;
-    gap: var(--pm-300);
-    grid-area: formSection2;
+    grid-template-columns: repeat(10, 48px);
+    gap: var(--space-250, 6px);
 }
 
-.themePalette {
-    display: flex;
-}
-.themePalette1 {
-    padding-top: var(--pm-650);
-}
 .paletteItem {
-    flex: 1;
-    height: calc(var(--wh-450) - 4px);
-    display: flex;
-    align-items: flex-end;
+    width: 48px;
+    height: 48px;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    border: 2px solid var(--border-subtle, #ebebeb);
+    background: #fbfbfb;
+    display: inline-block;
 }
 
 .newThemeBrushIcon {
@@ -134,68 +124,108 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--pm-300);
+    justify-content: space-between;
+    gap: var(--space-450, 16px);
 }
 
 .formItems {
     display: flex;
     flex-direction: column;
-    grid-area: formSection1;
+    gap: var(--space-300, 8px);
 }
 
 .colorInputs {
-    padding-top: var(--pm-300);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-350, 12px);
 }
-@media (max-width: 769px) {
-    .colorInputs {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-.colorInputs .colorInput {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: var(--wh-450);
-    height: var(--wh-450);
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-.colorInputs .colorInput::-webkit-color-swatch {
-    border-radius: var(--r-300);
-    border: 1px solid hsl(var(--clr-grey-300));
-}
-.colorInputs .colorInput::-moz-color-swatch {
-    border-radius: var(--r-300);
-    border: none;
+
+.colorInputs > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-350, 12px);
+    align-items: stretch;
 }
 
 .colorInputWrapper {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 280px;
+    border-radius: var(--br-2xl, 12px);
+    border: var(--bw-m, 2px) solid var(--border-subtle, #ebebeb);
+    background: var(--background-secondary, #f3f3f3);
+    overflow: hidden;
+}
+
+.colorLabel {
+    padding: 0 var(--space-300, 8px) var(--space-250, 6px) var(--space-450, 16px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    gap: 3px;
+}
+
+.colorLabel label {
+    color: var(--content-primary, #1a1a1a);
+    font-size: var(--fs-14, 14px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--lh-20, 20px);
+    text-wrap: nowrap;
+}
+
+.colorLabel span {
+    color: var(--content-tertiary, #666);
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--lh-14, 14px);
+}
+
+.colorInput {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    width: 140px;
+    height: 100%;
+    /* height: 48px; */
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    display: block;
+}
+
+.colorInput::-webkit-color-swatch-wrapper {
+    padding: 0;
+    height: 100%;
+}
+
+.colorInput::-webkit-color-swatch {
+    border: none;
+    border-radius: 0 var(--br-2xl, 12px) var(--br-2xl, 12px) 0;
+    height: 100%;
+}
+
+.colorInput::-moz-color-swatch {
+    border: none;
+    border-radius: 0 var(--br-2xl, 12px) var(--br-2xl, 12px) 0;
+    height: 100%;
 }
 
 .createThemeBtnsWrapper {
-    gap: var(--pm-300);
+    gap: var(--space-300, 8px);
     display: flex;
-    padding-top: var(--pm-400);
     justify-content: flex-end;
 }
+
 @media (max-width: 440px) {
     .createThemeBtnsWrapper > button {
         flex: 1;
     }
-}
-.createThemeHeader {
-    display: flex;
-    justify-content: space-between;
-}
-
-.createThemeHeader h4 {
-    font-size: var(--fs-300);
-    font-weight: 600;
 }

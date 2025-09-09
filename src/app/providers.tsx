@@ -5,7 +5,7 @@ import { PermissionProvider } from '@/modules/permission/PermissionContext';
 
 import { composeProviders } from '@/shared/utils';
 
-import { ConfirmProvider } from '@/ui/modal/confirm';
+import { ConfirmProvider } from '@/ui/dialog/confirm';
 
 // @ts-expect-error
 const CombinedProviders = composeProviders([ConfirmProvider, PermissionProvider, ...SettingsProvider]);

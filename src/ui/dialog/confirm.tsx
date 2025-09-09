@@ -1,14 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
-import { createPortal } from 'react-dom';
-
-import { Dialog } from '@ark-ui/react/dialog';
-
-import { CloseIcon } from '@/shared/icons';
-import { cls } from '@/shared/utils';
 
 import S_Button from '../button';
-import { ModalSize } from './index';
-import styles from './modal.module.css';
+import Modal, { ModalSize } from './index';
 
 interface ConfirmOptions {
     message: string;
@@ -58,40 +51,29 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
         resolveCallback(false);
         setIsOpen(false);
     };
-    const modalClasses = cls(styles.confirmPositioner, styles[`${texts.size}Size`]);
     return (
         <ConfirmContext.Provider value={{ confirm }}>
             {children}
+
             {isOpen && (
-                <Dialog.Root open={isOpen}>
-                    {createPortal(
-                        <>
-                            <Dialog.Backdrop className={styles.confirmBackdrop} />
-                            <Dialog.Positioner className={modalClasses}>
-                                <Dialog.Content className={styles.dialogContent}>
-                                    {texts.title && (
-                                        <Dialog.Title className={styles.confirmTitle}>
-                                            {texts.title}
-                                            <Dialog.CloseTrigger className={styles.closeButton} onClick={handleCancel}>
-                                                <CloseIcon />
-                                            </Dialog.CloseTrigger>
-                                        </Dialog.Title>
-                                    )}
-                                    <p>{texts.message}</p>
-                                    <div className={styles.confirmButtons}>
-                                        <S_Button variant="primary" onClick={handleCancel}>
-                                            {texts.cancelText}
-                                        </S_Button>
-                                        <S_Button variant="primary" onClick={handleConfirm}>
-                                            {texts.confirmText}
-                                        </S_Button>
-                                    </div>
-                                </Dialog.Content>
-                            </Dialog.Positioner>
-                        </>,
-                        document.body
-                    )}
-                </Dialog.Root>
+                <Modal
+                    open={isOpen}
+                    onOpenChange={setIsOpen}
+                    title={texts.title}
+                    size="xs"
+                    footer={
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-300)' }}>
+                            <S_Button variant="outlined" onClick={handleCancel}>
+                                {texts.cancelText}
+                            </S_Button>
+                            <S_Button variant="primary" onClick={handleConfirm}>
+                                {texts.confirmText}
+                            </S_Button>
+                        </div>
+                    }
+                >
+                    <p>{texts.message}</p>
+                </Modal>
             )}
         </ConfirmContext.Provider>
     );

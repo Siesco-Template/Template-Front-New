@@ -88,7 +88,7 @@ const SettingsPageLayout = () => {
     const { saveSizes, discardSizes } = useTypographyStore();
     const { discardViewAndContent, saveViewAndContent } = useViewAndContentStore();
 
-    const { saveConfigToApi, defaultConfig, config } = useTableConfig();
+    const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
 
     const { saveChangesOnLayout, discardChangesOnLayout } = useLayoutStore();
 
@@ -117,17 +117,18 @@ const SettingsPageLayout = () => {
                                 color="primary"
                                 children={'Yadda Saxla'}
                                 onClick={async () => {
-                                    const mergedDiff = getFullConfigDiff(undefined, defaultConfig, config);
+                                    // const mergedDiff = getFullConfigDiff(undefined, defaultConfig, config);
 
                                     //birinci post edirik
-                                    await saveConfigToApi(mergedDiff);
+                                    await saveConfigToApi();
+                                    await loadConfigFromApi();
 
                                     // daha sonra storeda save evvele etsek çünki diff itəcək, save zamanı reset olunacaq.
-                                    useThemeStore.getState().saveTheme();
-                                    useLayoutStore.getState().saveChangesOnLayout();
-                                    useTypographyStore.getState().saveSizes();
-                                    useViewAndContentStore.getState().saveViewAndContent();
-                                    useThemeStore.getState().saveTheme();
+                                    // useThemeStore.getState().saveTheme();
+                                    // useLayoutStore.getState().saveChangesOnLayout();
+                                    // useTypographyStore.getState().saveSizes();
+                                    // useViewAndContentStore.getState().saveViewAndContent();
+                                    // useThemeStore.getState().saveTheme();
 
                                     showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
                                     setHasChange(false);

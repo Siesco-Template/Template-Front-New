@@ -1,109 +1,191 @@
 import { FC } from 'react';
 
-import { CloseIcon } from '@/shared/icons';
-import { cls } from '@/shared/utils';
-
 import { S_Button, S_Input } from '@/ui';
 
 import { useEditTheme } from '../use-edit-theme';
 import styles from './themes.module.css';
 
 interface ICreateThemeProps {
-    closeModal: () => void;
+    closeModal: (open: boolean) => void;
 }
 const EditTheme: FC<ICreateThemeProps> = ({ closeModal }) => {
-    const {
-        editThemeForm,
-        backgroundColor,
-        changeColor,
-        changeName,
-        error,
-        foregroundColor,
-        primaryColor,
-        secondaryColor,
-        theme,
-        name,
-    } = useEditTheme();
+    const { editThemeForm, changeColor, changeName, error, theme, name, newColors } = useEditTheme();
 
     return (
         <form className={styles.createThemeForm} onSubmit={editThemeForm}>
             <div className={styles.formItems}>
                 <S_Input
-                    label="Theme name"
                     name="name"
+                    placeholder="Adlandır"
+                    size={'48'}
                     value={name}
                     onChange={changeName}
-                    errorText={error?.name?.[0]}
+                    description={error?.name?.[0]}
+                    state={error?.name?.[0] ? 'error' : 'default'}
                 />
                 <div className={styles.colorInputs}>
-                    <div className={styles.colorInputWrapper}>
-                        <label htmlFor="primary">Əsas rəng</label>
-                        <input
-                            type="color"
-                            id="primary"
-                            name="primary"
-                            className={styles.colorInput}
-                            value={primaryColor}
-                            onChange={changeColor}
-                        />
+                    {/* Primary Color */}
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="primary">Əsas rəng</label>
+                                <span>{newColors.primaryColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="primary"
+                                name="primary"
+                                className={styles.colorInput}
+                                value={newColors.primaryColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.primary).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
                     </div>
-                    <div className={styles.colorInputWrapper}>
-                        <label htmlFor="secondary">İkinci rəngi</label>
-                        <input
-                            type="color"
-                            id="secondary"
-                            name="secondary"
-                            className={styles.colorInput}
-                            value={secondaryColor}
-                            onChange={changeColor}
-                        />
+
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="secondary">İkinci rəng</label>
+                                <span>{newColors.secondaryColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="secondary"
+                                name="secondary"
+                                className={styles.colorInput}
+                                value={newColors.secondaryColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.secondary).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
                     </div>
-                    <div className={styles.colorInputWrapper}>
-                        <label htmlFor="foreground">Ön plan rəngi</label>
-                        <input
-                            type="color"
-                            id="foreground"
-                            name="foreground"
-                            className={styles.colorInput}
-                            value={foregroundColor}
-                            onChange={changeColor}
-                        />
+
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="yellow">Sarı rəng</label>
+                                <span>{newColors.yellowColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="yellow"
+                                name="yellow"
+                                className={styles.colorInput}
+                                value={newColors.yellowColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.yellow).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
                     </div>
-                    <div className={styles.colorInputWrapper}>
-                        <label htmlFor="background">Arxa fon rəngi </label>
-                        <input
-                            type="color"
-                            id="background"
-                            name="background"
-                            className={styles.colorInput}
-                            value={backgroundColor}
-                            onChange={changeColor}
-                        />
+
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="neutral">Neytral rəng</label>
+                                <span>{newColors.neutralColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="neutral"
+                                name="neutral"
+                                className={styles.colorInput}
+                                value={newColors.neutralColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.neutral).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="green">Yaşıl rəng</label>
+                                <span>{newColors.greenColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="green"
+                                name="green"
+                                className={styles.colorInput}
+                                value={newColors.greenColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.green).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="blue">Mavi rəng</label>
+                                <span>{newColors.blueColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="blue"
+                                name="blue"
+                                className={styles.colorInput}
+                                value={newColors.blueColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.blue).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className={styles.colorInputWrapper}>
+                            <div className={styles.colorLabel}>
+                                <label htmlFor="red">Qırmızı rəng</label>
+                                <span>{newColors.redColor}</span>
+                            </div>
+                            <input
+                                type="color"
+                                id="red"
+                                name="red"
+                                className={styles.colorInput}
+                                value={newColors.redColor}
+                                onChange={changeColor}
+                            />
+                        </div>
+                        <div className={styles.themePalette}>
+                            {Object.entries(theme.red).map(([key, value]) => {
+                                return <span className={styles.paletteItem} key={key} style={{ background: value }} />;
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <ul className={styles.themePalettesWrapper}>
-                <li className={cls(styles.themePalette, styles.themePalette1)}>
-                    {Object.entries(theme.primary).map(([key, value]) => {
-                        return (
-                            <span className={styles.paletteItem} key={key} style={{ background: `hsl(${value})` }} />
-                        );
-                    })}
-                </li>
-                <li className={styles.themePalette}>
-                    {Object.entries(theme.secondary).map(([key, value]) => {
-                        return (
-                            <span className={styles.paletteItem} key={key} style={{ background: `hsl(${value})` }} />
-                        );
-                    })}
-                </li>
-            </ul>
             <div className={styles.createThemeBtnsWrapper}>
-                <S_Button type="button" variant="outlined-10" onClick={closeModal}>
+                <S_Button type="button" variant="outlined" onClick={closeModal.bind(null, false)}>
                     Geri qayıt
                 </S_Button>
-                <S_Button type="submit" variant="main-10">
+                <S_Button type="submit" variant="primary">
                     Yadda saxla
                 </S_Button>
             </div>

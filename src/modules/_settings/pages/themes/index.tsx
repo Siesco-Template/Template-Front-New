@@ -1,18 +1,17 @@
 import { useState } from 'react';
 
-import { CustomThemeBackground } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
-import Modal from '@/ui/modal';
-import { useConfirm } from '@/ui/modal/confirm';
+import Modal from '@/ui/dialog';
+import { useConfirm } from '@/ui/dialog/confirm';
 
 import { DefaultThemes } from '../../settings.contants';
 import { Theme, useThemeStore } from '../../theme/theme.store';
 import CreateTheme from './ui/create-theme';
+import CustomThemeCard from './ui/custom/custom-theme-card';
 import EditTheme from './ui/edit-theme';
 import ThemeCard from './ui/theme-card';
 import styles from './ui/themes.module.css';
-import CustomThemeCard from './ui/custom/custom-theme-card';
 
 const Themes = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -37,16 +36,23 @@ const Themes = () => {
         setIsOpenModal(true);
         addNewTheme({
             name: '',
-            id: getThemes()[getThemes().length - 1].id + '1',
-            background: initialCurrentTheme?.background,
-            foreground: initialCurrentTheme?.foreground,
+            id: getThemes().at(-1)?.id + '1',
+            isSystemDefault: false,
             primary: initialCurrentTheme?.primary,
             secondary: initialCurrentTheme?.secondary,
-            type: initialCurrentTheme.type,
+            yellow: initialCurrentTheme?.yellow,
+            neutral: initialCurrentTheme?.neutral,
+            green: initialCurrentTheme?.green,
+            blue: initialCurrentTheme?.blue,
+            red: initialCurrentTheme?.red,
+            white: initialCurrentTheme?.white,
+            black: initialCurrentTheme?.black,
         });
     };
 
-    const closeModal = async () => {
+    const closeModal = async (open: boolean) => {
+        if (open) return;
+
         const isConfirmed = await confirm({
             title: 'Dəyişiklikləri geri qaytar',
             message: 'Dəyişiklikləri geri qaytarmağa əminsiniz?',
@@ -68,13 +74,13 @@ const Themes = () => {
     return (
         <>
             <div className={styles.cardContainer}>
-                {DefaultThemes?.map((theme) => {
+                {/* {DefaultThemes?.map((theme) => {
                     return <ThemeCard key={theme.id} {...{ theme, currentTheme, changeCurrentTheme, newThemeId }} />;
-                })}
+                })} */}
                 {themes?.map((theme, idx) => {
                     return (
                         <ThemeCard
-                            key={idx}
+                            key={theme.id}
                             {...{
                                 theme,
                                 currentTheme,
@@ -82,14 +88,13 @@ const Themes = () => {
                                 newThemeId,
                                 removeTheme,
                                 editTheme,
-                                isEditable: true,
+                                isEditable: theme.isSystemDefault === false,
                             }}
                         />
                     );
                 })}
-                {/* onClick={newTheme} */}
                 {!newThemeId && (
-                    <div className={cls(styles.themeCardWrapper)}>
+                    <div className={cls(styles.themeCardWrapper)} onClick={newTheme}>
                         <CustomThemeCard />
 
                         <div className={styles.themeCardFooter}>

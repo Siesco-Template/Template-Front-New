@@ -268,6 +268,7 @@ export function CatalogSelect<T>({
                                     />
                                 ) : (
                                     <div
+                                        key={key}
                                         className={cls(
                                             styles.optionLabel,
                                             styles.selectOption,

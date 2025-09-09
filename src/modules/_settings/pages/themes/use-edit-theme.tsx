@@ -11,59 +11,69 @@ type ErrorType = Record<string, string[]>;
 export const useEditTheme = () => {
     const [error, setError] = useState<ErrorType>({});
     const { editedTheme, currentTheme, themes, setTheme, saveTheme } = useThemeStore();
-	
-    const theme = themes.find(theme => theme.id === editedTheme?.id)!;
 
-    const hexToHsl = (color: string | TinyColor) => {
-        if (typeof color === 'string') {
-            color = new TinyColor(color).toHslString().slice(4, -1);
-        } else {
-            return color.toHslString().slice(4, -1);
-        }
-    };
-    const colorToHex = (color: string) => new TinyColor(`hsl(${color})`).toHexString();
+    const theme = themes.find((theme) => theme.id === editedTheme?.id)!;
 
     const changeColor = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         const currentColor = new TinyColor(value);
-        const color = currentColor.toHslString().slice(4, -1);
         let newColorsOnTheme: Theme;
 
-        if (name === 'primary' || name === 'secondary') {
+        if (
+            name === 'primary' ||
+            name === 'secondary' ||
+            name === 'yellow' ||
+            name === 'green' ||
+            name === 'blue' ||
+            name === 'red'
+        ) {
             const newPalette = {
-                50: hexToHsl(currentColor.mix('#fff', 80)),
-                100: hexToHsl(currentColor.mix('#fff', 70)),
-                200: hexToHsl(currentColor.mix('#fff', 60)),
-                300: hexToHsl(currentColor.mix('#fff', 50)),
-                400: hexToHsl(currentColor.mix('#fff', 40)),
-                500: hexToHsl(currentColor),
-                600: hexToHsl(currentColor.mix('#000', 15)),
-                700: hexToHsl(currentColor.mix('#000', 30)),
-                800: hexToHsl(currentColor.mix('#000', 45)),
-                900: hexToHsl(currentColor.mix('#000', 60)),
+                100: currentColor.mix('#fff', 70).toHexString(),
+                200: currentColor.mix('#fff', 60).toHexString(),
+                300: currentColor.mix('#fff', 50).toHexString(),
+                400: currentColor.mix('#fff', 40).toHexString(),
+                500: currentColor.toHexString(),
+                600: currentColor.mix('#000', 15).toHexString(),
+                700: currentColor.mix('#000', 30).toHexString(),
+                800: currentColor.mix('#000', 45).toHexString(),
+                900: currentColor.mix('#000', 60).toHexString(),
             };
             newColorsOnTheme = { ...theme, [name]: newPalette };
         } else {
-            if (name === 'background') {
-				// background-a görə dark və ya light mode-ni qoyuruq
-                newColorsOnTheme = { ...theme, type: currentColor.isDark() ? 'dark' : 'light', background: color };
-            } else {
-                newColorsOnTheme = { ...theme, foreground: color };
-            }
+            const newPalette = {
+                50: currentColor.mix('#fff', 75).toHexString(),
+                100: currentColor.mix('#fff', 70).toHexString(),
+                150: currentColor.mix('#fff', 65).toHexString(),
+                200: currentColor.mix('#fff', 60).toHexString(),
+                250: currentColor.mix('#fff', 55).toHexString(),
+                300: currentColor.mix('#fff', 50).toHexString(),
+                350: currentColor.mix('#fff', 45).toHexString(),
+                400: currentColor.mix('#fff', 40).toHexString(),
+                500: currentColor.toHexString(),
+                600: currentColor.mix('#000', 15).toHexString(),
+                650: currentColor.mix('#000', 22.5).toHexString(),
+                700: currentColor.mix('#000', 30).toHexString(),
+                750: currentColor.mix('#000', 37.5).toHexString(),
+                800: currentColor.mix('#000', 45).toHexString(),
+                850: currentColor.mix('#000', 52.5).toHexString(),
+                900: currentColor.mix('#000', 60).toHexString(),
+                950: currentColor.mix('#000', 67.5).toHexString(),
+                1000: currentColor.mix('#000', 75).toHexString(),
+            };
+            newColorsOnTheme = { ...theme, [name]: newPalette };
         }
-
         setTheme(newColorsOnTheme);
 
-		// əgər user-in istifadə etdiyi theme-ni edit edir-sə bütün ui-da dəyişikliklər görünür
-		if (editedTheme?.id === currentTheme) {
-			addThemeOnHtmlRoot(transformThemeToCss(newColorsOnTheme));
-		}
+        // əgər user-in istifadə etdiyi theme-ni edit edir-sə bütün ui-da dəyişikliklər görünür
+        if (editedTheme?.id === currentTheme) {
+            addThemeOnHtmlRoot(transformThemeToCss(newColorsOnTheme));
+        }
     };
 
     const changeName = (e: ChangeEvent<HTMLInputElement>) => {
-		const name = e.target.value;
+        const name = e.target.value;
 
-		setTheme({ ...theme, name});
+        setTheme({ ...theme, name });
 
         if (name.trim() !== '') {
             setError({});
@@ -71,7 +81,6 @@ export const useEditTheme = () => {
             setError({ name: ['Adını yazmaq lazımdır'] });
         }
     };
-
 
     useBlocker(editedTheme?.id !== undefined);
     useBeforeUnload((event) => {
@@ -81,7 +90,7 @@ export const useEditTheme = () => {
         }
     });
 
-	const editThemeForm = (e: FormEvent<HTMLFormElement>) => {
+    const editThemeForm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (theme.name.trim() === '') {
             setError({ name: ['Adını yazmaq lazımdır'] });
@@ -89,17 +98,22 @@ export const useEditTheme = () => {
             saveTheme();
         }
     };
-	
+
     return {
         theme,
         error,
-		name: theme?.name || '',
-        primaryColor: colorToHex(theme?.primary[500]),
-        secondaryColor: colorToHex(theme?.secondary[500]),
-        foregroundColor: colorToHex(theme?.foreground),
-        backgroundColor: colorToHex(theme?.background),
+        name: theme?.name || '',
+        newColors: {
+            primaryColor: theme.primary[500],
+            secondaryColor: theme.secondary[500],
+            yellowColor: theme.yellow[500],
+            neutralColor: theme.neutral[500],
+            greenColor: theme.green[500],
+            blueColor: theme.blue[500],
+            redColor: theme.red[500],
+        },
         changeColor,
         changeName,
-		editThemeForm
+        editThemeForm,
     };
 };

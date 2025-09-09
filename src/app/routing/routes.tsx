@@ -179,52 +179,9 @@ export const AppInitializer = ({ config }: { config: any }) => {
             useViewAndContentStore.setState(viewAndContentState);
             useTypographyStore.setState(typographyState);
 
-            const visualSettings = config.extraConfig?.visualSettings || {};
-
-            const themeEntries = Object.entries(visualSettings)
-                .filter(([key]) => /^themes\[\d+\]$/.test(key))
-                .sort(([a], [b]) => {
-                    const ia = Number(a.match(/^themes\[(\d+)\]$/)![1]);
-                    const ib = Number(b.match(/^themes\[(\d+)\]$/)![1]);
-                    return ia - ib;
-                });
-
-            const themeArray = themeEntries.map(([_, themeObj]) => themeObj);
-
             const currentThemeId = config.extraConfig?.visualSettings.currentTheme;
             const previousThemeId = config.extraConfig?.visualSettings.previousTheme;
-
-            const normalizedThemeList = (themeArray || [])?.map((t: any) => ({
-                name: t?.name,
-                id: t?.id,
-                type: t?.type ?? 'light',
-                primary: {
-                    '50': t?.primary?.['50'] ?? '',
-                    '100': t?.primary?.['100'] ?? '',
-                    '200': t?.primary?.['200'] ?? '',
-                    '300': t?.primary?.['300'] ?? '',
-                    '400': t?.primary?.['400'] ?? '',
-                    '500': t?.primary?.['500'] ?? '',
-                    '600': t?.primary?.['600'] ?? '',
-                    '700': t?.primary?.['700'] ?? '',
-                    '800': t?.primary?.['800'] ?? '',
-                    '900': t?.primary?.['900'] ?? '',
-                },
-                secondary: {
-                    '50': t?.secondary?.['50'] ?? '',
-                    '100': t?.secondary?.['100'] ?? '',
-                    '200': t?.secondary?.['200'] ?? '',
-                    '300': t?.secondary?.['300'] ?? '',
-                    '400': t?.secondary?.['400'] ?? '',
-                    '500': t?.secondary?.['500'] ?? '',
-                    '600': t?.secondary?.['600'] ?? '',
-                    '700': t?.secondary?.['700'] ?? '',
-                    '800': t?.secondary?.['800'] ?? '',
-                    '900': t?.secondary?.['900'] ?? '',
-                },
-                background: t?.background ?? '',
-                foreground: t?.foreground ?? '',
-            }));
+            const normalizedThemeList = config.extraConfig?.visualSettings?.themes || [];
 
             const currentTheme: any = normalizedThemeList?.find((t: any) => t.id === currentThemeId);
             const cssTheme = transformThemeToCss(currentTheme);

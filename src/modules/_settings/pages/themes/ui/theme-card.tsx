@@ -40,7 +40,7 @@ const ThemeCard: FC<IThemeCardProps> = ({
 
     const renderCardIcon = (name: string) => {
         switch (name) {
-            case 'Light':
+            case 'Default':
                 return <LightThemeBackground />;
             case 'Dark':
                 return <DarkThemeBackground />;

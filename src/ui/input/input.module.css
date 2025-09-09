@@ -132,6 +132,7 @@
 }
 
 .input.size-36 {
+    height: 36px;
     border-radius: var(--br-2xl, 12px);
     padding: var(--space-300, 8px);
 }
@@ -155,6 +156,7 @@
 }
 
 .input.size-48 {
+    height: 48px;
     border-radius: var(--br-3xl, 16px);
     padding: var(--space-400, 14px) var(--space-450, 16px);
 }

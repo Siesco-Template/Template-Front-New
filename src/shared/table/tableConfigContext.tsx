@@ -5,7 +5,7 @@ import { configService } from '@/services/configuration/configuration.service';
 import { useLayoutStore } from '@/modules/_settings/layout/layout.store';
 import { useSettingsStore } from '@/modules/_settings/settings.store';
 import { getPersonalizationDiff } from '@/modules/_settings/settings.utils';
-import { useThemeStore } from '@/modules/_settings/theme/theme.store';
+import { Theme, useThemeStore } from '@/modules/_settings/theme/theme.store';
 import { useTypographyStore } from '@/modules/_settings/typography/typography.store';
 import { useViewAndContentStore } from '@/modules/_settings/view-and-content/view-and-content.store';
 
@@ -50,7 +50,7 @@ const TableConfigContext = createContext<{
 
 export const useTableConfig = () => useContext(TableConfigContext);
 
-export const getFullConfigDiff = (customTableDiff?: Record<string, any>, defaultConfig?: any, config?: any) => {
+export const getFullConfigDiff = (initialThemes: Theme[]) => {
     const layout = useLayoutStore.getState();
     const typography = useTypographyStore.getState();
     const viewAndContent = useViewAndContentStore.getState();
@@ -60,12 +60,12 @@ export const getFullConfigDiff = (customTableDiff?: Record<string, any>, default
     const layoutDiff = layout.getLayoutDiff?.() ?? {};
     const typographyDiff = typography.getTypographyDiff?.() ?? {};
     const viewAndContentDiff = viewAndContent.getViewAndContentDiff?.() ?? {};
-    const themeDiff = theme.getThemeDiff?.() ?? {};
+    const themeDiff = theme.getThemeDiff?.(initialThemes) ?? {};
     const personalizationDiff = getPersonalizationDiff(settings.navigationLinks, settings.initialNavigationLinks);
-    const tableDiff = customTableDiff ?? getUserDiffFromConfig(defaultConfig, config);
+    // const tableDiff = customTableDiff ?? getUserDiffFromConfig(defaultConfig, config);
 
     return {
-        ...tableDiff,
+        // ...tableDiff,
         ...layoutDiff,
         ...typographyDiff,
         ...viewAndContentDiff,
@@ -86,8 +86,12 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
             const computedDiff = getUserDiffFromConfig(defaultConfig, config);
 
             const tableDiff = diff ? { ...computedDiff, ...diff } : computedDiff;
-            const fullDiff = getFullConfigDiff(tableDiff, defaultConfig, config);
+            const fullDiff = {
+                ...tableDiff,
+                ...getFullConfigDiff(config.extraConfig.visualSettings.themes as Theme[]),
+            };
 
+            // console.log('fullDiff', fullDiff);
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
                 return;
             }
@@ -111,7 +115,7 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
                 userConfig && Object.keys(userConfig).length > 0
                     ? mergeWithEval(defaultConfig, userConfig)
                     : defaultConfig;
-
+            // console.log(finalConfig);
             setConfig(finalConfig);
         } catch (error) {
             console.error('Config yüklənərkən xəta:', error);
