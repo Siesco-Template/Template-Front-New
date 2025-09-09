@@ -451,7 +451,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 styles.configPanel,
                                 isConfigCollapsed ? styles.collapsed : styles.expanded,
                             ].join(' ')}
-                            {...inertProps(isFilterCollapsed)}
+                            {...inertProps(isConfigCollapsed)}
                         >
                             <ConfigPanel
                                 isCollapsed={isConfigCollapsed}
