@@ -135,7 +135,7 @@ function FolderPage() {
 
     useEffect(() => {
         if (searchParams.get('path') !== currentPath) {
-            setCurrentPath(searchParams.get('path') || '/Organizations/');
+            setCurrentPath(searchParams.get('path') || '/Organizations');
         }
     }, [searchParams]);
 
