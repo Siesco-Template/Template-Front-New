@@ -66,6 +66,10 @@ const commonArgTypes = {
             'auto',
         ],
     },
+    format: {
+        control: 'select',
+        options: ['dd/MM/yyyy', 'MM/yy/yyyy', 'dd.MM.yyyy', 'MM.dd.yyyy', 'dd-MM-yyyy', 'MM-dd-yyyy'],
+    },
 };
 
 export const SingleDatePicker: StoryObj<typeof CustomDatePicker> = {
@@ -74,7 +78,7 @@ export const SingleDatePicker: StoryObj<typeof CustomDatePicker> = {
         label: 'Doğum tarixi',
         placeholder: 'Tarix seçin',
         error: false,
-        format: 'dd.MM.yyyy',
+        // format: 'dd.MM.yyyy',
         oneTap: true,
         placement: 'auto',
         appearance: 'default',
@@ -95,7 +99,7 @@ export const RangeDatePicker: StoryObj<typeof CustomDateRangePicker> = {
         label: 'Tarix intervalı',
         placeholder: 'Interval seçin',
         error: false,
-        format: 'dd.MM.yyyy',
+        // format: 'dd.MM.yyyy',
         oneTap: true,
         placement: 'auto',
         appearance: 'default',
