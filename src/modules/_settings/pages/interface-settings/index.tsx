@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
 import Catalog from '@/shared/catalog';
+import { DarkThemeBackground, LightThemeBackground } from '@/shared/icons';
+import { cls, getSystemTheme } from '@/shared/utils';
 
 import { S_Button, S_Switch } from '@/ui';
 import S_Select_Simple, { Item } from '@/ui/select/select-simple';
 
 import { LayoutPositionState, LayoutZoomState, useLayoutStore } from '../../layout/layout.store';
 import { useViewAndContentStore } from '../../view-and-content/view-and-content.store';
+import SystemThemeCard from '../themes/ui/system/system-theme';
 import styles from './interface-settings.module.css';
 
 const layoutPositions: Item[] = [
@@ -109,6 +112,13 @@ const InterfaceSettings = () => {
 
     const selectedObj: any = layoutPositions.find((i) => i.value === position) ?? null;
     const selectedZoomObj: any = zoomOptions.find((i) => i.value === zoom) ?? null;
+
+    const [selectedMode, setSelectedMode] = useState<'light' | 'dark' | 'system'>('light');
+
+    useEffect(() => {
+        const rootElement = document.documentElement;
+        rootElement.setAttribute('data-theme', selectedMode === 'system' ? getSystemTheme() : selectedMode);
+    }, [selectedMode]);
 
     return (
         <div style={{ width: '100%' }}>
@@ -218,6 +228,47 @@ const InterfaceSettings = () => {
                             clearable={false}
                             searchItems={false}
                         />
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles.settingsSection}>
+                <div className={styles.section}>
+                    <div>
+                        <h3>Ümumi ölçü</h3>
+                        <p>Menyunun ölçüsünü tənzimləyin.</p>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', gap: 20 }}>
+                    <div
+                        className={cls(styles.themeCardWrapper, selectedMode === 'light' && styles.selected)}
+                        onClick={() => setSelectedMode('light')}
+                    >
+                        <LightThemeBackground />
+
+                        <div className={styles.themeCardFooter}>
+                            <p>Light</p>
+                        </div>
+                    </div>
+                    <div
+                        className={cls(styles.themeCardWrapper, selectedMode === 'dark' && styles.selected)}
+                        onClick={() => setSelectedMode('dark')}
+                    >
+                        <DarkThemeBackground />
+
+                        <div className={styles.themeCardFooter}>
+                            <p>Dark</p>
+                        </div>
+                    </div>
+                    <div
+                        className={cls(styles.themeCardWrapper, selectedMode === 'system' && styles.selected)}
+                        onClick={() => setSelectedMode('system')}
+                    >
+                        <SystemThemeCard />
+
+                        <div className={styles.themeCardFooter}>
+                            <p>Sistem</p>
+                        </div>
                     </div>
                 </div>
             </div>
