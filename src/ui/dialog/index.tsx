@@ -14,12 +14,31 @@ interface Props {
     title?: ReactNode;
     size?: ModalSize;
     footer?: ReactNode;
+
+    closeOnOutsideClick?: boolean;
+    closeOnEsc?: boolean;
+    onClickOutside?: (event: Event) => void;
 }
 
-function Modal({ open, onOpenChange, children, title, size = 'md', footer }: Props) {
+function Modal({
+    open,
+    onOpenChange,
+    children,
+    title,
+    size = 'md',
+    footer,
+    closeOnOutsideClick = true,
+    closeOnEsc = true,
+    onClickOutside,
+}: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={cls(styles.modalContent, styles[size])}>
+            <DialogContent
+                className={cls(styles.modalContent, styles[size])}
+                closeOnOutsideClick={closeOnOutsideClick}
+                closeOnEsc={closeOnEsc}
+                onClickOutside={onClickOutside}
+            >
                 <DialogHeader className={cls(styles.modalHeader, styles[size])}>
                     <DialogTitle className={cls(styles.modalTitle, styles[size])}>{title}</DialogTitle>
                 </DialogHeader>

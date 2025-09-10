@@ -1,5 +1,5 @@
-// src/ui/dialog/Modal.stories.tsx
 import { useState } from 'react';
+import React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -18,6 +18,9 @@ const meta: Meta<typeof Modal> = {
         size: 'md',
         children: 'This is an example modal body. Put any content here.',
         footer: undefined,
+        closeOnOutsideClick: true,
+        closeOnEsc: true,
+        onClickOutside: undefined,
     },
     argTypes: {
         open: { control: 'boolean' },
@@ -25,6 +28,9 @@ const meta: Meta<typeof Modal> = {
         size: { control: 'select', options: sizes },
         footer: { control: false },
         children: { control: 'text' },
+        closeOnOutsideClick: { control: 'boolean' },
+        closeOnEsc: { control: 'boolean' },
+        onClickOutside: { action: 'onClickOutside' },
         onOpenChange: { action: 'onOpenChange' },
     },
     parameters: {
@@ -54,9 +60,7 @@ const TriggerRender: Story['render'] = (args) => {
     );
 };
 
-export const Playground: Story = {
-    render: TriggerRender,
-};
+export const Playground: Story = { render: TriggerRender };
 
 export const WithFooter: Story = {
     args: {
@@ -101,4 +105,21 @@ export const MD: Story = { args: { size: 'md', title: 'Modal (md)' }, render: Tr
 export const LG: Story = { args: { size: 'lg', title: 'Modal (lg)' }, render: TriggerRender };
 export const XL: Story = { args: { size: 'xl', title: 'Modal (xl)' }, render: TriggerRender };
 
-export const Closed: Story = { args: { open: false } };
+export const Closed: Story = { args: { open: false }, render: TriggerRender };
+
+export const Locked: Story = {
+    args: {
+        title: 'Locked Modal',
+        closeOnOutsideClick: false,
+        closeOnEsc: false,
+    },
+    render: TriggerRender,
+};
+
+export const WithOutsideHandler: Story = {
+    args: {
+        title: 'Modal with Outside Click Handler',
+        onClickOutside: () => alert('Clicked outside!'),
+    },
+    render: TriggerRender,
+};

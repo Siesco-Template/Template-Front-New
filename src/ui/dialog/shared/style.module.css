@@ -20,6 +20,10 @@
     border-radius: 16px;
     box-shadow: var(--shadow-l2);
     transition-duration: 200;
+
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100dvh - 32px);
 }
 
 .content[data-state='open'] {

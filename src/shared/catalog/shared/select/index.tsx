@@ -3,6 +3,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import * as Popover from '@radix-ui/react-popover';
 
 import { CloseIcon, DirectionDownIcon, DirectionUpIcon, SearchIcon } from '@/shared/icons';
+import { RemoveIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
 import { S_Button, S_Checkbox, S_Input } from '@/ui';
@@ -132,7 +133,6 @@ export function CatalogSelect<T>({
     const triggerClassName = cls(
         styles.trigger,
         open && styles.open,
-        disabled && styles.disabled,
         isCompleted && styles.completed,
         styles[`size-${size}`],
         disabled && styles.disabled,
@@ -159,7 +159,11 @@ export function CatalogSelect<T>({
             >
                 {selectedArray.map((item, idx) => (
                     <div ref={(el) => (measureRefs.current[idx] = el)} key={getKey(item)}>
-                        <S_Chips label={getLabel(item)} type="outlined-fill" />
+                        <S_Chips
+                            label={getLabel(item)}
+                            type="outlined-fill"
+                            rightIcon={<RemoveIcon width={14} height={14} />}
+                        />
                     </div>
                 ))}
             </div>
@@ -179,6 +183,7 @@ export function CatalogSelect<T>({
                                                 e.stopPropagation();
                                                 toggleItem(item);
                                             }}
+                                            rightIcon={<RemoveIcon width={14} height={14} />}
                                         />
                                     ))}
                                     {overflowCount > 0 && (
@@ -189,6 +194,7 @@ export function CatalogSelect<T>({
                                                 e.stopPropagation();
                                                 removeOverflow();
                                             }}
+                                            rightIcon={<RemoveIcon width={14} height={14} />}
                                         />
                                     )}
                                 </div>

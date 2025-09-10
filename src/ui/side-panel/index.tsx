@@ -8,12 +8,34 @@ interface Props {
     children: React.ReactNode;
     footer?: React.ReactNode;
     maxWidth?: string;
+    fullWidth?: boolean;
+
+    closeOnOutsideClick?: boolean;
+    closeOnEsc?: boolean;
+    onClickOutside?: (event: Event) => void;
 }
 
-function S_SidePanel({ open, onOpenChange, title, children, footer, maxWidth }: Props) {
+function S_SidePanel({
+    open,
+    onOpenChange,
+    title,
+    children,
+    footer,
+    maxWidth,
+    fullWidth = false,
+    closeOnOutsideClick = true,
+    closeOnEsc = true,
+    onClickOutside,
+}: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className={styles.mainContent} style={{ width: maxWidth || '480px' }}>
+            <DialogContent
+                className={styles.mainContent}
+                style={{ width: fullWidth ? 'calc(100vw - 80px)' : maxWidth || '480px' }}
+                closeOnOutsideClick={closeOnOutsideClick}
+                closeOnEsc={closeOnEsc}
+                onClickOutside={onClickOutside}
+            >
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>

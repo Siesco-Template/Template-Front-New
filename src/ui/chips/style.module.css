@@ -8,6 +8,7 @@
     transition: all 0.2s ease-in-out;
     gap: var(--space-100, 2px);
     height: 22px;
+    /* max-width: 200px; */
 }
 
 .chip.clickable {
@@ -48,8 +49,8 @@
 
 .left svg,
 .right svg {
-    width: 6px;
-    height: 6px;
+    /* width: 6px;
+    height: 6px; */
 }
 
 .label {
@@ -57,6 +58,12 @@
     font-style: normal;
     font-weight: 400;
     line-height: var(--lh-14, 14px);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .chip.outline .label {

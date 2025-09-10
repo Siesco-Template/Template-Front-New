@@ -190,7 +190,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                     <DialogFooter>
                         <DialogClose asChild>
                             <S_Button
-                                variant="outlined-10"
+                                variant="outlined"
                                 onClick={() => {
                                     setSelectedItems(value as T[]);
                                     setOpen(false);
@@ -205,7 +205,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                 handleSelect(multiple ? selectedItems : (selectedItems[0] ?? null));
                                 setOpen(false);
                             }}
-                            variant="main-10"
+                            variant="primary"
                         >
                             Done
                         </S_Button>
@@ -308,7 +308,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                 {/* Footer */}
                 <PanelDialogFooter>
                     <S_Button
-                        variant="outlined-10"
+                        variant="outlined"
                         onClick={() => {
                             setSelectedItems(value as T[]);
                             setOpen(false);
@@ -322,7 +322,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                             handleSelect(multiple ? selectedItems : (selectedItems[0] ?? null));
                             setOpen(false);
                         }}
-                        variant="main-10"
+                        variant="primary"
                     >
                         Done
                     </S_Button>
