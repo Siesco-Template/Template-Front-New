@@ -52,12 +52,10 @@
 }
 
 .expanded .filterContent {
-    /* transform: translateX(0); */
     opacity: 1;
 }
 
 .collapsed .filterContent {
-    /* transform: translateX(-100%); */
     opacity: 0;
     pointer-events: none;
 }

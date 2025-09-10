@@ -40,12 +40,11 @@ export default function CustomDateSelection({ label, value, onChange, error, pla
                         value={from}
                         onChange={handleFromChange}
                         menuClassName={styles.customMenu}
+                        // @ts-expect-error
                         placement={placement}
                         placeholder="Başlanğıc"
                     />
-                    <InputGroup.Addon
-                        style={{ padding: '0 2px', backgroundColor: 'var(--background-disabled, #f3f3f3)' }}
-                    >
+                    <InputGroup.Addon style={{ padding: '0 2px', backgroundColor: 'var(--background-primary, #fff)' }}>
                         →
                     </InputGroup.Addon>
                     <DatePicker
@@ -58,6 +57,7 @@ export default function CustomDateSelection({ label, value, onChange, error, pla
                         value={to}
                         onChange={handleToChange}
                         menuClassName={styles.customMenu}
+                        // @ts-expect-error
                         placement={placement}
                         placeholder="Son"
                     />

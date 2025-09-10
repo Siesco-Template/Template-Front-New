@@ -29,6 +29,7 @@ export function buildQueryParamsFromTableRequest(
     options?: {
         isInfiniteScroll?: boolean;
         page?: number;
+        initialFilter?: boolean; 
     }
 ): Record<string, any> {
     const params: Record<string, any> = {};
@@ -36,6 +37,14 @@ export function buildQueryParamsFromTableRequest(
 
     const take = data.take ?? 10;
     const page = isInfiniteScroll ? (options?.page ?? 1) : (data.skip ?? 0) + 1;
+
+    if (options?.initialFilter) {
+        params['InitialFilter'] = true;
+        params['Pagination.Page'] = 0;
+        params['Pagination.Take'] = take;
+        params['Pagination.IsInfiniteScroll'] = isInfiniteScroll.toString();
+        return params;
+    }
 
     // Filters
     if (Array.isArray(data.filter)) {

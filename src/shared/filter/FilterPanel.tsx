@@ -31,10 +31,18 @@ interface FilterPanelProps {
     isCollapsed?: boolean;
     onToggleCollapse?: () => void;
     table_key: string;
+    onResetFilters: () => void;
     onReady?: () => void;
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey, table_key, onReady }) => {
+const FilterPanel: React.FC<FilterPanelProps> = ({
+    filters,
+    onChange,
+    storageKey,
+    table_key,
+    onReady,
+    onResetFilters,
+}) => {
     const [activeTab, setActiveTab] = useState<'default' | 'saved'>('default');
     const [savedFilters, setSavedFilters] = useState<FilterConfig[]>([]);
     const [sortMode, setSortMode] = useState(false);
@@ -143,32 +151,21 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         if (f.type === 'multi-select') return [];
         return '';
     };
+
     // urldeki butun filterleri temizleyir, eger default varsa onu saxliyir ama
     const handleResetFilters = () => {
         setSearchText('');
-
-        // Əgər defaultFilter varsa → onun dəyərlərini merge et, digərləri boş qalsın
-        const reset: any = filters.map((f) => {
-            const def = defaultFilter?.find((d) => d.key === f.key);
-            return { ...f, value: def?.value ?? getEmptyValue(f) };
-        });
-
-        setSavedFilters(reset);
         setAppliedFilterName(null);
+
+        const reset = filters.map((f) => ({ ...f, value: getEmptyValue(f) }));
+        setSavedFilters(reset);
         reset.forEach((f: any) => onChange?.(f.key, f.value));
 
-        // URL-ə yalnız defaultFilter-dən gələn dolu dəyərlər getsin
-        const cleanedDefaults =
-            defaultFilter?.map((f) => ({
-                id: f.key || f.column,
-                value: f.value,
-            })) ?? [];
+        const url = new URL(window.location.href);
+        url.searchParams.delete('filterData');
+        window.history.replaceState({}, '', url.toString());
 
-        if (hasDefault) {
-            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort, true);
-        } else {
-            applyFiltersToUrl(cleanedDefaults, filterDataState.skip, filterDataState.take, filterDataState.sort, false);
-        }
+        onResetFilters?.();
     };
 
     // hansisa filterde yeni value secende state vurur, ama tetbiq etmir helem

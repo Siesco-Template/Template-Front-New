@@ -110,13 +110,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             placeholder: 'Unikal nömrə',
             enableSummary: true,
         },
-        // {
-        //     accessorKey: 'Organization.ShortName',
-        //     header: 'Short Name',
-        //     filterVariant: 'text',
-        //     placeholder: 'Short Name',
-        //     enableSummary: true,
-        // },
+        {
+            accessorKey: 'Organization.ShortName',
+            header: 'Short Name',
+            filterVariant: 'text',
+            placeholder: 'Short Name',
+            enableSummary: true,
+        },
         {
             accessorKey: 'CompileDate',
             header: 'Tərtib tarixi',
@@ -248,21 +248,19 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [filters, setFilters] = useState<FilterConfig[]>(generateFiltersFromColumns(filterColumns));
 
-    const fetchData = (isLoadMore = false) => {
+    const fetchData = (isLoadMore = false, options?: { initialFilter?: boolean }) => {
         if (loading) return;
         setLoading(true);
 
         console.log('budayammm');
         const raw: any = filterDataForFetch();
-
         const nextPage = isLoadMore ? currentPage + 1 : 1;
 
-        const queryParams = isInfinite
-            ? buildQueryParamsFromTableRequest(raw, {
-                  isInfiniteScroll: true,
-                  page: nextPage,
-              })
-            : buildQueryParamsFromTableRequest(raw);
+        const queryParams = buildQueryParamsFromTableRequest(raw, {
+            isInfiniteScroll: isInfinite,
+            page: nextPage,
+            initialFilter: options?.initialFilter ?? false,
+        });
 
         const allowed = new Set(
             columns
@@ -278,14 +276,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             .map(([key]) => key);
 
         visibleColumns = Array.from(new Set(visibleColumns));
-
         const mandatoryHidden = ['Id'];
 
-        if (visibleColumns.length > 0) {
-            queryParams.columns = [...new Set([...visibleColumns, ...mandatoryHidden])].join(',');
-        } else {
-            queryParams.columns = mandatoryHidden.join(',');
-        }
+        queryParams.Columns =
+            visibleColumns.length > 0
+                ? [...new Set([...visibleColumns, ...mandatoryHidden])].join(',')
+                : mandatoryHidden.join(',');
 
         reportService
             .getAllReports('reports', queryParams)
@@ -556,6 +552,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 onToggleCollapse={onToggleCollapse}
                                 table_key="reports"
                                 onReady={() => setDefaultFilterReady(true)}
+                                onResetFilters={() => fetchData(false, { initialFilter: true })}
                             />
                         </div>
 

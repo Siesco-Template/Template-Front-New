@@ -177,9 +177,10 @@ li {
 /* Date Picker (RSuit) */
 
 .rs-input-group {
-    background: var(--background-disabled, #f3f3f3);
+    background: var(--background-primary, #fff);
     border: 1px solid var(--border-tertiary, #ccc) !important;
     border-radius: var(--br-2xl, 12px) !important;
+    transition: all 0.3s ease;
 }
 
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
@@ -187,22 +188,24 @@ li {
     color: white !important;
 }
 
-.rs-input-group-focus input {
-    border: none !important;
-    outline: none !important;
+.rs-input-group:focus {
+    border-color: #ffee00 !important; /* mavi border */
+    box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2) !important;
+    outline: none;
 }
 
 .rs-input-group.rs-input-group-inside,
 .rs-input {
     border-radius: var(--br-2xl, 12px) !important;
-    background: var(--background-secondary, #f3f3f3) !important ;
+    background: var(--background-primary, #fff) !important ;
 }
+
 .rs-input {
     padding: 8px 11px !important;
 }
+
 .rs-picker-date > .rs-input-group.rs-input-group-inside .rs-input::placeholder {
     color: var(--content-tertiary, #666);
-
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
@@ -232,56 +235,25 @@ li {
     color: var(--background-primary, #fff) !important;
 }
 .rs-calendar-header-title-date {
-    color: black !important;
+    color: var(--content-secondary, #333) !important;
 }
 
 .rs-calendar-month-dropdown-year-active {
-    color: gray !important;
+    color: var(--background-secondary, #f3f3f3) !important;
 }
 
 .rs-calendar-table-cell-is-today .rs-calendar-table-cell-content {
-    box-shadow: inset 0 0 0 1px blue !important;
-}
-
-.rs-input-group:hover {
-    border-color: var(--border-tertiary, #ccc) !important;
-    box-shadow: none !important;
-}
-
-.rs-input-group-focus {
-    border-color: var(--border-brand, #0d3caf) !important;
-    outline: none !important;
-}
-
-.rs-input-group:not(.rs-input-group-disabled).rs-input-group-focus,
-.rs-input-group:focus-within {
-    border-color: var(--border-brand, #0d3caf) !important;
-    outline: none !important;
-}
-
-.rsuite-input-error,
-.rsuite-input-error:focus {
-    border-color: transparent !important;
-    box-shadow: none !important;
-}
-
-.rs-picker-date .rs-input-group.rs-input-group-focus {
-    border-color: transparent !important;
-    box-shadow: none !important;
-    outline: none !important;
+    box-shadow: inset 0 0 0 1px var(--border-brand, #0d3caf) !important;
 }
 
 :where(.css-dev-only-do-not-override-1a3rktk).ant-color-picker-trigger .ant-color-picker-color-block {
     border-radius: 8px !important;
 }
 
-.rs-picker-date.rs-picker-subtle .rs-input-group:focus {
-    border: none !important;
-}
-
 .ant-color-picker-trigger {
     background: var(--background-primary, #fff);
 }
+
 @keyframes shine {
     0% {
         transform: translateX(-100%);
