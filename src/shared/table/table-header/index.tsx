@@ -42,6 +42,7 @@ interface TableHeaderProps {
     headerClassName?: string;
     onClickShowAsFolder?: () => void;
     isCatalogView?: boolean;
+    onClickShowAsTable?: () => void;
 }
 
 const Table_Header: React.FC<TableHeaderProps> = ({
@@ -65,6 +66,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
     tableVisibiltyColumn = true,
     onClickShowAsFolder,
     headerClassName,
+    onClickShowAsTable,
     isCatalogView = false,
 }) => {
     const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -101,7 +103,7 @@ const Table_Header: React.FC<TableHeaderProps> = ({
             </div>
             <div className={styles.table_header_btn}>
                 {isCatalogView ? (
-                    <S_Button variant="primary" color="secondary">
+                    <S_Button variant="primary" color="secondary" onClick={onClickShowAsTable}>
                         Cədvəl kimi göstər
                     </S_Button>
                 ) : (

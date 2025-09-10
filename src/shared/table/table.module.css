@@ -29,7 +29,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 6px;
+    gap: 4px;
 
     position: relative;
     overflow: visible;
@@ -40,18 +40,6 @@
 }
 .tbody tr {
     transition: all var(--animation);
-}
-
-.tbodyRow:hover td {
-    background-color: #f4f7ff !important;
-}
-
-.tbodyRow:hover {
-    background: #f4f7ff !important;
-}
-
-[data-theme='dark'] .tbody tr:hover {
-    background: hsl(var(--clr-primary-900)) !important;
 }
 .tbody td {
     border: none;
@@ -92,6 +80,7 @@
     justify-content: space-between !important;
     align-items: center !important;
 }
+
 
 .tableHeadCell {
     position: relative;
