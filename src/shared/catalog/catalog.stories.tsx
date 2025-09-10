@@ -30,7 +30,7 @@ interface Product extends MRT_RowData {
 const sampleUsers: User[] = [
     {
         id: '1',
-        name: 'John Doe',
+        name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn Doe',
         email: 'john@example.com',
         role: 'Admin',
         department: 'IT',

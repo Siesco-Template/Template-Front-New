@@ -24,13 +24,40 @@ const DialogOverlay = React.forwardRef<
     <DialogPrimitive.Overlay ref={ref} className={cls(styles.overlay, className)} {...props} />
 ));
 
+type ContentExtraProps = {
+    /** Close when clicking outside? default: true */
+    closeOnOutsideClick?: boolean;
+    /** Close when pressing Escape? default: true */
+    closeOnEsc?: boolean;
+    /** Fires when a true outside click happens (overlay or page) */
+    onClickOutside?: (event: Event) => void;
+};
 const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & ContentExtraProps
+>(({ className, children, closeOnOutsideClick = true, closeOnEsc = true, onClickOutside, ...props }, ref) => (
     <DialogPortal>
         <DialogOverlay />
-        <DialogPrimitive.Content ref={ref} className={cls(styles.content, className)} {...props}>
+        <DialogPrimitive.Content
+            ref={ref}
+            className={cls(styles.content, className)}
+            onEscapeKeyDown={(e) => {
+                if (!closeOnEsc) e.preventDefault();
+                props.onEscapeKeyDown?.(e);
+            }}
+            /* pointer (mouse/touch) outside */
+            onPointerDownOutside={(e) => {
+                onClickOutside?.(e.detail.originalEvent ?? e);
+                if (!closeOnOutsideClick) e.preventDefault();
+                props.onPointerDownOutside?.(e);
+            }}
+            /* keyboard focus outside (e.g., Tab out) */
+            onInteractOutside={(e) => {
+                if (!closeOnOutsideClick) e.preventDefault();
+                props.onInteractOutside?.(e);
+            }}
+            {...props}
+        >
             {children}
         </DialogPrimitive.Content>
     </DialogPortal>

@@ -35,20 +35,19 @@
     align-items: center;
     gap: var(--space-500, 20px);
     align-self: stretch;
-    background: var(--background-secondary, #f3f3f3);
     width: 100%;
     outline: none;
-    border: 1px solid transparent;
     transition: all 0.2s ease-in-out;
     border: 1px solid var(--border-tertiary, #ccc);
+    background: var(--Background-Primary, #fff);
 }
 .trigger.disabled {
     cursor: not-allowed;
     background: var(--background-disabled, #f3f3f3) !important;
-    border: 1px solid var(--border-disabled, #e6e6e6) !important;
+    border: none;
 }
 .trigger:hover {
-    background: var(--background-disabled, #f3f3f3);
+    background: var(--background-secondary, #f3f3f3);
 }
 .trigger:focus-within,
 .trigger.open {
@@ -92,6 +91,10 @@
     font-weight: 400;
     line-height: var(--lh-20, 20px);
     transition: all 0.2s ease-in-out;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .trigger:hover .placeholder {
@@ -129,13 +132,21 @@
 }
 
 /* Chips */
-
-.selectChips {
+/* .selectChips {
     display: flex;
     align-items: center;
     gap: var(--space-200, 4px);
     flex-wrap: nowrap;
     flex: 1;
+} */
+
+.selectChips {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200, 4px);
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
 }
 
 /* Dropdown */
@@ -173,7 +184,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-200, 4px);
-    padding-right: var(--space-300, 8px);
+    /* padding-right: var(--space-300, 8px); */
 }
 
 .optionsList::-webkit-scrollbar {
