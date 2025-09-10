@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
@@ -16,12 +17,13 @@ interface MoveDialogProps {
 }
 
 export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: MoveDialogProps) {
-    const [currentPath, setCurrentPath] = useState('/Users');
+    const [searchParams] = useSearchParams();
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path'));
     const [items, setItems] = useState<FolderItem[]>([]);
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
     const [isLoading, setIsLoading] = useState(false);
     const fetchItems = useCallback(async () => {
-        const items = await folderService.getOnlyFolders(currentPath);
+        const items = await folderService.getOnlyFolders(currentPath || '');
         if (!items) {
             return [];
         }
@@ -54,9 +56,9 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
     const handleSubmit = () => {
         setIsLoading(true);
         if (moveOption === 'Move') {
-            onMove(currentPath);
+            onMove(currentPath || '');
         } else {
-            onCopy(currentPath);
+            onCopy(currentPath || '');
         }
         setIsLoading(false);
     };
@@ -64,7 +66,8 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
     return (
         <Modal
             title={moveOption === 'Move' ? 'Qovluğa köçür' : 'Qovluğu kopyala'}
-            open={open}  size="sm"
+            open={open}
+            size="sm"
             onOpenChange={onOpenChange}
             footer={
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
@@ -86,7 +89,7 @@ export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: M
                 <Folder
                     items={items}
                     setItems={setItems}
-                    currentPath={currentPath}
+                    currentPath={currentPath || ''}
                     setCurrentPath={setCurrentPath}
                     className="h-full"
                     hideContextMenu={true}

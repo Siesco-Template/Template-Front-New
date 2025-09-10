@@ -356,7 +356,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [searchParams] = useSearchParams();
     const [items, setItems] = useState<FolderItem[]>([]);
-    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Users');
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path'));
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
 
     const fetchItems = useCallback(
@@ -475,7 +475,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     useEffect(() => {
         if (showCatalogView) {
-            handleItemsChange(currentPath);
+            handleItemsChange(currentPath || '');
         }
     }, [currentPath, showCatalogView]);
 
@@ -505,7 +505,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         <Folder
                             items={items}
                             setItems={setItems}
-                            currentPath={currentPath}
+                            currentPath={currentPath || ''}
                             setCurrentPath={setCurrentPath}
                             onItemsChange={handleItemsChange}
                             className={styles.folder}

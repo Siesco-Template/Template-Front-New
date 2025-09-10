@@ -21,12 +21,12 @@ export function AddressBar({ path, onPathChange, className, onPathNotFound, vali
 
     const handleSegmentClick = (index: number) => {
         const targetSegments = pathSegments.slice(0, index + 1);
-        const newPath = '/Users/' + targetSegments.join('/');
+        const newPath = path + targetSegments.join('/');
         onPathChange(newPath);
     };
 
     const handleHomeClick = () => {
-        onPathChange('/Users');
+        onPathChange(path);
     };
 
     const handleBarClick = (e: React.MouseEvent) => {
