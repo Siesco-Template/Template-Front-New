@@ -93,7 +93,8 @@
 }
 
 .checkbox[data-part='root'][data-size='14'] [data-part='control'] {
-    min-width: 14px;
+    width: 14px;
+    height: 14px;
     aspect-ratio: 1 / 1;
     border-radius: var(--br-md, 4px);
     border-width: 1.5px;
@@ -111,7 +112,8 @@
 }
 
 .checkbox[data-part='root'][data-size='16'] [data-part='control'] {
-    min-width: 16px;
+    width: 16px;
+    height: 16px;
     aspect-ratio: 1 / 1;
     border-radius: var(--br-md, 4px);
     border-width: 2px;
@@ -129,7 +131,8 @@
 }
 
 .checkbox[data-part='root'][data-size='20'] [data-part='control'] {
-    min-width: 20px;
+    width: 20px;
+    height: 20px;
     aspect-ratio: 1 / 1;
     border-radius: var(--br-lg, 6px);
     border-width: 2px;

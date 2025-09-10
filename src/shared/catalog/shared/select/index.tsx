@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import * as Popover from '@radix-ui/react-popover';
+import { CheckedChangeDetails } from 'node_modules/@ark-ui/react/dist/components/checkbox/checkbox';
 
-import { CloseIcon, DirectionDownIcon, DirectionUpIcon, SearchIcon } from '@/shared/icons';
-import { RemoveIcon } from '@/shared/icons';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import { CloseIcon, DirectionDownIcon, RemoveIcon, SearchIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
 import { S_Button, S_Checkbox, S_Input } from '@/ui';
@@ -168,8 +169,8 @@ export function CatalogSelect<T>({
                 ))}
             </div>
 
-            <Popover.Root open={open} onOpenChange={setOpen}>
-                <Popover.Trigger asChild disabled={disabled}>
+            <DropdownMenu.Root open={open} onOpenChange={setOpen}>
+                <DropdownMenu.Trigger asChild disabled={disabled}>
                     <button ref={containerRef} className={triggerClassName}>
                         {multiple ? (
                             selectedArray.length > 0 ? (
@@ -179,10 +180,7 @@ export function CatalogSelect<T>({
                                             key={getKey(item)}
                                             label={getLabel(item)}
                                             type="outlined-fill"
-                                            onRightIconClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleItem(item);
-                                            }}
+                                            onRightIconClick={() => toggleItem(item)}
                                             rightIcon={<RemoveIcon width={14} height={14} />}
                                         />
                                     ))}
@@ -208,7 +206,30 @@ export function CatalogSelect<T>({
                         )}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             {clearable && (multiple ? selectedArray.length > 0 : selected) && (
-                                <CloseIcon color="var(--content-tertiary)" onClick={clearSelection} />
+                                <span
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label="Clear selection"
+                                    onPointerDown={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                    }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        clearSelection();
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            clearSelection();
+                                        }
+                                    }}
+                                    className={styles.clearBtn}
+                                >
+                                    <CloseIcon color="var(--content-tertiary)" />
+                                </span>
                             )}
                             <DirectionDownIcon
                                 color="var(--content-tertiary)"
@@ -216,82 +237,90 @@ export function CatalogSelect<T>({
                             />
                         </div>
                     </button>
-                </Popover.Trigger>
+                </DropdownMenu.Trigger>
 
-                <Popover.Content
-                    sideOffset={4}
-                    align="start"
-                    className={styles.dropdown}
-                    style={{ width: dropdownWidth }}
-                >
-                    <div className={styles.searchHeader}>
-                        {searchItems && (
-                            <div className={styles.searchBox}>
-                                <S_Input
-                                    autoFocus
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    placeholder="Axtar"
-                                    icon={<SearchIcon width={16} height={16} />}
-                                    iconPosition="right"
-                                    size="36"
-                                />
-                            </div>
-                        )}
-
-                        {showMore && (
-                            <S_Button
-                                type="button"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onViewAll?.();
-                                }}
-                                variant="primary"
-                                color="primary"
-                                size="36"
-                            >
-                                Hamısı
-                            </S_Button>
-                        )}
-                    </div>
-
-                    <div className={styles.optionsList}>
-                        {filtered.length > 0 ? (
-                            filtered.map((item) => {
-                                const key = getKey(item);
-                                const label = getLabel(item);
-                                const isSelected = multiple
-                                    ? selectedArray.some((i) => getKey(i) === key)
-                                    : selected !== null && !Array.isArray(selected) && getKey(selected) === key;
-
-                                return multiple ? (
-                                    <S_Checkbox
-                                        key={key}
-                                        checked={isSelected}
-                                        onCheckedChange={() => toggleItem(item)}
-                                        label={label}
-                                        className={cls(styles.selectOption, isSelected && styles.selected)}
+                <DropdownMenu.Portal>
+                    <DropdownMenu.Content
+                        sideOffset={4}
+                        align="start"
+                        className={styles.dropdown}
+                        style={{ width: dropdownWidth }}
+                    >
+                        <div className={styles.searchHeader}>
+                            {searchItems && (
+                                <div className={styles.searchBox}>
+                                    <S_Input
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        placeholder="Axtar"
+                                        icon={<SearchIcon width={16} height={16} />}
+                                        iconPosition="right"
+                                        size="36"
                                     />
-                                ) : (
-                                    <div
-                                        key={key}
-                                        className={cls(
-                                            styles.optionLabel,
-                                            styles.selectOption,
-                                            isSelected && styles.selected
-                                        )}
-                                        onClick={() => toggleItem(item)}
-                                    >
-                                        {label}
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className={styles.noResult}>Tapılmadı</div>
-                        )}
-                    </div>
-                </Popover.Content>
-            </Popover.Root>
+                                </div>
+                            )}
+
+                            {showMore && (
+                                <S_Button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onViewAll?.();
+                                    }}
+                                    variant="primary"
+                                    color="primary"
+                                    size="36"
+                                >
+                                    Hamısı
+                                </S_Button>
+                            )}
+                        </div>
+
+                        <div className={styles.optionsList}>
+                            {filtered.length > 0 ? (
+                                filtered.map((item) => {
+                                    const key = getKey(item);
+                                    const label = getLabel(item);
+                                    const isSelected = multiple
+                                        ? selectedArray.some((i) => getKey(i) === key)
+                                        : selected !== null && !Array.isArray(selected) && getKey(selected) === key;
+
+                                    return multiple ? (
+                                        <DropdownMenu.Item
+                                            key={key}
+                                            onSelect={(e) => {
+                                                e.preventDefault();
+                                                toggleItem(item);
+                                            }}
+                                            className={cls(styles.selectOption, isSelected && styles.selected)}
+                                        >
+                                            <S_Checkbox
+                                                checked={isSelected}
+                                                onPointerDownCapture={(e) => e.preventDefault()}
+                                                label={label}
+                                            />
+                                        </DropdownMenu.Item>
+                                    ) : (
+                                        <DropdownMenu.Item
+                                            key={key}
+                                            className={cls(
+                                                styles.optionLabel,
+                                                styles.selectOption,
+                                                isSelected && styles.selected
+                                            )}
+                                            onClick={() => toggleItem(item)}
+                                        >
+                                            {label}
+                                        </DropdownMenu.Item>
+                                    );
+                                })
+                            ) : (
+                                <div className={styles.noResult}>Tapılmadı</div>
+                            )}
+                        </div>
+                    </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+            </DropdownMenu.Root>
             {description && (
                 <span className={cls(styles.description, disabled && styles.disabled, styles[`state-${state}`])}>
                     {description}
