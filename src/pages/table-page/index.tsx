@@ -112,7 +112,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
         {
             accessorKey: 'Organization.ShortName',
-            header: 'Short Name',
+            header: 'Şirkət adı',
             filterVariant: 'text',
             placeholder: 'Short Name',
             enableSummary: true,
@@ -295,7 +295,15 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         setCurrentPage(1);
                     }
                 } else {
-                    setData(res.items);
+                    console.log(res.items);
+                    setData(
+                        res.items.map((item: any) => ({
+                            ...item,
+                            Organization: {
+                                ShortName: item.ShortName,
+                            },
+                        }))
+                    );
                 }
                 setTotalItems(res.totalCount);
             })
@@ -316,11 +324,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         console.log(item.value, 'item');
         navigate(`?${params.toString()}`, { replace: true });
     };
-
-    useEffect(() => {
-        const generatedFilters = generateFiltersFromColumns(filterColumns);
-        setFilters(generatedFilters);
-    }, []);
 
     useEffect(() => {
         const shouldFetch =

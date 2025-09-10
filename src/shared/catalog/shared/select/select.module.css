@@ -166,7 +166,7 @@
     min-height: 100px;
     max-height: 272px;
     overflow: hidden;
-    z-index: 45;
+    z-index: 200;
 }
 
 .searchHeader {
