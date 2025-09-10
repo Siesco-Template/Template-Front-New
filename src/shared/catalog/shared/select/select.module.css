@@ -149,6 +149,10 @@
     overflow: hidden;
 }
 
+.clearBtn {
+    cursor: pointer;
+}
+
 /* Dropdown */
 .dropdown {
     display: flex;
@@ -239,6 +243,11 @@
 
 .selectOption:hover {
     background: var(--background-secondary, #f3f3f3);
+}
+.selectOption[data-highlighted] {
+    background: var(--background-secondary, #f5f5f7) !important;
+    outline: none;
+    border: none;
 }
 .selectOption:hover.optionLabel {
     color: var(--content-primary, #1a1a1a);

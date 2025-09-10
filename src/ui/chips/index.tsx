@@ -27,23 +27,63 @@ const S_Chips: React.FC<S_ChipsProps> = ({
     onClick,
     photoUrl,
 }) => {
+    const stopTriggerToggle = (e: React.PointerEvent | React.MouseEvent | React.KeyboardEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
         <div className={cls(styles.chip, styles[type], onClick && styles.clickable)} onClick={onClick}>
             {photoUrl && (
                 <div className={styles.avatar}>
-                    <img src={photoUrl} />
+                    <img src={photoUrl} alt="" />
                 </div>
             )}
+
             {leftIcon && (
-                <button className={styles.left} onClick={onLeftIconClick}>
+                <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Action"
+                    className={styles.left}
+                    onPointerDown={stopTriggerToggle}
+                    onClick={(e) => {
+                        stopTriggerToggle(e);
+                        onLeftIconClick?.(e as any);
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            stopTriggerToggle(e);
+                            onLeftIconClick?.(e as any);
+                        }
+                    }}
+                >
                     {leftIcon}
-                </button>
+                </span>
             )}
+
             <span className={styles.label}>{label}</span>
+
             {rightIcon && (
-                <button className={styles.right} onClick={onRightIconClick}>
+                <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Remove"
+                    className={styles.right}
+                    onPointerDown={stopTriggerToggle}
+                    onClick={(e) => {
+                        stopTriggerToggle(e);
+                        onRightIconClick?.(e as any);
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            stopTriggerToggle(e);
+                            onRightIconClick?.(e as any);
+                        }
+                    }}
+                >
                     {rightIcon}
-                </button>
+                </span>
             )}
         </div>
     );
