@@ -235,8 +235,8 @@ const InterfaceSettings = () => {
             <div className={styles.settingsSection}>
                 <div className={styles.section}>
                     <div>
-                        <h3>Ümumi ölçü</h3>
-                        <p>Menyunun ölçüsünü tənzimləyin.</p>
+                        <h3>Rejim</h3>
+                        <p>Saytın rejimini seçərək öz zövqünüzə uyğunlaşdırın.</p>
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: 20 }}>
