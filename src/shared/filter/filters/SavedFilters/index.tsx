@@ -165,6 +165,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 );
                 setSavedFilters(updatedFilters);
                 setEditing(false);
+                showToast({ label: 'Filterə uğurla düzəliş edildi', type: 'success' });
             })
             .catch((error) => {
                 console.error('Filteri yeniləyərkən xəta baş verdi:', error);
@@ -331,7 +332,7 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                                     )
                                                 }
                                                 onEdit={() => handleEdit(filter.id)}
-                                                onView={() => handleView(filter.id)}
+                                                onView={() => handleFilterClick(filter.id)}
                                                 onDelete={() => handleDelete(filter.id)}
                                                 filter={filter}
                                                 setSavedFilters={setSavedFilters}

@@ -288,14 +288,28 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             .then((res: any) => {
                 if (isInfinite) {
                     if (isLoadMore) {
-                        setData((prev) => [...prev, ...res.items]);
+                        setData((prev) => [
+                            ...prev,
+                            ...res.items.map((item: any) => ({
+                                ...item,
+                                Organization: {
+                                    ShortName: item.ShortName,
+                                },
+                            })),
+                        ]);
                         setCurrentPage(nextPage);
                     } else {
-                        setData(res.items);
+                        setData(
+                            res.items.map((item: any) => ({
+                                ...item,
+                                Organization: {
+                                    ShortName: item.ShortName,
+                                },
+                            }))
+                        );
                         setCurrentPage(1);
                     }
                 } else {
-                    console.log(res.items);
                     setData(
                         res.items.map((item: any) => ({
                             ...item,

@@ -158,12 +158,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         setAppliedFilterName(null);
 
         const reset = filters.map((f) => ({ ...f, value: getEmptyValue(f) }));
+        // @ts-expect-error
         setSavedFilters(reset);
         reset.forEach((f: any) => onChange?.(f.key, f.value));
 
-        const url = new URL(window.location.href);
-        url.searchParams.delete('filterData');
-        window.history.replaceState({}, '', url.toString());
+        let newHash = window.location.hash.split('?')[0]; // yalnız route qalsın, ?dən sonrasını atırıq
+        window.location.hash = newHash; // url dəyişəcək
 
         onResetFilters?.();
     };
