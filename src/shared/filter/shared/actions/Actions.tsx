@@ -48,6 +48,7 @@ const ActionsDropdown = ({
         try {
             await filterService.setDefaultFilter(filter.id);
             showToast({ label: 'Default  filter uğurla təyin edildi', type: 'success' });
+            onToggle(null);
         } catch (e) {
             console.error(e);
         }
