@@ -12,6 +12,7 @@ import { folderService } from '@/modules/folder/services/folder.service';
 import { FolderItem, ViewMode } from '@/modules/folder/types';
 
 import Catalog from '@/shared/catalog';
+import { mockCatalogs } from '@/shared/catalog/mockCatalogs';
 import ConfigPanel from '@/shared/config';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
@@ -76,9 +77,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     isConfigCollapsed,
     onToggleConfigCollapse,
 }) => {
-    const { columnVisibility, filterDataState, onColumnFiltersChange } = useTableContext();
+    const { columnVisibility, filterDataState } = useTableContext();
 
-    const location = useLocation();
     const sentinelRef = useRef<HTMLDivElement | null>(null);
 
     const [isOpen, setIsOpen] = useState(false);
@@ -95,12 +95,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [isInfinite, setIsInfinite] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [catalogs, setCatalogs] = useState([]);
-
     const [showCatalogView, setShowCatalogView] = useState(false);
 
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
+
+    const catalogs = mockCatalogs['reports'];
 
     const columns: CustomMRTColumn<BudceTableData>[] = [
         {
@@ -307,29 +307,18 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             .finally(() => setLoading(false));
     };
 
-    useEffect(() => {
-        catalogService
-            .getCatalogsByTableId('reports')
-            .then((res: any) => {
-                console.log(res, 'response');
-                setCatalogs(res ?? []);
-            })
-            .catch((err: any) => {
-                console.error('Fetch error:', err);
-            });
-    }, [isOpen]);
-
     // seçilən kataloqu tətbiq et
+
     const applyCatalog = (item: any) => {
         if (!item) return;
         setSelected(item);
         setShowCatalogView(true);
         setIsOpen(false);
 
-        // URL-ə yaz
         const params = new URLSearchParams(window.location.search);
         params.set('path', item.value);
-        navigate(`?${params.toString()}`);
+        console.log(item.value, 'item');
+        navigate(`?${params.toString()}`, { replace: true });
     };
 
     useEffect(() => {
@@ -343,12 +332,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             Object.keys(columnVisibility).length > 0 &&
             filterDataState &&
             Array.isArray(filterDataState.filter);
-        console.log(
-            defaultFilterReady,
-            Object.keys(columnVisibility).length,
-            filterDataState,
-            Array.isArray(filterDataState.filter)
-        );
         if (shouldFetch) {
             fetchData();
         }
@@ -411,7 +394,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 ];
                 return itemsList;
             } catch (error: any) {
-                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
+                // showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
                 return [];
             }
         },
@@ -470,23 +453,19 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         [fetchItems, updateItemChildren, viewMode]
     );
 
+    const pathParam = searchParams.get('path');
     useEffect(() => {
-        if (showCatalogView && currentPath !== searchParams.get('path')) {
-            const params = new URLSearchParams(window.location.search);
-            params.set('path', currentPath);
-            navigate(`?${params.toString()}`);
+        if (showCatalogView && pathParam && pathParam !== currentPath) {
+            setCurrentPath(pathParam);
         }
+    }, [pathParam, showCatalogView]);
 
-        handleItemsChange(currentPath);
+    useEffect(() => {
+        if (showCatalogView) {
+            handleItemsChange(currentPath);
+        }
     }, [currentPath, showCatalogView]);
 
-    useEffect(() => {
-        const pathParam = searchParams.get('path');
-
-        if (showCatalogView && pathParam !== currentPath) {
-            setCurrentPath(pathParam || '/Users');
-        }
-    }, [searchParams, showCatalogView]);
     return (
         <>
             <Table_Header
@@ -503,6 +482,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 notification={isFilterApplied}
                 onClickRightBtn={() => {}}
                 onClickShowAsFolder={() => setIsOpen(true)}
+                onClickShowAsTable={() => setShowCatalogView(false)}
                 isCatalogView={showCatalogView}
             />
 
@@ -629,7 +609,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 }
             >
                 <Catalog
-                    items={catalogs.map((i: any) => ({
+                    items={catalogs.map((i) => ({
                         label: i.catalogId,
                         value: i.catalogPath,
                     }))}

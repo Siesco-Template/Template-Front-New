@@ -22,8 +22,6 @@ const ActionsDropdown = ({
     const [_, setSearchParams] = useSearchParams();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const navigate = useNavigate();
-
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -42,24 +40,10 @@ const ActionsDropdown = ({
         };
     }, [isOpen, onToggle]);
 
-    const clearAllQueryParams = () => {
-        setSearchParams({}, { replace: true });
-    };
-
     const handleSetDefaultFilter = async (filter: any) => {
         if (!filter) return;
 
         setSavedFilters((prev: any) => prev.map((f: any) => ({ ...f, isDefault: f.id === filter.id })));
-        onToggle(null);
-
-        // if (filter?.filterValues?.length) {
-        //     onApplyFilter?.(filter.filterValues, true);
-        // } else {
-        //     try {
-        //         const resp = await filterService.getFilterById(filter.id);
-        //         onApplyFilter?.(filter.filterValues, true);
-        //     } catch {}
-        // }
 
         try {
             await filterService.setDefaultFilter(filter.id);
@@ -87,7 +71,7 @@ const ActionsDropdown = ({
                 });
         }
     };
-    
+
     const handleDefaultToggle = () => {
         if (filter.isDefault) {
             handleRemoveDefaultFilter();

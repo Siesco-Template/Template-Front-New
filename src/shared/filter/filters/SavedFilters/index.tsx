@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { filterService } from '@/services/filter/filter.service';
 
@@ -20,20 +19,10 @@ interface SavedFiltersProps {
     onApplyFilter: any;
     table_key: string;
     filters: FilterConfig[];
-    appliedFilterId?: string | null;
     onClearAppliedFilter?: () => void;
-    setAppliedFilterId: any;
 }
 
-const SavedFilters = ({
-    renderFilter,
-    onApplyFilter,
-    table_key,
-    filters,
-    appliedFilterId,
-    onClearAppliedFilter,
-    setAppliedFilterId,
-}: SavedFiltersProps) => {
+const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: SavedFiltersProps) => {
     const [savedFilters, setSavedFilters] = useState<any[]>([]);
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const [selectedFilter, setSelectedFilter] = useState<any>(null);
@@ -43,10 +32,7 @@ const SavedFilters = ({
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [filterToDelete, setFilterToDelete] = useState<any>(null);
 
-    // console.log(selectedFilter, 'selectedFilter');
     const [loading, setLoading] = useState(true);
-
-    // console.log(filters, 'filters');
 
     const mergedFilterView: FilterConfig[] = filters.map((f: any) => {
         const matched = selectedFilter?.filterValues?.find((sf: any) => sf.column === f.key || sf.column === f.column);
@@ -72,14 +58,6 @@ const SavedFilters = ({
             })
             .finally(() => setLoading(false));
     }, []);
-
-    console.log(appliedFilterId, 'd');
-    useEffect(() => {
-        if (!appliedFilterId || selectedFilter) return;
-
-        const found = savedFilters.find((f) => f.id === appliedFilterId);
-        if (found) setSelectedFilter(found);
-    }, [appliedFilterId, savedFilters]);
 
     // delete metodu
     const handleDelete = (id: string) => {
@@ -131,8 +109,6 @@ const SavedFilters = ({
                 console.error('Filter əldə edərkən xəta baş verdi:', error);
             });
     };
-
-    console.log(selectedFilter, 'selectedFilter');
 
     // axtaris
     const handleSearchChange = (value: string) => {
@@ -229,27 +205,29 @@ const SavedFilters = ({
         if (!id) return;
         const selected = savedFilters.find((filter: any) => filter.id == id);
         setSelectedFilter(selected);
-        onApplyFilter(selected?.filterValues, false, id);
+        onApplyFilter(selected?.filterValues, false, id, selected?.filterTitle);
     };
 
-    const handleBack = () => {
-        setSelectedFilter(null);
-        setEditing(false);
-        setSelectedFilterSearchText('');
-        setAppliedFilterId(null);
-        onClearAppliedFilter?.();
+    // const handleBack = () => {
+    //     setSelectedFilter(null);
+    //     setEditing(false);
+    //     setSelectedFilterSearchText('');
+    //     setAppliedFilterId(null);
+    //     onClearAppliedFilter?.();
 
-        const currentHash = window.location.hash.split('?')[0];
-        window.location.hash = currentHash;
-    };
+    //     const currentHash = window.location.hash.split('?')[0];
+    //     window.location.hash = currentHash;
+    // };
+
     return (
         <ul className={styles.savedFilterList}>
             <>
                 {selectedFilter ? (
                     <div className={styles.selectedFilterDetails}>
                         <div className={styles.selectedFilterHeader}>
-                            <button className={styles.selectedFilterInfo} type="button" onClick={handleBack}>
-                                <ArrowLeftIcon color='var("--content-primary" )' />
+                            {/* onClick={handleBack} */}
+                            <button className={styles.selectedFilterInfo} type="button">
+                                {/* <ArrowLeftIcon color='var("--content-primary" )' /> */}
                                 <span>
                                     {selectedFilter.filterTitle.charAt(0).toUpperCase() +
                                         selectedFilter.filterTitle.slice(1)}

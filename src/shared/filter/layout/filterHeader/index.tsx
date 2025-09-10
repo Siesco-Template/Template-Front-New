@@ -9,12 +9,20 @@ interface Props {
     onSaveSort: () => void;
     onSaveFilters: () => void;
     disableSave?: boolean;
+    filterName?: string;
 }
-const FilterHeader: React.FC<Props> = ({ onSortClick, sortMode, onSaveSort, onSaveFilters, disableSave = false }) => {
+const FilterHeader: React.FC<Props> = ({
+    onSortClick,
+    sortMode,
+    onSaveSort,
+    onSaveFilters,
+    disableSave = false,
+    filterName,
+}) => {
     return (
         <>
             <div className={styles.filterHeader}>
-                <h1 className={styles.filterTitle}>Filter</h1>
+                <h1 className={styles.filterTitle}>{filterName}</h1>
                 <div className={styles.filterHeaderButtons}>
                     <S_Button onClick={onSortClick} color="secondary" variant="primary">
                         {sortMode ? (

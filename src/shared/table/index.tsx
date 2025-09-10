@@ -260,7 +260,7 @@ function Table<T extends Record<string, any>>({
         switch (filterType) {
             case FilterKey.Text:
                 return (
-                    <div style={{ width: '160px' }}>
+                    <div style={{ width: '160px', }}>
                         <S_Input
                             key={filter.key || filter.column}
                             value={filter.value ?? ''}
@@ -358,7 +358,6 @@ function Table<T extends Record<string, any>>({
                         style={{
                             textAlign: 'center',
                             width: '100%',
-                            background: 'red',
                             height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '30px',
                             lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '30px',
                         }}
@@ -426,7 +425,6 @@ function Table<T extends Record<string, any>>({
                             height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
                             lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
                             justifyContent: headerTextStyle.alignment,
-
                             maxWidth: '90%',
                         }}
                         title={col.header?.toString()}

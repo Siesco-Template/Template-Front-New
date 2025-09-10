@@ -51,11 +51,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
     const [defaultFilter, setDefaultFilter] = useState<FilterConfig[] | null>(null);
     const [hasDefault, setHasDefault] = useState(false);
 
+    const [appliedFilterName, setAppliedFilterName] = useState<any>(null);
+
     useEffect(() => {
         setSavedFilters(filters);
     }, []);
-
-    const [appliedFilterId, setAppliedFilterId] = useState<string | null>(null);
 
     const parseFiltersFromUrl = (): { id: string; value: any }[] => {
         try {
@@ -154,6 +154,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
         });
 
         setSavedFilters(reset);
+        setAppliedFilterName(null);
         reset.forEach((f: any) => onChange?.(f.key, f.value));
 
         // URL-ə yalnız defaultFilter-dən gələn dolu dəyərlər getsin
@@ -179,7 +180,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     // filterKey gore filterleri ui cixardir
     const renderFilter = (filter: any) => {
-        console.log(filter, 'f');
+        // console.log(filter, 'f');
         const _onChange = filter.onChange || ((key: string, value: any) => handleUpdateFilter(key, value));
         switch (filter.type || filter.filterKey) {
             case FilterKey.Text: // 1
@@ -278,16 +279,20 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
 
     // save olunan filteri tetbiq edir
 
-    const handleApplySavedFilter = (filters: FilterConfig[], isDefault?: boolean, filterId?: string) => {
+    const handleApplySavedFilter = (
+        filters: FilterConfig[],
+        isDefault?: boolean,
+        filterId?: string,
+        filterName?: string
+    ) => {
         const cleanedFilters = filters?.map((f) => ({
             id: f.key || f.column,
             value: f.value,
         }));
-        if (filterId) {
-            setAppliedFilterId(filterId);
-        }
 
         applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort, isDefault);
+        setActiveTab('default');
+        setAppliedFilterName(filterName);
     };
 
     // filteri tetbiq edir
@@ -297,7 +302,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
             value: f.value,
         }));
 
+        console.log(savedFilters, 'clg');
+
         applyFiltersToUrl(filterItems, filterDataState.skip, filterDataState.take, filterDataState.sort, false);
+
+        setActiveTab('default');
     };
 
     const filteredSavedFilters = savedFilters
@@ -439,6 +448,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                         sortMode={sortMode}
                                         onSaveSort={handleSaveSort}
                                         onSaveFilters={handleSaveCurrentFilters}
+                                        filterName={appliedFilterName}
                                     />
                                     <SearchHeader
                                         onReset={sortMode ? handleResetOrder : handleResetFilters}
@@ -479,8 +489,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, storageKey
                                     onApplyFilter={handleApplySavedFilter}
                                     table_key={table_key}
                                     filters={filters}
-                                    appliedFilterId={appliedFilterId}
-                                    setAppliedFilterId={setAppliedFilterId}
                                 />
                             )}
                         </div>

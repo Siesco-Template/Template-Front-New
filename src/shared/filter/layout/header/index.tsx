@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => (
                 className={`${styles.tabButton} ${activeTab === 'default' ? styles.active : ''}`}
                 onClick={() => setActiveTab('default')}
             >
-                Default
+                Filter
             </button>
             <button
                 className={`${styles.tabButton} ${activeTab === 'saved' ? styles.active : ''}`}
