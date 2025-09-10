@@ -99,14 +99,18 @@ function flattenTheme(obj: Record<string, any>, parentKey = ''): Record<string, 
 }
 
 function getThemeChanges(defaults: Theme[], current: Theme[]) {
-    console.log(defaults);
     let changes: Record<string, any> = {};
+
+    // current.slice(1, current.length).forEach((theme, index) => {
+    //     changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index + 1}]`) };
+    // });
 
     // current
     //     .filter((theme) => defaults.findIndex((def) => def.id === theme.id) === -1)
-    //     .forEach((theme, index) => {
-    //         changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index + 1}]`) };
-    //     });
+    // .forEach((theme, index) => {
+    //     changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index + 1}]`) };
+    // });
+
     current.forEach((theme, index) => {
         const defaultTheme = defaults.find((def) => def.id === theme.id);
         if (defaultTheme) {

@@ -14,7 +14,7 @@ function FolderPage() {
     const [searchParams] = useSearchParams();
 
     const [items, setItems] = useState<FolderItem[]>([]);
-    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Users');
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Organizations');
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
 
     const fetchItems = useCallback(
@@ -135,7 +135,7 @@ function FolderPage() {
 
     useEffect(() => {
         if (searchParams.get('path') !== currentPath) {
-            setCurrentPath(searchParams.get('path') || '/Users');
+            setCurrentPath(searchParams.get('path') || '/Organizations/');
         }
     }, [searchParams]);
 

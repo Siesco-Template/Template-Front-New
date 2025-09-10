@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
@@ -17,8 +16,8 @@ interface MoveDialogProps {
 }
 
 export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: MoveDialogProps) {
-    const [searchParams] = useSearchParams();
-    const [currentPath, setCurrentPath] = useState(searchParams.get('path'));
+    // const [searchParams] = useSearchParams();
+    const [currentPath, setCurrentPath] = useState('/Organizations/');
     const [items, setItems] = useState<FolderItem[]>([]);
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
     const [isLoading, setIsLoading] = useState(false);

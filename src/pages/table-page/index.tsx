@@ -356,7 +356,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [searchParams] = useSearchParams();
     const [items, setItems] = useState<FolderItem[]>([]);
-    const [currentPath, setCurrentPath] = useState(searchParams.get('path'));
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Organizations/');
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
 
     const fetchItems = useCallback(
