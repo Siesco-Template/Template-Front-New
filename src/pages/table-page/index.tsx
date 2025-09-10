@@ -461,7 +461,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     useEffect(() => {
         if (showCatalogView) {
-            handleItemsChange(currentPath);
+            handleItemsChange(currentPath || '');
         }
     }, [currentPath, showCatalogView]);
 
