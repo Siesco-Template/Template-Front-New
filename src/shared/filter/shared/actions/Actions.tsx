@@ -49,6 +49,7 @@ const ActionsDropdown = ({
             await filterService.setDefaultFilter(filter.id);
             showToast({ label: 'Default  filter uğurla təyin edildi', type: 'success' });
             onToggle(null);
+            onApplyFilter(filter.filterValues, true, filter.id, filter.filterTitle);
         } catch (e) {
             console.error(e);
         }
@@ -65,7 +66,6 @@ const ActionsDropdown = ({
                     setSavedFilters((prevFilters: any) =>
                         prevFilters.map((f: any) => (f.id === filter.id ? { ...f, isDefault: false } : f))
                     );
-                    // clearAllQueryParams();
                 })
                 .catch((error) => {
                     console.error('Default filter sıfırlanarkən xəta baş verdi', error);

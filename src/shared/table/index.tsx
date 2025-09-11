@@ -209,6 +209,9 @@ function Table<T extends Record<string, any>>({
         };
     }, []);
 
+    console.log(config, 'c')
+    console.log(tableKey, 'tblekey')
+
     const configOrderObj = config.tables?.[tableKey]?.columnsOrder || {};
     const configColumnOrder = Object.keys(configOrderObj).sort((a, b) => configOrderObj[a] - configOrderObj[b]);
 
@@ -403,6 +406,7 @@ function Table<T extends Record<string, any>>({
             },
             header: (
                 <div
+                title=''
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -419,7 +423,7 @@ function Table<T extends Record<string, any>>({
                         }
                     }}
                 >
-                    <S_Tooltip content={col.header?.toString()} position="right-start">
+                    {/* <S_Tooltip content={col.header?.toString()} position="right-start"> */}
                         <span
                             style={{
                                 fontSize: headerTextStyle.fontSize,
@@ -433,7 +437,7 @@ function Table<T extends Record<string, any>>({
                         >
                             {col.header}
                         </span>
-                    </S_Tooltip>
+                    {/* </S_Tooltip> */}
 
                     {enableColumnActionsCustom && (
                         <button

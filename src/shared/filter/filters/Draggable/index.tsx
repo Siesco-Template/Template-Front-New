@@ -4,6 +4,8 @@ import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, useSensor, use
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+import { useTableConfig } from '@/shared/table/tableConfigContext';
+
 import { DragIcon, EyeIcon, EyeOffIcon } from '../../shared/icons';
 import { FilterConfig } from '../../types';
 import styles from './style.module.css';
@@ -12,10 +14,11 @@ interface DraggableProps {
     savedFilters: FilterConfig[];
     setSavedFilters: React.Dispatch<React.SetStateAction<FilterConfig[]>>;
     searchText?: string;
-    storageKey: string;
+    tableKey: string;
 }
 
 const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 const highlightMatch = (text: string, search?: string) => {
     if (!search) return text;
     const regex = new RegExp(`(${escapeRegex(search)})`, 'gi');
@@ -66,9 +69,8 @@ const SortableItem: React.FC<{
     );
 };
 
-const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilters, searchText, storageKey }) => {
-    const orderKey = `filter_order_${storageKey}`;
-    const visibilityKey = `filter_visibility_${storageKey}`;
+const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilters, searchText, tableKey }) => {
+    const { updateConfig, saveConfigToApi } = useTableConfig();
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -77,7 +79,7 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
 
     const ids = savedFilters.map((f) => String(f.key ?? f.column));
 
-    const handleDragEnd = (event: DragEndEvent) => {
+    const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
@@ -87,20 +89,30 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
 
         const items = arrayMove(savedFilters, oldIndex, newIndex);
         setSavedFilters(items);
-        localStorage.setItem(orderKey, JSON.stringify(items.map((i) => i.key)));
+
+        const updates = items.map((f, index) => ({
+            id: f.key,
+            order: index + 1,
+            visibility: f.visible !== false,
+        }));
+
+        updateConfig(tableKey, 'filters', updates);
     };
 
-    const toggleVisibility = (key: string) => {
+    const toggleVisibility = async (key: string) => {
         const updated = savedFilters.map((f) =>
             f.key === key ? { ...f, visible: f.visible === false ? true : false } : f
         );
         setSavedFilters(updated);
 
-        const visibilityMap = updated.reduce<Record<string, boolean>>((acc, curr: any) => {
-            acc[curr.key] = curr.visible !== false;
-            return acc;
-        }, {});
-        localStorage.setItem(visibilityKey, JSON.stringify(visibilityMap));
+        const updates = updated.map((f, index) => ({
+            id: f.key,
+            order: index + 1,
+            visibility: f.visible !== false,
+        }));
+
+        updateConfig(tableKey, 'filters', updates);
+        console.log('🔄 updateConfig filters:', updates);
     };
 
     return (

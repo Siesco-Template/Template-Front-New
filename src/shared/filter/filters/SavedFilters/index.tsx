@@ -10,7 +10,7 @@ import { showToast } from '@/ui/toast/showToast';
 
 import SearchHeader from '../../layout/searchHeader';
 import ActionsDropdown from '../../shared/actions/Actions';
-import { ArrowLeftIcon, DiskIcon, EditIcon, TrashIcon } from '../../shared/icons';
+import { ArrowLeftIcon, DiskIcon, TrashIcon } from '../../shared/icons';
 import { FilterConfig } from '../../types';
 import styles from './style.module.css';
 
@@ -93,21 +93,6 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
     // context menu
     const handleToggleDropdown = (id: number | null) => {
         setOpenDropdownId((prev) => (prev === id ? null : id));
-    };
-
-    // view metodu
-    const handleView = (id: string) => {
-        filterService
-            .getFilterById(id)
-            .then((response) => {
-                setSelectedFilter(response);
-                setEditing(false);
-                setOpenDropdownId(null);
-                onApplyFilter(response?.filterValues ?? [], false, id);
-            })
-            .catch((error) => {
-                console.error('Filter əldə edərkən xəta baş verdi:', error);
-            });
     };
 
     // axtaris
@@ -209,16 +194,11 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
         onApplyFilter(selected?.filterValues, false, id, selected?.filterTitle);
     };
 
-    // const handleBack = () => {
-    //     setSelectedFilter(null);
-    //     setEditing(false);
-    //     setSelectedFilterSearchText('');
-    //     setAppliedFilterId(null);
-    //     onClearAppliedFilter?.();
-
-    //     const currentHash = window.location.hash.split('?')[0];
-    //     window.location.hash = currentHash;
-    // };
+    const handleBack = () => {
+        setSelectedFilter(null);
+        setEditing(false);
+        setSelectedFilterSearchText('');
+    };
 
     return (
         <ul className={styles.savedFilterList}>
@@ -226,9 +206,8 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                 {selectedFilter ? (
                     <div className={styles.selectedFilterDetails}>
                         <div className={styles.selectedFilterHeader}>
-                            {/* onClick={handleBack} */}
                             <button className={styles.selectedFilterInfo} type="button">
-                                {/* <ArrowLeftIcon color='var("--content-primary" )' /> */}
+                                {editing && <ArrowLeftIcon color='var("--content-primary" )' onClick={handleBack} />}
                                 <span>
                                     {selectedFilter.filterTitle.charAt(0).toUpperCase() +
                                         selectedFilter.filterTitle.slice(1)}

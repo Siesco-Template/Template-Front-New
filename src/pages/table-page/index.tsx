@@ -15,6 +15,7 @@ import Catalog from '@/shared/catalog';
 import { mockCatalogs } from '@/shared/catalog/mockCatalogs';
 import ConfigPanel from '@/shared/config';
 import FilterPanel from '@/shared/filter/FilterPanel';
+import { FilterConfig } from '@/shared/filter/types';
 import { generateFiltersFromColumns } from '@/shared/filter/utils/generateColumns';
 import { PencilIcon, PencilPaperIcon, TrashIcon } from '@/shared/icons';
 import { CustomMRTColumn, Table } from '@/shared/table';
@@ -30,7 +31,6 @@ import Modal from '@/ui/dialog';
 import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
-import { FilterConfig } from '@/shared/filter/types';
 
 export enum ReportStatus {
     Compiled = 1,
@@ -491,7 +491,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 page="report"
                 onClickCustomExport={() => {}}
                 actions={['create', 'exportFile']}
-                table_key="customer_table"
+                table_key="reports"
                 notification={isFilterApplied}
                 onClickRightBtn={() => {}}
                 onClickShowAsFolder={() => setIsOpen(true)}
@@ -531,7 +531,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                     isLoading={loading}
                                     isConfigCollapsed={isConfigCollapsed}
                                     selectedRowIds={selectedRowIds}
-                                    tableKey="customer_table"
+                                    tableKey="reports"
                                     onSelectedRowsChange={(ids, rows) => {
                                         setSelectedRowIds(ids);
                                         setSelectedRows(rows);
@@ -547,7 +547,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             </div>
                             <Table_Footer
                                 totalItems={totalItems}
-                                table_key="customer_table"
+                                table_key="reports"
                                 isInfiniteScroll={isInfinite}
                                 onInfiniteChange={setIsInfinite}
                                 filtersReady={defaultFilterReady}
@@ -564,7 +564,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         >
                             <FilterPanel
                                 filters={filters}
-                                storageKey="customer_table"
                                 isCollapsed={isFilterCollapsed}
                                 onToggleCollapse={onToggleCollapse}
                                 table_key="reports"
@@ -585,7 +584,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 isCollapsed={isConfigCollapsed}
                                 onToggleCollapse={onToggleConfigCollapse}
                                 modalTableData={data}
-                                table_key="customer_table"
+                                table_key="reports"
                                 modalTableColumns={columns}
                                 isRowSum={true}
                             />
@@ -671,7 +670,7 @@ const Table_Page = () => {
         }
     };
     return (
-        <TableProvider tableKey="customer_table">
+        <TableProvider tableKey="reports">
             <Table_PageContent
                 isConfigCollapsed={isConfigCollapsed}
                 isFilterCollapsed={isFilterCollapsed}

@@ -12,6 +12,7 @@ import { showToast } from '@/ui/toast/showToast';
 
 import Catalog from '../catalog';
 import { useTableContext } from '../table/table-context';
+import { useTableConfig } from '../table/tableConfigContext';
 import styles from './filter.module.css';
 import DateIntervalFilter from './filters/DateIntervalFilter';
 import DraggableItems from './filters/Draggable';
@@ -27,7 +28,6 @@ import { FilterKey } from './utils/filterTypeEnum';
 interface FilterPanelProps {
     filters: FilterConfig[];
     onChange?: (key: string, value: any) => void;
-    storageKey: string;
     isCollapsed?: boolean;
     onToggleCollapse?: () => void;
     table_key: string;
@@ -38,7 +38,6 @@ interface FilterPanelProps {
 const FilterPanel: React.FC<FilterPanelProps> = ({
     filters,
     onChange,
-    storageKey,
     table_key,
     onReady,
     onResetFilters,
@@ -58,6 +57,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
     const [defaultFilter, setDefaultFilter] = useState<FilterConfig[] | null>(null);
     const [hasDefault, setHasDefault] = useState(false);
+
+    const { saveConfigToApi } = useTableConfig();
 
     const [appliedFilterName, setAppliedFilterName] = useState<any>(null);
 
@@ -86,14 +87,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
         if (activeTab !== 'default') return;
 
-        // console.log(urlFilters, 'url');
-
         const updated = filters.map((f) => {
             const match = urlFilters?.find((u) => u.id === f.key || u.id === f.column);
             return match ? { ...f, value: match.value } : { ...f, value: getEmptyValue(f) };
         });
-
-        // console.log(updated, 'up');
 
         setSavedFilters(updated);
         updated.forEach((f: any) => onChange?.(f.key, f.value));
@@ -264,8 +261,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     };
 
     // filterlerin orderini ve visibilty yadda saxlayir
-    const handleSaveSort = () => {
+    const handleSaveSort = async () => {
+        await saveConfigToApi();
         setSortMode(false);
+        showToast({ label: 'Filter sıralaması yadda saxlanıldı', type: 'success' });
     };
 
     const handleSaveCurrentFilters = () => {
@@ -457,7 +456,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                                         <DraggableItems
                                             savedFilters={savedFilters}
                                             setSavedFilters={setSavedFilters}
-                                            storageKey={storageKey}
+                                            tableKey={table_key}
                                         />
                                     ) : (
                                         <>

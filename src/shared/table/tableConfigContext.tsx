@@ -91,13 +91,11 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
                 ...getFullConfigDiff(config.extraConfig.visualSettings.themes as Theme[]),
             };
 
-            // console.log('fullDiff', fullDiff);
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
                 return;
             }
 
             await configService.createOrUpdateConfig(fullDiff);
-            // console.log('✅ Bütün konfiqurasiya serverə göndərildi:', fullDiff);
         } catch (err) {
             console.error('❌ Config POST zamanı xəta:', err);
         }
@@ -124,6 +122,7 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     const updateConfig = (tableKey: string, path: string, value: any) => {
         const fullPath = `tables.${tableKey}.${path}`;
+        console.log(fullPath, 'fulpath');
         setConfig((prev) => {
             const newConfig = structuredClone(prev);
             setNestedValue(newConfig, fullPath, value);
