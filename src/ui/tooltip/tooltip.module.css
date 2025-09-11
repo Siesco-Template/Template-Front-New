@@ -6,7 +6,7 @@
     gap: var(--space-450, 16px);
     background: var(--background-primary-inverse-50, rgba(0, 0, 0, 0.5));
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
-    opacity: 0.8;
+    /* opacity: 0.8; */
     color: var(--content-primary-inverse, #fff);
     border: none;
     outline: none;

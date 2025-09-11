@@ -13,7 +13,7 @@ import { hasPermission } from '@/modules/permission/PermissionGuard';
 import ConfigPanel from '@/shared/config';
 import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
-import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
+import { generateFiltersFromColumns } from '@/shared/filter/utils/generateColumns';
 import { CustomMRTColumn, Table } from '@/shared/table';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';

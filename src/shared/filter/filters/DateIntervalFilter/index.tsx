@@ -38,9 +38,6 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
 }) => {
     const [isRangeMode, setIsRangeMode] = useState(Array.isArray(value));
 
-    const placeholder =
-        typeof rangePlaceholders === 'string' ? rangePlaceholders : `${rangePlaceholders[0]} – ${rangePlaceholders[1]}`;
-
     const toggleMode = () => {
         if (readOnly) return;
         const next = !isRangeMode;

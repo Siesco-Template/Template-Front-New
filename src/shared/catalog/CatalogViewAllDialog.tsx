@@ -8,7 +8,7 @@ import { PresetSize } from '.';
 import ConfigPanel from '../config';
 import { FilterConfig } from '../filter';
 import FilterPanel from '../filter/FilterPanel';
-import { generateFiltersFromColumns } from '../filter/config/generateColumns';
+import { generateFiltersFromColumns } from '../filter/utils/generateColumns';
 import { CustomMRTColumn, Table } from '../table';
 import { TableProvider } from '../table/table-context';
 import Table_Footer from '../table/table-footer';

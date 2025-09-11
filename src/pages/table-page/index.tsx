@@ -14,9 +14,8 @@ import { FolderItem, ViewMode } from '@/modules/folder/types';
 import Catalog from '@/shared/catalog';
 import { mockCatalogs } from '@/shared/catalog/mockCatalogs';
 import ConfigPanel from '@/shared/config';
-import { FilterConfig } from '@/shared/filter';
 import FilterPanel from '@/shared/filter/FilterPanel';
-import { generateFiltersFromColumns } from '@/shared/filter/config/generateColumns';
+import { generateFiltersFromColumns } from '@/shared/filter/utils/generateColumns';
 import { PencilIcon, PencilPaperIcon, TrashIcon } from '@/shared/icons';
 import { CustomMRTColumn, Table } from '@/shared/table';
 import TableActions from '@/shared/table/table-actions';
@@ -31,6 +30,7 @@ import Modal from '@/ui/dialog';
 import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
+import { FilterConfig } from '@/shared/filter/types';
 
 export enum ReportStatus {
     Compiled = 1,

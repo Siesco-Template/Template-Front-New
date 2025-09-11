@@ -12,8 +12,7 @@ import { showToast } from '@/ui/toast/showToast';
 
 import Catalog from '../catalog';
 import { useTableContext } from '../table/table-context';
-import { applyFiltersToUrl } from './config/filterHelpers';
-import { FilterKey } from './config/filterTypeEnum';
+import styles from './filter.module.css';
 import DateIntervalFilter from './filters/DateIntervalFilter';
 import DraggableItems from './filters/Draggable';
 import NumberIntervalFilter from './filters/NumberIntervalFilter';
@@ -21,8 +20,9 @@ import SavedFilters from './filters/SavedFilters';
 import FilterHeader from './layout/filterHeader';
 import Header from './layout/header';
 import SearchHeader from './layout/searchHeader';
-import styles from './styles/filter.module.css';
 import { FilterConfig } from './types';
+import { applyFiltersToUrl } from './utils/filterHelpers';
+import { FilterKey } from './utils/filterTypeEnum';
 
 interface FilterPanelProps {
     filters: FilterConfig[];
@@ -251,7 +251,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                         key={filter.key}
                         label={filter.label}
                         value={filter.value}
-                        onChange={(val) => _onChange(filter.key, val)} //
+                        onChange={(val) => _onChange(filter.key, val)}
                         readOnly={filter.readOnly}
                         singlePlaceholder={filter.placeholder}
                         rangePlaceholders={filter.rangePlaceholders}

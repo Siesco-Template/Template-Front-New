@@ -13,9 +13,9 @@ import { MRT_Localization_AZ } from 'material-react-table/locales/az';
 import { S_Checkbox, S_Input, S_Tooltip } from '@/ui';
 
 import Catalog from '../catalog';
-import { FilterKey } from '../filter/config/filterTypeEnum';
 import DateIntervalFilter from '../filter/filters/DateIntervalFilter';
 import NumberIntervalFilter from '../filter/filters/NumberIntervalFilter';
+import { FilterKey } from '../filter/utils/filterTypeEnum';
 import { ArrowDownIcon, MoreVerticalIcon } from '../icons';
 import { toCssColor } from '../utils/color.utils';
 import CustomColumnMenu from './customColumnMenu';
@@ -419,7 +419,7 @@ function Table<T extends Record<string, any>>({
                         }
                     }}
                 >
-                    <S_Tooltip content={col.header?.toString()} position="right" > 
+                    <S_Tooltip content={col.header?.toString()} position="right-start">
                         <span
                             style={{
                                 fontSize: headerTextStyle.fontSize,
