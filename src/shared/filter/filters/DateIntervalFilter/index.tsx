@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import CustomDatePicker from '@/ui/datepicker/date-picker';
-import CustomDateRangePicker from '@/ui/datepicker/date-range-picker';
 import CustomDateSelection from '@/ui/datepicker/date-selection-picker';
 
 import { ArrowTransferIcon } from '../../shared/icons';
@@ -16,12 +15,13 @@ interface DateIntervalFilterProps {
     rangePlaceholders?: [string, string] | string;
     inline?: boolean;
     errorMsg?: string | false;
+    placement: string;
+    format?: string;
+    oneTap: boolean;
 }
 
 const formatDate = (date: Date): string =>
     `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
-
-const isDateInstance = (val: any): val is Date => val instanceof Date && !isNaN(val.getTime());
 
 const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
     label,
@@ -32,6 +32,9 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
     rangePlaceholders = ['Başlanğıc tarix', 'Bitmə tarixi'],
     inline = false,
     errorMsg,
+    placement = 'leftEnd',
+    format = 'dd.MM.yyyy',
+    oneTap = false,
 }) => {
     const [isRangeMode, setIsRangeMode] = useState(Array.isArray(value));
 
@@ -43,8 +46,6 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
         const next = !isRangeMode;
         setIsRangeMode(next);
     };
-
-    // console.log(value, 'value in date interval');
 
     const toDate = (v: string | Date | null | undefined) =>
         v == null || v === ''
@@ -97,17 +98,20 @@ const DateIntervalFilter: React.FC<DateIntervalFilterProps> = ({
                         onChange={handleChange}
                         label={undefined}
                         error={errorMsg}
-                        placement="leftEnd"
+                        placement={placement}
+                        format={format}
+                        oneTap={oneTap}
                     />
                 ) : (
-                    <CustomDatePicker // @ts-expect-error
+                    <CustomDatePicker
+                        // @ts-expect-error
                         value={internalValue}
                         onChange={handleChange}
                         placeholder={singlePlaceholder}
-                        format="dd.MM.yyyy"
+                        format={format}
                         style={{ width: '100%' }}
                         error={errorMsg}
-                        placement="leftEnd"
+                        placement={placement}
                         oneTap
                     />
                 )}

@@ -10,7 +10,7 @@ import {
 } from 'material-react-table';
 import { MRT_Localization_AZ } from 'material-react-table/locales/az';
 
-import { S_Checkbox, S_Input } from '@/ui';
+import { S_Checkbox, S_Input, S_Tooltip } from '@/ui';
 
 import Catalog from '../catalog';
 import { FilterKey } from '../filter/config/filterTypeEnum';
@@ -260,7 +260,7 @@ function Table<T extends Record<string, any>>({
         switch (filterType) {
             case FilterKey.Text:
                 return (
-                    <div style={{ width: '160px', }}>
+                    <div style={{ width: '160px' }}>
                         <S_Input
                             key={filter.key || filter.column}
                             value={filter.value ?? ''}
@@ -340,6 +340,8 @@ function Table<T extends Record<string, any>>({
                             singlePlaceholder={filter.placeholder}
                             rangePlaceholders={'Aralıq seçin'}
                             errorMsg={false}
+                            placement={'leftStart'}
+                            oneTap={true}
                         />
                     </div>
                 );
@@ -417,20 +419,21 @@ function Table<T extends Record<string, any>>({
                         }
                     }}
                 >
-                    <span
-                        style={{
-                            fontSize: headerTextStyle.fontSize,
-                            fontStyle: headerTextStyle.italic ? 'italic' : undefined,
-                            fontWeight: headerTextStyle.bold ? 'bold' : undefined,
-                            height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
-                            lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
-                            justifyContent: headerTextStyle.alignment,
-                            maxWidth: '90%',
-                        }}
-                        title={col.header?.toString()}
-                    >
-                        {col.header}
-                    </span>
+                    <S_Tooltip content={col.header?.toString()} position="right" > 
+                        <span
+                            style={{
+                                fontSize: headerTextStyle.fontSize,
+                                fontStyle: headerTextStyle.italic ? 'italic' : undefined,
+                                fontWeight: headerTextStyle.bold ? 'bold' : undefined,
+                                height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
+                                lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
+                                justifyContent: headerTextStyle.alignment,
+                                maxWidth: '90%',
+                            }}
+                        >
+                            {col.header}
+                        </span>
+                    </S_Tooltip>
 
                     {enableColumnActionsCustom && (
                         <button
@@ -728,7 +731,7 @@ function Table<T extends Record<string, any>>({
 
             return {
                 className: styles.tableHeadCell,
-                title: column.columnDef.header?.toString(),
+                title: '',
                 sx: {
                     '& .MuiTableSortLabel-icon': {
                         display: 'none',
@@ -830,7 +833,7 @@ function Table<T extends Record<string, any>>({
             // showProgressBars: isRefetching,
             sorting: filterDataState?.sort ?? [],
             isLoading: state === 'pending' || props.isLoading,
-            showSkeletons: (state === 'pending' || props.isLoading) && (!data || data.length === 0),
+            showSkeletons: !isInfinite && (state === 'pending' || props.isLoading),
             showProgressBars: state === 'pending' || props.isLoading,
             showAlertBanner: state === 'error',
             columnPinning: {
@@ -840,10 +843,8 @@ function Table<T extends Record<string, any>>({
         },
         muiTableBodyRowProps: ({ row }: any) => {
             const rowId = row.id;
-
             const rowConfig = config.tables?.[tableKey]?.row || {};
             const rowHeight = rowConfig?.cell?.padding;
-
             const defaultProps = {
                 onClick: (e: React.MouseEvent) => {
                     const target = e.target as HTMLElement;
@@ -908,10 +909,10 @@ function Table<T extends Record<string, any>>({
         icons: {
             SortIcon: (props: any) => <ArrowDownIcon {...props} />,
         },
-        mrtTheme: {
-            baseBackgroundColor: `hsl(var(--clr-background))`,
-            draggingBorderColor: `hsl(var(--clr-secondary-500))`,
-        },
+        // mrtTheme: {
+        //     baseBackgroundColor: `hsl(var(--clr-background))`,
+        //     draggingBorderColor: `hsl(var(--clr-secondary-500))`,
+        // },
         getRowId: (originalRow, index, parentRow) => {
             if ((originalRow as any)?.isSummaryRow) {
                 return (originalRow as any)?.position === 'top' ? '__summary_top__' : '__summary_bottom__';

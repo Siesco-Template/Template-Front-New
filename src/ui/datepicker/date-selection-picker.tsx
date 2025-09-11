@@ -12,9 +12,19 @@ type CustomDateSelectionProps = {
     onChange?: (val: [Date | null, Date | null]) => void;
     error?: string | false;
     placement: string;
+    format: string;
+    oneTap: boolean;
 };
 
-export default function CustomDateSelection({ label, value, onChange, error, placement }: CustomDateSelectionProps) {
+export default function CustomDateSelection({
+    label,
+    value,
+    onChange,
+    error,
+    placement,
+    format,
+    oneTap = false,
+}: CustomDateSelectionProps) {
     const [from, to] = value || [null, null];
 
     const handleFromChange = (val: Date | null) => {
@@ -31,7 +41,7 @@ export default function CustomDateSelection({ label, value, onChange, error, pla
             <CustomProvider locale={formatPickerLang()}>
                 <InputGroup style={{ width: '100%' }}>
                     <DatePicker
-                        format="dd.MM.yyyy"
+                        format={format}
                         appearance="subtle"
                         style={{
                             flex: 1,
@@ -43,12 +53,13 @@ export default function CustomDateSelection({ label, value, onChange, error, pla
                         // @ts-expect-error
                         placement={placement}
                         placeholder="Başlanğıc"
+                        oneTap={oneTap}
                     />
                     <InputGroup.Addon style={{ padding: '0 2px', backgroundColor: 'var(--background-primary, #fff)' }}>
                         →
                     </InputGroup.Addon>
                     <DatePicker
-                        format="dd.MM.yyyy"
+                        format={format}
                         appearance="subtle"
                         style={{
                             flex: 1,
@@ -60,6 +71,7 @@ export default function CustomDateSelection({ label, value, onChange, error, pla
                         // @ts-expect-error
                         placement={placement}
                         placeholder="Son"
+                        oneTap={oneTap}
                     />
                 </InputGroup>
             </CustomProvider>
