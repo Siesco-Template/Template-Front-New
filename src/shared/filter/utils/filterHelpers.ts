@@ -1,3 +1,5 @@
+import { FilterConfig } from '../types';
+
 export const applyFiltersToUrl = (
     filters: { id: string; value: any }[] = [],
     skip: number = 0,
@@ -49,4 +51,29 @@ export const applyFiltersToUrl = (
     }, 0);
 
     return true;
+};
+
+export const applyConfigToFilters = (filters: FilterConfig[], configFilters: any[]) => {
+    if (!configFilters) return filters;
+
+    console.log(filters, configFilters, 'd');
+
+    const filterMap: Record<string, { order: number; visibility: boolean }> = {};
+    configFilters.forEach((f: any) => {
+        filterMap[f.id] = { order: f.order, visibility: f.visibility };
+    });
+
+    const merged = filters.map((f: any) => {
+        const cfg = filterMap[f.key];
+        return cfg ? { ...f, visible: cfg?.visibility, order: cfg?.order } : f;
+    });
+
+    merged.sort((a, b) => {
+        const oa = filterMap[a.key]?.order ?? 9999;
+        const ob = filterMap[b.key]?.order ?? 9999;
+        return oa - ob;
+    });
+
+    console.log(merged, 'merged');
+    return merged;
 };

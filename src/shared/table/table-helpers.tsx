@@ -163,7 +163,6 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
                           const isToValid = isDateString(to);
 
                           if (isFromValid && isToValid) {
-                              console.log('bura dusdu');
                               return {
                                   id,
                                   type: FilterTypeEnum.RangeNumberOrDate,
@@ -173,7 +172,6 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
 
                           // ✅ Yalnız from varsa — >=
                           if (isFromValid && !isToValid) {
-                              console.log('bura dusdu 2');
                               return {
                                   id,
                                   type: FilterTypeEnum.GreaterThanOrEqual,
@@ -184,7 +182,6 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
 
                           // ✅ Yalnız to varsa — <=
                           if (!isFromValid && isToValid) {
-                              console.log('bura dusdu 3');
                               return {
                                   id,
                                   type: FilterTypeEnum.LessThanOrEqual,

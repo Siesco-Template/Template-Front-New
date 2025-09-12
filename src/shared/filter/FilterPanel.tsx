@@ -22,7 +22,7 @@ import FilterHeader from './layout/filterHeader';
 import Header from './layout/header';
 import SearchHeader from './layout/searchHeader';
 import { FilterConfig } from './types';
-import { applyFiltersToUrl } from './utils/filterHelpers';
+import { applyConfigToFilters, applyFiltersToUrl } from './utils/filterHelpers';
 import { FilterKey } from './utils/filterTypeEnum';
 
 interface FilterPanelProps {
@@ -35,13 +35,7 @@ interface FilterPanelProps {
     onReady?: () => void;
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({
-    filters,
-    onChange,
-    table_key,
-    onReady,
-    onResetFilters,
-}) => {
+const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key, onReady, onResetFilters }) => {
     const [activeTab, setActiveTab] = useState<'default' | 'saved'>('default');
     const [savedFilters, setSavedFilters] = useState<FilterConfig[]>([]);
     const [sortMode, setSortMode] = useState(false);
@@ -58,14 +52,26 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     const [defaultFilter, setDefaultFilter] = useState<FilterConfig[] | null>(null);
     const [hasDefault, setHasDefault] = useState(false);
 
-    const { saveConfigToApi } = useTableConfig();
+    const { saveConfigToApi, config } = useTableConfig();
 
     const [appliedFilterName, setAppliedFilterName] = useState<any>(null);
 
     useEffect(() => {
-        setSavedFilters(filters);
-    }, []);
+        const tableFilters = config?.tables?.[table_key]?.filters;
+        console.log(tableFilters, 'tbleflters');
+        console.log(filters, 'filters');
+        if (filters && tableFilters) {
+            console.log('brdadi');
+            setSavedFilters(applyConfigToFilters(filters, tableFilters));
+            console.log(applyConfigToFilters(filters, tableFilters), 'x');
+            console.log(savedFilters, 'svdflters');
+        } else {
+            console.log('elsdeyem');
+            setSavedFilters(filters);
+        }
+    }, [filters, config, table_key]);
 
+    console.log(savedFilters, 'svd');
     const parseFiltersFromUrl = (): { id: string; value: any }[] => {
         try {
             const hash = window.location.hash;
@@ -92,7 +98,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             return match ? { ...f, value: match.value } : { ...f, value: getEmptyValue(f) };
         });
 
-        setSavedFilters(updated);
+        const tableFilters = config?.tables?.[table_key]?.filters;
+        if (tableFilters) {
+            setSavedFilters(applyConfigToFilters(updated, tableFilters));
+        } else {
+            setSavedFilters(updated);
+        }
+
         updated.forEach((f: any) => onChange?.(f.key, f.value));
     }, [window.location.hash, filters, defaultFilter]);
 
@@ -167,7 +179,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
     // hansisa filterde yeni value secende state vurur, ama tetbiq etmir helem
     const handleUpdateFilter = (key: string, value: any) => {
-        console.log(key, value, 'handleUpdateFilter');
+        // console.log(key, value, 'handleUpdateFilter');
         const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
         setSavedFilters(updatedFilters);
     };
@@ -244,6 +256,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
             case FilterKey.DateInterval: // 7
                 return (
+                    // @ts-expect-error
                     <DateIntervalFilter
                         key={filter.key}
                         label={filter.label}
@@ -262,9 +275,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
     // filterlerin orderini ve visibilty yadda saxlayir
     const handleSaveSort = async () => {
-        await saveConfigToApi();
         setSortMode(false);
-        showToast({ label: 'Filter sıralaması yadda saxlanıldı', type: 'success' });
+        await saveConfigToApi();
     };
 
     const handleSaveCurrentFilters = () => {
@@ -274,7 +286,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     // ****
 
     // save olunan filteri tetbiq edir
-
     const handleApplySavedFilter = (
         filters: FilterConfig[],
         isDefault?: boolean,
@@ -286,7 +297,21 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             value: f.value,
         }));
 
+        const tableFilters = config?.tables?.[table_key]?.filters;
+
+        let merged = applyConfigToFilters(filters, tableFilters ?? []);
+        merged = merged.map((f) => ({
+            ...f,
+            value: filters.find((sf) => sf.key === f.key || sf.column === f.column)?.value ?? f.value,
+            visible: true,
+        }));
+
+        console.log(merged, 'm');
+
+        setSavedFilters(merged);
+
         applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort, isDefault);
+
         setActiveTab('default');
         setAppliedFilterName(filterName);
     };
@@ -306,7 +331,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     };
 
     const filteredSavedFilters = savedFilters
-        .filter((filter) => filter.visible !== false)
+        .filter((filter) => {
+            if (appliedFilterName) return true;
+            return filter.visible !== false;
+        })
         .filter((filter) => {
             const columnMatch = filter?.column?.toLowerCase().includes(searchText?.toLowerCase());
             const labelMatch = filter?.label?.toLowerCase().includes(searchText?.toLowerCase());
@@ -445,6 +473,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                                         onSaveSort={handleSaveSort}
                                         onSaveFilters={handleSaveCurrentFilters}
                                         filterName={appliedFilterName}
+                                        hideActions={!!appliedFilterName}
                                     />
                                     <SearchHeader
                                         onReset={sortMode ? handleResetOrder : handleResetFilters}
@@ -518,6 +547,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                     value={filterName}
                     onChange={(e) => setFilterName(e.target.value)}
                     size="36"
+                    autoFocus={true}
                 />
             </Modal>
         </>

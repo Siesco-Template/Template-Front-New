@@ -10,7 +10,9 @@ import {
 } from 'material-react-table';
 import { MRT_Localization_AZ } from 'material-react-table/locales/az';
 
-import { S_Checkbox, S_Input, S_Tooltip } from '@/ui';
+import { CircularProgress } from '@mui/material';
+
+import { S_Checkbox, S_Input } from '@/ui';
 
 import Catalog from '../catalog';
 import DateIntervalFilter from '../filter/filters/DateIntervalFilter';
@@ -209,9 +211,6 @@ function Table<T extends Record<string, any>>({
         };
     }, []);
 
-    console.log(config, 'c')
-    console.log(tableKey, 'tblekey')
-
     const configOrderObj = config.tables?.[tableKey]?.columnsOrder || {};
     const configColumnOrder = Object.keys(configOrderObj).sort((a, b) => configOrderObj[a] - configOrderObj[b]);
 
@@ -259,7 +258,7 @@ function Table<T extends Record<string, any>>({
             filterType = FilterKeyMap[filterType];
         }
 
-        console.log(filterType, filter, 'filterType');
+        // console.log(filterType, filter, 'filterType');
         switch (filterType) {
             case FilterKey.Text:
                 return (
@@ -299,14 +298,14 @@ function Table<T extends Record<string, any>>({
                     disabled: !!opt.disabled,
                 }));
 
-                console.log(items, 'i');
+                // console.log(items, 'i');
 
                 const selectedObj =
                     filter.value != null && filter.value !== ''
                         ? (items.find((i: any) => i.value == filter.value) ?? null)
                         : null;
 
-                console.log(selectedObj, filter, 'onj');
+                // console.log(selectedObj, filter, 'onj');
                 return (
                     <div style={{ width: '160px' }}>
                         <Catalog
@@ -406,7 +405,7 @@ function Table<T extends Record<string, any>>({
             },
             header: (
                 <div
-                title=''
+                    title=""
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -424,19 +423,19 @@ function Table<T extends Record<string, any>>({
                     }}
                 >
                     {/* <S_Tooltip content={col.header?.toString()} position="right-start"> */}
-                        <span
-                            style={{
-                                fontSize: headerTextStyle.fontSize,
-                                fontStyle: headerTextStyle.italic ? 'italic' : undefined,
-                                fontWeight: headerTextStyle.bold ? 'bold' : undefined,
-                                height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
-                                lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
-                                justifyContent: headerTextStyle.alignment,
-                                maxWidth: '90%',
-                            }}
-                        >
-                            {col.header}
-                        </span>
+                    <span
+                        style={{
+                            fontSize: headerTextStyle.fontSize,
+                            fontStyle: headerTextStyle.italic ? 'italic' : undefined,
+                            fontWeight: headerTextStyle.bold ? 'bold' : undefined,
+                            height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
+                            lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
+                            justifyContent: headerTextStyle.alignment,
+                            maxWidth: '90%',
+                        }}
+                    >
+                        {col.header}
+                    </span>
                     {/* </S_Tooltip> */}
 
                     {enableColumnActionsCustom && (
@@ -837,14 +836,24 @@ function Table<T extends Record<string, any>>({
             // showProgressBars: isRefetching,
             sorting: filterDataState?.sort ?? [],
             isLoading: state === 'pending' || props.isLoading,
+            showProgressBars: isInfinite && (state === 'pending' || props.isLoading),
             showSkeletons: !isInfinite && (state === 'pending' || props.isLoading),
-            showProgressBars: state === 'pending' || props.isLoading,
             showAlertBanner: state === 'error',
             columnPinning: {
                 left: pinnedLeftColumns,
             },
             showColumnFilters: showColumnFilters,
         },
+        muiLinearProgressProps: {
+            color: 'primary',
+            sx: { height: 2 },
+        },
+        renderBottomToolbarCustom: () =>
+            isInfinite && props.isLoading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+                    <CircularProgress size={28} />
+                </div>
+            ) : null,
         muiTableBodyRowProps: ({ row }: any) => {
             const rowId = row.id;
             const rowConfig = config.tables?.[tableKey]?.row || {};

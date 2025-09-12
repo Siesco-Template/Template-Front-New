@@ -121,7 +121,6 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
     };
 
     // edit
-
     const handleEdit = (id: string) => {
         const selected = savedFilters.find((filter: any) => filter.id === id);
         setSelectedFilter(selected);

@@ -28,8 +28,7 @@ export const Default: Story = {
                 <File_Upload
                     {...args}
                     onChange={(newFiles: File[]) => {
-                        console.log('Selected files:', newFiles);
-                        setFiles(newFiles);
+                         setFiles(newFiles);
                     }}
                 />
             </div>

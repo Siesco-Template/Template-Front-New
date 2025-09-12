@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -70,16 +70,17 @@ const SortableItem: React.FC<{
 };
 
 const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilters, searchText, tableKey }) => {
-    const { updateConfig, saveConfigToApi } = useTableConfig();
+    const { updateConfig } = useTableConfig();
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
         useSensor(KeyboardSensor)
     );
 
+    console.log(savedFilters, 'saved');
     const ids = savedFilters.map((f) => String(f.key ?? f.column));
 
-    const handleDragEnd = async (event: DragEndEvent) => {
+    const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
@@ -99,7 +100,7 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
         updateConfig(tableKey, 'filters', updates);
     };
 
-    const toggleVisibility = async (key: string) => {
+    const toggleVisibility = (key: string) => {
         const updated = savedFilters.map((f) =>
             f.key === key ? { ...f, visible: f.visible === false ? true : false } : f
         );
@@ -112,7 +113,6 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
         }));
 
         updateConfig(tableKey, 'filters', updates);
-        console.log('🔄 updateConfig filters:', updates);
     };
 
     return (

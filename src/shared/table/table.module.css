@@ -17,9 +17,6 @@
     box-shadow: 0px 2px 0px hsl(var(--clr-primary-50));
     font-family: 'DM Sans';
 }
-[data-theme='dark'] .thead tr {
-    box-shadow: 0px 2px 0px hsl(var(--clr-primary-700));
-}
 .thead tr th {
     box-shadow: none;
     font-family: 'DM Sans';
@@ -81,7 +78,6 @@
     align-items: center !important;
 }
 
-
 .tableHeadCell {
     position: relative;
     transition: all 0.2s ease;
@@ -104,25 +100,6 @@
 .checkbox {
     border-radius: var(--r-200);
 }
-
-/* .tableContainer::-webkit-scrollbar {
-    height: 5px !important;
-    width: 5px;
-}
-
-.tableContainer::-webkit-scrollbar-track {
-    background: hsl(var(--clr-grey-50));
-    border-radius: 10px;
-}
-
-.tableContainer::-webkit-scrollbar-thumb {
-    background: hsl(var(--clr-primary-500));
-    border-radius: 10px;
-}
-
-.tableContainer::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--clr-primary-700));
-} */
 
 .visibilityColumns {
     display: flex;
@@ -159,12 +136,6 @@
     height: 35px;
 }
 
-[data-theme='dark'] .visibilityDropdown {
-    -webkit-box-shadow: 0px 18px 22px -2px hsl(var(--clr-grey-50));
-    -moz-box-shadow: 0px 18px 22px -2px hsl(var(--clr-grey-50));
-    box-shadow: 0px 18px 22px -2px hsl(var(--clr-grey-50));
-    border: 1px solid hsl(var(--clr-primary-800));
-}
 .visibilityDropdown > * {
     background: hsl(var(--clr-background));
     /* color: hsl(var(--clr-foreground)); */
@@ -194,26 +165,6 @@
 
 .visibilityDropdown > .visibilityDropdownItem:hover {
     background: hsl(var(--clr-primary-50)) !important;
-}
-[data-theme='dark'] .visibilityDropdown > .visibilityDropdownItem:hover {
-    background: hsl(var(--clr-primary-900));
-}
-/* visibility button */
-.visibilityBtn {
-    border-radius: 12px;
-    border: 1px solid var(--Foundation-Blue-White, #fff);
-    background: var(--foundation-blue-white-active, #f5f7f9);
-    display: flex;
-    width: 36px;
-    height: 36px;
-    padding: 4px 8px;
-    justify-content: center;
-    align-items: center;
-    gap: var(--sds-size-space-100);
-}
-
-.visibilityBtn:hover {
-    background: #fff;
 }
 
 .filterBtn {

@@ -10,6 +10,7 @@ interface Props {
     onSaveFilters: () => void;
     disableSave?: boolean;
     filterName?: string;
+    hideActions?: boolean;
 }
 const FilterHeader: React.FC<Props> = ({
     onSortClick,
@@ -17,27 +18,40 @@ const FilterHeader: React.FC<Props> = ({
     onSaveSort,
     onSaveFilters,
     disableSave = false,
+    hideActions,
     filterName,
 }) => {
     return (
         <>
             <div className={styles.filterHeader}>
                 <h1 className={styles.filterTitle}>{filterName}</h1>
-                <div className={styles.filterHeaderButtons}>
-                    <S_Button onClick={onSortClick} color="secondary" variant="primary">
-                        {sortMode ? (
-                            <TickIcon width={16} height={16} color="var(--content-secondary-brand-bold)" />
-                        ) : (
-                            <SortCircle width={16} height={16} color="var(--content-secondary-brand-bold)" />
-                        )}
-                    </S_Button>
-
-                    {!sortMode && (
-                        <S_Button color="primary" variant="primary" onClick={onSaveFilters} disabled={disableSave}>
-                            <DiskIcon width={16} height={16} color="var(--clr-content-brand-light)" />
+                {!hideActions && (
+                    <div className={styles.filterHeaderButtons}>
+                        <S_Button
+                            onClick={() => {
+                                if (sortMode) {
+                                    onSaveSort();
+                                } else {
+                                    onSortClick();
+                                }
+                            }}
+                            color="secondary"
+                            variant="primary"
+                        >
+                            {sortMode ? (
+                                <DiskIcon width={16} height={16} color="var(--content-secondary-brand-bold)" />
+                            ) : (
+                                <SortCircle width={16} height={16} color="var(--content-secondary-brand-bold)" />
+                            )}
                         </S_Button>
-                    )}
-                </div>
+
+                        {!sortMode && (
+                            <S_Button color="primary" variant="primary" onClick={onSaveFilters} disabled={disableSave}>
+                                <DiskIcon width={16} height={16} color="var(--clr-content-brand-light)" />
+                            </S_Button>
+                        )}
+                    </div>
+                )}
             </div>
         </>
     );
