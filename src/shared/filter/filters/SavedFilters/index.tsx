@@ -12,6 +12,7 @@ import SearchHeader from '../../layout/searchHeader';
 import ActionsDropdown from '../../shared/actions/Actions';
 import { ArrowLeftIcon, DiskIcon, TrashIcon } from '../../shared/icons';
 import { FilterConfig } from '../../types';
+import { capitalizeFirst } from '../../utils/stringUtils';
 import styles from './style.module.css';
 
 interface SavedFiltersProps {
@@ -206,11 +207,8 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                     <div className={styles.selectedFilterDetails}>
                         <div className={styles.selectedFilterHeader}>
                             <button className={styles.selectedFilterInfo} type="button">
-                                {editing && <ArrowLeftIcon color='var("--content-primary" )' onClick={handleBack} />}
-                                <span>
-                                    {selectedFilter.filterTitle.charAt(0).toUpperCase() +
-                                        selectedFilter.filterTitle.slice(1)}
-                                </span>
+                                {editing && <ArrowLeftIcon color='var("--content-primary")' onClick={handleBack} />}
+                                <span>{capitalizeFirst(selectedFilter.filterTitle)}</span>
                             </button>
                             <div className={styles.btnGroup}>
                                 {editing && (
@@ -299,7 +297,10 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                                         >
                                             <span
                                                 dangerouslySetInnerHTML={{
-                                                    __html: highlightMatch(filter.filterTitle, searchTerm),
+                                                    __html: highlightMatch(
+                                                        capitalizeFirst(filter.filterTitle),
+                                                        searchTerm
+                                                    ),
                                                 }}
                                             />
                                             <ActionsDropdown
@@ -343,7 +344,8 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
                     }
                 >
                     <h1 className={styles.description}>
-                        <span>{filterToDelete?.filterTitle}</span> filterini silmək istədiyinizdən əminsiniz mi?
+                        <span>{capitalizeFirst(filterToDelete?.filterTitle)}</span>
+                        filterini silmək istədiyinizdən əminsiniz mi?
                     </h1>
                 </Modal>
             </>

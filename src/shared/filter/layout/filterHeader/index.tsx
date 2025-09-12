@@ -1,6 +1,7 @@
 import { S_Button } from '@/ui';
 
-import { DiskIcon, SortCircle, TickIcon } from '../../shared/icons';
+import { DiskIcon, SortCircle } from '../../shared/icons';
+import { capitalizeFirst } from '../../utils/stringUtils';
 import styles from './style.module.css';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
     disableSave?: boolean;
     filterName?: string;
     hideActions?: boolean;
+    isDefault?: boolean;
 }
 const FilterHeader: React.FC<Props> = ({
     onSortClick,
@@ -20,11 +22,19 @@ const FilterHeader: React.FC<Props> = ({
     disableSave = false,
     hideActions,
     filterName,
+    isDefault = false,
 }) => {
     return (
         <>
             <div className={styles.filterHeader}>
-                <h1 className={styles.filterTitle}>{filterName}</h1>
+                <h1 className={styles.filterTitle}>
+                    {isDefault && filterName && (
+                        <span style={{ marginLeft: 8, fontSize: 14, color: 'var(--content-tertiary)' }}>
+                            Default filter : {''}
+                        </span>
+                    )}
+                    {capitalizeFirst(filterName)}
+                </h1>
                 {!hideActions && (
                     <div className={styles.filterHeaderButtons}>
                         <S_Button

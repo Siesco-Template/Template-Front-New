@@ -50,6 +50,7 @@ const ActionsDropdown = ({
             showToast({ label: 'Default  filter uğurla təyin edildi', type: 'success' });
             onToggle(null);
             onApplyFilter(filter.filterValues, true, filter.id, filter.filterTitle);
+            console.log(filter.filterValues, true, filter.id, filter.filterTitle, 'dflt flter adi');
         } catch (e) {
             console.error(e);
         }

@@ -55,23 +55,27 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
     const { saveConfigToApi, config } = useTableConfig();
 
     const [appliedFilterName, setAppliedFilterName] = useState<any>(null);
+    const [isAppliedDefault, setIsAppliedDefault] = useState(false);
+
+    console.log(isAppliedDefault, 'isdeflt', filterName);
 
     useEffect(() => {
         const tableFilters = config?.tables?.[table_key]?.filters;
-        console.log(tableFilters, 'tbleflters');
-        console.log(filters, 'filters');
+        // console.log(tableFilters, 'tbleflters');
+        // console.log(filters, 'filters');
         if (filters && tableFilters) {
-            console.log('brdadi');
+            // console.log('brdadi');
             setSavedFilters(applyConfigToFilters(filters, tableFilters));
-            console.log(applyConfigToFilters(filters, tableFilters), 'x');
-            console.log(savedFilters, 'svdflters');
+            // console.log(applyConfigToFilters(filters, tableFilters), 'x');
+            // console.log(savedFilters, 'svdflters');
         } else {
-            console.log('elsdeyem');
+            // console.log('elsdeyem');
             setSavedFilters(filters);
         }
     }, [filters, config, table_key]);
 
     console.log(savedFilters, 'svd');
+
     const parseFiltersFromUrl = (): { id: string; value: any }[] => {
         try {
             const hash = window.location.hash;
@@ -136,13 +140,17 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
                         filterDataState.sort,
                         true
                     );
+                    setIsAppliedDefault(true);
+
+                    if (res?.filterTitle) {
+                        setAppliedFilterName(res.filterTitle);
+                    }
                 } else {
                     onReady?.();
                 }
             } catch (_) {
                 onReady?.();
             } finally {
-                // Failsafe: heç bir halda bloklanmasın
                 onReady?.();
             }
         })();
@@ -283,8 +291,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
         setIsSaveModalOpen(true);
     };
 
-    // ****
-
     // save olunan filteri tetbiq edir
     const handleApplySavedFilter = (
         filters: FilterConfig[],
@@ -306,14 +312,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
             visible: true,
         }));
 
-        console.log(merged, 'm');
-
         setSavedFilters(merged);
 
         applyFiltersToUrl(cleanedFilters, filterDataState.skip, filterDataState.take, filterDataState.sort, isDefault);
 
         setActiveTab('default');
         setAppliedFilterName(filterName);
+
+        setIsAppliedDefault(!!isDefault);
     };
 
     // filteri tetbiq edir
@@ -474,6 +480,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
                                         onSaveFilters={handleSaveCurrentFilters}
                                         filterName={appliedFilterName}
                                         hideActions={!!appliedFilterName}
+                                        isDefault={isAppliedDefault}
                                     />
                                     <SearchHeader
                                         onReset={sortMode ? handleResetOrder : handleResetFilters}
