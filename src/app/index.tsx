@@ -4,7 +4,6 @@ import { useAuthStore } from '@/store/authStore';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
 
-import SplashScreen from '@/ui/preloader/SplashScreen';
 import S_Toast from '@/ui/toast/S_Toast';
 
 import './globals.css';
@@ -20,7 +19,6 @@ const App = () => {
     useLayoutEffect(() => {
         loadConfigFromApi();
     }, [user]);
-
 
     return (
         <Providers>

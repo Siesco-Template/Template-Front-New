@@ -15,6 +15,7 @@ interface DraggableProps {
     setSavedFilters: React.Dispatch<React.SetStateAction<FilterConfig[]>>;
     searchText?: string;
     tableKey: string;
+    setIsDirty: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -69,7 +70,13 @@ const SortableItem: React.FC<{
     );
 };
 
-const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilters, searchText, tableKey }) => {
+const DraggableItems: React.FC<DraggableProps> = ({
+    savedFilters,
+    setSavedFilters,
+    searchText,
+    tableKey,
+    setIsDirty,
+}) => {
     const { updateConfig } = useTableConfig();
 
     const sensors = useSensors(
@@ -98,6 +105,7 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
         }));
 
         updateConfig(tableKey, 'filters', updates);
+        setIsDirty(true);
     };
 
     const toggleVisibility = (key: string) => {
@@ -113,6 +121,7 @@ const DraggableItems: React.FC<DraggableProps> = ({ savedFilters, setSavedFilter
         }));
 
         updateConfig(tableKey, 'filters', updates);
+        setIsDirty(true);
     };
 
     return (

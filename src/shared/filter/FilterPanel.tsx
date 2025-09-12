@@ -57,6 +57,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
     const [appliedFilterName, setAppliedFilterName] = useState<any>(null);
     const [isAppliedDefault, setIsAppliedDefault] = useState(false);
 
+    const [isDirty, setIsDirty] = useState(false);
+
     console.log(isAppliedDefault, 'isdeflt', filterName);
 
     useEffect(() => {
@@ -283,8 +285,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
 
     // filterlerin orderini ve visibilty yadda saxlayir
     const handleSaveSort = async () => {
-        setSortMode(false);
+        if (!isDirty) {
+            setSortMode(false);
+            return;
+        }
+
         await saveConfigToApi();
+        setSortMode(false);
+        setIsDirty(false);
     };
 
     const handleSaveCurrentFilters = () => {
@@ -493,6 +501,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
                                             savedFilters={savedFilters}
                                             setSavedFilters={setSavedFilters}
                                             tableKey={table_key}
+                                            setIsDirty={setIsDirty}
                                         />
                                     ) : (
                                         <>
