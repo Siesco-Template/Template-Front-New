@@ -124,6 +124,8 @@ function Table<T extends Record<string, any>>({
 
     const tableContainerRef = useRef(null);
 
+    const { config, updateConfig } = useTableConfig();
+
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
@@ -197,8 +199,6 @@ function Table<T extends Record<string, any>>({
             setShowColumnFilters(false);
         }
     }, [isConfigCollapsed, setSelectedColumnKey, setShowColumnFilters]);
-
-    const { config, updateConfig } = useTableConfig();
 
     useEffect(() => {
         initializeVisibility(columns);

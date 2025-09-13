@@ -22,7 +22,7 @@ import FilterHeader from './layout/filterHeader';
 import Header from './layout/header';
 import SearchHeader from './layout/searchHeader';
 import { FilterConfig } from './types';
-import { applyConfigToFilters, applyFiltersToUrl } from './utils/filterHelpers';
+import { applyConfigToFilters, applyFiltersToUrl, getEmptyValue, isEmpty } from './utils/filterHelpers';
 import { FilterKey } from './utils/filterTypeEnum';
 
 interface FilterPanelProps {
@@ -33,9 +33,17 @@ interface FilterPanelProps {
     table_key: string;
     onResetFilters: () => void;
     onReady?: () => void;
+    isResetting?: boolean;
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key, onReady, onResetFilters }) => {
+const FilterPanel: React.FC<FilterPanelProps> = ({
+    filters,
+    onChange,
+    table_key,
+    onReady,
+    onResetFilters,
+    isResetting = false,
+}) => {
     const [activeTab, setActiveTab] = useState<'default' | 'saved'>('default');
     const [savedFilters, setSavedFilters] = useState<FilterConfig[]>([]);
     const [sortMode, setSortMode] = useState(false);
@@ -58,6 +66,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
     const [isAppliedDefault, setIsAppliedDefault] = useState(false);
 
     const [isDirty, setIsDirty] = useState(false);
+    const [isModified, setIsModified] = useState(false);
 
     console.log(isAppliedDefault, 'isdeflt', filterName);
 
@@ -134,7 +143,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
                 setHasDefault(true);
 
                 const urlFilters = parseFiltersFromUrl();
-                if (urlFilters?.length === 0) {
+
+                if (urlFilters?.length === 0 && !isResetting) {
                     applyFiltersToUrl(
                         onlyFilled.map((f) => ({ id: f.key || f.column, value: f.value })),
                         filterDataState.skip,
@@ -158,40 +168,48 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
         })();
     }, [table_key]);
 
-    const isEmpty = (v: any) =>
-        v == null ||
-        (typeof v === 'string' && v.trim() === '') ||
-        (Array.isArray(v) && v.length === 0) ||
-        (typeof v === 'object' && 'min' in v && 'max' in v && v.min === '' && v.max === '');
-
-    const getEmptyValue = (f: any) => {
-        if (f.type === 'number-interval') return { min: '', max: '' };
-        if (f.type === 'date-interval') return Array.isArray(f.value) ? [null, null] : null;
-        if (f.type === 'multi-select') return [];
-        return '';
-    };
-
     // urldeki butun filterleri temizleyir, eger default varsa onu saxliyir ama
     const handleResetFilters = () => {
         setSearchText('');
         setAppliedFilterName(null);
+        setIsAppliedDefault(false);
+        setIsModified(false);
 
-        const reset = filters.map((f) => ({ ...f, value: getEmptyValue(f) }));
-        // @ts-expect-error
+        const reset = savedFilters.map((f) => ({
+            ...f,
+            value: getEmptyValue(f),
+        }));
         setSavedFilters(reset);
         reset.forEach((f: any) => onChange?.(f.key, f.value));
 
-        let newHash = window.location.hash.split('?')[0]; // yalnız route qalsın, ?dən sonrasını atırıq
-        window.location.hash = newHash; // url dəyişəcək
+        // URL təmizlə
+        let newHash = window.location.hash.split('?')[0];
+        window.location.hash = newHash;
 
+        // bir dəfəlik fetch initialFilter:true ilə getsin
         onResetFilters?.();
     };
 
     // hansisa filterde yeni value secende state vurur, ama tetbiq etmir helem
     const handleUpdateFilter = (key: string, value: any) => {
-        // console.log(key, value, 'handleUpdateFilter');
-        const updatedFilters = savedFilters.map((f) => (f.key === key ? { ...f, value } : f));
+        const updatedFilters = savedFilters.map((f) =>
+            f.key === key || f.column === key
+                ? {
+                      ...f,
+                      value,
+                  }
+                : f
+        );
+
+        console.log(updatedFilters, 'upd filters');
+
         setSavedFilters(updatedFilters);
+
+        if (appliedFilterName || isAppliedDefault) {
+            setAppliedFilterName(null);
+            setIsModified(true);
+            setIsAppliedDefault(false);
+        }
     };
 
     // filterKey gore filterleri ui cixardir
@@ -346,7 +364,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
 
     const filteredSavedFilters = savedFilters
         .filter((filter) => {
-            if (appliedFilterName) return true;
+            // Əgər istifadəçi hansısa filter tətbiq edib və ya dəyişib → hamısını göstər
+            if (appliedFilterName || isModified) return true;
+            console.log(appliedFilterName, isModified, 'drf')
+
+            // Əks halda yalnız visible=true olanları göstər
             return filter.visible !== false;
         })
         .filter((filter) => {
@@ -487,7 +509,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange, table_key,
                                         onSaveSort={handleSaveSort}
                                         onSaveFilters={handleSaveCurrentFilters}
                                         filterName={appliedFilterName}
-                                        hideActions={!!appliedFilterName}
+                                        hideActions={!!appliedFilterName || isModified}
                                         isDefault={isAppliedDefault}
                                     />
                                     <SearchHeader

@@ -100,6 +100,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
 
+    const [isResetting, setIsResetting] = useState(false);
+
     const catalogs = mockCatalogs['reports'];
 
     const columns: CustomMRTColumn<BudceTableData>[] = [
@@ -345,7 +347,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             Object.keys(columnVisibility).length > 0 &&
             filterDataState &&
             Array.isArray(filterDataState.filter);
-        if (shouldFetch) {
+        if (shouldFetch && !isResetting) {
             fetchData();
         }
     }, [defaultFilterReady, columnVisibility, isInfinite, filterDataState]);
@@ -467,6 +469,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     );
 
     const pathParam = searchParams.get('path');
+
     useEffect(() => {
         if (showCatalogView && pathParam && pathParam !== currentPath) {
             setCurrentPath(pathParam);
@@ -568,7 +571,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                 onToggleCollapse={onToggleCollapse}
                                 table_key="reports"
                                 onReady={() => setDefaultFilterReady(true)}
-                                onResetFilters={() => fetchData(false, { initialFilter: true })}
+                                onResetFilters={() => {
+                                    setIsResetting(true);
+                                    fetchData(false, { initialFilter: true });
+                                    setIsResetting(false);
+                                }}
+                                isResetting={isResetting}
                             />
                         </div>
 

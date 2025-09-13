@@ -77,3 +77,16 @@ export const applyConfigToFilters = (filters: FilterConfig[], configFilters: any
     console.log(merged, 'merged');
     return merged;
 };
+
+export const isEmpty = (v: any) =>
+    v == null ||
+    (typeof v === 'string' && v.trim() === '') ||
+    (Array.isArray(v) && v.length === 0) ||
+    (typeof v === 'object' && 'min' in v && 'max' in v && v.min === '' && v.max === '');
+
+export const getEmptyValue = (f: any) => {
+    if (f.type === 'number-interval') return { min: '', max: '' };
+    if (f.type === 'date-interval') return Array.isArray(f.value) ? [null, null] : null;
+    if (f.type === 'multi-select') return [];
+    return '';
+};
