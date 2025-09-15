@@ -4,8 +4,12 @@ import { DefaultLayoutNavbar } from '../settings.contants';
 
 export type LayoutPositionState = 'left' | 'right' | 'top' | 'bottom';
 export type LayoutZoomState = 'small' | 'normal' | 'large';
+export type LayoutModeState = 'light' | 'dark' | 'system';
 
 export type LayoutState = {
+    mode: LayoutModeState;
+    previousMode?: LayoutModeState;
+
     position: LayoutPositionState;
     previousPosition?: LayoutPositionState;
 
@@ -26,6 +30,7 @@ export type LayoutState = {
 };
 type LayoutActions = {
     setPosition: (position: LayoutPositionState) => void;
+    setMode: (mode: LayoutModeState) => void;
     togglePinned: (pinned: boolean) => void;
     toggleOpenWithButton: (openWithButton: boolean) => void;
     toggleOpenWithHover: (openWithHover: boolean) => void;
@@ -37,12 +42,14 @@ type LayoutActions = {
 };
 
 export const useLayoutStore = create<LayoutState & LayoutActions>()((set, get) => ({
+    mode: 'light',
     position: DefaultLayoutNavbar.position,
     pinned: DefaultLayoutNavbar.pinned,
     openWithButton: DefaultLayoutNavbar.openWithButton,
     openWithHover: DefaultLayoutNavbar.openWithHover,
     alwaysOpen: DefaultLayoutNavbar.alwaysOpen,
     zoom: DefaultLayoutNavbar.zoom,
+    previousMode: 'light',
     previousPosition: DefaultLayoutNavbar.position,
     previousPinned: DefaultLayoutNavbar.pinned,
     previousOpenWithButton: DefaultLayoutNavbar.openWithButton,
@@ -50,6 +57,7 @@ export const useLayoutStore = create<LayoutState & LayoutActions>()((set, get) =
     previousAlwaysOpen: DefaultLayoutNavbar.alwaysOpen,
     previousZoom: DefaultLayoutNavbar.zoom,
 
+    setMode: (mode) => set(() => ({ mode })),
     setPosition: (position) => set(() => ({ position })),
     togglePinned: (pinned) => set(() => ({ pinned })),
     toggleOpenWithButton: (openWithButton) => set(() => ({ openWithButton })),
@@ -59,12 +67,14 @@ export const useLayoutStore = create<LayoutState & LayoutActions>()((set, get) =
 
     getLayoutDiff: () => {
         const {
+            mode,
             position,
             pinned,
             openWithButton,
             openWithHover,
             alwaysOpen,
             zoom,
+            previousMode,
             previousPosition,
             previousPinned,
             previousOpenWithButton,
@@ -79,6 +89,10 @@ export const useLayoutStore = create<LayoutState & LayoutActions>()((set, get) =
             current !== previous || previous !== defaultVal;
 
         // Hər bir dəyər üçün fərqlilik varsa diffə yazırıq
+        if (isChanged(mode, previousMode, 'light')) {
+            diff['extraConfig.interfaceSettings.mode'] = mode;
+        }
+
         if (isChanged(position, previousPosition, DefaultLayoutNavbar.position)) {
             diff['extraConfig.interfaceSettings.menuPosition'] = position;
         }
@@ -115,6 +129,7 @@ export const useLayoutStore = create<LayoutState & LayoutActions>()((set, get) =
             previousOpenWithHover: state.openWithHover,
             previousAlwaysOpen: state.alwaysOpen,
             previousZoom: state.zoom,
+            previousMode: state.mode,
         });
     },
 
@@ -126,6 +141,7 @@ export const useLayoutStore = create<LayoutState & LayoutActions>()((set, get) =
             openWithHover: state.previousOpenWithHover ?? DefaultLayoutNavbar.openWithHover,
             alwaysOpen: state.previousAlwaysOpen ?? DefaultLayoutNavbar.alwaysOpen,
             zoom: state.previousZoom ?? DefaultLayoutNavbar.zoom,
+            mode: state.previousMode ?? 'light',
         }));
     },
 }));

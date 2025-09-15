@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router';
 
 import Catalog from '@/shared/catalog';
 import { DarkThemeBackground, LightThemeBackground } from '@/shared/icons';
-import { cls, getSystemTheme } from '@/shared/utils';
+import { cls } from '@/shared/utils';
 
-import { S_Button, S_Switch } from '@/ui';
-import S_Select_Simple, { Item } from '@/ui/select/select-simple';
+import { S_Switch } from '@/ui';
+import { Item } from '@/ui/select/select-simple';
 
 import { LayoutPositionState, LayoutZoomState, useLayoutStore } from '../../layout/layout.store';
-import { useViewAndContentStore } from '../../view-and-content/view-and-content.store';
 import SystemThemeCard from '../themes/ui/system/system-theme';
 import styles from './interface-settings.module.css';
 
@@ -47,32 +46,13 @@ const zoomOptions: Item[] = [
     },
 ];
 
-export const ViewAndContentActions = () => {
-    const { previousCursorSize, previousCursorVariant, saveViewAndContent, discardViewAndContent } =
-        useViewAndContentStore();
-
-    const isChanged = previousCursorSize || previousCursorVariant;
-
-    const saveActions = () => {
-        saveViewAndContent();
-    };
-
-    const discardActions = () => {
-        discardViewAndContent();
-    };
-    if (!isChanged) return null;
-
-    return (
-        <div className={styles.buttonContainer}>
-            <S_Button variant="primary" color="secondary" children={'Geri qaytar'} onClick={() => discardActions()} />
-            <S_Button variant="primary" color="primary" children={'Yadda Saxla'} onClick={() => saveActions()} />
-        </div>
-    );
-};
-
 const InterfaceSettings = () => {
     const { setHasChange } = useOutletContext<{ setHasChange: (value: boolean) => void }>();
     const {
+        mode,
+        previousMode,
+        setMode,
+
         position,
         previousPosition,
         setPosition,
@@ -104,7 +84,8 @@ const InterfaceSettings = () => {
         openWithButton !== previousOpenWithButton ||
         openWithHover !== previousOpenWithHover ||
         alwaysOpen !== previousAlwaysOpen ||
-        zoom !== previousZoom;
+        zoom !== previousZoom ||
+        mode !== previousMode;
 
     useEffect(() => {
         setHasChange(changedLayout);
@@ -112,13 +93,6 @@ const InterfaceSettings = () => {
 
     const selectedObj: any = layoutPositions.find((i) => i.value === position) ?? null;
     const selectedZoomObj: any = zoomOptions.find((i) => i.value === zoom) ?? null;
-
-    const [selectedMode, setSelectedMode] = useState<'light' | 'dark' | 'system'>('light');
-
-    useEffect(() => {
-        const rootElement = document.documentElement;
-        rootElement.setAttribute('data-theme', selectedMode === 'system' ? getSystemTheme() : selectedMode);
-    }, [selectedMode]);
 
     return (
         <div style={{ width: '100%' }}>
@@ -241,8 +215,8 @@ const InterfaceSettings = () => {
                 </div>
                 <div style={{ display: 'flex', gap: 20 }}>
                     <div
-                        className={cls(styles.themeCardWrapper, selectedMode === 'light' && styles.selected)}
-                        onClick={() => setSelectedMode('light')}
+                        className={cls(styles.themeCardWrapper, mode === 'light' && styles.selected)}
+                        onClick={() => setMode('light')}
                     >
                         <LightThemeBackground />
 
@@ -251,8 +225,8 @@ const InterfaceSettings = () => {
                         </div>
                     </div>
                     <div
-                        className={cls(styles.themeCardWrapper, selectedMode === 'dark' && styles.selected)}
-                        onClick={() => setSelectedMode('dark')}
+                        className={cls(styles.themeCardWrapper, mode === 'dark' && styles.selected)}
+                        onClick={() => setMode('dark')}
                     >
                         <DarkThemeBackground />
 
@@ -261,8 +235,8 @@ const InterfaceSettings = () => {
                         </div>
                     </div>
                     <div
-                        className={cls(styles.themeCardWrapper, selectedMode === 'system' && styles.selected)}
-                        onClick={() => setSelectedMode('system')}
+                        className={cls(styles.themeCardWrapper, mode === 'system' && styles.selected)}
+                        onClick={() => setMode('system')}
                     >
                         <SystemThemeCard />
 

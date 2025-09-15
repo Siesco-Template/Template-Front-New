@@ -82,18 +82,17 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const userConfigRef = React.useRef<Record<string, any> | null>(null);
 
     const saveConfigToApi = async (diff?: Record<string, any>) => {
-        console.log('burdadi dusdu bu bloka')
         try {
-            const computedDiff = getUserDiffFromConfig(defaultConfig, config);
+            // const computedDiff = getUserDiffFromConfig(defaultConfig, config);
 
-            const tableDiff = diff ? { ...computedDiff, ...diff } : computedDiff;
+            const tableDiff = diff ? diff : {};
             const fullDiff = {
                 ...tableDiff,
                 ...getFullConfigDiff(config.extraConfig.visualSettings.themes as Theme[]),
             };
 
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
-                console.log('tapilmadi')
+                console.log('tapilmadi');
                 return;
             }
 

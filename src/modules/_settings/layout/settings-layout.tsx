@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 
 import { useWidthViewport } from '@/shared/hooks';
@@ -17,15 +17,20 @@ const navbarSizeMap: Record<'small' | 'normal' | 'large', number> = {
 };
 
 const Layout_Sidebar: FC = () => {
-    const { pinned, position, togglePinned, alwaysOpen, openWithButton, openWithHover, zoom } = useLayoutStore();
+    const { pinned, position, alwaysOpen, openWithButton, openWithHover, zoom } = useLayoutStore();
     const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
+    const [open, setOpen] = useState(pinned);
+
+    useEffect(() => {
+        setOpen(pinned);
+    }, [pinned]);
 
     const changePinnOnSidebarBtn = (
         <button
-            className={cls(styles.sidebarToggleBtn, pinned && styles.pinned, styles[position])}
+            className={cls(styles.sidebarToggleBtn, open && styles.pinned, styles[position])}
             onClick={() => {
                 setSubMenuOpen(null);
-                togglePinned(!pinned);
+                setOpen(!open);
             }}
         >
             <DirectionLeft01 width={20} height={20} color="var(--content-brand, #0D3CAF)" />
@@ -34,23 +39,23 @@ const Layout_Sidebar: FC = () => {
 
     const handleHover = () => {
         if (openWithHover && pinned && !alwaysOpen) {
-            togglePinned(false);
+            setOpen(false);
         }
     };
 
     const handleMouseLeave = () => {
         if (openWithHover && !pinned && !alwaysOpen) {
-            togglePinned(true);
+            setOpen(true);
         }
     };
 
     return (
         <nav
-            className={cls(styles.layoutSidebar, styles[zoom], !pinned || alwaysOpen ? styles.unpinned : styles.pinned)}
+            className={cls(styles.layoutSidebar, styles[zoom], !open || alwaysOpen ? styles.unpinned : styles.pinned)}
             onMouseEnter={handleHover}
             onMouseLeave={handleMouseLeave}
         >
-            <Sidebar subMenuOpen={subMenuOpen} setSubMenuOpen={setSubMenuOpen} />
+            <Sidebar subMenuOpen={subMenuOpen} setSubMenuOpen={setSubMenuOpen} open={open} setOpen={setOpen} />
             {!alwaysOpen ? (openWithButton ? changePinnOnSidebarBtn : null) : null}
         </nav>
     );
