@@ -18,6 +18,8 @@ export const generateFiltersFromColumns = (columns: any[]) => {
                         value: opt.value ?? opt.name,
                     })),
                     showMoreColumns: col.showMoreColumns || [],
+                    endpoint: col.endpoint,
+                    column: col.column,
                 });
                 break;
             case 'multi-select':

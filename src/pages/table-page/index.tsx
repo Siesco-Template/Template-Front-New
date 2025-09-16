@@ -231,7 +231,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             accessorKey: 'Name',
             header: 'Təşkilat',
             filterVariant: 'select',
-            enpoint: '/GetCatalog',
+            endpoint: '/GetCatalog',
             column: 'Name',
         },
         {

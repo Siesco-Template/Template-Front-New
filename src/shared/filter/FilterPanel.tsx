@@ -250,7 +250,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 );
 
             case FilterKey.Select: {
+                console.log(filter, 'fltr');
                 if (filter.endpoint) {
+                    console.log('d', filter.endpoint);
                     return <CatalogFilter key={filter.key} filter={filter} onChange={_onChange} tableId={table_key} />;
                 }
 
