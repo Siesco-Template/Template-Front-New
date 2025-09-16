@@ -1,8 +1,7 @@
 import React, { MouseEventHandler, useState } from 'react';
-import toast from 'react-hot-toast';
 import { NavLink, Outlet, useLocation } from 'react-router';
 
-import { getFullConfigDiff, useTableConfig } from '@/shared/table/tableConfigContext';
+import { useTableConfig } from '@/shared/table/tableConfigContext';
 import { cls } from '@/shared/utils';
 
 import { S_Button } from '@/ui';
@@ -85,14 +84,12 @@ const SettingsPageHeader = ({ rightSide }: { rightSide: React.ReactNode }) => {
 const SettingsPageLayout = () => {
     const [hasChange, setHasChange] = useState(false);
 
-    const { saveSizes, discardSizes } = useTypographyStore();
-    const { discardViewAndContent, saveViewAndContent } = useViewAndContentStore();
+    const { discardSizes } = useTypographyStore();
+    const { discardViewAndContent } = useViewAndContentStore();
+    const { discardChangesOnLayout } = useLayoutStore();
+    const { discardTheme } = useThemeStore();
 
     const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
-
-    const { saveChangesOnLayout, discardChangesOnLayout } = useLayoutStore();
-
-    const { discardTheme } = useThemeStore();
 
     return (
         <div className={styles.settingsPageLayout}>

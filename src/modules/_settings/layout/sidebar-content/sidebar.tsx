@@ -24,9 +24,11 @@ const IconComponent = ({ link }: { link: NavigationItem }) => {
 interface Props {
     subMenuOpen: string | null;
     setSubMenuOpen: Dispatch<SetStateAction<string | null>>;
+    open: boolean;
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
+const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen, open, setOpen }) => {
     const { navigationLinks } = useSettingsStore();
 
     const navigate = useNavigate();
@@ -64,7 +66,7 @@ const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
     };
 
     useEffect(() => {
-        if (pinned) {
+        if (open) {
             setSubMenuOpen(null);
             return;
         }
@@ -79,10 +81,10 @@ const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
         }
 
         setSubMenuOpen(activeParentHref);
-    }, [location.pathname, pinned]);
+    }, [location.pathname, open]);
 
     useEffect(() => {
-        if (!pinned) {
+        if (!open) {
             filteredNavigationLinks.forEach((item) => {
                 if (item.subLinks) {
                     const hasActiveChild = item.subLinks.some((subLink) => subLink.href === location.pathname);
@@ -174,12 +176,12 @@ const Sidebar: FC<Props> = ({ subMenuOpen, setSubMenuOpen }) => {
         <>
             {alwaysOpen ? (
                 <div className={cls(styles.sidebarWrapper)}>{sidebar}</div>
-            ) : pinned ? (
-                <div className={cls(styles.sidebarPinnedWrapper, !pinned && styles.disable)}>
+            ) : open ? (
+                <div className={cls(styles.sidebarPinnedWrapper, !open && styles.disable)}>
                     <Sidebar_Content_Pinned {...{ subMenuOpen, setSubMenuOpen, toggleSubMenu: pinnedToggleSubMenu }} />
                 </div>
             ) : (
-                <div className={cls(styles.sidebarWrapper, pinned && styles.disable)}>{sidebar}</div>
+                <div className={cls(styles.sidebarWrapper, open && styles.disable)}>{sidebar}</div>
             )}
         </>
     );

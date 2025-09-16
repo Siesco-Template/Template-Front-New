@@ -195,8 +195,6 @@ export interface SizesState {
 }
 
 export const DefaultSizes = {
-    // əvvəlki %/px mapping yeri
-    // indi birbaşa keyword saxlayırıq
     sidebarSize: 'normal',
     navbarSize: 'normal',
     fontSize: '16px',
@@ -220,7 +218,7 @@ export const DefaultAlign: ViewAndContentState & CursorSizeState = {
     step: 4,
 };
 
-export const DefaultLayoutNavbar: LayoutState = {
+export const DefaultLayoutNavbar: Omit<LayoutState, 'mode'> = {
     position: 'left',
     pinned: false,
     openWithButton: true,

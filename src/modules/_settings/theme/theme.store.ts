@@ -4,19 +4,6 @@ import { devtools } from 'zustand/middleware';
 import { DefaultThemes } from '../settings.contants';
 import { addThemeOnHtmlRoot, transformThemeToCss } from './theme.utils';
 
-// export type ThemePalette = {
-//     '50': string;
-//     '100': string;
-//     '200': string;
-//     '300': string;
-//     '400': string;
-//     '500': string;
-//     '600': string;
-//     '700': string;
-//     '800': string;
-//     '900': string;
-// };
-
 export type Theme = {
     name: string;
     id: string;
@@ -34,8 +21,10 @@ export type Theme = {
 
 export type ThemeState = {
     themes: Theme[];
+    initialThemes: Theme[];
     currentTheme: string;
     previousTheme: string | null;
+    initialTheme: string;
     newThemeId?: string;
     editedTheme?: Theme;
 };
@@ -53,7 +42,8 @@ type ThemeAction = {
     setTheme: (theme: Theme) => void;
     discardEditedTheme: () => void;
     discardTheme: () => void;
-    getThemeDiff: (initialThemes: Theme[]) => Record<string, any>;
+    getThemeDiff: () => Record<string, any>;
+    detectChanges: () => boolean;
 };
 
 function deepDiff(obj1: any, obj2: any, basePath: string = ''): Record<string, any> {
@@ -98,28 +88,62 @@ function flattenTheme(obj: Record<string, any>, parentKey = ''): Record<string, 
     return result;
 }
 
+const prepareDeletedTheme = (basePath: string = '') => {
+    const deleted = { [`${basePath}.name`]: null, [`${basePath}.id`]: null, [`${basePath}.isSystemDefault`]: null };
+    const colors = ['primary', 'secondary', 'yellow', 'neutral', 'green', 'blue', 'red'];
+
+    colors.forEach((color) => {
+        deleted[`${basePath}.${color}.50`] = null;
+        deleted[`${basePath}.${color}.100`] = null;
+        deleted[`${basePath}.${color}.150`] = null;
+        deleted[`${basePath}.${color}.200`] = null;
+        deleted[`${basePath}.${color}.250`] = null;
+        deleted[`${basePath}.${color}.300`] = null;
+        deleted[`${basePath}.${color}.350`] = null;
+        deleted[`${basePath}.${color}.400`] = null;
+        deleted[`${basePath}.${color}.450`] = null;
+        deleted[`${basePath}.${color}.500`] = null;
+        deleted[`${basePath}.${color}.550`] = null;
+        deleted[`${basePath}.${color}.600`] = null;
+        deleted[`${basePath}.${color}.650`] = null;
+        deleted[`${basePath}.${color}.700`] = null;
+        deleted[`${basePath}.${color}.750`] = null;
+        deleted[`${basePath}.${color}.800`] = null;
+        deleted[`${basePath}.${color}.850`] = null;
+        deleted[`${basePath}.${color}.900`] = null;
+        deleted[`${basePath}.${color}.950`] = null;
+        deleted[`${basePath}.${color}.1000`] = null;
+    });
+
+    deleted[`${basePath}.white.12`] = null;
+    deleted[`${basePath}.white.50`] = null;
+    deleted[`${basePath}.black.12`] = null;
+    deleted[`${basePath}.black.50`] = null;
+
+    return deleted;
+};
+
 function getThemeChanges(defaults: Theme[], current: Theme[]) {
     let changes: Record<string, any> = {};
 
-    // current.slice(1, current.length).forEach((theme, index) => {
-    //     changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index + 1}]`) };
-    // });
-
-    // current
-    //     .filter((theme) => defaults.findIndex((def) => def.id === theme.id) === -1)
-    // .forEach((theme, index) => {
-    //     changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index + 1}]`) };
-    // });
-
     current.forEach((theme, index) => {
-        const defaultTheme = defaults.find((def) => def.id === theme.id);
-        if (defaultTheme) {
-            const diff = deepDiff(defaultTheme, theme, `extraConfig.visualSettings.themes[${index}]`);
-            changes = { ...changes, ...diff };
-        } else {
-            changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index}]`) };
-        }
+        // const defaultTheme = defaults.find((def) => def.id === theme.id);
+        // if (defaultTheme) {
+        //     const diff = deepDiff(defaultTheme, theme, `extraConfig.visualSettings.themes[${index}]`);
+        //     changes = { ...changes, ...diff };
+        // } else {
+        //     changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index}]`) };
+        // }
+
+        if (theme.isSystemDefault) return;
+        changes = { ...changes, ...flattenTheme(theme, `extraConfig.visualSettings.themes[${index}]`) };
     });
+
+    if (defaults.length > current.length) {
+        for (let i = current.length; i < defaults.length; i++) {
+            changes = { ...changes, ...prepareDeletedTheme(`extraConfig.visualSettings.themes[${i}]`) };
+        }
+    }
 
     return changes;
 }
@@ -127,26 +151,13 @@ function getThemeChanges(defaults: Theme[], current: Theme[]) {
 export const useThemeStore = create<ThemeState & ThemeAction>()(
     devtools((set, get) => ({
         discardTheme: () => {
-            const { newThemeId, previousTheme, currentTheme } = get();
-
-            if (newThemeId && currentTheme === newThemeId) {
-                set((state) => ({
-                    currentTheme: previousTheme!,
-                    themes: state.themes.filter((theme) => theme.id !== newThemeId),
-                    newThemeId: undefined,
-                    editedTheme: undefined,
-                }));
-            } else if (get().editedTheme) {
-                const editedTheme = get().editedTheme;
-                set((state) => ({
-                    themes: state.themes.map((theme) => (theme.id === editedTheme?.id ? editedTheme : theme)),
-                    editedTheme: undefined,
-                }));
-
-                if (currentTheme === editedTheme?.id) {
-                    addThemeOnHtmlRoot(transformThemeToCss(editedTheme));
-                }
-            }
+            set((state) => ({
+                currentTheme: state.initialTheme,
+                themes: state.initialThemes,
+                previousTheme: state.initialTheme,
+                newThemeId: undefined,
+                editedTheme: undefined,
+            }));
         },
 
         addNewTheme: (theme) =>
@@ -174,14 +185,14 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
         removeTheme: (themeId) => {
             const themes = get().themes.filter((theme) => theme?.id !== themeId);
             const currentTheme = get().currentTheme;
-            const previousTheme = get().previousTheme;
             const isCurrentTheme = themeId === currentTheme;
 
-            const isPreviousTheme = previousTheme !== null && themes.find((theme) => theme?.id === previousTheme);
+            const previousTheme =
+                get().previousTheme !== null ? themes.find((theme) => theme?.id === get().previousTheme) : null;
 
             let newCurrentTheme: string = currentTheme;
             if (isCurrentTheme) {
-                newCurrentTheme = isPreviousTheme ? previousTheme : DefaultThemes[0].id;
+                newCurrentTheme = previousTheme?.id ? previousTheme.id : DefaultThemes[0].id;
             }
 
             set(() => ({ themes, currentTheme: newCurrentTheme, previousTheme: null }));
@@ -191,11 +202,11 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
             set(() => ({ newThemeId: undefined, editedTheme: undefined }));
         },
 
-        getThemeDiff: (initialThemes: Theme[]) => {
-            const { currentTheme, previousTheme, themes } = get();
+        getThemeDiff: () => {
+            const { currentTheme, initialTheme, themes, initialThemes } = get();
             let diff: Record<string, any> = {};
 
-            if (previousTheme !== currentTheme) {
+            if (initialTheme !== currentTheme) {
                 diff['extraConfig.visualSettings.currentTheme'] = currentTheme;
             }
 
@@ -211,14 +222,14 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
 
         discardNewTheme: () => {
             set((state) => ({
-                currentTheme: state.previousTheme!,
+                currentTheme: state.previousTheme || DefaultThemes[0].id,
                 themes: state.themes.filter((theme) => theme.id !== state.newThemeId),
                 newThemeId: undefined,
             }));
         },
 
         getThemes: () => {
-            return [...DefaultThemes, ...get()?.themes];
+            return [...get()?.themes];
         },
 
         getThemeForCss: () => {
@@ -249,7 +260,6 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
         },
 
         discardEditedTheme: () => {
-            console.log('disk');
             const editedTheme = get().editedTheme;
 
             if (get().currentTheme === editedTheme?.id) {
@@ -262,6 +272,13 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
                 }),
                 editedTheme: undefined,
             }));
+        },
+
+        detectChanges: () => {
+            const { themes, initialThemes, currentTheme, initialTheme } = get();
+            const themesChanged = JSON.stringify(themes) !== JSON.stringify(initialThemes);
+            const currentThemeChanged = currentTheme !== initialTheme;
+            return themesChanged || currentThemeChanged;
         },
     }))
 );

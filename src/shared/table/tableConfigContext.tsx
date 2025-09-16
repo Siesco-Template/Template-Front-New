@@ -50,7 +50,7 @@ const TableConfigContext = createContext<{
 
 export const useTableConfig = () => useContext(TableConfigContext);
 
-export const getFullConfigDiff = (initialThemes: Theme[]) => {
+export const getFullConfigDiff = () => {
     const layout = useLayoutStore.getState();
     const typography = useTypographyStore.getState();
     const viewAndContent = useViewAndContentStore.getState();
@@ -60,7 +60,7 @@ export const getFullConfigDiff = (initialThemes: Theme[]) => {
     const layoutDiff = layout.getLayoutDiff?.() ?? {};
     const typographyDiff = typography.getTypographyDiff?.() ?? {};
     const viewAndContentDiff = viewAndContent.getViewAndContentDiff?.() ?? {};
-    const themeDiff = theme.getThemeDiff?.(initialThemes) ?? {};
+    const themeDiff = theme.getThemeDiff?.() ?? {};
     const personalizationDiff = getPersonalizationDiff(settings.navigationLinks, settings.initialNavigationLinks);
     // const tableDiff = customTableDiff ?? getUserDiffFromConfig(defaultConfig, config);
 
@@ -82,18 +82,17 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const userConfigRef = React.useRef<Record<string, any> | null>(null);
 
     const saveConfigToApi = async (diff?: Record<string, any>) => {
-        console.log('burdadi dusdu bu bloka')
         try {
-            const computedDiff = getUserDiffFromConfig(defaultConfig, config);
+            // const computedDiff = getUserDiffFromConfig(defaultConfig, config);
 
-            const tableDiff = diff ? { ...computedDiff, ...diff } : computedDiff;
+            const tableDiff = diff ? diff : {};
             const fullDiff = {
                 ...tableDiff,
-                ...getFullConfigDiff(config.extraConfig.visualSettings.themes as Theme[]),
+                ...getFullConfigDiff(),
             };
 
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
-                console.log('tapilmadi')
+                console.log('tapilmadi');
                 return;
             }
 

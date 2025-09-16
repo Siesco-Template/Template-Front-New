@@ -180,7 +180,6 @@ export const AppInitializer = ({ config }: { config: any }) => {
             useTypographyStore.setState(typographyState);
 
             const currentThemeId = config.extraConfig?.visualSettings.currentTheme;
-            const previousThemeId = config.extraConfig?.visualSettings.previousTheme;
             const normalizedThemeList = config.extraConfig?.visualSettings?.themes || [];
 
             const currentTheme: any = normalizedThemeList?.find((t: any) => t.id === currentThemeId);
@@ -191,8 +190,12 @@ export const AppInitializer = ({ config }: { config: any }) => {
 
             useThemeStore.setState({
                 themes: normalizedThemeList,
+                initialThemes: normalizedThemeList,
                 currentTheme: currentThemeId,
-                previousTheme: previousThemeId ?? currentThemeId ?? null,
+                previousTheme: currentThemeId,
+                initialTheme: currentThemeId,
+                newThemeId: undefined,
+                editedTheme: undefined,
             });
         }
     }, [config]);

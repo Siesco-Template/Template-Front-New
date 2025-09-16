@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router';
 
 import { cls } from '@/shared/utils';
@@ -7,7 +7,7 @@ import { S_Slider } from '@/ui';
 
 import { CursorIcon } from '../../components/cursor';
 import { DefaultAlign } from '../../settings.contants';
-import { Theme, useThemeStore } from '../../theme/theme.store';
+import { useThemeStore } from '../../theme/theme.store';
 import { CursorVariant, useViewAndContentStore } from '../../view-and-content/view-and-content.store';
 import Themes from '../themes';
 import styles from './visual-settings.module.css';
@@ -47,24 +47,20 @@ function VisualSettings() {
         previousCursorVariant,
     } = useViewAndContentStore();
 
-    const { currentTheme, getThemes } = useThemeStore();
-
-    const initialThemeSnapshot = useRef<Theme | null>(null);
+    const { currentTheme, themes, getThemes, detectChanges } = useThemeStore();
 
     useEffect(() => {
-        if (!initialThemeSnapshot.current && currentTheme) {
-            const initial = getThemes().find((t) => t.id === currentTheme);
-            if (initial) initialThemeSnapshot.current = initial;
-        }
-
-        const currentThemeObj = getThemes()?.find((t) => t.id === currentTheme);
-        const themeHasChanged = JSON.stringify(currentThemeObj) !== JSON.stringify(initialThemeSnapshot.current);
-
-        const changedSizes = cursorVariant !== previousCursorVariant || cursorSize !== previousCursorSize;
-        const hasAnyChange = changedSizes || themeHasChanged;
-
-        setHasChange(hasAnyChange);
-    }, [currentTheme, cursorSize, cursorVariant, previousCursorSize, previousCursorVariant, getThemes, setHasChange]);
+        setHasChange(detectChanges());
+    }, [
+        currentTheme,
+        themes,
+        cursorSize,
+        cursorVariant,
+        previousCursorSize,
+        previousCursorVariant,
+        getThemes,
+        setHasChange,
+    ]);
 
     const cursor = () => {
         return (
@@ -134,7 +130,6 @@ function VisualSettings() {
                                 min={DefaultAlign.minSize}
                                 max={DefaultAlign.maxSize}
                                 step={DefaultAlign.step}
-                                size="15"
                             />
                         </div>
                     </div>

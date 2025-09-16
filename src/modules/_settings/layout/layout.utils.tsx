@@ -4,6 +4,7 @@ import { LayoutState } from './layout.store';
 export const getLayoutFromContext = (interfaceSettings: any): LayoutState => {
     const sidebar = interfaceSettings?.sidebarMode ?? {};
 
+    const mode = interfaceSettings?.mode ?? 'light';
     const position = interfaceSettings?.menuPosition ?? DefaultLayoutNavbar.position;
     const pinned = sidebar?.autoHide ?? DefaultLayoutNavbar.pinned;
     const openWithButton = sidebar?.openWithButton ?? DefaultLayoutNavbar.openWithButton;
@@ -12,6 +13,7 @@ export const getLayoutFromContext = (interfaceSettings: any): LayoutState => {
     const zoom = interfaceSettings?.scale ?? DefaultLayoutNavbar.zoom;
 
     return {
+        mode,
         position,
         pinned,
         openWithButton,
@@ -19,6 +21,7 @@ export const getLayoutFromContext = (interfaceSettings: any): LayoutState => {
         alwaysOpen,
         zoom,
 
+        previousMode: mode,
         previousPosition: position,
         previousPinned: pinned,
         previousOpenWithButton: openWithButton,
