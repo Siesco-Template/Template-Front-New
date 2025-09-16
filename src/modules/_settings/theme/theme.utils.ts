@@ -100,6 +100,5 @@ export const addThemeOnHtmlRoot = (getTheme: ReturnType<typeof transformThemeToC
         Object.entries(cssVariables)?.forEach(([key, value]) => {
             root.style.setProperty(key, value);
         });
-        // root.setAttribute('data-theme', type);
     }
 };

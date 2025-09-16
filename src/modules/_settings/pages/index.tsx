@@ -86,12 +86,10 @@ const SettingsPageLayout = () => {
 
     const { discardSizes } = useTypographyStore();
     const { discardViewAndContent } = useViewAndContentStore();
+    const { discardChangesOnLayout } = useLayoutStore();
+    const { discardTheme } = useThemeStore();
 
     const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
-
-    const { discardChangesOnLayout } = useLayoutStore();
-
-    const { discardTheme } = useThemeStore();
 
     return (
         <div className={styles.settingsPageLayout}>

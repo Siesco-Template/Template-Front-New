@@ -50,7 +50,7 @@ const TableConfigContext = createContext<{
 
 export const useTableConfig = () => useContext(TableConfigContext);
 
-export const getFullConfigDiff = (initialThemes: Theme[]) => {
+export const getFullConfigDiff = () => {
     const layout = useLayoutStore.getState();
     const typography = useTypographyStore.getState();
     const viewAndContent = useViewAndContentStore.getState();
@@ -60,7 +60,7 @@ export const getFullConfigDiff = (initialThemes: Theme[]) => {
     const layoutDiff = layout.getLayoutDiff?.() ?? {};
     const typographyDiff = typography.getTypographyDiff?.() ?? {};
     const viewAndContentDiff = viewAndContent.getViewAndContentDiff?.() ?? {};
-    const themeDiff = theme.getThemeDiff?.(initialThemes) ?? {};
+    const themeDiff = theme.getThemeDiff?.() ?? {};
     const personalizationDiff = getPersonalizationDiff(settings.navigationLinks, settings.initialNavigationLinks);
     // const tableDiff = customTableDiff ?? getUserDiffFromConfig(defaultConfig, config);
 
@@ -88,7 +88,7 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
             const tableDiff = diff ? diff : {};
             const fullDiff = {
                 ...tableDiff,
-                ...getFullConfigDiff(config.extraConfig.visualSettings.themes as Theme[]),
+                ...getFullConfigDiff(),
             };
 
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
