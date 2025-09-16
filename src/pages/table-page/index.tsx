@@ -45,7 +45,7 @@ export const ReportStatusLabels: Record<ReportStatus, string> = {
 };
 
 export const ReportStatusColors: Record<ReportStatus, { bg: string; text: string }> = {
-    [ReportStatus.Compiled]: { bg: 'rgba(0, 102, 255, 0.1)', text: '#0066FF' },
+    [ReportStatus.Compiled]: { bg: 'var(--background-info-subtle, #D6E6F4)', text: 'var(--content-link, #3183C8)' },
     [ReportStatus.Seen]: { bg: 'rgba(0, 204, 102, 0.1)', text: '#00CC66' },
     [ReportStatus.Sent]: { bg: 'rgba(255, 153, 0, 0.1)', text: '#FF9900' },
 };
@@ -113,7 +113,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSummary: true,
         },
         {
-            accessorKey: 'Organization.ShortName',
+            accessorKey: 'Organization.Name',
             header: 'Şirkət adı',
             filterVariant: 'text',
             placeholder: 'Short Name',
@@ -228,6 +228,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
         },
         {
+            accessorKey: 'Name',
+            header: 'Təşkilat',
+            filterVariant: 'select',
+            enpoint: '/GetCatalog',
+            column: 'Name',
+        },
+        {
             accessorKey: 'Term',
             header: 'Rüb',
             filterVariant: 'select',
@@ -295,7 +302,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             ...res.items.map((item: any) => ({
                                 ...item,
                                 Organization: {
-                                    ShortName: item.ShortName,
+                                    Name: item.Name,
                                 },
                             })),
                         ]);
@@ -305,7 +312,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             res.items.map((item: any) => ({
                                 ...item,
                                 Organization: {
-                                    ShortName: item.ShortName,
+                                    Name: item.Name,
                                 },
                             }))
                         );
@@ -316,7 +323,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         res.items.map((item: any) => ({
                             ...item,
                             Organization: {
-                                ShortName: item.ShortName,
+                                Name: item.Name,
                             },
                         }))
                     );

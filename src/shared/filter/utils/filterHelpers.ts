@@ -56,7 +56,7 @@ export const applyFiltersToUrl = (
 export const applyConfigToFilters = (filters: FilterConfig[], configFilters: any[]) => {
     if (!configFilters) return filters;
 
-    console.log(filters, configFilters, 'd');
+    // console.log(filters, configFilters, 'd');
 
     const filterMap: Record<string, { order: number; visibility: boolean }> = {};
     configFilters.forEach((f: any) => {
@@ -74,7 +74,7 @@ export const applyConfigToFilters = (filters: FilterConfig[], configFilters: any
         return oa - ob;
     });
 
-    console.log(merged, 'merged');
+    // console.log(merged, 'merged');svd
     return merged;
 };
 

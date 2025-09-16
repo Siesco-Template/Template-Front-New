@@ -153,7 +153,6 @@ export function CatalogSelect<T>({
                     overflow: 'hidden',
                     left: 0,
                     top: 0,
-                    backgroundColor: 'red',
                     display: 'flex',
                     gap: 4,
                 }}
