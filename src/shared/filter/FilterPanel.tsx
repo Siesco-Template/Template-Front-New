@@ -179,6 +179,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             ...f,
             value: getEmptyValue(f),
         }));
+        // @ts-expect-error
         setSavedFilters(reset);
         reset.forEach((f: any) => onChange?.(f.key, f.value));
 
@@ -366,7 +367,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         .filter((filter) => {
             // Əgər istifadəçi hansısa filter tətbiq edib və ya dəyişib → hamısını göstər
             if (appliedFilterName || isModified) return true;
-            console.log(appliedFilterName, isModified, 'drf')
+            console.log(appliedFilterName, isModified, 'drf');
 
             // Əks halda yalnız visible=true olanları göstər
             return filter.visible !== false;
