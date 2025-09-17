@@ -4,11 +4,11 @@ import { CSS } from '@dnd-kit/utilities';
 import { DragIcon, EyeIcon, EyeSlashIcon } from '@/shared/icons';
 import { cls } from '@/shared/utils';
 
-import { NewNavigationItem } from '.';
+import { NavigationItem } from '../../settings.contants';
 import styles from './personalization-menu.module.css';
 
 interface Props {
-    item: NewNavigationItem;
+    item: NavigationItem;
     level?: number;
     onToggleVisible: (id: string) => void;
     containerClassName?: string;

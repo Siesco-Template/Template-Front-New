@@ -2,9 +2,8 @@ import { NavigationItem } from './settings.contants';
 
 type PersonalizationItem = {
     id: string;
-    label: string;
-    visible: boolean;
-    order: number;
+    title: string;
+    show: boolean;
     href?: string;
     children?: PersonalizationItem[];
 };
@@ -12,75 +11,73 @@ type PersonalizationItem = {
 export function convertPersonalizationToNavigation(data?: PersonalizationItem[]): NavigationItem[] {
     if (!Array.isArray(data)) return [];
 
-    return data
-        .sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
-        .map((item) => ({
-            id: item.id,
-            title: item.label,
-            href: item.href || '',
-            show: item.visible,
-            subLinks:
-                item.children && Array.isArray(item.children) && item.children.length > 0
-                    ? item.children
-                          ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-                          .map((child) => ({
-                              id: child.id,
-                              title: child.label,
-                              href: child.href || '',
-                              show: child.visible,
-                              roles: [],
-                              permissionKey: [],
-                          }))
-                    : undefined,
-            roles: [],
-            permissionKey: [],
-        }));
+    return data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        href: item.href || '',
+        show: item.show,
+        subLinks:
+            item.children && Array.isArray(item.children) && item.children.length > 0
+                ? item.children.map((child) => ({
+                      id: child.id,
+                      title: child.title,
+                      href: child.href || '',
+                      show: child.show,
+                      roles: [],
+                      permissionKey: [],
+                  }))
+                : undefined,
+        roles: [],
+        permissionKey: [],
+    }));
 }
 
 export function getPersonalizationDiff(current: NavigationItem[], initial: NavigationItem[]): Record<string, any> {
     const diff: Record<string, any> = {};
 
-    const compare = (curr: NavigationItem[], init: NavigationItem[], path: string) => {
-        const maxLength = Math.max(curr.length, init.length);
+    current.forEach((currentItem, index) => {
+        const initialItem = initial[index];
 
-        for (let i = 0; i < maxLength; i++) {
-            const currentItem = curr[i];
-            const initialItem = init[i];
+        if (!currentItem) return;
 
-            if (!currentItem || !initialItem) continue;
-
-            // ID-lər fərqli olarsa sırada dəyişiklik baş verib
-            if (currentItem.id !== initialItem.id) {
-                // tap curr[] içində initialItem.id-nin indexini (əgər tapılarsa)
-                const newIndex = curr.findIndex((it) => it.id === initialItem.id);
-                if (newIndex !== -1 && newIndex !== i) {
-                    diff[`${path}[${newIndex}].order`] = i;
-                }
-                // həmçinin, əgər curr[i] → yeni elementdirsə, onun da indexini qeyd et
-                const expectedIndex = init.findIndex((it) => it.id === currentItem.id);
-                if (expectedIndex !== -1 && expectedIndex !== i) {
-                    diff[`${path}[${i}].order`] = expectedIndex;
-                }
-            }
-
-            const fieldsToCompare: [keyof NavigationItem, string][] = [
-                ['show', 'visible'],
-                ['title', 'label'],
-            ];
-
-            for (const [itemKey, configKey] of fieldsToCompare) {
-                if (currentItem[itemKey] !== initialItem[itemKey]) {
-                    diff[`${path}[${i}].${configKey}`] = currentItem[itemKey];
-                }
-            }
-
-            // Rekursiv alt menyulara bax
-            if ((currentItem.subLinks?.length || 0) > 0 || (initialItem.subLinks?.length || 0) > 0) {
-                compare(currentItem.subLinks || [], initialItem.subLinks || [], `${path}[${i}].children`);
-            }
+        if (initialItem?.title !== currentItem.title) {
+            diff[`extraConfig.personalizationMenu[${index}].title`] = currentItem.title;
         }
-    };
 
-    compare(current, initial, 'extraConfig.personalizationMenu');
+        if (initialItem?.show !== currentItem.show) {
+            diff[`extraConfig.personalizationMenu[${index}].show`] = currentItem.show;
+        }
+
+        if (initialItem?.href !== currentItem.href) {
+            diff[`extraConfig.personalizationMenu[${index}].href`] = currentItem.href;
+        }
+
+        if (initialItem?.id !== currentItem.id) {
+            diff[`extraConfig.personalizationMenu[${index}].id`] = currentItem.id;
+        }
+
+        if ((initialItem?.subLinks?.length || 0) > 0 || (currentItem?.subLinks?.length || 0) > 0) {
+            const childDiff = getPersonalizationDiff(currentItem?.subLinks || [], initialItem?.subLinks || []);
+            Object.keys(childDiff).forEach((key) => {
+                const newKey = key.replace(
+                    'extraConfig.personalizationMenu',
+                    `extraConfig.personalizationMenu[${index}].children`
+                );
+                diff[newKey] = childDiff[key];
+            });
+        }
+
+        if (!currentItem.subLinks?.length && initialItem?.subLinks?.length) {
+            diff[`extraConfig.personalizationMenu[${index}].children`] = [];
+
+            initialItem.subLinks?.forEach((subItem, subIndex) => {
+                diff[`extraConfig.personalizationMenu[${index}].children[${subIndex}].title`] = null;
+                diff[`extraConfig.personalizationMenu[${index}].children[${subIndex}].show`] = null;
+                diff[`extraConfig.personalizationMenu[${index}].children[${subIndex}].href`] = null;
+                diff[`extraConfig.personalizationMenu[${index}].children[${subIndex}].id`] = null;
+            });
+        }
+    });
+
     return diff;
 }

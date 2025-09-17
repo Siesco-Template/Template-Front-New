@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
 import {
@@ -18,45 +18,14 @@ import { restrictToVerticalAxis, restrictToWindowEdges } from '@dnd-kit/modifier
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { DragIcon } from '@/shared/icons';
-import { useTableConfig } from '@/shared/table/tableConfigContext';
 
-import { NavigationItem } from '../../settings.contants';
 import { useSettingsStore } from '../../settings.store';
-import { convertPersonalizationToNavigation } from '../../settings.utils';
+import { getPersonalizationDiff } from '../../settings.utils';
 import SortableItem from './SortableItem';
 import styles from './personalization-menu.module.css';
 
-export interface NewNavigationItem extends NavigationItem {
-    id: string;
-    subLinks?: NewNavigationItem[];
-}
-
 export default function PersonalizationMenu() {
-    const { config } = useTableConfig();
-    const { navigationLinks, setNavigationLinks, setInitialNavigationLinks } = useSettingsStore();
-
-    const personalization = config?.extraConfig?.personalizationMenu || [];
-
-    const mapWithIds = (items: NavigationItem[]): NewNavigationItem[] => {
-        return items.map((item, i) => ({
-            ...item,
-            id: item.id || `${item.title}-${i}`,
-            subLinks: item.subLinks ? mapWithIds(item.subLinks) : undefined,
-        }));
-    };
-
-    useEffect(() => {
-        const initialLinks = mapWithIds(navigationLinks);
-        setInitialNavigationLinks(initialLinks);
-        setLinks(initialLinks);
-    }, []);
-
-    const mappedLinks = useMemo(() => {
-        return mapWithIds(convertPersonalizationToNavigation(personalization));
-    }, [personalization]);
-
-    const initialLinksRef = useRef<NewNavigationItem[]>(mappedLinks);
-    const [links, setLinks] = useState<NewNavigationItem[]>(mappedLinks);
+    const { navigationLinks, initialNavigationLinks, setNavigationLinks } = useSettingsStore();
 
     const { setHasChange } = useOutletContext<{ setHasChange: (value: boolean) => void }>();
 
@@ -67,10 +36,9 @@ export default function PersonalizationMenu() {
     const [activeId, setActiveId] = useState<string | null>(null);
 
     useEffect(() => {
-        setNavigationLinks(links as NewNavigationItem[]);
-        const isSame = deepEqual(links, initialLinksRef.current);
+        const isSame = deepEqual(navigationLinks, initialNavigationLinks);
         setHasChange(!isSame);
-    }, [links]);
+    }, [navigationLinks]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -103,17 +71,17 @@ export default function PersonalizationMenu() {
         if (!over) return;
 
         // 1) Try to reorder top-level
-        const oldIndex = links.findIndex((l) => l.id === active.id);
-        const newIndex = links.findIndex((l) => l.id === over.id);
+        const oldIndex = navigationLinks.findIndex((l) => l.id === active.id);
+        const newIndex = navigationLinks.findIndex((l) => l.id === over.id);
         if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-            setLinks(arrayMove(links, oldIndex, newIndex));
+            setNavigationLinks(arrayMove(navigationLinks, oldIndex, newIndex));
             setHasChange(true);
             return;
         }
 
         // 2) Otherwise try to reorder within subLinks
-        setLinks((prev) =>
-            prev.map((section) => {
+        setNavigationLinks(
+            navigationLinks.map((section) => {
                 if (!section.subLinks) return section;
                 const oldSub = section.subLinks.findIndex((s) => s.id === active.id);
                 const newSub = section.subLinks.findIndex((s) => s.id === over.id);
@@ -130,7 +98,7 @@ export default function PersonalizationMenu() {
     }
 
     function toggleVisibility(id: string) {
-        const items = links.map((item) => {
+        const items = navigationLinks.map((item) => {
             if (item.id === id) {
                 return { ...item, show: !item.show };
             }
@@ -142,22 +110,25 @@ export default function PersonalizationMenu() {
             }
             return item;
         });
-        setLinks(items);
+        setNavigationLinks(items);
         setHasChange(true);
     }
 
     const activeItem = activeId
-        ? [...links, ...links.flatMap((l) => l.subLinks || [])].find((item) => item.id === activeId)
+        ? [...navigationLinks, ...navigationLinks.flatMap((l) => l.subLinks || [])].find((item) => item.id === activeId)
         : null;
 
-    const isReady = mappedLinks.length > 0;
+    const isReady = navigationLinks.length > 0;
 
     useEffect(() => {
         if (isReady) {
-            setInitialNavigationLinks(mappedLinks);
-            setLinks(mappedLinks);
+            setNavigationLinks(navigationLinks);
         }
     }, [isReady]);
+
+    useEffect(() => {
+        getPersonalizationDiff(navigationLinks, initialNavigationLinks);
+    }, [navigationLinks]);
 
     if (!isReady) {
         return (
@@ -186,8 +157,8 @@ export default function PersonalizationMenu() {
                 onDragEnd={handleDragEnd}
                 modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
             >
-                <SortableContext items={links.map((l) => l.id!)} strategy={verticalListSortingStrategy}>
-                    {links.map((section) => (
+                <SortableContext items={navigationLinks.map((l) => l.id!)} strategy={verticalListSortingStrategy}>
+                    {navigationLinks.map((section) => (
                         <div key={section.id} style={{ marginBottom: '14px' }}>
                             <SortableItem
                                 item={section}

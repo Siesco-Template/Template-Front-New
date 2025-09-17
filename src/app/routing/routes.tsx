@@ -175,6 +175,7 @@ export const AppInitializer = ({ config }: { config: any }) => {
             const items = convertPersonalizationToNavigation(config.extraConfig?.personalizationMenu);
 
             useSettingsStore.getState().setNavigationLinks(items);
+            useSettingsStore.getState().setInitialNavigationLinks(items);
             useLayoutStore.setState(layoutState);
             useTypographyStore.setState(typographyState);
             useViewAndContentStore.setState(viewAndContentState);

@@ -10,7 +10,6 @@ import {
     MenuReportIcon,
     PaintBucketIcon,
 } from '@/shared/icons';
-import { getSystemTheme } from '@/shared/utils';
 
 import { LayoutState } from './layout/layout.store';
 import { SETTINGS_URL } from './settings.config';

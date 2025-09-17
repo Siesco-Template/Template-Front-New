@@ -10,6 +10,7 @@ import { showToast } from '@/ui/toast/showToast';
 import SectionHeader from '../components/section-header';
 import { useLayoutStore } from '../layout/layout.store';
 import { SettingsNavigationLinks } from '../settings.contants';
+import { useSettingsStore } from '../settings.store';
 import { useThemeStore } from '../theme/theme.store';
 import { useTypographyStore } from '../typography/typography.store';
 import { useViewAndContentStore } from '../view-and-content/view-and-content.store';
@@ -89,6 +90,7 @@ const SettingsPageLayout = () => {
     const { discardViewAndContent } = useViewAndContentStore();
     const { discardChangesOnLayout } = useLayoutStore();
     const { discardTheme, editedTheme, newThemeId } = useThemeStore();
+    const { setNavigationLinks, initialNavigationLinks } = useSettingsStore();
 
     const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
 
@@ -127,6 +129,7 @@ const SettingsPageLayout = () => {
                                     discardViewAndContent();
                                     discardChangesOnLayout();
                                     discardTheme();
+                                    setNavigationLinks(initialNavigationLinks);
                                     setHasChange(false);
                                 }}
                             />
