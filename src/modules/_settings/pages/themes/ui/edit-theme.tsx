@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { S_Button, S_Input } from '@/ui';
+import { S_Input } from '@/ui';
 
 import { useEditTheme } from '../use-edit-theme';
 import styles from './themes.module.css';
@@ -12,12 +12,12 @@ const EditTheme: FC<ICreateThemeProps> = ({ closeModal }) => {
     const { editThemeForm, changeColor, changeName, error, theme, name, newColors } = useEditTheme();
 
     return (
-        <form className={styles.createThemeForm} onSubmit={editThemeForm}>
+        <form className={styles.createThemeForm} onSubmit={editThemeForm} id="editThemeForm">
             <div className={styles.formItems}>
                 <S_Input
                     name="name"
                     placeholder="Adlandır"
-                    size={'48'}
+                    size={'36'}
                     value={name}
                     onChange={changeName}
                     description={error?.name?.[0]}
@@ -181,14 +181,14 @@ const EditTheme: FC<ICreateThemeProps> = ({ closeModal }) => {
                 </div>
             </div>
 
-            <div className={styles.createThemeBtnsWrapper}>
+            {/* <div className={styles.createThemeBtnsWrapper}>
                 <S_Button type="button" variant="outlined" onClick={closeModal.bind(null, false)}>
                     Geri qayıt
                 </S_Button>
                 <S_Button type="submit" variant="primary">
                     Yadda saxla
                 </S_Button>
-            </div>
+            </div> */}
         </form>
     );
 };

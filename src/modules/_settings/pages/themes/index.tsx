@@ -105,15 +105,15 @@ const Themes = () => {
             </div>
 
             {newThemeId && (
-                <Modal open={isOpenModal} onOpenChange={closeModal} title="Tema yarat">
-                    <CreateTheme closeModal={closeModal} />
-                </Modal>
+                // <Modal open={isOpenModal} onOpenChange={closeModal} title="Tema yarat">
+                <CreateTheme closeModal={closeModal} />
+                // </Modal>
             )}
 
             {editedTheme?.id && (
-                <Modal open={isOpenModal} onOpenChange={closeModal} title="Tema redaktə et">
-                    <EditTheme closeModal={closeModal} />
-                </Modal>
+                // <Modal open={isOpenModal} onOpenChange={closeModal} title="Tema redaktə et">
+                <EditTheme closeModal={closeModal} />
+                // </Modal>
             )}
         </>
     );

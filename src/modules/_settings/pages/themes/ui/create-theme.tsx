@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { S_Button, S_Input } from '@/ui';
+import { S_Input } from '@/ui';
 
 import { useCreateTheme } from '../use-create-theme';
 import styles from './themes.module.css';
@@ -12,12 +12,12 @@ const CreateTheme: FC<ICreateThemeProps> = ({ closeModal }) => {
     const { createThemeForm, changeColor, changeName, error, theme, newColors } = useCreateTheme();
 
     return (
-        <form className={styles.createThemeForm} onSubmit={createThemeForm}>
+        <form className={styles.createThemeForm} onSubmit={createThemeForm} id="createThemeForm">
             <div className={styles.formItems}>
                 <S_Input
                     name="name"
                     placeholder="Adlandır"
-                    size={'48'}
+                    size={'36'}
                     onChange={changeName}
                     description={error?.name?.[0]}
                     state={error?.name?.[0] ? 'error' : 'default'}
@@ -180,14 +180,14 @@ const CreateTheme: FC<ICreateThemeProps> = ({ closeModal }) => {
                 </div>
             </div>
 
-            <div className={styles.createThemeBtnsWrapper}>
+            {/* <div className={styles.createThemeBtnsWrapper}>
                 <S_Button type="button" variant="outlined" onClick={closeModal.bind(null, false)}>
                     Geri qayıt
                 </S_Button>
                 <S_Button type="submit" variant="primary">
                     Yadda saxla
                 </S_Button>
-            </div>
+            </div> */}
         </form>
     );
 };

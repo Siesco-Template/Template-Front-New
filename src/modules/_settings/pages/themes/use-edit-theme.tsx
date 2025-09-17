@@ -3,16 +3,29 @@ import { useBeforeUnload, useBlocker } from 'react-router';
 
 import { TinyColor } from '@ctrl/tinycolor';
 
+import { useTableConfig } from '@/shared/table/tableConfigContext';
+
+import { showToast } from '@/ui/toast/showToast';
+
 import { Theme, useThemeStore } from '../../theme/theme.store';
 import { addThemeOnHtmlRoot, transformThemeToCss } from '../../theme/theme.utils';
 
 type ErrorType = Record<string, string[]>;
 
 export const useEditTheme = () => {
+    const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
     const [error, setError] = useState<ErrorType>({});
     const { editedTheme, currentTheme, themes, setTheme, saveTheme } = useThemeStore();
 
     const theme = themes.find((theme) => theme.id === editedTheme?.id)!;
+
+    const customEditSuccessEvent = new CustomEvent('themeEdited', {
+        detail: { result: true },
+    });
+
+    const customEditFailEvent = new CustomEvent('themeEdited', {
+        detail: { result: false },
+    });
 
     const changeColor = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -90,13 +103,19 @@ export const useEditTheme = () => {
         }
     });
 
-    const editThemeForm = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const editThemeForm = async (e?: FormEvent<HTMLFormElement>) => {
+        e?.preventDefault();
         if (theme.name.trim() === '') {
             setError({ name: ['Adını yazmaq lazımdır'] });
-        } else {
-            saveTheme();
+            document.dispatchEvent(customEditFailEvent);
+            return;
         }
+
+        saveTheme();
+        await saveConfigToApi();
+        await loadConfigFromApi();
+        document.dispatchEvent(customEditSuccessEvent);
+        return;
     };
 
     return {
@@ -104,13 +123,13 @@ export const useEditTheme = () => {
         error,
         name: theme?.name || '',
         newColors: {
-            primaryColor: theme.primary[500],
-            secondaryColor: theme.secondary[500],
-            yellowColor: theme.yellow[500],
-            neutralColor: theme.neutral[500],
-            greenColor: theme.green[500],
-            blueColor: theme.blue[500],
-            redColor: theme.red[500],
+            primaryColor: theme?.primary?.[500],
+            secondaryColor: theme?.secondary?.[500],
+            yellowColor: theme?.yellow?.[500],
+            neutralColor: theme?.neutral?.[500],
+            greenColor: theme?.green?.[500],
+            blueColor: theme?.blue?.[500],
+            redColor: theme?.red?.[500],
         },
         changeColor,
         changeName,
