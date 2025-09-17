@@ -114,10 +114,11 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
         {
             accessorKey: 'Organization.Name',
-            header: 'Şirkət adı',
-            filterVariant: 'text',
-            placeholder: 'Short Name',
+            header: 'Təşkilat',
+            filterVariant: 'select',
+            placeholder: 'Təşkilat',
             enableSummary: true,
+            endpoint: '/GetCatalog',
         },
         {
             accessorKey: 'CompileDate',
@@ -228,11 +229,11 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
         },
         {
-            accessorKey: 'Name',
+            accessorKey: 'Organization.Name',
             header: 'Təşkilat',
             filterVariant: 'select',
             endpoint: '/GetCatalog',
-            column: 'Name',
+            columns: 'Name',
         },
         {
             accessorKey: 'Term',

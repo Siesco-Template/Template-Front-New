@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { MRT_RowData } from 'material-react-table';
 
-import { S_Button } from '@/ui';
-import Modal from '@/ui/dialog';
+import { S_Button, S_SidePanel } from '@/ui';
 
 import { PresetSize } from '.';
 import ConfigPanel from '../config';
@@ -14,7 +13,7 @@ import { CustomMRTColumn, Table } from '../table';
 import { TableProvider } from '../table/table-context';
 import Table_Footer from '../table/table-footer';
 import Table_Header from '../table/table-header';
-import styles from './CatalogViewAllDialog.module.css';
+import styles from './style.module.css';
 
 function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
     open,
@@ -87,11 +86,14 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
         setFilters(generatedFilters);
     }, []);
 
+    console.log(selectedItems, 'selec');
+
     return (
-        <Modal
+        <S_SidePanel
             open={open}
             onOpenChange={setOpen}
-            size="xl"
+            fullWidth
+            title=""
             footer={
                 <>
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
@@ -122,11 +124,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                     columns={showMoreColumns ?? []}
                     data={items}
                     title="Catalog"
-                    onToggleFilter={handleToggleFilterPanel}
-                    onToggleConfig={handleToggleConfigPanel}
-                    onClickRightBtn={onClickNew}
                     tableVisibiltyColumn={false}
-                    headerClassName={styles.modalHeader}
                     onRefresh={onRefetch}
                 />
 
@@ -149,17 +147,15 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                                 }) ?? []
                             }
                             data={items as any}
-                            getRowId={(row) => {
-                                return getRowId(row.original);
+                            getRowId={(r) => String((r as any).Id)}
+                            onSelectedRowsChange={(ids: string[]) => {
+                                const selected = ids
+                                    .map((id) => items.find((item) => getRowId(item) === id))
+                                    .filter((item): item is T => !!item);
+                                setSelectedItems(selected);
                             }}
                             enableCheckbox={true}
-                            enableMultiSelect={multiple}
-                            rowCheckboxSelectState={selectedItems.map((item) => getRowId(item))}
-                            setRowCheckboxSelect={(value) => {
-                                setSelectedItems(
-                                    Object.keys(value).map((key) => items.find((item) => item.id === key) as T)
-                                );
-                            }}
+                            enableMultiSelect={false}
                             enableRowNumbers={false}
                             isLoading={isLoading}
                         />
@@ -182,6 +178,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                             isCollapsed={isFilterCollapsed}
                             onToggleCollapse={handleToggleFilterPanel}
                             table_key="reports"
+                            onResetFilters={() => {}}
                         />
                     </div>
 
@@ -202,7 +199,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                     </div>
                 </div>
             </TableProvider>
-        </Modal>
+        </S_SidePanel>
     );
 }
 export default CatalogViewAllDialog;

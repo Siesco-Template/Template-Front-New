@@ -1,37 +1,25 @@
-.modalHeader {
-    background: #fff;
-    padding: 0;
-    min-height: auto;
-}
-
 .wrapper {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    overflow: hidden;
-    background: hsl(var(--clr-white-200));
-    border: 1px solid var(--border-tertiary, #ccc);
-    padding: 8px;
-    padding-right: 0;
-    border-radius: 16px;
     position: relative;
+    width: 100%;
+    height: calc(100% - 70px);
+    overflow: hidden;
 }
 
 .tableArea {
-    flex-grow: 1;
+    transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-
     border-radius: 16px;
-    background: #fff;
-
+    background: var(--background-primary, #fff);
+    height: 100%;
     transition: all 0.3s ease;
-    overflow-x: auto;
+    padding: 16px 16px 0 16px;
+    overflow: hidden;
 }
 
-.modalFooter {
-    padding: 8px 16px;
+.tableScrollWrapper {
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .panel {
@@ -49,12 +37,10 @@
 }
 .filterPanel {
     right: 0;
-    /* height: 98%; */
     height: calc(100% - 20px);
 }
 .configPanel {
     right: 0;
-    /* height: 98%; */
     height: calc(100% - 20px);
 }
 

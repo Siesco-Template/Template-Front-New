@@ -4,46 +4,62 @@ import { catalogService } from '@/services/catalog/catalog.service';
 
 import Catalog from '@/shared/catalog';
 
-const CatalogFilter: React.FC<{ filter: any; onChange: (key: string, val: any) => void; tableId: string }> = ({
-    filter,
-    onChange,
-    tableId,
-}) => {
+const CatalogFilter: React.FC<{
+    filter: any;
+    onChange: (key: string, val: any) => void;
+    tableId: string;
+    isFromTable: boolean;
+}> = ({ filter, onChange, tableId, isFromTable }) => {
     const [options, setOptions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     const tableColumns = [
         {
             header: 'Təşkilat',
             accessorKey: 'Name',
             id: 'Name',
-            filterVariant: 'text', Cell: ({ cell }: any) => cell.getValue(),
+            filterVariant: 'text',
+            Cell: ({ cell }: any) => cell.getValue(),
         },
     ];
 
-    const fetchOptions = async () => {
+    const fetchOptions = async (nextPage = 1, reset = false) => {
+        if (loading) return;
         setLoading(true);
+
         try {
             const res = await catalogService.getCatalogsByTableId(filter.endpoint, {
                 tableId: 'Organizations',
                 columns: 'Name, Id',
-                page: 1,
+                page: nextPage,
+                take: 10,
             });
 
-            setOptions(
-                res.items.map((o: any) => ({
-                    label: o.Name,
-                    value: o.Id,
-                    ...o,
-                }))
-            );
+            if (res.items.length === 0) {
+                setHasMore(false);
+                return;
+            }
+
+            const mapped = res.items.map((o: any) => ({
+                label: o.Name,
+                value: o.Id,
+                ...o,
+            }));
+
+            setOptions((prev) => (reset ? mapped : [...prev, ...mapped]));
+            setPage(nextPage);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchOptions();
+        setOptions([]);
+        setPage(1);
+        setHasMore(true);
+        fetchOptions(1, true);
     }, [tableId, filter.endpoint]);
 
     const selectedObj =
@@ -67,9 +83,11 @@ const CatalogFilter: React.FC<{ filter: any; onChange: (key: string, val: any) =
             enableModal={true}
             sizePreset="md-lg"
             totalItemCount={options.length}
-            onRefetch={fetchOptions}
+            onRefetch={() => {
+                if (hasMore) fetchOptions(page + 1);
+            }}
             isLoading={loading}
-            label={filter.label}
+            label={isFromTable ? undefined : filter.label}
             showMoreColumns={tableColumns}
         />
     );
