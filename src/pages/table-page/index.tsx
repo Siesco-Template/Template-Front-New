@@ -113,12 +113,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSummary: true,
         },
         {
-            accessorKey: 'Organization.Name',
+            accessorKey: 'Organization.Id',
             header: 'Təşkilat',
             filterVariant: 'select',
             placeholder: 'Təşkilat',
             enableSummary: true,
             endpoint: '/GetCatalog',
+            accessorFn: (row: any) => row.Organization?.Name,
         },
         {
             accessorKey: 'CompileDate',
@@ -288,9 +289,14 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         visibleColumns = Array.from(new Set(visibleColumns));
         const mandatoryHidden = ['Id'];
 
+        const expandedColumns = visibleColumns.flatMap((col) => {
+            if (col === 'Organization.Id') return ['Organization.Id', 'Organization.Name'];
+            return col;
+        });
+
         queryParams.Columns =
-            visibleColumns.length > 0
-                ? [...new Set([...visibleColumns, ...mandatoryHidden])].join(',')
+            expandedColumns.length > 0
+                ? [...new Set([...expandedColumns, ...mandatoryHidden])].join(',')
                 : mandatoryHidden.join(',');
 
         reportService

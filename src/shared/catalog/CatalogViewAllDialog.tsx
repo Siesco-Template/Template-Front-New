@@ -86,7 +86,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
         setFilters(generatedFilters);
     }, []);
 
-    console.log(selectedItems, 'selec');
 
     return (
         <S_SidePanel

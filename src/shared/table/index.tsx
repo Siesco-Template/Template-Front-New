@@ -295,16 +295,12 @@ function Table<T extends Record<string, any>>({
                     />
                 );
             case FilterKey.Select: {
-                console.log(filter, 'fltr', filter.value);
-
                 if (filter.endpoint) {
-                    console.log('Endpoint:', filter.endpoint);
                     return (
                         <div style={{ width: '90%' }}>
                             <CatalogFilter
                                 key={filter.key}
                                 filter={filter}
-                                value={filter.value}
                                 onChange={_onChange}
                                 tableId={tableKey}
                                 isFromTable={filter.isFromTable}

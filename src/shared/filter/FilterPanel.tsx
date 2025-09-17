@@ -252,8 +252,16 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             case FilterKey.Select: {
                 // console.log(filter, 'fltr');
                 if (filter.endpoint) {
-                    console.log('d', filter.endpoint);
-                    return <CatalogFilter isFromTable={false} key={filter.key} filter={filter} onChange={_onChange} tableId={table_key} />;
+                    console.log(filter, 'f')
+                    return (
+                        <CatalogFilter
+                            isFromTable={false}
+                            key={filter.key}
+                            filter={filter}
+                            onChange={_onChange}
+                            tableId={table_key}
+                        />
+                    );
                 }
 
                 const items = (filter.options || []).map((opt: any) => ({
