@@ -61,6 +61,11 @@ export interface CatalogProps<T extends MRT_RowData> {
     searchItems?: boolean;
 
     clearable?: boolean;
+
+    totalDBRowCount: any;
+    fetchh: any;
+    totalFetched: any;
+    isInfinite: any;
 }
 
 export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
@@ -83,6 +88,10 @@ export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
         selectProps,
         searchItems,
         clearable = true,
+        totalDBRowCount,
+        fetchh,
+        totalFetched,
+        isInfinite,
     } = props;
 
     const [open, setOpen] = useState(false);
@@ -135,6 +144,10 @@ export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {
                     onRefetch={onRefetch}
                     onClickNew={onClickNew}
                     isLoading={isLoading}
+                    totalDBRowCount={totalDBRowCount}
+                    fetchh={fetchh}
+                    totalFetched={totalFetched}
+                    isInfinite={isInfinite}
                 />
             )}
         </div>

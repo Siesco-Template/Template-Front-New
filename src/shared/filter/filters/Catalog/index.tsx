@@ -15,6 +15,8 @@ const CatalogFilter: React.FC<{
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
+    const [totalItems, setTotalItems] = useState(0);
+
     const tableColumns = [
         {
             header: 'Təşkilat',
@@ -34,7 +36,6 @@ const CatalogFilter: React.FC<{
                 tableId: 'Organizations',
                 columns: 'Name, Id',
                 page: nextPage,
-                take: 10,
             });
 
             if (res.items.length === 0) {
@@ -42,12 +43,13 @@ const CatalogFilter: React.FC<{
                 return;
             }
 
+            setTotalItems(res.totalCount);
+
             const mapped = res.items.map((o: any) => ({
                 label: o.Name,
                 value: o.Id,
                 ...o,
             }));
-            
 
             setOptions((prev) => (reset ? mapped : [...prev, ...mapped]));
             setPage(nextPage);
@@ -60,7 +62,14 @@ const CatalogFilter: React.FC<{
         setOptions([]);
         setPage(1);
         setHasMore(true);
-        fetchOptions(1, true);
+
+        const preload = async () => {
+            await fetchOptions(1, true);
+            await fetchOptions(2);
+            await fetchOptions(3);
+        };
+
+        preload();
     }, [tableId, filter.endpoint]);
 
     console.log(filter.value, 'value');
@@ -75,7 +84,7 @@ const CatalogFilter: React.FC<{
         } else {
             setSelectedObj(null);
         }
-    }, [filter?.value, options]);
+    }, [filter?.value]);
 
     return (
         <Catalog
@@ -99,6 +108,10 @@ const CatalogFilter: React.FC<{
             isLoading={loading}
             label={isFromTable ? undefined : filter.label}
             showMoreColumns={tableColumns}
+            totalDBRowCount={totalItems}
+            fetchh={() => fetchOptions(page + 1)}
+            totalFetched={options?.length}
+            isInfinite={true}
         />
     );
 };

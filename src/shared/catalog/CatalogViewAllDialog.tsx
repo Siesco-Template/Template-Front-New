@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { MRT_RowData } from 'material-react-table';
 
@@ -29,6 +29,10 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
     totalItemCount,
     onRefetch,
     onClickNew,
+    totalDBRowCount,
+    fetchh,
+    totalFetched,
+    isInfinite,
     isLoading = false,
 }: {
     open: boolean;
@@ -44,12 +48,18 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
     totalItemCount: number;
     onRefetch?: () => void;
     onClickNew?: () => void;
+    totalDBRowCount: any;
+    fetchh: any;
+    totalFetched: any;
+    isInfinite: any;
     isLoading?: boolean;
 }) {
     const [selectedItems, setSelectedItems] = useState<T[]>(value as T[]);
 
     const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
     const [isConfigCollapsed, setIsConfigCollapsed] = useState(true);
+
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
 
     const handleToggleFilterPanel = () => {
         if (isFilterCollapsed) {
@@ -85,7 +95,6 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
         );
         setFilters(generatedFilters);
     }, []);
-
 
     return (
         <S_SidePanel
@@ -134,34 +143,38 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                             marginRight: (isFilterCollapsed ? 0 : 280) + (isConfigCollapsed ? 0 : 280) + 'px',
                         }}
                     >
-                        <Table<T>
-                            tableKey="reports"
-                            columns={
-                                showMoreColumns?.map((col) => {
-                                    return {
-                                        ...col,
-                                        accessorFn: (row) =>
-                                            col.accessorKey ? row[col.accessorKey as keyof typeof row] : undefined,
-                                    };
-                                }) ?? []
-                            }
-                            data={items as any}
-                            getRowId={(r) => String((r as any).Id)}
-                            onSelectedRowsChange={(ids: string[]) => {
-                                const selected = ids
-                                    .map((id) => items.find((item) => getRowId(item) === id))
-                                    .filter((item): item is T => !!item);
-                                setSelectedItems(selected);
-                            }}
-                            enableCheckbox={true}
-                            enableMultiSelect={false}
-                            enableRowNumbers={false}
-                            isLoading={isLoading}
-                        />
-
-                        <div className={styles.modalFooter}>
-                            <Table_Footer totalItems={totalItemCount} />
+                        <div className={styles.tableScrollWrapper}>
+                            <Table<T>
+                                tableKey="reports"
+                                columns={
+                                    showMoreColumns?.map((col) => {
+                                        return {
+                                            ...col,
+                                            accessorFn: (row) =>
+                                                col.accessorKey ? row[col.accessorKey as keyof typeof row] : undefined,
+                                        };
+                                    }) ?? []
+                                }
+                                data={items as any}
+                                getRowId={(r) => String((r as any).Id)}
+                                onSelectedRowsChange={(ids: string[]) => {
+                                    const selected = ids
+                                        .map((id) => items.find((item) => getRowId(item) === id))
+                                        .filter((item): item is T => !!item);
+                                    setSelectedItems(selected);
+                                }}
+                                enableCheckbox={true}
+                                enableMultiSelect={false}
+                                enableRowNumbers={false}
+                                isLoading={isLoading}
+                                totalDBRowCount={totalDBRowCount}
+                                fetchh={fetchh}
+                                totalFetched={totalFetched}
+                                isInfinite={isInfinite}
+                            />
+                            <div ref={sentinelRef} style={{ height: 1 }} />
                         </div>
+                        <Table_Footer totalItems={totalItemCount} isInfiniteScroll={true}/>
                     </div>
 
                     <div

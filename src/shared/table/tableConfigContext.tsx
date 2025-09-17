@@ -9,7 +9,7 @@ import { useThemeStore } from '@/modules/_settings/theme/theme.store';
 import { useTypographyStore } from '@/modules/_settings/typography/typography.store';
 import { useViewAndContentStore } from '@/modules/_settings/view-and-content/view-and-content.store';
 
-import { mergeWithEval, setNestedValue } from '../utils/queryBuilder';
+import { getUserDiffFromConfig, mergeWithEval, setNestedValue } from '../utils/queryBuilder';
 
 export type ConfigValue = {
     padding?: number;
@@ -83,12 +83,13 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     const saveConfigToApi = async (diff?: Record<string, any>) => {
         try {
-            // const computedDiff = getUserDiffFromConfig(defaultConfig, config);
+            const computedDiff = getUserDiffFromConfig(defaultConfig, config);
 
             const tableDiff = diff ? diff : {};
             const fullDiff = {
                 ...tableDiff,
                 ...getFullConfigDiff(),
+                ...computedDiff,
             };
 
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
