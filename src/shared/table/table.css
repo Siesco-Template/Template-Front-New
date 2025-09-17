@@ -36,6 +36,11 @@
     background-color: transparent !important;
 }
 
-.MuiTableCell-head {
+.MuiCollapse-root,
+.MuiCollapse-wrapper {
+    width: 100%;
+}
+
+.MuiTableCell-root {
     padding-bottom: 14px !important;
 }

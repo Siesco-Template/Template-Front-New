@@ -325,7 +325,7 @@ function Table<T extends Record<string, any>>({
                         : null;
 
                 return (
-                    <div >
+                    <div style={{ width: '90%' }}>
                         <Catalog
                             key={filter.key}
                             items={items}
@@ -432,6 +432,7 @@ function Table<T extends Record<string, any>>({
                         justifyContent: 'space-between',
                         color: isSelected ? 'var(--background-brand)' : toCssColor(headerTextStyle.color),
                         cursor: 'pointer',
+                        width: '100%',
                         height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
                         lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
                     }}
