@@ -62,10 +62,10 @@ export interface CatalogProps<T extends MRT_RowData> {
 
     clearable?: boolean;
 
-    totalDBRowCount: any;
-    fetchh: any;
-    totalFetched: any;
-    isInfinite: any;
+    totalDBRowCount?: any;
+    fetchh?: any;
+    totalFetched?: any;
+    isInfinite?: any;
 }
 
 export default function Catalog<T extends MRT_RowData>(props: CatalogProps<T>) {

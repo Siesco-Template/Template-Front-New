@@ -12,6 +12,7 @@ import { hasPermission } from '@/modules/permission/PermissionGuard';
 
 import ConfigPanel from '@/shared/config';
 import FilterPanel from '@/shared/filter/FilterPanel';
+import { FilterConfig } from '@/shared/filter/types';
 import { generateFiltersFromColumns } from '@/shared/filter/utils/generateColumns';
 import { CustomMRTColumn, Table } from '@/shared/table';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
@@ -27,7 +28,6 @@ import { DeleteModal } from './DeleteModal';
 import { ResetPasswordModal } from './ResetPasswordModal';
 import { UserRecordDialog } from './UserRecordModal';
 import styles from './style.module.css';
-import { FilterConfig } from '@/shared/filter/types';
 
 interface TablePageMainProps {
     isFilterCollapsed: boolean;
@@ -249,6 +249,8 @@ const UsersTableContent: React.FC<TablePageMainProps> = ({
                         isCollapsed={isFilterCollapsed}
                         onToggleCollapse={onToggleCollapse}
                         table_key="customer_table"
+                        onResetFilters={() => {}}
+                        onReady={() => {}}
                     />
                 </div>
 
