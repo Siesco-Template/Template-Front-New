@@ -1,0 +1,49 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 70px);
+    overflow: hidden;
+}
+
+.tableArea {
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    background: var(--background-primary, #fff);
+    height: 100%;
+    transition: all 0.3s ease;
+    padding: 16px 16px 0 16px;
+    overflow: hidden;
+}
+
+.tableScrollWrapper {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.panel {
+    position: absolute;
+    top: 0;
+    width: 310px;
+    height: 100%;
+    border-radius: 16px 16px 0 0;
+    transition: all 0.4s ease;
+    will-change: transform;
+    border-radius: 16px;
+}
+.filterPanel {
+    right: 0;
+    height: 100%;
+}
+.configPanel {
+    right: 0;
+    height: 100%;
+}
+
+.collapsed {
+    transform: translateX(100%);
+}
+.expanded {
+    transform: translateX(0);
+}

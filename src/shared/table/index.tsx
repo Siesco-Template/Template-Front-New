@@ -15,6 +15,7 @@ import { CircularProgress } from '@mui/material';
 import { S_Checkbox, S_Input } from '@/ui';
 
 import Catalog from '../catalog';
+import CatalogFilter from '../filter/filters/Catalog';
 import DateIntervalFilter from '../filter/filters/DateIntervalFilter';
 import NumberIntervalFilter from '../filter/filters/NumberIntervalFilter';
 import { FilterKey } from '../filter/utils/filterTypeEnum';
@@ -33,6 +34,8 @@ export type CustomMRTColumn<T extends MRT_RowData> = MRT_ColumnDef<T> & {
     placeholder?: string;
     filterVariant?: string;
     filterSelectOptions?: { label: string; value: any }[];
+    endpoint?: string;
+    columns?: string;
 };
 
 type TableProps<T extends Record<string, any>> = {
@@ -63,10 +66,10 @@ type TableProps<T extends Record<string, any>> = {
     isConfigCollapsed?: boolean;
     onSelectedRowsChange?: (ids: string[], rows: T[]) => void;
     selectedRowIds?: string[];
-    fetchh: any;
-    totalFetched: any;
-    isInfinite: any;
-    totalDBRowCount: any;
+    fetchh?: any;
+    totalFetched?: any;
+    isInfinite?: any;
+    totalDBRowCount?: any;
 };
 
 const customLocalization = {
@@ -262,7 +265,7 @@ function Table<T extends Record<string, any>>({
         switch (filterType) {
             case FilterKey.Text:
                 return (
-                    <div style={{ width: '160px' }}>
+                    <div style={{ width: '90%' }}>
                         <S_Input
                             key={filter.key || filter.column}
                             value={filter.value ?? ''}
@@ -291,23 +294,34 @@ function Table<T extends Record<string, any>>({
                         placeholder={filter.placeholder || filter.column}
                     />
                 );
-            case FilterKey.Select:
+            case FilterKey.Select: {
+                if (filter.endpoint) {
+                    return (
+                        <div style={{ width: '90%' }}>
+                            <CatalogFilter
+                                key={filter.key}
+                                filter={filter}
+                                onChange={_onChange}
+                                tableId={tableKey}
+                                isFromTable={filter.isFromTable}
+                            />
+                        </div>
+                    );
+                }
+
                 const items = (filter.options || []).map((opt: any) => ({
                     value: opt.value,
                     label: opt.label,
                     disabled: !!opt.disabled,
                 }));
 
-                // console.log(items, 'i');
-
                 const selectedObj =
                     filter.value != null && filter.value !== ''
-                        ? (items.find((i: any) => i.value == filter.value) ?? null)
+                        ? (items.find((i: any) => String(i.value) === String(filter.value)) ?? null)
                         : null;
 
-                // console.log(selectedObj, filter, 'onj');
                 return (
-                    <div style={{ width: '160px' }}>
+                    <div style={{ width: '90%' }}>
                         <Catalog
                             key={filter.key}
                             items={items}
@@ -323,17 +337,16 @@ function Table<T extends Record<string, any>>({
                             enableModal={false}
                             sizePreset="md-lg"
                             totalItemCount={items.length}
-                            onRefetch={undefined}
-                            onClickNew={undefined}
                             isLoading={false}
                             showMoreColumns={filter.showMoreColumns || []}
-                            searchItems
                         />
                     </div>
                 );
+            }
+
             case FilterKey.DateInterval:
                 return (
-                    <div style={{ width: '190px' }}>
+                    <div style={{ width: '90%' }}>
                         <DateIntervalFilter
                             key={filter.key}
                             inline
@@ -352,7 +365,7 @@ function Table<T extends Record<string, any>>({
         }
     };
 
-    const columnsWithFilter: any = columns.map((col) => {
+    const columnsWithFilter: any = columns?.map((col) => {
         const headerConfig = config?.tables?.[tableKey]?.header || {};
         if (col.accessorKey === 'actions') {
             return {
@@ -391,14 +404,17 @@ function Table<T extends Record<string, any>>({
             Filter: ({ column }: any) => {
                 const existingFilter = filterDataState?.filter?.find((f) => f.id === column.id);
                 const filter = {
-                    key: column.id,
-                    column: column.id,
-                    label: column.columnDef.header,
+                    key: column?.id,
+                    column: column?.id,
+                    label: column?.columnDef?.header,
                     value: existingFilter?.value ?? '',
                     type: customFilterType,
-                    onChange: column.setFilterValue,
-                    options: column.columnDef.filterSelectOptions || [],
+                    onChange: column?.setFilterValue,
+                    options: column?.columnDef?.filterSelectOptions || [],
                     placeholder: col?.placeholder,
+                    endpoint: col?.endpoint,
+                    columns: col?.columns,
+                    isFromTable: true,
                 };
 
                 return renderFilter(filter);
@@ -412,6 +428,7 @@ function Table<T extends Record<string, any>>({
                         justifyContent: 'space-between',
                         color: isSelected ? 'var(--background-brand)' : toCssColor(headerTextStyle.color),
                         cursor: 'pointer',
+                        width: '100%',
                         height: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : '100%',
                         lineHeight: headerConfig?.cell?.padding ? `${headerConfig?.cell?.padding}px` : 'normal',
                     }}
@@ -662,16 +679,12 @@ function Table<T extends Record<string, any>>({
             const selectedBg = 'var(--background-selected)';
 
             const getBackgroundColor = () => {
-                // console.log(isRowSelected, 'isRowSelected');
                 if (isRowSelected) return selectedBg;
 
                 const baseColor = toCssColor(mergedCell.backgroundColor) ?? '#ffffff';
                 const altColor = 'var(--background-secondary, #F3F3F3)';
 
                 if (hoveredRowId === row.id) {
-                    // if (stripeStyle === 'plain') return altColor;
-                    // const isOdd = row.index % 2 === 1;
-                    // return isOdd ? altColor : baseColor;
                     return 'var(--background-selected)';
                 }
 
@@ -761,12 +774,10 @@ function Table<T extends Record<string, any>>({
                     opacity: selectedColumnKey ? (isSelected ? 1 : 0.5) : 1,
                     transition: 'all 0.2s ease-in-out',
                     justifyContent: textStyle?.alignment,
-
                     borderBottom: `${headerConfig?.border?.thickness ?? 1}px ${headerConfig?.border?.style} ${headerConfig?.border?.color ?? 'transparent'}`,
                     color: textStyle?.color,
                     fontSize: styleConfig?.fontSize,
                     position: 'relative',
-
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',

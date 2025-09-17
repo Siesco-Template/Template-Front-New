@@ -264,6 +264,7 @@ export function CatalogSelect<T>({
                                     type="button"
                                     onClick={(e) => {
                                         e.stopPropagation();
+                                        setOpen(false);
                                         onViewAll?.();
                                     }}
                                     variant="primary"

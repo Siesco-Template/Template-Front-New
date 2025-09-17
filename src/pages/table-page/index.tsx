@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
 import { inertProps } from '@/lib/useInert';
 
-import { catalogService } from '@/services/catalog/catalog.service';
 import { reportService } from '@/services/reports/reports.service';
 
 import { Folder } from '@/modules/folder';
@@ -17,18 +16,16 @@ import ConfigPanel from '@/shared/config';
 import FilterPanel from '@/shared/filter/FilterPanel';
 import { FilterConfig } from '@/shared/filter/types';
 import { generateFiltersFromColumns } from '@/shared/filter/utils/generateColumns';
-import { PencilIcon, PencilPaperIcon, TrashIcon } from '@/shared/icons';
+import { PencilIcon, TrashIcon } from '@/shared/icons';
 import { CustomMRTColumn, Table } from '@/shared/table';
 import TableActions from '@/shared/table/table-actions';
 import { TableProvider, useTableContext } from '@/shared/table/table-context';
 import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
-import { useTableConfig } from '@/shared/table/tableConfigContext';
 
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
-import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
 
@@ -113,11 +110,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSummary: true,
         },
         {
-            accessorKey: 'Organization.Name',
-            header: 'Şirkət adı',
-            filterVariant: 'text',
-            placeholder: 'Short Name',
+            accessorKey: 'Organization.Id',
+            header: 'Təşkilat',
+            filterVariant: 'select',
+            placeholder: 'Təşkilat',
             enableSummary: true,
+            endpoint: '/GetCatalog',
+            accessorFn: (row: any) => row.Organization?.Name,
         },
         {
             accessorKey: 'CompileDate',
@@ -228,11 +227,11 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
         },
         {
-            accessorKey: 'Name',
+            accessorKey: 'Organization.Id',
             header: 'Təşkilat',
             filterVariant: 'select',
             endpoint: '/GetCatalog',
-            column: 'Name',
+            columns: 'Name',
         },
         {
             accessorKey: 'Term',
@@ -287,9 +286,14 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         visibleColumns = Array.from(new Set(visibleColumns));
         const mandatoryHidden = ['Id'];
 
+        const expandedColumns = visibleColumns.flatMap((col) => {
+            if (col === 'Organization.Id') return ['Organization.Id', 'Organization.Name'];
+            return col;
+        });
+
         queryParams.Columns =
-            visibleColumns.length > 0
-                ? [...new Set([...visibleColumns, ...mandatoryHidden])].join(',')
+            expandedColumns.length > 0
+                ? [...new Set([...expandedColumns, ...mandatoryHidden])].join(',')
                 : mandatoryHidden.join(',');
 
         reportService
