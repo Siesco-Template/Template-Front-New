@@ -8,8 +8,9 @@ const CatalogFilter: React.FC<{
     filter: any;
     onChange: (key: string, val: any) => void;
     tableId: string;
+    value: any;
     isFromTable: boolean;
-}> = ({ filter, onChange, tableId, isFromTable }) => {
+}> = ({ filter, onChange, tableId, isFromTable, value }) => {
     const [options, setOptions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -62,10 +63,17 @@ const CatalogFilter: React.FC<{
         fetchOptions(1, true);
     }, [tableId, filter.endpoint]);
 
-    const selectedObj =
-        filter.value != null && filter.value !== ''
-            ? (options.find((i) => String(i.value) === String(filter.value)) ?? null)
-            : null;
+    console.log(value, 'value');
+    const [selectedObj, setSelectedObj] = useState<any>(null);
+
+    useEffect(() => {
+        if (filter.value && options.length > 0) {
+            const match = options.find((i) => String(i.value) === String(filter.value));
+            setSelectedObj(match ?? null);
+        } else {
+            setSelectedObj(null);
+        }
+    }, [filter.value, options]);
 
     return (
         <Catalog

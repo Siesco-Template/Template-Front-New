@@ -229,7 +229,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ],
         },
         {
-            accessorKey: 'Organization.Name',
+            accessorKey: 'Organization.Id',
             header: 'Təşkilat',
             filterVariant: 'select',
             endpoint: '/GetCatalog',

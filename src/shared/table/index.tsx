@@ -265,7 +265,7 @@ function Table<T extends Record<string, any>>({
         switch (filterType) {
             case FilterKey.Text:
                 return (
-                    <div style={{ width: '160px' }}>
+                    <div style={{ width: '90%' }}>
                         <S_Input
                             key={filter.key || filter.column}
                             value={filter.value ?? ''}
@@ -295,11 +295,22 @@ function Table<T extends Record<string, any>>({
                     />
                 );
             case FilterKey.Select: {
-                console.log(filter, 'fltr');
+                console.log(filter, 'fltr', filter.value);
 
                 if (filter.endpoint) {
                     console.log('Endpoint:', filter.endpoint);
-                    return <CatalogFilter key={filter.key} filter={filter} onChange={_onChange} tableId={tableKey} isFromTable={filter.isFromTable}/>;
+                    return (
+                        <div style={{ width: '90%' }}>
+                            <CatalogFilter
+                                key={filter.key}
+                                filter={filter}
+                                value={filter.value}
+                                onChange={_onChange}
+                                tableId={tableKey}
+                                isFromTable={filter.isFromTable}
+                            />
+                        </div>
+                    );
                 }
 
                 const items = (filter.options || []).map((opt: any) => ({
@@ -314,30 +325,32 @@ function Table<T extends Record<string, any>>({
                         : null;
 
                 return (
-                    <Catalog
-                        key={filter.key}
-                        items={items}
-                        getLabel={(i: any) => i?.label}
-                        getRowId={(i: any) => String(i?.value)}
-                        value={selectedObj ? [selectedObj] : []}
-                        onChange={(sel) => {
-                            const picked = Array.isArray(sel) ? sel[0] : sel;
-                            const newVal = picked ? (picked as any).value : '';
-                            _onChange(filter.key, newVal);
-                        }}
-                        multiple={false}
-                        enableModal={false}
-                        sizePreset="md-lg"
-                        totalItemCount={items.length}
-                        isLoading={false}
-                        showMoreColumns={filter.showMoreColumns || []}
-                    />
+                    <div >
+                        <Catalog
+                            key={filter.key}
+                            items={items}
+                            getLabel={(i: any) => i?.label}
+                            getRowId={(i: any) => String(i?.value)}
+                            value={selectedObj ? [selectedObj] : []}
+                            onChange={(sel) => {
+                                const picked = Array.isArray(sel) ? sel[0] : sel;
+                                const newVal = picked ? (picked as any).value : '';
+                                _onChange(filter.key, newVal);
+                            }}
+                            multiple={false}
+                            enableModal={false}
+                            sizePreset="md-lg"
+                            totalItemCount={items.length}
+                            isLoading={false}
+                            showMoreColumns={filter.showMoreColumns || []}
+                        />
+                    </div>
                 );
             }
 
             case FilterKey.DateInterval:
                 return (
-                    <div style={{ width: '190px' }}>
+                    <div style={{ width: '90%' }}>
                         <DateIntervalFilter
                             key={filter.key}
                             inline
