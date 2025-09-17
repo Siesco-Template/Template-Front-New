@@ -1,22 +1,47 @@
+import ArrowTransferIcon from './arrow-transfer-1.svg?react';
 import CalendarIcon from './calendar-add.svg?react';
-import ArrowDown from './direction-down 01.svg?react'
-import ArrowUp from './direction-up 01.svg'
-import DiskIcon from './disk.svg?react'
-import RedoIcon from './redo.svg?react'
-import SearhchIcon from './search 01.svg?react'
-import SortCircle from './sort-circle.svg?react'
-import ArrowTransferIcon from './arrow-transfer-1.svg?react'
-import DragIcon from './drag-icon.svg?react'
-import EyeIcon from './eye.svg?react'
-import EyeOffIcon from './eye-slash.svg?react'
-import EditIcon from './edit.svg?react'
-import TrashIcon from './trash.svg?react'
-import ArrowRightIcon from './direction-right 01.svg?react'
-import ArrowLeftIcon from './direction-left 01.svg?react'
-import RemoveIcon from './remove.svg?react'
-import CloseIcon from './closeIcon.svg?react'
-import TickIcon from './tick-double.svg?react'
-import FilterIcon from './filter.svg?react'
-import ReloadIcon from './reload.svg?react'
-import CopyCheckIcon from './copy-check.svg?react'
-export { CalendarIcon, ArrowDown, ArrowUp, DiskIcon, RedoIcon, SearhchIcon,CloseIcon, SortCircle, ArrowTransferIcon,DragIcon, EyeIcon, EyeOffIcon, EditIcon,TrashIcon,ArrowRightIcon,ArrowLeftIcon, RemoveIcon, TickIcon, FilterIcon, ReloadIcon, CopyCheckIcon};
+import CloseIcon from './closeIcon.svg?react';
+import CopyCheckIcon from './copy-check.svg?react';
+import ArrowDown from './direction-down 01.svg?react';
+import ArrowLeftIcon from './direction-left 01.svg?react';
+import ArrowRightIcon from './direction-right 01.svg?react';
+import ArrowUp from './direction-up 01.svg';
+import DiskIcon from './disk.svg?react';
+import DragIcon from './drag-icon.svg?react';
+import EditIcon from './edit.svg?react';
+import EyeOffIcon from './eye-slash.svg?react';
+import EyeIcon from './eye.svg?react';
+import FilterIcon from './filter.svg?react';
+import RedoIcon from './redo.svg?react';
+import ReloadIcon from './reload.svg?react';
+import RemoveIcon from './remove.svg?react';
+import SearhchIcon from './search 01.svg?react';
+import SortCircle from './sort-circle.svg?react';
+import TickIcon from './tick-double.svg?react';
+import TrashIcon2 from './trash-2.svg?react';
+import TrashIcon from './trash.svg?react';
+
+export {
+    CalendarIcon,
+    TrashIcon2,
+    ArrowDown,
+    ArrowUp,
+    DiskIcon,
+    RedoIcon,
+    SearhchIcon,
+    CloseIcon,
+    SortCircle,
+    ArrowTransferIcon,
+    DragIcon,
+    EyeIcon,
+    EyeOffIcon,
+    EditIcon,
+    TrashIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+    RemoveIcon,
+    TickIcon,
+    FilterIcon,
+    ReloadIcon,
+    CopyCheckIcon,
+};

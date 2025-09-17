@@ -922,10 +922,6 @@ function Table<T extends Record<string, any>>({
         icons: {
             SortIcon: (props: any) => <ArrowDownIcon {...props} />,
         },
-        // mrtTheme: {
-        //     baseBackgroundColor: `hsl(var(--clr-background))`,
-        //     draggingBorderColor: `hsl(var(--clr-secondary-500))`,
-        // },
         getRowId: (originalRow, index, parentRow) => {
             if ((originalRow as any)?.isSummaryRow) {
                 return (originalRow as any)?.position === 'top' ? '__summary_top__' : '__summary_bottom__';

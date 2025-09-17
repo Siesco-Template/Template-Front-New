@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import { filterService } from '@/services/filter/filter.service';
 
 import { showToast } from '@/ui/toast/showToast';
 
-import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon } from '../icons';
+import { CopyCheckIcon, EditIcon, EyeIcon, ReloadIcon, TrashIcon2 } from '../icons';
 import styles from './style.module.css';
 
 const ActionsDropdown = ({
@@ -19,7 +18,6 @@ const ActionsDropdown = ({
     setSavedFilters,
     onApplyFilter,
 }: any) => {
-    const [_, setSearchParams] = useSearchParams();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -90,22 +88,24 @@ const ActionsDropdown = ({
             {isOpen && (
                 <ul className={styles.dropdownMenu}>
                     <li onClick={onView} className={styles.dropdownItem}>
-                        <EyeIcon color="var(--content-tertiary)" /> Bax
+                        <EyeIcon width={14} height={14} color="var(--content-tertiary)" /> Bax
                     </li>
                     <li onClick={onEdit} className={styles.dropdownItem}>
-                        <EditIcon color="var(--content-tertiary)" /> Düzəliş et
+                        <EditIcon width={14} height={14} color="var(--content-tertiary)" /> Düzəliş et
                     </li>
                     <li onClick={onDelete} className={styles.dropdownItem}>
-                        <TrashIcon color="var(--content-tertiary)" /> Sil
+                        <TrashIcon2 width={14} height={14} color="var(--content-tertiary)" /> Sil
                     </li>
                     <li onClick={handleDefaultToggle} className={styles.dropdownItem}>
                         {filter.isDefault ? (
                             <>
-                                <ReloadIcon color="var(--content-tertiary)" /> Default filteri sıfırla
+                                <ReloadIcon width={14} height={14} color="var(--content-tertiary)" /> Default filteri
+                                sıfırla
                             </>
                         ) : (
                             <>
-                                <CopyCheckIcon color="var(--content-tertiary)" /> Default filter et
+                                <CopyCheckIcon width={14} height={14} color="var(--content-tertiary)" /> Default filter
+                                et
                             </>
                         )}
                     </li>

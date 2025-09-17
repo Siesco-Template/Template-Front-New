@@ -14,6 +14,7 @@ import Catalog from '../catalog';
 import { useTableContext } from '../table/table-context';
 import { useTableConfig } from '../table/tableConfigContext';
 import styles from './filter.module.css';
+import CatalogFilter from './filters/Catalog';
 import DateIntervalFilter from './filters/DateIntervalFilter';
 import DraggableItems from './filters/Draggable';
 import NumberIntervalFilter from './filters/NumberIntervalFilter';
@@ -68,7 +69,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     const [isDirty, setIsDirty] = useState(false);
     const [isModified, setIsModified] = useState(false);
 
-    console.log(isAppliedDefault, 'isdeflt', filterName);
+    // console.log(isAppliedDefault, 'isdeflt', filterName);
 
     useEffect(() => {
         const tableFilters = config?.tables?.[table_key]?.filters;
@@ -85,7 +86,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         }
     }, [filters, config, table_key]);
 
-    console.log(savedFilters, 'svd');
+    // console.log(savedFilters, 'svd');
 
     const parseFiltersFromUrl = (): { id: string; value: any }[] => {
         try {
@@ -179,6 +180,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             ...f,
             value: getEmptyValue(f),
         }));
+        // @ts-expect-error
         setSavedFilters(reset);
         reset.forEach((f: any) => onChange?.(f.key, f.value));
 
@@ -246,7 +248,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                         placeholder={filter.placeholder || filter.column}
                     />
                 );
-            case FilterKey.Select: // 4
+
+            case FilterKey.Select: {
+                console.log(filter, 'fltr');
+                if (filter.endpoint) {
+                    console.log('d', filter.endpoint);
+                    return <CatalogFilter key={filter.key} filter={filter} onChange={_onChange} tableId={table_key} />;
+                }
+
                 const items = (filter.options || []).map((opt: any) => ({
                     value: opt.value,
                     label: opt.label,
@@ -281,6 +290,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                         showMoreColumns={filter.showMoreColumns || []}
                     />
                 );
+            }
 
             case FilterKey.DateInterval: // 7
                 return (
@@ -366,8 +376,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         .filter((filter) => {
             // Əgər istifadəçi hansısa filter tətbiq edib və ya dəyişib → hamısını göstər
             if (appliedFilterName || isModified) return true;
-            console.log(appliedFilterName, isModified, 'drf')
-
+            // console.log(appliedFilterName, isModified, 'drf');
             // Əks halda yalnız visible=true olanları göstər
             return filter.visible !== false;
         })

@@ -34,6 +34,10 @@
     align-items: center;
 }
 
-.MuiBox-root{
+.MuiBox-root {
     background-color: transparent !important;
+}
+
+.MuiTableCell-head {
+    padding-bottom: 14px !important;
 }
