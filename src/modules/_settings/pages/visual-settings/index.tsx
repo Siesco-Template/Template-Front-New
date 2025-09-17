@@ -50,7 +50,7 @@ function VisualSettings() {
     const { currentTheme, themes, getThemes, detectChanges } = useThemeStore();
 
     useEffect(() => {
-        setHasChange(detectChanges());
+        setHasChange(detectChanges() || cursorVariant !== previousCursorVariant || cursorSize !== previousCursorSize);
     }, [
         currentTheme,
         themes,

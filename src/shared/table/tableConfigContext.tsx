@@ -88,8 +88,8 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
             const tableDiff = diff ? diff : {};
             const fullDiff = {
                 ...tableDiff,
-                ...getFullConfigDiff(),
                 ...computedDiff,
+                ...getFullConfigDiff(),
             };
 
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
