@@ -176,8 +176,8 @@ export const AppInitializer = ({ config }: { config: any }) => {
 
             useSettingsStore.getState().setNavigationLinks(items);
             useLayoutStore.setState(layoutState);
-            useViewAndContentStore.setState(viewAndContentState);
             useTypographyStore.setState(typographyState);
+            useViewAndContentStore.setState(viewAndContentState);
 
             const currentThemeId = config.extraConfig?.visualSettings.currentTheme;
             const normalizedThemeList = config.extraConfig?.visualSettings?.themes || [];

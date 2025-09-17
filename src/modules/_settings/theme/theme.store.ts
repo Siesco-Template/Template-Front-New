@@ -211,7 +211,7 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
             }
 
             // themes array-ı boşdursa, heç nə göndərməyə ehtiyac yoxdur
-            if (themes.length > 0) {
+            if (themes.length > 0 && get().detectChanges()) {
                 const themeChanges = getThemeChanges(initialThemes, themes);
                 diff = { ...diff, ...themeChanges };
                 console.log(diff);

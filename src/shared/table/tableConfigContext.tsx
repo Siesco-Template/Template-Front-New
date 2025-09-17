@@ -5,11 +5,11 @@ import { configService } from '@/services/configuration/configuration.service';
 import { useLayoutStore } from '@/modules/_settings/layout/layout.store';
 import { useSettingsStore } from '@/modules/_settings/settings.store';
 import { getPersonalizationDiff } from '@/modules/_settings/settings.utils';
-import { Theme, useThemeStore } from '@/modules/_settings/theme/theme.store';
+import { useThemeStore } from '@/modules/_settings/theme/theme.store';
 import { useTypographyStore } from '@/modules/_settings/typography/typography.store';
 import { useViewAndContentStore } from '@/modules/_settings/view-and-content/view-and-content.store';
 
-import { getUserDiffFromConfig, mergeWithEval, setNestedValue } from '../utils/queryBuilder';
+import { mergeWithEval, setNestedValue } from '../utils/queryBuilder';
 
 export type ConfigValue = {
     padding?: number;
@@ -58,18 +58,18 @@ export const getFullConfigDiff = () => {
     const settings = useSettingsStore.getState();
 
     const layoutDiff = layout.getLayoutDiff?.() ?? {};
-    const typographyDiff = typography.getTypographyDiff?.() ?? {};
     const viewAndContentDiff = viewAndContent.getViewAndContentDiff?.() ?? {};
     const themeDiff = theme.getThemeDiff?.() ?? {};
+    const typographyDiff = typography.getTypographyDiff?.() ?? {};
     const personalizationDiff = getPersonalizationDiff(settings.navigationLinks, settings.initialNavigationLinks);
     // const tableDiff = customTableDiff ?? getUserDiffFromConfig(defaultConfig, config);
 
     return {
         // ...tableDiff,
         ...layoutDiff,
-        ...typographyDiff,
         ...viewAndContentDiff,
         ...themeDiff,
+        ...typographyDiff,
         ...personalizationDiff,
     };
 };

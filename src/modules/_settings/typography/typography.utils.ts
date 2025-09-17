@@ -1,7 +1,6 @@
 import { DefaultSizes } from '../settings.contants';
 import { TypographyState } from './typography.store';
 
-
 export const getTypographyFromContext = (textSettings: any): TypographyState => {
     const fontSize = textSettings?.fontSize ?? DefaultSizes.fontSize;
     const letterSpacing = textSettings?.letterSpacing ?? DefaultSizes.letterSpacing;
@@ -22,9 +21,6 @@ export const getTypographyFromContext = (textSettings: any): TypographyState => 
         previousHighlightTitles: highlightTitles,
     };
 };
-
-
-
 
 export const convertUnits = (value: string, baseFontSize: number = 16) => {
     if (value.endsWith('rem')) {
