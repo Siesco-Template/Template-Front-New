@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router';
 
 import { useTableConfig } from '@/shared/table/tableConfigContext';
@@ -82,14 +82,35 @@ const SettingsPageHeader = ({ rightSide }: { rightSide: React.ReactNode }) => {
 };
 
 const SettingsPageLayout = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [hasChange, setHasChange] = useState(false);
 
     const { discardSizes } = useTypographyStore();
     const { discardViewAndContent } = useViewAndContentStore();
     const { discardChangesOnLayout } = useLayoutStore();
-    const { discardTheme } = useThemeStore();
+    const { discardTheme, editedTheme, newThemeId } = useThemeStore();
 
     const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
+
+    useEffect(() => {
+        document.addEventListener('themeEdited', (e) => {
+            const event = e as CustomEvent;
+            if (event.detail.result) {
+                showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
+                setHasChange(false);
+            }
+            setIsSubmitting(false);
+        });
+
+        document.addEventListener('themeCreated', (e) => {
+            const event = e as CustomEvent;
+            if (event.detail.result) {
+                showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
+                setHasChange(false);
+            }
+            setIsSubmitting(false);
+        });
+    }, []);
 
     return (
         <div className={styles.settingsPageLayout}>
@@ -113,22 +134,25 @@ const SettingsPageLayout = () => {
                                 variant="primary"
                                 color="primary"
                                 children={'Yadda Saxla'}
+                                isLoading={isSubmitting}
+                                disabled={isSubmitting}
                                 onClick={async () => {
-                                    // const mergedDiff = getFullConfigDiff(undefined, defaultConfig, config);
-
-                                    //birinci post edirik
-                                    await saveConfigToApi();
-                                    await loadConfigFromApi();
-
-                                    // daha sonra storeda save evvele etsek çünki diff itəcək, save zamanı reset olunacaq.
-                                    // useThemeStore.getState().saveTheme();
-                                    // useLayoutStore.getState().saveChangesOnLayout();
-                                    // useTypographyStore.getState().saveSizes();
-                                    // useViewAndContentStore.getState().saveViewAndContent();
-                                    // useThemeStore.getState().saveTheme();
-
-                                    showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
-                                    setHasChange(false);
+                                    setIsSubmitting(true);
+                                    if (editedTheme) {
+                                        document
+                                            ?.getElementById('editThemeForm')
+                                            ?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                                    } else if (newThemeId) {
+                                        document
+                                            ?.getElementById('createThemeForm')
+                                            ?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                                    } else {
+                                        await saveConfigToApi();
+                                        await loadConfigFromApi();
+                                        showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
+                                        setHasChange(false);
+                                        setIsSubmitting(false);
+                                    }
                                 }}
                             />
                         </div>

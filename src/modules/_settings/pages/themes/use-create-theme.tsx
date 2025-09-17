@@ -3,12 +3,23 @@ import { useBeforeUnload, useBlocker } from 'react-router';
 
 import { TinyColor } from '@ctrl/tinycolor';
 
+import { useTableConfig } from '@/shared/table/tableConfigContext';
+
 import { Theme, useThemeStore } from '../../theme/theme.store';
 import { addThemeOnHtmlRoot, transformThemeToCss } from '../../theme/theme.utils';
 
 export type ErrorType = Record<string, string[]>;
 
 export const useCreateTheme = () => {
+    const customCreateSuccessEvent = new CustomEvent('themeCreated', {
+        detail: { result: true },
+    });
+
+    const customCreateFailEvent = new CustomEvent('themeCreated', {
+        detail: { result: false },
+    });
+
+    const { saveConfigToApi, loadConfigFromApi } = useTableConfig();
     const [error, setError] = useState<ErrorType>({});
     const { newThemeId, themes, setTheme, saveTheme } = useThemeStore();
 
@@ -78,13 +89,19 @@ export const useCreateTheme = () => {
         }
     };
 
-    const createThemeForm = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const createThemeForm = async (e?: FormEvent<HTMLFormElement>) => {
+        e?.preventDefault();
         if (theme.name.trim() === '') {
-            setError({ name: ['Ad tələb olunur'] });
-        } else {
-            saveTheme();
+            setError({ name: ['Adını yazmaq lazımdır'] });
+            document.dispatchEvent(customCreateFailEvent);
+            return;
         }
+
+        saveTheme();
+        await saveConfigToApi();
+        await loadConfigFromApi();
+        document.dispatchEvent(customCreateSuccessEvent);
+        return;
     };
 
     useBlocker(newThemeId !== undefined);
@@ -99,13 +116,13 @@ export const useCreateTheme = () => {
         theme,
         error,
         newColors: {
-            primaryColor: theme.primary[500],
-            secondaryColor: theme.secondary[500],
-            yellowColor: theme.yellow[500],
-            neutralColor: theme.neutral[500],
-            greenColor: theme.green[500],
-            blueColor: theme.blue[500],
-            redColor: theme.red[500],
+            primaryColor: theme?.primary?.[500],
+            secondaryColor: theme?.secondary?.[500],
+            yellowColor: theme?.yellow?.[500],
+            neutralColor: theme?.neutral?.[500],
+            greenColor: theme?.green?.[500],
+            blueColor: theme?.blue?.[500],
+            redColor: theme?.red?.[500],
         },
         changeColor,
         changeName,

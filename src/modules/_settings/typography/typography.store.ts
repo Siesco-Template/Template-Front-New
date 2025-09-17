@@ -66,39 +66,6 @@ export const useTypographyStore = create<TypographyState & TypographyAction>()(
 
             const diff: Record<string, any> = {};
 
-            // bu sahəni dəyişib və saxlayıbsa, diffə sal
-            if (
-                previousFontSize !== undefined &&
-                previousFontSize !== DefaultSizes.fontSize &&
-                fontSize === previousFontSize
-            ) {
-                diff['extraConfig.textSettings.fontSize'] = fontSize;
-            }
-
-            if (
-                previousLetterSpacing !== undefined &&
-                previousLetterSpacing !== DefaultSizes.letterSpacing &&
-                letterSpacing === previousLetterSpacing
-            ) {
-                diff['extraConfig.textSettings.letterSpacing'] = letterSpacing;
-            }
-
-            if (
-                previousHighlightTitles !== undefined &&
-                previousHighlightTitles !== DefaultSizes.highlightTitles &&
-                highlightTitles === previousHighlightTitles
-            ) {
-                diff['extraConfig.textSettings.highlight.headings'] = highlightTitles;
-            }
-
-            if (
-                previousHighlightLinks !== undefined &&
-                previousHighlightLinks !== DefaultSizes.highlightLinks &&
-                highlightLinks === previousHighlightLinks
-            ) {
-                diff['extraConfig.textSettings.highlight.links'] = highlightLinks;
-            }
-
             // Əlavə olaraq, cari sessiyada dəyişib və hələ saxlanmayıbsa
             if (fontSize !== previousFontSize) {
                 diff['extraConfig.textSettings.fontSize'] = fontSize;
