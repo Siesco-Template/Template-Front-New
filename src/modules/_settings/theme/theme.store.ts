@@ -195,7 +195,13 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
                 newCurrentTheme = previousTheme?.id ? previousTheme.id : DefaultThemes[0].id;
             }
 
-            set(() => ({ themes, currentTheme: newCurrentTheme, previousTheme: null }));
+            set(() => ({
+                themes,
+                currentTheme: newCurrentTheme,
+                previousTheme: null,
+                newThemeId: themeId === get().newThemeId ? undefined : get().newThemeId,
+                editedTheme: themeId === get().editedTheme?.id ? undefined : get().editedTheme,
+            }));
         },
 
         saveTheme: () => {
@@ -214,7 +220,6 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
             if (themes.length > 0 && get().detectChanges()) {
                 const themeChanges = getThemeChanges(initialThemes, themes);
                 diff = { ...diff, ...themeChanges };
-                console.log(diff);
             }
 
             return diff;
