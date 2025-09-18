@@ -95,21 +95,20 @@ li {
     background: var(--background-strong, #bfbfbf);
 }
 
-/* .header-menu {
+.header-menu {
     border: none;
     outline: none;
     min-width: 130px;
     cursor: pointer;
-
+    overflow: hidden;
     border-radius: 12px !important;
     background-color: var(--background-primary, #fff) !important;
     box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
-} */
+}
 
-/* .header-menu [data-part='item'] {
+.header-menu [data-part='item'] {
     width: 100%;
     padding: 8px 10px;
-    border-radius: 8px;
     transition: all 0.3s ease;
     color: var(--content-tertiary, #666);
     font-feature-settings:
@@ -119,24 +118,24 @@ li {
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--lh-20, 20px); 
+    line-height: var(--lh-20, 20px);
     display: flex;
     justify-content: flex-start;
     align-items: center;
-} */
+}
 
-/* .header-menu [data-part='item']:hover {
+.header-menu [data-part='item']:hover {
     color: var(--content-primary, #1a1a1a);
     background: var(--background-secondary, #f3f3f3);
 }
 .header-menu [data-part='item']:hover > svg {
-    color: hsl(var(--clr-primary-600)) !important;
+    color: var(--content-primary, #1a1a1a) !important;
 }
 .header-menu [data-part='item']:hover > span {
-    color: hsl(var(--clr-primary-600)) !important;
+    color: var(--content-primary, #1a1a1a) !important;
 }
 .header-menu [data-part='separator'] {
-    border: 1px solid hsl(var(--clr-grey-100));
+    border: 1px solid var(--content-primary, #1a1a1a);
 }
 
 [data-scope='menu'][data-part='content'],
@@ -170,7 +169,7 @@ li {
         transform: translateY(10px);
         opacity: 0;
     }
-} */
+}
 
 /* Date Picker (RSuit) */
 
