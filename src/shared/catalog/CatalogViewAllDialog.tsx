@@ -174,7 +174,7 @@ function CatalogViewAllDialog<T extends Record<string, any> & MRT_RowData>({
                             />
                             <div ref={sentinelRef} style={{ height: 1 }} />
                         </div>
-                        <Table_Footer totalItems={totalItemCount} isInfiniteScroll={true}/>
+                        <Table_Footer totalItems={totalItemCount} isInfiniteScroll={true} forceInfinite={true} />
                     </div>
 
                     <div

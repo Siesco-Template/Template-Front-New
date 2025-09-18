@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 import {
@@ -537,10 +538,15 @@ function Table<T extends Record<string, any>>({
             });
     }
 
+    const loadingRow: Record<string, any> = { id: '__loading__', isLoadingRow: true };
+    // const endRow: Record<string, any> = { id: '__end__', isEndRow: true };
+
     const finalData: any = [
         ...(hasTopSummary ? [summaryTopRow] : []),
         ...(Array.isArray(data) ? data : []),
         ...(hasBottomSummary ? [summaryBottomRow] : []),
+        ...(isInfinite && props.isLoading ? [loadingRow] : []),
+        // ...(isInfinite && !props.isLoading && totalFetched >= totalDBRowCount ? [endRow] : []),
     ];
 
     const pinnedLeftColumns = [
@@ -656,6 +662,47 @@ function Table<T extends Record<string, any>>({
             className: styles.tableWrapper,
         },
         muiTableBodyCellProps: ({ cell, row, column }) => {
+            if (row.original?.isLoadingRow) {
+                return {
+                    colSpan: table.getAllLeafColumns().length,
+                    children: (
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: '100%',
+                                padding: 0,
+                                height: '100%',
+                            }}
+                        >
+                            <Skeleton active paragraph={false} style={{ width: '100%', height: '100%' }} />
+                        </div>
+                    ),
+                    style: { textAlign: 'center' },
+                };
+            }
+
+            // if (row.original?.isEndRow) {
+            //     const isFirstColumn = cell.column.id === table.getAllLeafColumns()[0].id;
+            //     if (isFirstColumn) {
+            //         return {
+            //             colSpan: table.getAllLeafColumns().length,
+            //             children: (
+            //                 <div style={{ textAlign: 'center' }}>
+            //                     <h1 style={{ color: ' var(--content-brand-bold, #061D55)' }}>
+            //                         Bütün məlumat yükləndi ✅
+            //                     </h1>
+            //                 </div>
+            //             ),
+            //             style: { textAlign: 'center', width: '100%' },
+            //         };
+            //     }
+            //     return {
+            //         style: { display: 'none' },
+            //     };
+            // }
+
             const columnId = cell.column.columnDef.accessorKey || cell.column.id;
             const isSummaryRow = row.original?.isSummaryRow;
             const isColSelected = selectedColumnKey === column?.id;

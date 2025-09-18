@@ -44,3 +44,7 @@
 .MuiTableCell-root {
     padding-bottom: 14px !important;
 }
+
+/* td.MuiTableCell-root {
+    padding-bottom: 0 !important;
+} */

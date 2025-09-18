@@ -16,6 +16,7 @@ interface TableFooterProps {
     table_key?: string;
     onInfiniteChange?: (val: boolean) => void;
     filtersReady?: boolean;
+    forceInfinite?: boolean;
 }
 
 const Table_Footer: React.FC<TableFooterProps> = ({
@@ -24,6 +25,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
     table_key,
     onInfiniteChange,
     filtersReady,
+    forceInfinite = false,
 }: any) => {
     const { filterDataState, onPaginationChange, setFilterDataState } = useTableContext();
     const { config } = useTableConfig();
@@ -55,12 +57,15 @@ const Table_Footer: React.FC<TableFooterProps> = ({
     }, [defaultTake, setFilterDataState]);
 
     useEffect(() => {
-        if (isInfiniteScroll) {
+        if (forceInfinite) {
+            setPageSize(-1);
+            onInfiniteChange?.(true);
+        } else if (isInfiniteScroll) {
             setPageSize(-1);
         } else if (pageSize === -1) {
             setPageSize(defaultTake);
         }
-    }, [isInfiniteScroll, defaultTake]);
+    }, [isInfiniteScroll, defaultTake, forceInfinite]);
 
     const currentPage = filterDataState.skip ?? 0;
     const totalPages = Math.ceil(totalItems / pageSize);
@@ -155,6 +160,8 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                             },
                         ]}
                         onChange={(sel) => {
+                            if (forceInfinite) return; // 🔒 dəyişməyə icazə vermə
+
                             const picked = Array.isArray(sel) ? sel[0] : sel;
                             const val: any = picked?.value;
 
@@ -162,9 +169,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                                 hasUserChanged.current = true;
                                 setPageSize(-1);
                                 onInfiniteChange?.(true);
-
                                 setSearchParams({}, { replace: true });
-
                                 setFilterDataState((prev: any) => ({
                                     ...prev,
                                     take: 20,
@@ -187,7 +192,7 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                 </div>
             </div>
 
-            {!isInfiniteScroll && totalPages > 1 && (
+            {!isInfiniteScroll && !forceInfinite && totalPages > 1 && (
                 <div className={styles.centerSide}>
                     <button onClick={handlePrev} className={styles.iconBtn} disabled={currentPage === 0}>
                         <LeftIcon width={16} height={16} color="var(--content-secondary)" />
@@ -218,13 +223,15 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                 </div>
             )}
 
-            {!isInfiniteScroll && (
-                <div className={styles.rightSide}>
+            <div className={styles.rightSide}>
+                {isInfiniteScroll || forceInfinite ? (
+                    <span className={styles.range}>Cəmi: {totalItems}</span>
+                ) : (
                     <span className={styles.range}>
                         {start}–{end} / {totalItems}
                     </span>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };
