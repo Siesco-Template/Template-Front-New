@@ -75,7 +75,6 @@ ul,
 li,
 a {
     text-decoration: none;
-    /* list-style-type: none; */
 }
 li {
     display: inline-flex;
@@ -96,7 +95,7 @@ li {
     background: var(--background-strong, #bfbfbf);
 }
 
-.header-menu {
+/* .header-menu {
     border: none;
     outline: none;
     min-width: 130px;
@@ -105,9 +104,9 @@ li {
     border-radius: 12px !important;
     background-color: var(--background-primary, #fff) !important;
     box-shadow: 0 4px 8px 0 rgba(91, 118, 168, 0.12);
-}
+} */
 
-.header-menu [data-part='item'] {
+/* .header-menu [data-part='item'] {
     width: 100%;
     padding: 8px 10px;
     border-radius: 8px;
@@ -120,14 +119,13 @@ li {
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--lh-20, 20px); /* 142.857% */
-
+    line-height: var(--lh-20, 20px); 
     display: flex;
     justify-content: flex-start;
     align-items: center;
-}
+} */
 
-.header-menu [data-part='item']:hover {
+/* .header-menu [data-part='item']:hover {
     color: var(--content-primary, #1a1a1a);
     background: var(--background-secondary, #f3f3f3);
 }
@@ -172,7 +170,7 @@ li {
         transform: translateY(10px);
         opacity: 0;
     }
-}
+} */
 
 /* Date Picker (RSuit) */
 
@@ -183,13 +181,17 @@ li {
     transition: all 0.3s ease;
 }
 
+.rs-input-group:hover .rs-input-group.rs-input-group-inside,
+.rs-input-group:hover .rs-input {
+    /* background-color: red !important; */
+}
+
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
     background-color: var(--border-brand, #0d3caf) !important;
     color: white !important;
 }
 
 .rs-input-group:focus {
-    border-color: #ffee00 !important; /* mavi border */
     box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2) !important;
     outline: none;
 }

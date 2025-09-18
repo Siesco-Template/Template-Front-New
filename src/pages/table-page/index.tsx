@@ -353,15 +353,16 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     };
 
     useEffect(() => {
+        const hasFilters =
+            filterDataState && Array.isArray(filterDataState.filter) && filterDataState.filter.length > 0;
+
         const shouldFetch =
-            defaultFilterReady &&
-            Object.keys(columnVisibility).length > 0 &&
-            filterDataState &&
-            Array.isArray(filterDataState.filter);
-        if (shouldFetch && !isResetting) {
+            Object.keys(columnVisibility).length > 0 && !isResetting && (defaultFilterReady || hasFilters);
+
+        if (shouldFetch) {
             fetchData();
         }
-    }, [defaultFilterReady, columnVisibility, isInfinite, filterDataState]);
+    }, [defaultFilterReady, columnVisibility, isInfinite, filterDataState, isResetting]);
 
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 

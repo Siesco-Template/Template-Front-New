@@ -163,8 +163,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 }
             } catch (_) {
                 onReady?.();
-            } finally {
-                onReady?.();
             }
         })();
     }, [table_key]);
@@ -251,7 +249,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
             case FilterKey.Select: {
                 if (filter.endpoint) {
-                    console.log(filter, 'f');
+                    // console.log(filter, 'f');
                     return (
                         <CatalogFilter
                             isFromTable={false}
