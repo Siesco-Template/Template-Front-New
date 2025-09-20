@@ -765,7 +765,6 @@ function Table<T extends Record<string, any>>({
                     borderLeftColor: 'var(--background-selected)',
                     ...(isFirst && { borderLeft: '2px solid "var(--background-selected)"' }),
                     ...(isLast && { borderRight: '2px solid "var(--background-selected)"' }),
-                    zIndex: 1,
                 }),
             };
 
