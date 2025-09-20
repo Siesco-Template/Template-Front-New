@@ -104,7 +104,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
                     </div>
                     <ul className={styles.visibilityColumns}>
                         <li className={styles.visibilityDropdownItem} onClick={toggleAll}>
-                            <S_Checkbox indeterminate={isIndeterminate} checked={isAllChecked} />
+                            <S_Checkbox indeterminate={!isAllChecked} checked={hasAnyVisibleSelected} />
                             <span style={{ marginLeft: 8 }}>Hamısını göstər</span>
                         </li>
                         {visibleColumns.map((column) => (

@@ -593,9 +593,9 @@ function Table<T extends Record<string, any>>({
                 enableResizing: false,
 
                 Header: ({ table }) => {
-                    const selectable = table.getRowModel().rows.filter((r) => r.getCanSelect?.());
-                    const all = selectable.length > 0 && selectable.every((r) => r.getIsSelected());
-                    const some = selectable.some((r) => r.getIsSelected()) && !all;
+                    const all =
+                        selectedIds.length === table.getPreFilteredRowModel().rows.length && !!selectedIds.length;
+                    console.log(selectedIds);
 
                     return (
                         <div
@@ -607,7 +607,8 @@ function Table<T extends Record<string, any>>({
                                 label=""
                                 color="primary"
                                 size="16"
-                                checked={all || some}
+                                checked={!!selectedIds.length}
+                                indeterminate={!all}
                                 onCheckedChange={({ checked }) => {
                                     table.toggleAllRowsSelected(!!checked);
                                 }}
