@@ -6,7 +6,16 @@ import { useAuthStore } from '@/store/authStore';
 import { APP_URLS } from '@/services/config/url.config';
 import { excelService } from '@/services/import/export/excel.service';
 
-import { DownloadIcon, DownloadIconn, LeftIcon, RightIcon, SettingIcon, StarIcon } from '@/shared/icons';
+import {
+    DownloadIcon,
+    DownloadIconn,
+    LeftIcon,
+    OutlineStartIcon,
+    RightIcon,
+    SettingIcon,
+    StarIcon,
+    TimeQuarterIconn,
+} from '@/shared/icons';
 import companyLogo from '@/shared/images/company.png';
 import { cls } from '@/shared/utils';
 
@@ -65,6 +74,32 @@ const Header_Content = () => {
                         <S_Button
                             variant="primary"
                             color="secondary"
+                            aria-label="Seçilmişlər"
+                            onClick={() => {
+                                setSelectedPanel('favorites');
+                                setIsPanelOpen(!isPanelOpen);
+                            }}
+                        >
+                            <OutlineStartIcon color="var(--content-secondary-brand-bold)" width={16} height={16} />
+                        </S_Button>
+                    </li>
+                    <li>
+                        <S_Button
+                            variant="primary"
+                            color="secondary"
+                            aria-label="Tarixçə"
+                            onClick={() => {
+                                setSelectedPanel('history');
+                                setIsPanelOpen(!isPanelOpen);
+                            }}
+                        >
+                            <TimeQuarterIconn color="var(--content-secondary-brand-bold)" width={16} height={16} />
+                        </S_Button>
+                    </li>
+                    <li>
+                        <S_Button
+                            variant="primary"
+                            color="secondary"
                             aria-label="Endirilənlər"
                             onClick={() => {
                                 fetchItems();
@@ -96,12 +131,7 @@ const Header_Content = () => {
                 </ul>
             </div>
 
-            <S_SidePanel
-                open={isPanelOpen}
-                onOpenChange={(open) => setIsPanelOpen(open)}
-                title="Endirilənlər"
-                children=""
-            />
+            <S_SidePanel open={isPanelOpen} onOpenChange={(open) => setIsPanelOpen(open)} title="" children="Panel" />
         </>
     );
 };
