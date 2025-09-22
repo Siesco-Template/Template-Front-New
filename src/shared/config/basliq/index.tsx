@@ -11,12 +11,13 @@ import ValidatedNumberInput from '../components/input/ValidatedNumberInput';
 import styles from '../style.module.css';
 
 const HeaderConfigSection: React.FC<{ tableKey: string }> = ({ tableKey }) => {
+
     const { config, updateConfig } = useTableConfig();
 
     const header = config.tables?.[tableKey]?.header || {};
     const cell = header.cell || {};
     const text = header.text || {};
-    const border = header.border || {};
+    const border = header.border || {}; 
 
     return (
         <>
