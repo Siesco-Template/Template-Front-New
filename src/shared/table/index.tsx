@@ -25,6 +25,7 @@ import { toCssColor } from '../utils/color.utils';
 import CustomColumnMenu from './customColumnMenu';
 import { FilterIcon, FilterSolidIcon } from './icons';
 import { useTableContext } from './table-context';
+import { collectFrozenColumns } from './table-helpers';
 import TableTheme from './table-theme';
 import './table.css';
 import styles from './table.module.css';
@@ -552,9 +553,7 @@ function Table<T extends Record<string, any>>({
     const pinnedLeftColumns = [
         'mrt-row-select',
         'mrt-row-numbers',
-        ...Object.entries(config.tables?.[tableKey]?.columns || {})
-            .filter(([_, val]: any) => val?.config?.freeze === true)
-            .map(([key]) => key),
+        ...collectFrozenColumns(config.tables?.[tableKey]?.columns || {}),
     ];
 
     const table = useMaterialReactTable<T>({
@@ -595,7 +594,6 @@ function Table<T extends Record<string, any>>({
                 Header: ({ table }) => {
                     const all =
                         selectedIds.length === table.getPreFilteredRowModel().rows.length && !!selectedIds.length;
-                    console.log(selectedIds);
 
                     return (
                         <div
@@ -683,26 +681,6 @@ function Table<T extends Record<string, any>>({
                     style: { textAlign: 'center' },
                 };
             }
-
-            // if (row.original?.isEndRow) {
-            //     const isFirstColumn = cell.column.id === table.getAllLeafColumns()[0].id;
-            //     if (isFirstColumn) {
-            //         return {
-            //             colSpan: table.getAllLeafColumns().length,
-            //             children: (
-            //                 <div style={{ textAlign: 'center' }}>
-            //                     <h1 style={{ color: ' var(--content-brand-bold, #061D55)' }}>
-            //                         Bütün məlumat yükləndi ✅
-            //                     </h1>
-            //                 </div>
-            //             ),
-            //             style: { textAlign: 'center', width: '100%' },
-            //         };
-            //     }
-            //     return {
-            //         style: { display: 'none' },
-            //     };
-            // }
 
             const columnId = cell.column.columnDef.accessorKey || cell.column.id;
             const isSummaryRow = row.original?.isSummaryRow;

@@ -29,7 +29,7 @@ export function buildQueryParamsFromTableRequest(
     options?: {
         isInfiniteScroll?: boolean;
         page?: number;
-        initialFilter?: boolean; 
+        initialFilter?: boolean;
     }
 ): Record<string, any> {
     const params: Record<string, any> = {};
@@ -81,3 +81,7 @@ export function buildQueryParamsFromTableRequest(
 
     return params;
 }
+
+export const getNestedValue = (obj: any, path: string): any => {
+    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+};

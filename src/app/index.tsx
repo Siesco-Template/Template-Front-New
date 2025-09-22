@@ -20,6 +20,7 @@ const App = () => {
         loadConfigFromApi();
     }, [user]);
 
+    console.log(config, 'config');
     return (
         <Providers>
             <S_Toast expand={true} visibleToasts={4} position="top-right" />

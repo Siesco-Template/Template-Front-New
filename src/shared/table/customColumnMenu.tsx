@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
+import { getNestedValue } from '@/lib/queryBuilder';
 import { MRT_Column, MRT_TableInstance } from 'material-react-table';
 
 import { getUserDiffFromConfig, setNestedValue } from '../utils/queryBuilder';
@@ -42,8 +43,19 @@ const CustomColumnMenu = <T extends Record<string, any>>({ column, table, tableK
     }, [onClose]);
 
     const handleToggleFreezeColumn = async () => {
-        const keyPath = `columns.${column.id}.config.freeze`;
-        const currentFreeze = config?.tables?.[tableKey]?.columns?.[column.id]?.config?.freeze;
+        // column.id → path array
+        const parts = column.id.split('.');
+        // məsələn: "Organization.Id" → ["Organization","Id"]
+        // "Number" → ["Number"]
+
+        const keyPath = `columns.${parts.join('.')}.config.freeze`;
+
+        // mövcud freeze dəyərini oxu
+        let currentFreeze: any = config?.tables?.[tableKey];
+        for (const p of ['columns', ...parts, 'config', 'freeze']) {
+            currentFreeze = currentFreeze?.[p];
+        }
+
         const newValue = !currentFreeze;
 
         const nextConfig = updateConfigSync(tableKey, keyPath, newValue);
@@ -95,7 +107,9 @@ const CustomColumnMenu = <T extends Record<string, any>>({ column, table, tableK
 
             <button className={styles.customColumnMenuItem} onClick={handleToggleFreezeColumn}>
                 <PinIcon width={18} height={18} color="var(--content-tertiary)" />
-                {config?.tables?.[tableKey]?.columns?.[column.id]?.config?.freeze ? 'Dondurmanı sil' : 'Dondur'}
+                {getNestedValue(config?.tables?.[tableKey]?.columns, `${column.id}.config.freeze`)
+                    ? 'Dondurmanı sil'
+                    : 'Dondur'}
             </button>
         </div>
     );
