@@ -5,8 +5,6 @@ import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea
 
 import { CloseIcon } from '@/shared/icons';
 
-import { S_Button } from '@/ui';
-
 import { exportToExcel } from '../exportToExcel';
 import styles from './style.module.css';
 

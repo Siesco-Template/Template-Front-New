@@ -76,8 +76,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 }) => {
     const { columnVisibility, filterDataState } = useTableContext();
 
-    const sentinelRef = useRef<HTMLDivElement | null>(null);
-
+    // modal ucun stateler
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState<any | null>(null);
 
@@ -89,18 +88,25 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [defaultFilterReady, setDefaultFilterReady] = useState(false);
 
+    // infinite scroll ucun lazim olan stateler
     const [isInfinite, setIsInfinite] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [showCatalogView, setShowCatalogView] = useState(false);
+    // infinite scroll ucun sentinel
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
 
+    // folder view ucun state-lər
+    const [showCatalogView, setShowCatalogView] = useState(false);
+    const catalogs = mockCatalogs['reports'];
+
+    // eger table da row secmek lazimdirsa bu stateler istifade olunacaq
     const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<any>([]);
 
+    // filter panelin tetbiq etdiyi filtrlere esasen table-i yeniden fetch edir
     const [isResetting, setIsResetting] = useState(false);
 
-    const catalogs = mockCatalogs['reports'];
-
+    // main table ucun mutleq gonderilmeli sutunlar
     const columns: CustomMRTColumn<BudceTableData>[] = [
         {
             accessorKey: 'Number',
@@ -214,6 +220,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
+    // filter panele mutleq gonderilmelisutunlar
     const filterColumns = [
         { accessorKey: 'Number', header: 'Unikal nömrə', filterVariant: 'text' },
         {
@@ -256,6 +263,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     const [filters, setFilters] = useState<FilterConfig[]>(generateFiltersFromColumns(filterColumns));
 
+    // main table ucun fetch funksiyasi
     const fetchData = (isLoadMore = false, options?: { initialFilter?: boolean }) => {
         if (loading) return;
         setLoading(true);
@@ -338,20 +346,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             .finally(() => setLoading(false));
     };
 
-    // seçilən kataloqu tətbiq et
-
-    const applyCatalog = (item: any) => {
-        if (!item) return;
-        setSelected(item);
-        setShowCatalogView(true);
-        setIsOpen(false);
-
-        const params = new URLSearchParams(window.location.search);
-        params.set('path', item.value);
-        console.log(item.value, 'item');
-        navigate(`?${params.toString()}`, { replace: true });
-    };
-
+    // ilk mount zamani hersey okeydise fetch edir
     useEffect(() => {
         const hasFilters =
             filterDataState && Array.isArray(filterDataState.filter) && filterDataState.filter.length > 0;
@@ -364,14 +359,27 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         }
     }, [defaultFilterReady, columnVisibility, isInfinite, filterDataState, isResetting]);
 
+    // hansisa bir filter apply olunsa bunu table headerde bildirim kimi gosteririk
     const isFilterApplied = filterDataState.filter && filterDataState.filter.length > 0;
 
-    // FOLDER VIEW
-
+    // folder view ucun lazim olan funksionalliq ve stateler
     const [searchParams] = useSearchParams();
     const [items, setItems] = useState<FolderItem[]>([]);
     const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Organizations');
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
+
+    // seçilən kataloqu tetbiq edir, table folder inteqrasiyasi ucundu
+    const applyCatalog = (item: any) => {
+        if (!item) return;
+        setSelected(item);
+        setShowCatalogView(true);
+        setIsOpen(false);
+
+        const params = new URLSearchParams(window.location.search);
+        params.set('path', item.value);
+        console.log(item.value, 'item');
+        navigate(`?${params.toString()}`, { replace: true });
+    };
 
     const fetchItems = useCallback(
         async (path: string) => {
@@ -483,16 +491,15 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const pathParam = searchParams.get('path');
 
     useEffect(() => {
-        if (showCatalogView && pathParam && pathParam !== currentPath) {
-            setCurrentPath(pathParam);
-        }
-    }, [pathParam, showCatalogView]);
+        if (!showCatalogView) return;
 
-    useEffect(() => {
-        if (showCatalogView) {
+        if (pathParam && pathParam !== currentPath) {
+            setCurrentPath(pathParam);
+            handleItemsChange(pathParam);
+        } else {
             handleItemsChange(currentPath || '');
         }
-    }, [currentPath, showCatalogView]);
+    }, [showCatalogView, pathParam, currentPath]);
 
     return (
         <>

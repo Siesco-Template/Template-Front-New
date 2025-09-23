@@ -34,7 +34,6 @@ const Table_Footer: React.FC<TableFooterProps> = ({
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const selectRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         setFilterDataState((prev: any) => ({
