@@ -80,6 +80,10 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState<any | null>(null);
 
+    // detail modal ucun state
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [detailRow, setDetailRow] = useState<string | null>(null);
+
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -564,6 +568,10 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                     fetchh={fetchData.bind(null, true)}
                                     totalFetched={data?.length}
                                     isInfinite={isInfinite}
+                                    onRowDoubleClick={(row: any) => {
+                                        setDetailRow(row.original);
+                                        setDetailOpen(true);
+                                    }}
                                 />
                                 <div ref={sentinelRef} style={{ height: 1 }} />
                             </div>
@@ -671,6 +679,26 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     searchItems
                 />
             </Modal>
+
+            <Modal
+                title="Detail modal"
+                open={detailOpen}
+                size="xs"
+                onOpenChange={setDetailOpen}
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            tabIndex={2}
+                            type="button"
+                            variant="primary"
+                            color="primary"
+                            onClick={() => setDetailOpen(false)}
+                        >
+                            Ok
+                        </S_Button>
+                    </div>
+                }
+            ></Modal>
         </>
     );
 };
