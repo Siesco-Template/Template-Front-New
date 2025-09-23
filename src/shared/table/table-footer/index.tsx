@@ -3,8 +3,6 @@ import { useSearchParams } from 'react-router';
 
 import Catalog from '@/shared/catalog';
 
-import S_Select_Simple from '@/ui/select/select-simple';
-
 import { LeftIcon, RightIcon } from '../icons';
 import { useTableContext } from '../table-context';
 import { useTableConfig } from '../tableConfigContext';
@@ -149,18 +147,18 @@ const Table_Footer: React.FC<TableFooterProps> = ({
                             { label: '20', value: '20' },
                             { label: '50', value: '50' },
                             { label: '100', value: '100' },
-                            { label: 'Auto', value: 'infinite' },
+                            { label: 'Sonsuz', value: 'infinite' },
                         ]}
                         getLabel={(i) => i.label}
                         getRowId={(i) => i.value}
                         value={[
                             {
-                                label: pageSize === -1 ? 'Auto' : pageSize.toString(),
+                                label: pageSize === -1 ? 'Sonsuz' : pageSize.toString(),
                                 value: pageSize === -1 ? 'infinite' : pageSize.toString(),
                             },
                         ]}
                         onChange={(sel) => {
-                            if (forceInfinite) return; // 🔒 dəyişməyə icazə vermə
+                            if (forceInfinite) return;
 
                             const picked = Array.isArray(sel) ? sel[0] : sel;
                             const val: any = picked?.value;
