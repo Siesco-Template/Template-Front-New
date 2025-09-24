@@ -253,21 +253,26 @@ export const filterDataForFetch = (takeParams?: any, filterDatas?: any) => {
     return filterRequest;
 };
 
-export const collectFrozenColumns = (columns: Record<string, any>, prefix: string[] = []): string[] => {
+export const collectFrozenColumns = (columns: Record<string, any> | undefined, prefix: string[] = []): string[] => {
+    if (!columns || typeof columns !== 'object') return [];
+
     const frozen: string[] = [];
 
     for (const [key, val] of Object.entries(columns)) {
+        if (!val || typeof val !== 'object') continue;
+
         const currentPath = [...prefix, key];
 
         if (val?.config?.freeze === true) {
             frozen.push(currentPath.join('.'));
         }
-        if (val?.columns) {
+
+        if (val?.columns && typeof val.columns === 'object') {
             frozen.push(...collectFrozenColumns(val.columns, currentPath));
         } else {
             const childKeys = Object.keys(val).filter((k) => k !== 'config');
             if (childKeys.length > 0) {
-                frozen.push(...collectFrozenColumns(val, currentPath));
+                frozen.push(...collectFrozenColumns(val as Record<string, any>, currentPath));
             }
         }
     }

@@ -40,11 +40,14 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
 
     const buildDiff = (tableKey: string, current: Record<string, boolean>, original: Record<string, boolean>) => {
         const diff: Record<string, any> = {};
+        console.log(current, original, 'current', 'original');
         for (const [key, vis] of Object.entries(current)) {
             if (original[key] !== vis) {
                 diff[`tables.${tableKey}.columns.${key}.visible`] = vis;
             }
         }
+
+        console.log(diff, 'diff');
         return diff;
     };
 
@@ -52,7 +55,9 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
         const changes = Object.entries(localVisibility).filter(([key, vis]) => columnVisibility[key] !== vis);
         if (!changes.length) return;
 
+        console.log(changes, 'changes');
         const updated = { ...columnVisibility };
+        console.log(updated, 'updated before');
         changes.forEach(([key, vis]) => {
             updated[key] = vis;
         });
@@ -60,7 +65,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
 
         setTimeout(() => {
             saveConfigToApi(buildDiff(table_key, updated, columnVisibility));
-        }, 0);
+        }, 300);
 
         await loadConfigFromApi();
     };
