@@ -35,7 +35,6 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
     );
 
     const isAllChecked = visibleColumns.length > 0 && visibleColumns.every((col) => localVisibility[col.accessorKey]);
-    const isIndeterminate = !isAllChecked && visibleColumns.some((col) => localVisibility[col.accessorKey]);
     const hasAnyVisibleSelected = visibleColumns.some((col) => localVisibility[col.accessorKey]);
 
     const buildDiff = (tableKey: string, current: Record<string, boolean>, original: Record<string, boolean>) => {
@@ -55,19 +54,18 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
         const changes = Object.entries(localVisibility).filter(([key, vis]) => columnVisibility[key] !== vis);
         if (!changes.length) return;
 
-        console.log(changes, 'changes');
         const updated = { ...columnVisibility };
-        console.log(updated, 'updated before');
         changes.forEach(([key, vis]) => {
             updated[key] = vis;
         });
         setColumnVisibility(updated);
 
-        setTimeout(() => {
-            saveConfigToApi(buildDiff(table_key, updated, columnVisibility));
-        }, 300);
+        const fullPayload: Record<string, any> = {};
+        for (const [key, vis] of Object.entries(updated)) {
+            fullPayload[`tables.${table_key}.columns.${key}.visible`] = vis;
+        }
 
-        await loadConfigFromApi();
+        await saveConfigToApi(fullPayload);
     };
 
     const toggleAll = () => {
