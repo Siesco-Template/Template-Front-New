@@ -565,7 +565,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                                     renderFilter={renderFilter}
                                     onApplyFilter={handleApplySavedFilter}
                                     table_key={table_key}
-                                    filters={filters}
+                                    filters={savedFilters}
                                 />
                             )}
                         </div>

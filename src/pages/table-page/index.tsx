@@ -224,7 +224,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
-    // filter panele mutleq gonderilmelisutunlar
+    // filter panele mutleq gonderilmeli sutunlar
     const filterColumns = [
         { accessorKey: 'Number', header: 'Unikal nömrə', filterVariant: 'text' },
         {

@@ -41,8 +41,8 @@ const SavedFilters = ({ renderFilter, onApplyFilter, table_key, filters }: Saved
             ...f,
             value: matched?.value ?? f.value ?? '',
             type: matched?.filterKey ?? f.type,
-            // readOnly: !editing,
-            // disabled: !editing,
+            order: matched?.order,
+            // disabled: !editing,x
             onChange: (key: string, value: any) => handleUpdateSelectedFilter(f.key, value),
         };
     });
