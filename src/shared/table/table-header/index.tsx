@@ -25,7 +25,8 @@ interface TableHeaderProps {
     onToggleConfig?: () => void;
     columns: { accessorKey?: string; header: string }[];
     data: any[];
-    onClickRightBtn?: () => void;
+    onOpenModal?: () => void;
+    onNavigate?: () => void;
     title: string;
     onClickCancelBtn?: () => void;
     onClickSaveBtn?: () => void;
@@ -50,7 +51,8 @@ const Table_Header: React.FC<TableHeaderProps> = ({
     onToggleConfig,
     data,
     columns,
-    onClickRightBtn,
+    onNavigate,
+    onOpenModal,
     title,
     onClickCancelBtn,
     onClickSaveBtn,
@@ -103,9 +105,38 @@ const Table_Header: React.FC<TableHeaderProps> = ({
             </div>
             <div className={styles.table_header_btn}>
                 {isCatalogView ? (
-                    <S_Button variant="primary" color="secondary" onClick={onClickShowAsTable}>
-                        Cədvəl kimi göstər
-                    </S_Button>
+                    <>
+                        <S_Button variant="primary" color="secondary" onClick={onClickShowAsTable}>
+                            Cədvəl kimi göstər
+                        </S_Button>
+                        {onOpenModal || onNavigate ? (
+                            page && actions?.includes('create') ? (
+                                <PermissionGuard permissionKey={`${page}/create`}>
+                                    <S_Button
+                                        variant="primary"
+                                        color="primary"
+                                        onClick={() => {
+                                            if (onOpenModal) return onOpenModal();
+                                            if (onNavigate) return onNavigate();
+                                        }}
+                                    >
+                                        <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
+                                    </S_Button>
+                                </PermissionGuard>
+                            ) : (
+                                <S_Button
+                                    variant="primary"
+                                    color="primary"
+                                    onClick={() => {
+                                        if (onOpenModal) return onOpenModal();
+                                        if (onNavigate) return onNavigate();
+                                    }}
+                                >
+                                    <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
+                                </S_Button>
+                            )
+                        ) : null}
+                    </>
                 ) : (
                     <>
                         <S_Button variant="primary" color="secondary" aria-label="Faq">
@@ -219,19 +250,34 @@ const Table_Header: React.FC<TableHeaderProps> = ({
                                 Yadda saxla
                             </S_Button>
                         )}
-                        {onClickRightBtn ? (
+                        {onOpenModal || onNavigate ? (
                             page && actions?.includes('create') ? (
                                 <PermissionGuard permissionKey={`${page}/create`}>
-                                    <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
+                                    <S_Button
+                                        variant="primary"
+                                        color="primary"
+                                        onClick={() => {
+                                            if (onOpenModal) return onOpenModal();
+                                            if (onNavigate) return onNavigate();
+                                        }}
+                                    >
                                         <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
                                     </S_Button>
                                 </PermissionGuard>
                             ) : (
-                                <S_Button variant="primary" color="primary" onClick={onClickRightBtn}>
+                                <S_Button
+                                    variant="primary"
+                                    color="primary"
+                                    onClick={() => {
+                                        if (onOpenModal) return onOpenModal();
+                                        if (onNavigate) return onNavigate();
+                                    }}
+                                >
                                     <NewItemIcon color="var(--clr-content-brand-light)" /> Yeni
                                 </S_Button>
                             )
                         ) : null}
+
                         {onClickSaveandApplyBtn && (
                             <S_Button variant="primary" color="primary" onClick={onClickSaveandApplyBtn}>
                                 Yadda saxla və təsdiqlə

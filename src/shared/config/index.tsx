@@ -60,10 +60,12 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
 
         const diff: Record<string, any> = {};
         if (pendingTake !== '' && pendingTake !== initialTake) {
-            diff[`tables.${table_key}.row.paginationTakeCount`] = Number(pendingTake);
+            diff[`tables.${table_key}.row.paginationTakeCount`] =
+                pendingTake === 'infinite' ? 'infinite' : Number(pendingTake);
         }
 
         try {
+            console.log(diff, 'diff');
             await saveConfigToApi(diff);
             const elapsed = Date.now() - start;
             const delay = Math.max(0, 1000 - elapsed);

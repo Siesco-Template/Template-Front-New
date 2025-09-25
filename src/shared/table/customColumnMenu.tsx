@@ -45,9 +45,6 @@ const CustomColumnMenu = <T extends Record<string, any>>({ column, table, tableK
     const handleToggleFreezeColumn = async () => {
         // column.id → path array
         const parts = column.id.split('.');
-        // məsələn: "Organization.Id" → ["Organization","Id"]
-        // "Number" → ["Number"]
-
         const keyPath = `columns.${parts.join('.')}.config.freeze`;
 
         // mövcud freeze dəyərini oxu
@@ -108,8 +105,8 @@ const CustomColumnMenu = <T extends Record<string, any>>({ column, table, tableK
             <button className={styles.customColumnMenuItem} onClick={handleToggleFreezeColumn}>
                 <PinIcon width={18} height={18} color="var(--content-tertiary)" />
                 {getNestedValue(config?.tables?.[tableKey]?.columns, `${column.id}.config.freeze`)
-                    ? 'Dondurmanı sil'
-                    : 'Dondur'}
+                    ? 'Sabitləməni sil'
+                    : 'Sabitlə'}
             </button>
         </div>
     );

@@ -66,6 +66,7 @@ export const TableVisibilityChangeMenu = ({ table_key }: any) => {
         }
 
         await saveConfigToApi(fullPayload);
+        await loadConfigFromApi();
     };
 
     const toggleAll = () => {

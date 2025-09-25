@@ -86,10 +86,11 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
             const computedDiff = getUserDiffFromConfig(defaultConfig, config);
 
             const tableDiff = diff ? diff : {};
+            // console.log(computedDiff, tableDiff, getFullConfigDiff(), 'diffs');
             const fullDiff = {
-                ...tableDiff,
                 ...computedDiff,
                 ...getFullConfigDiff(),
+                ...tableDiff,
             };
 
             if (!fullDiff || Object.keys(fullDiff).length === 0) {
@@ -97,6 +98,7 @@ export const TableConfigProvider: React.FC<{ children: React.ReactNode }> = ({ c
                 return;
             }
 
+            console.log(fullDiff, 'fullDiff');
             await configService.createOrUpdateConfig(fullDiff);
         } catch (err) {
             console.error('❌ Config POST zamanı xəta:', err);

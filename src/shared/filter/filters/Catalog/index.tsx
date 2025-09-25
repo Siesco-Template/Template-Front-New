@@ -99,7 +99,7 @@ const CatalogFilter: React.FC<{
                 onChange(filter.key, newVal);
             }}
             multiple={false}
-            enableModal={true}
+            enableModal={isFromTable ? false : true}
             sizePreset="md-lg"
             totalItemCount={options.length}
             onRefetch={() => {

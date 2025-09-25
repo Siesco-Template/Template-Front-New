@@ -14,8 +14,6 @@ function rgbToHex(rgb: string): string {
 }
 
 export function resolveCssVariable(color: string): string {
-    console.log(color, 'color');
-
     if (!color) return '#D9D9D9';
     if (color.startsWith('#') || color.startsWith('rgb')) return color;
 

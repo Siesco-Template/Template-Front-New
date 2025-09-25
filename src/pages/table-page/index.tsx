@@ -74,9 +74,10 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     isConfigCollapsed,
     onToggleConfigCollapse,
 }) => {
+    // table context-dən lazim olan stateler (columnların görünürlüyü və filter dataları)
     const { columnVisibility, filterDataState } = useTableContext();
 
-    // modal ucun stateler
+    // catalog modal ucun stateler
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState<any | null>(null);
 
@@ -84,8 +85,13 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     const [detailOpen, setDetailOpen] = useState(false);
     const [detailRow, setDetailRow] = useState<string | null>(null);
 
+    // yeni report ucun modal stateler
+    const [newReportOpen, setNewReportOpen] = useState(false);
+    const [newReport, setNewReport] = useState<string | null>(null);
+
     const navigate = useNavigate();
 
+    // main table ucun lazim olan stateler
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<BudceTableData[]>([]);
     const [totalItems, setTotalItems] = useState(0);
@@ -275,9 +281,10 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         console.log('budayammm');
         const raw: any = filterDataForFetch();
         const nextPage = isLoadMore ? currentPage + 1 : 1;
+        console.log(raw, 'raw', filterDataState, 'filterDataState');
 
         const queryParams = buildQueryParamsFromTableRequest(raw, {
-            isInfiniteScroll: isInfinite,
+            isInfiniteScroll: filterDataState.infinite || isInfinite,
             page: nextPage,
             initialFilter: options?.initialFilter ?? false,
         });
@@ -385,6 +392,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         navigate(`?${params.toString()}`, { replace: true });
     };
 
+    // uygun path-ə uyğun olaraq folder və faylları gətirir
     const fetchItems = useCallback(
         async (path: string) => {
             try {
@@ -519,7 +527,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 actions={['create', 'exportFile']}
                 table_key="reports"
                 notification={isFilterApplied}
-                onClickRightBtn={() => {}}
+                onOpenModal={() => setNewReportOpen(true)}
                 onClickShowAsFolder={() => setIsOpen(true)}
                 onClickShowAsTable={() => setShowCatalogView(false)}
                 isCatalogView={showCatalogView}
@@ -685,6 +693,26 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 open={detailOpen}
                 size="xs"
                 onOpenChange={setDetailOpen}
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            tabIndex={2}
+                            type="button"
+                            variant="primary"
+                            color="primary"
+                            onClick={() => setDetailOpen(false)}
+                        >
+                            Ok
+                        </S_Button>
+                    </div>
+                }
+            ></Modal>
+
+            <Modal
+                title="Yeni report"
+                open={newReportOpen}
+                size="xs"
+                onOpenChange={setNewReportOpen}
                 footer={
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
                         <S_Button
