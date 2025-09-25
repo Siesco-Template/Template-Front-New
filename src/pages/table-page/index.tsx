@@ -284,7 +284,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         console.log(raw, 'raw', filterDataState, 'filterDataState');
 
         const queryParams = buildQueryParamsFromTableRequest(raw, {
-            isInfiniteScroll: filterDataState.infinite || isInfinite,
+            isInfiniteScroll: isInfinite,
             page: nextPage,
             initialFilter: options?.initialFilter ?? false,
         });
