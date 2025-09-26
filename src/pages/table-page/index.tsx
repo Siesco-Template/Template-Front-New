@@ -1,10 +1,11 @@
+import { Tooltip } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
 import { inertProps } from '@/lib/useInert';
 
-import { reportService } from '@/services/reports/reports.service';
+import { CreateReportPayload, reportService } from '@/services/reports/reports.service';
 
 import { Folder } from '@/modules/folder';
 import { folderService } from '@/modules/folder/services/folder.service';
@@ -24,8 +25,10 @@ import Table_Footer from '@/shared/table/table-footer';
 import Table_Header from '@/shared/table/table-header';
 import { filterDataForFetch } from '@/shared/table/table-helpers';
 
-import { S_Button } from '@/ui';
+import { S_Button, S_Input, S_Tooltip } from '@/ui';
+import CustomDatePicker from '@/ui/datepicker/date-picker';
 import Modal from '@/ui/dialog';
+import { showToast } from '@/ui/toast/showToast';
 
 import styles from './style.module.css';
 
@@ -87,7 +90,12 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     // yeni report ucun modal stateler
     const [newReportOpen, setNewReportOpen] = useState(false);
-    const [newReport, setNewReport] = useState<string | null>(null);
+    const [isNewReportLoading, setIsNewReportLoading] = useState(false);
+
+    // report silmek ucun modal stateler
+    const [reportDeleteOpen, setReportDeleteOpen] = useState(false);
+    const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
+    const [selectedReport, setSelectedReport] = useState<any | null>(null);
 
     const navigate = useNavigate();
 
@@ -133,6 +141,26 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSummary: true,
             endpoint: '/GetCatalog',
             accessorFn: (row: any) => row.Organization?.Name,
+            Cell: ({ cell }) => {
+                const rawValue = cell.getValue();
+                const value = rawValue != null ? String(rawValue) : '';
+                return (
+                    <Tooltip title={value} placement="right">
+                        <span
+                            style={{
+                                display: 'inline-block',
+                                maxWidth: 500,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                verticalAlign: 'middle',
+                            }}
+                        >
+                            {value}
+                        </span>
+                    </Tooltip>
+                );
+            },
         },
         {
             accessorKey: 'CompileDate',
@@ -222,7 +250,10 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                             edit={<PencilIcon width={14} height={14} />}
                             delete={<TrashIcon width={14} height={14} />}
                             onClickEdit={() => console.log('Edit', row.original)}
-                            onClickDelete={() => console.log('Delete', row.original)}
+                            onClickDelete={() => {
+                                setSelectedReport(row.original);
+                                setReportDeleteOpen(true);
+                            }}
                         />
                     </div>
                 );
@@ -376,7 +407,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     // folder view ucun lazim olan funksionalliq ve stateler
     const [searchParams] = useSearchParams();
     const [items, setItems] = useState<FolderItem[]>([]);
-    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Organizations');
+    const [currentPath, setCurrentPath] = useState(searchParams.get('path') || '/Reports');
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
 
     // seçilən kataloqu tetbiq edir, table folder inteqrasiyasi ucundu
@@ -512,6 +543,70 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             handleItemsChange(currentPath || '');
         }
     }, [showCatalogView, pathParam, currentPath]);
+
+    // yeni report yaratmaq ucun lazimlilar
+
+    const [formData, setFormData] = useState<any>({
+        number: '',
+        compileDate: '2025-04-21T00:00:00',
+        term: '',
+        organizationId: '',
+    });
+
+    const [errors, setErrors] = useState({
+        number: '',
+        compileDate: '',
+        term: '',
+        organizationId: '',
+    });
+
+    const handleChange = (field: keyof CreateReportPayload, value: any) => {
+        setFormData((prev: any) => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmit = async () => {
+        const newErrors: any = {};
+        if (!formData.number) newErrors.number = 'Nömrə daxil edilməlidir';
+        if (!formData.compileDate) newErrors.compileDate = 'Tərtib tarixi seçilməlidir';
+        if (!formData.term) newErrors.term = 'Rüb boş ola bilməz';
+        if (!formData.organizationId) newErrors.organizationId = 'Organizasiya seçilməlidir';
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({ number: '', compileDate: '', term: '', organizationId: '' });
+
+        try {
+            await reportService.createReport(formData);
+            showToast({ label: 'Report uğurla yaradıldı', type: 'success' });
+            setNewReportOpen(false);
+            fetchData(false, { initialFilter: true });
+            setFormData({ number: '', compileDate: '', term: '', organizationId: '' });
+        } catch (e) {
+            showToast({ label: 'Report yaradılarkən xəta baş verdi', type: 'error' });
+        }
+    };
+
+    const staticOrganizations = [
+        {
+            Name: 'Maliyyə Nazirliyi',
+            Id: '897c751b-1d79-40d1-eff9-08dda8f40f88',
+        },
+        {
+            Name: 'Təhsil Nazirliyi',
+            Id: 'fed0e862-33c6-49d5-4af6-08dda9e6656d',
+        },
+        {
+            Name: 'Ədliyyə Nazirliyi',
+            Id: 'bc0602b1-564f-44bc-9852-14d6b4e1af76',
+        },
+        {
+            Name: 'Nəqliyyatı İntellektual İdarəetmə Mərkəzi',
+            Id: 'dd30bdee-c4d2-4448-83af-2eb43685efbe',
+        },
+    ];
 
     return (
         <>
@@ -665,7 +760,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                 }
             >
                 <Catalog
-                    items={catalogs.map((i) => ({
+                    items={catalogs?.map((i) => ({
                         label: i.catalogId,
                         value: i.catalogPath,
                     }))}
@@ -681,7 +776,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     multiple={false}
                     enableModal={false}
                     sizePreset="md-lg"
-                    totalItemCount={catalogs.length}
+                    totalItemCount={catalogs?.length}
                     isLoading={loading}
                     showMoreColumns={[]}
                     searchItems
@@ -709,24 +804,156 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             ></Modal>
 
             <Modal
+                title="Reportun silinməsi"
+                open={reportDeleteOpen}
+                size="xs"
+                onOpenChange={setReportDeleteOpen}
+                footer={
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            type="button"
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => setReportDeleteOpen(false)}
+                        >
+                            Ləğv et
+                        </S_Button>
+                        <S_Button
+                            type="button"
+                            variant="primary"
+                            color="primary"
+                            onClick={async () => {
+                                if (!selectedReport) return;
+                                try {
+                                    await reportService.deleteReport(selectedReport.Id);
+                                    console.log(selectedReport, 'report');
+                                    setData((prev: any[]) => prev.filter((r) => r.Id !== selectedReport.Id));
+                                    showToast({ label: 'Report uğurla silindi', type: 'success' });
+                                } catch (err) {
+                                    console.error('Report silinərkən xəta baş verdi:', err);
+                                    showToast({ label: 'Xəta baş verdi', type: 'error' });
+                                } finally {
+                                    setReportDeleteOpen(false);
+                                    setSelectedReport(null);
+                                }
+                            }}
+                        >
+                            Təsdiqlə
+                        </S_Button>
+                    </div>
+                }
+            >
+                <p>
+                    <strong> {selectedReport?.Number}</strong> nömrəli reportu silmək istədiyinizə əminsinizmi?
+                    <br />
+                </p>
+            </Modal>
+
+            <Modal
                 title="Yeni report"
                 open={newReportOpen}
-                size="xs"
+                size="sm"
                 onOpenChange={setNewReportOpen}
                 footer={
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <S_Button
+                            tabIndex={1}
+                            type="button"
+                            variant="primary"
+                            color="secondary"
+                            onClick={() => {
+                                setNewReportOpen(false);
+                                setFormData({
+                                    number: '',
+                                    compileDate: '',
+                                    term: '',
+                                    organizationId: '',
+                                });
+                                setErrors({ number: '', compileDate: '', term: '', organizationId: '' });
+                            }}
+                        >
+                            Ləğv et
+                        </S_Button>
                         <S_Button
                             tabIndex={2}
                             type="button"
                             variant="primary"
                             color="primary"
-                            onClick={() => setDetailOpen(false)}
+                            onClick={handleSubmit}
+                            isLoading={isNewReportLoading}
                         >
-                            Ok
+                            Yadda saxla
                         </S_Button>
                     </div>
                 }
-            ></Modal>
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <S_Input
+                        label="Nömrə"
+                        value={formData.number}
+                        onChange={(e) => handleChange('number', e.target.value)}
+                        placeholder="Unikal nömrə"
+                        state={errors.number ? 'error' : undefined}
+                        description={errors.number}
+                    />
+
+                    {/* <CustomDatePicker
+                        label="Tərtib tarixi"
+                        value={formData.compileDate ? new Date(formData.compileDate) : null}
+                        onChange={(date) => handleChange('compileDate', date?.toISOString() || '')}
+                        placement='right'
+                    /> */}
+
+                    <S_Input
+                        label="Rüb"
+                        placeholder="Rüb"
+                        type="number"
+                        min={1}
+                        max={4}
+                        value={formData.term}
+                        onChange={(e) => handleChange('term', Number(e.target.value))}
+                        state={errors.term ? 'error' : undefined}
+                        description={errors.term}
+                    />
+
+                    <Catalog
+                        items={staticOrganizations?.map((o) => ({
+                            label: o?.Name,
+                            value: o?.Id,
+                        }))}
+                        getLabel={(i) => i.label}
+                        getRowId={(i) => i.value}
+                        value={
+                            formData.organizationId
+                                ? [
+                                      {
+                                          label:
+                                              staticOrganizations.find((o) => o.Id === formData.organizationId)?.Name ||
+                                              '',
+                                          value: formData.organizationId,
+                                      },
+                                  ]
+                                : []
+                        }
+                        onChange={(sel) => {
+                            const picked = Array.isArray(sel) ? sel[0] : sel;
+                            if (picked) {
+                                handleChange('organizationId', picked.value);
+                            }
+                        }}
+                        multiple={false}
+                        enableModal={false}
+                        sizePreset="md-lg"
+                        label="Organization"
+                        totalItemCount={staticOrganizations.length}
+                        searchItems
+                        selectProps={{
+                            state: errors.organizationId ? 'error' : 'default',
+                            description: errors.organizationId,
+                        }}
+                    />
+                </div>
+            </Modal>
         </>
     );
 };

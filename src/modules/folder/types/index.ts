@@ -4,6 +4,7 @@ export type SelectionAction = 'select' | 'selectAll' | 'clear' | 'toggle';
 
 export interface FolderItem {
     id: string;
+    sqlId?: string | number;
     name: string;
     type: 'folder' | 'file';
     path: string;

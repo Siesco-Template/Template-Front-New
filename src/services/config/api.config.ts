@@ -9,11 +9,10 @@ const GATEWAY = {
     config: `${BASE_URL}/template/Config`,
     filter: `${BASE_URL}/template/Filter`,
     report: `${BASE_URL}/template/Report`,
-    userFiles: `${BASE_URL}/template/UserFiles`,
-    userFolders: `${BASE_URL}/template/UserFolders`,
+    userFiles: `${BASE_URL}/template/Folder`,
+    userFolders: `${BASE_URL}/template/Folder`,
     users: `${BASE_URL}/template/Users`,
     catalog: `${BASE_URL}/template/Catalog`,
-
 } as const;
 
 const API_CONTROLLER = {

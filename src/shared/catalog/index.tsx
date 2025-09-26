@@ -57,14 +57,17 @@ export interface CatalogProps<T extends MRT_RowData> {
 
     /** Extra props to pass through to the underlying CatalogSelect */
     selectProps?: SelectPassThroughProps<T>;
-
+    /** Whether to show a search box in the select input */
     searchItems?: boolean;
-
+    /** Whether to show a clear button in the select input */
     clearable?: boolean;
-
+    /** Total number of rows in the database, if known */
     totalDBRowCount?: any;
+    /** Function to fetch more rows when needed, if any */
     fetchh?: any;
+    /** Total number of rows fetched so far, if known */
     totalFetched?: any;
+    /** For infinite loading */
     isInfinite?: any;
 }
 

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { showToast } from '@/ui/toast/showToast';
 
@@ -196,7 +195,7 @@ function useDialogState({
                     } else {
                         await folderService.renameFile({
                             folderPath: itemToRename.path,
-                            fileId: itemToRename.id,
+                            fileId: itemToRename.sqlId,
                             newFileName: newName,
                         });
                     }

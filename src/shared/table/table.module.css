@@ -18,12 +18,6 @@
     position: relative;
     overflow: visible;
 }
-
-.tbody td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: Poppins;
-}
 .tableHeadCell {
     position: 'relative';
     display: flex;

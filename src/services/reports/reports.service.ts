@@ -9,7 +9,7 @@ interface ReportDetail {
     actualAmount: number;
 }
 
-interface CreateReportPayload {
+export interface CreateReportPayload {
     number: string;
     compileDate: string;
     startDate: string;
@@ -28,6 +28,22 @@ class ReportService {
             queryParams: {
                 tableId,
                 ...queryParams,
+            },
+        });
+    }
+
+    async createReport(payload: CreateReportPayload) {
+        return httpRequest<any>(this.reportUrl('/CreateReport'), {
+            method: 'POST',
+            body: JSON.stringify(payload),
+        });
+    }
+
+    async deleteReport(reportId: string) {
+        return httpRequest<any>(this.reportUrl('/DeleteReport'), {
+            method: 'DELETE',
+            queryParams: {
+                reportId,
             },
         });
     }

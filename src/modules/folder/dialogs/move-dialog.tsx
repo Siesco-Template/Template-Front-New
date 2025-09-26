@@ -17,7 +17,7 @@ interface MoveDialogProps {
 
 export function MoveDialog({ open, onOpenChange, onMove, onCopy, moveOption }: MoveDialogProps) {
     // const [searchParams] = useSearchParams();
-    const [currentPath, setCurrentPath] = useState('/Organizations');
+    const [currentPath, setCurrentPath] = useState('/Reports');
     const [items, setItems] = useState<FolderItem[]>([]);
     const [viewMode, setViewMode] = useState<ViewMode>('medium');
     const [isLoading, setIsLoading] = useState(false);

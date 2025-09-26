@@ -107,6 +107,7 @@ const CatalogFilter: React.FC<{
             }}
             isLoading={loading}
             label={isFromTable ? undefined : filter.label}
+            // @ts-expect-error
             showMoreColumns={tableColumns}
             totalDBRowCount={totalItems}
             fetchh={() => fetchOptions(page + 1)}

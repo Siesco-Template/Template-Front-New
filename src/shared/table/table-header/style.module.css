@@ -129,7 +129,7 @@
     left: 0;
     height: 100%;
     width: 1px;
-    background: var(--content-secondary-brand-bold, #484c51);
+    background: var(--content-tertiary, #666);
 }
 
 .downloadMain:hover {

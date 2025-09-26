@@ -173,16 +173,14 @@ li {
 
 /* Date Picker (RSuit) */
 
+.rs-picker-popup {
+    z-index: 1981273071280123 !important;
+}
 .rs-input-group {
     background: var(--background-primary, #fff);
     border: 1px solid var(--border-tertiary, #ccc) !important;
     border-radius: var(--br-2xl, 12px) !important;
     transition: all 0.3s ease;
-}
-
-.rs-input-group:hover .rs-input-group.rs-input-group-inside,
-.rs-input-group:hover .rs-input {
-    /* background-color: red !important; */
 }
 
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
@@ -210,7 +208,7 @@ li {
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--lh-20, 20px); /* 142.857% */
+    line-height: var(--lh-20, 20px);
 }
 
 .rs-picker-date > .rs-input-group.rs-input-group-inside .rs-input:not(:disabled):not(:focus-within):hover::placeholder {
