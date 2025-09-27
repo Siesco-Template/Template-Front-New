@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 import { buildQueryParamsFromTableRequest } from '@/lib/queryBuilder';
 import { inertProps } from '@/lib/useInert';
+import dayjs from 'dayjs';
 
 import { CreateReportPayload, reportService } from '@/services/reports/reports.service';
 
@@ -86,7 +87,8 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
 
     // detail modal ucun state
     const [detailOpen, setDetailOpen] = useState(false);
-    const [detailRow, setDetailRow] = useState<string | null>(null);
+    const [detailRow, setDetailRow] = useState<any | null>(null);
+    const [loadingDetail, setLoadingDetail] = useState(false);
 
     // yeni report ucun modal stateler
     const [newReportOpen, setNewReportOpen] = useState(false);
@@ -233,6 +235,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSorting: false,
             maxSize: 36,
             Cell: ({ row }: any) => {
+                console.log(row, 'rowwwwww');
                 if (row.original?.isSummaryRow) return null;
                 return (
                     <div
@@ -545,10 +548,9 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
     }, [showCatalogView, pathParam, currentPath]);
 
     // yeni report yaratmaq ucun lazimlilar
-
     const [formData, setFormData] = useState<any>({
         number: '',
-        compileDate: '2025-04-21T00:00:00',
+        compileDate: '',
         term: '',
         organizationId: '',
     });
@@ -608,6 +610,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
+    console.log(selectedReport, 'detailRow');
     return (
         <>
             <Table_Header
@@ -671,9 +674,18 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                                     fetchh={fetchData.bind(null, true)}
                                     totalFetched={data?.length}
                                     isInfinite={isInfinite}
-                                    onRowDoubleClick={(row: any) => {
-                                        setDetailRow(row.original);
-                                        setDetailOpen(true);
+                                    onRowDoubleClick={async (row: any) => {
+                                        console.log(row, 'row');
+                                        try {
+                                            setLoadingDetail(true);
+                                            const response = await reportService.getReportById(row.Id);
+                                            setDetailRow(response);
+                                            setDetailOpen(true);
+                                        } catch (err) {
+                                            console.error('GetReportById error:', err);
+                                        } finally {
+                                            setLoadingDetail(false);
+                                        }
                                     }}
                                 />
                                 <div ref={sentinelRef} style={{ height: 1 }} />
@@ -784,24 +796,42 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             </Modal>
 
             <Modal
-                title="Detail modal"
+                title="Report Details"
                 open={detailOpen}
                 size="xs"
                 onOpenChange={setDetailOpen}
                 footer={
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                        <S_Button
-                            tabIndex={2}
-                            type="button"
-                            variant="primary"
-                            color="primary"
-                            onClick={() => setDetailOpen(false)}
-                        >
+                        <S_Button type="button" variant="primary" color="primary" onClick={() => setDetailOpen(false)}>
                             Ok
                         </S_Button>
                     </div>
                 }
-            ></Modal>
+            >
+                {loadingDetail ? (
+                    <p>Loading...</p>
+                ) : detailRow ? (
+                    <div>
+                        <p>
+                            <strong>Report nömrəsi:</strong> {''} {detailRow.number}
+                        </p>
+                        <p>
+                            <strong>Tərtib tarixi:</strong> {''}
+                            {detailRow.compileDate ? dayjs(detailRow.compileDate).format('DD.MM.YYYY') : '-'}
+                        </p>
+                        <p>
+                            <strong>Rüb:</strong> {''}
+                            {detailRow.term}
+                        </p>
+                        <p>
+                            <strong>Rüb:</strong>
+                            {''} {detailRow.organizationName}
+                        </p>
+                    </div>
+                ) : (
+                    <p>No data found</p>
+                )}
+            </Modal>
 
             <Modal
                 title="Reportun silinməsi"
@@ -896,13 +926,15 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         state={errors.number ? 'error' : undefined}
                         description={errors.number}
                     />
-
-                    {/* <CustomDatePicker
-                        label="Tərtib tarixi"
-                        value={formData.compileDate ? new Date(formData.compileDate) : null}
-                        onChange={(date) => handleChange('compileDate', date?.toISOString() || '')}
-                        placement='right'
-                    /> */}
+                    <div id="datepicker-container" style={{ width: '100%', height:"auto" }}>
+                        <CustomDatePicker
+                            label="Tərtib tarixi"
+                            value={formData.compileDate ? new Date(formData.compileDate) : null}
+                            onChange={(date) => handleChange('compileDate', date?.toISOString() || '')}
+                            placement="leftStart"
+                            container={() => document.getElementById('datepicker-container')!}
+                        />
+                    </div>
 
                     <S_Input
                         label="Rüb"

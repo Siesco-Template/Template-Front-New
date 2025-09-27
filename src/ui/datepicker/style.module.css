@@ -1,14 +1,20 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--pm-100);
+    gap: 4px;
 }
 
 .label {
-    font-weight: 500;
-    font-size: var(--fs-50);
-    line-height: 16px;
-    color: hsl(var(--clr-primary-900));
+    color: var(--content-secondary, #333);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+    font-family: Poppins;
+    font-size: var(--fs-12, 12px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--lh, 14px); 
 }
 
 .errorDescription {

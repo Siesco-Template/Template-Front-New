@@ -176,11 +176,33 @@ li {
 .rs-picker-popup {
     z-index: 1981273071280123 !important;
 }
+
+.rs-picker {
+    transition: all 0.3s ease !important;
+}
+
+.rs-input-group:not(.rs-input-group-disabled).rs-input-group-focus,
+.rs-input-group:focus-within {
+    border: 1px solid var(--border-brand, #0d3caf) !important;
+    outline: none !important;
+}
+/* 
+.rs-picker:not(:focus-within):not(.error):not(:hover) .rs-input,
+.rs-picker:not(:focus-within):not(.error):not(:hover) .rs-input-group.rs-input-group-inside {
+    background: var(--background-secondary, #f3f3f3) !important;
+    color: var(--content-secondary, #333) !important;
+} */
+
+.rs-picker:not(:focus-within):hover .rs-input-group.rs-input-group-inside,
+.rs-picker:not(:focus-within):hover .rs-input {
+    background-color: var(--background-secondary, #f3f3f3) !important;
+}
+
 .rs-input-group {
-    background: var(--background-primary, #fff);
+    background: var(--background-primary, #fff) !important;
     border: 1px solid var(--border-tertiary, #ccc) !important;
     border-radius: var(--br-2xl, 12px) !important;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease !important;
 }
 
 .rs-calendar-table-cell:not(.rs-calendar-table-cell-selected):hover .rs-calendar-table-cell-content {
@@ -188,23 +210,24 @@ li {
     color: white !important;
 }
 
-.rs-input-group:focus {
-    box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2) !important;
-    outline: none;
-}
-
 .rs-input-group.rs-input-group-inside,
 .rs-input {
     border-radius: var(--br-2xl, 12px) !important;
     background: var(--background-primary, #fff) !important ;
+    transition: all 0.3s ease !important;
 }
 
 .rs-input {
     padding: 8px 11px !important;
+    color: var(--content-tertiary, #666) !important;
+    font-size: var(--fs-14, 14px) !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    transition: all 0.3s ease !important;
 }
 
 .rs-picker-date > .rs-input-group.rs-input-group-inside .rs-input::placeholder {
-    color: var(--content-tertiary, #666);
+    color: var(--content-tertiary, #666) !important;
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;

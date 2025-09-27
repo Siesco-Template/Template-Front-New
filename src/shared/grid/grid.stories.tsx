@@ -10,16 +10,18 @@ const meta: Meta<typeof Grid> = {
         columns: { control: { type: 'number' } },
         rows: { control: { type: 'number' } },
         spacing: { control: { type: 'number' } },
+        count: { control: { type: 'number' } },
     },
 };
 
 export default meta;
 type Story = StoryObj<typeof Grid>;
 
-export const Default: Story = {
+export const WithChildren: Story = {
     args: {
         columns: 3,
         spacing: 2,
+        count: 6,
         children: (
             <>
                 <div style={{ background: '#e57373', padding: '20px' }}>1</div>
@@ -30,5 +32,13 @@ export const Default: Story = {
                 <div style={{ background: '#4db6ac', padding: '20px' }}>6</div>
             </>
         ),
+    },
+};
+
+export const WithCount: Story = {
+    args: {
+        columns: 3,
+        spacing: 3,
+        count: 10,
     },
 };

@@ -47,6 +47,54 @@
     </div>
 </div>
 
+### ↔️ Spacing (--space-\*)
+
+<div className="size-grid">
+    {' '}
+    <div className="size-item" style={{ padding: 'var(--space-100)' }}>
+        --space-100 (2px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-200)' }}>
+        --space-200 (4px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-250)' }}>
+        --space-250 (6px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-300)' }}>
+        --space-300 (8px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-325)' }}>
+        --space-325 (10px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-350)' }}>
+        --space-350 (12px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-400)' }}>
+        --space-400 (14px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-450)' }}>
+        --space-450 (16px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-500)' }}>
+        --space-500 (20px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-550)' }}>
+        --space-550 (24px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-600)' }}>
+        --space-600 (32px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-650)' }}>
+        --space-650 (40px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-700)' }}>
+        --space-700 (48px)
+    </div>{' '}
+    <div className="size-item" style={{ padding: 'var(--space-800)' }}>
+        --space-800 (64px)
+    </div>{' '}
+</div>
+
 ### 📐 Line Height (`--lh-*`)
 
 <div className="size-grid">
@@ -100,22 +148,89 @@
     </div>
 </div>
 
+### 📏 Border Width (--bw-\*)
+
+<div className="size-grid">
+    {' '}
+    <div className="size-item" style={{ border: 'var(--bw-xl) solid #333' }}>
+        --bw-xl (8px)
+    </div>{' '}
+    <div className="size-item" style={{ border: 'var(--bw-l) solid #333' }}>
+        --bw-l (4px)
+    </div>{' '}
+    <div className="size-item" style={{ border: 'var(--bw-m) solid #333' }}>
+        --bw-m (2px)
+    </div>{' '}
+    <div className="size-item" style={{ border: 'var(--bw-s) solid #333' }}>
+        --bw-s (1.5px)
+    </div>{' '}
+    <div className="size-item" style={{ border: 'var(--bw-xs) solid #333' }}>
+        --bw-xs (1px)
+    </div>{' '}
+</div>
+
+### 🔘 Border Radius (--br-\*)
+
+<div className="size-grid">
+    {' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-xs)', border: '1px solid #333' }}>
+        --br-xs (1px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-sm)', border: '1px solid #333' }}>
+        --br-sm (2px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-md)', border: '1px solid #333' }}>
+        --br-md (4px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-lg)', border: '1px solid #333' }}>
+        --br-lg (6px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-xl)', border: '1px solid #333' }}>
+        --br-xl (8px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-2xl)', border: '1px solid #333' }}>
+        --br-2xl (12px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-3xl)', border: '1px solid #333' }}>
+        --br-3xl (16px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-4xl)', border: '1px solid #333' }}>
+        --br-4xl (18px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-5xl)', border: '1px solid #333' }}>
+        --br-5xl (20px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-6xl)', border: '1px solid #333' }}>
+        --br-6xl (22px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-7xl)', border: '1px solid #333' }}>
+        --br-7xl (24px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-8xl)', border: '1px solid #333' }}>
+        --br-8xl (32px)
+    </div>{' '}
+    <div className="size-item" style={{ borderRadius: 'var(--br-pill)', border: '1px solid #333' }}>
+        --br-pill (9999px)
+    </div>{' '}
+</div>
+
 <style>
     {`
-    .size-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 8px;
-      margin-top: 16px;
-    }
-    .size-item {
-      padding: 8px 12px;
-      background: #f5f5f5;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 13px;
-      color: #111;
-      border: 1px solid #ddd;
-    }
-  `}
+  .size-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .size-item {
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #111;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+`}
 </style>

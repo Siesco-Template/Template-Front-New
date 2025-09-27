@@ -47,6 +47,15 @@ class ReportService {
             },
         });
     }
+
+    async getReportById(reportId: string) {
+        return httpRequest<any>(this.reportUrl('/GetReportById'), {
+            method: 'GET',
+            queryParams: {
+                reportId,
+            },
+        });
+    }
 }
 
 export const reportService = new ReportService();
