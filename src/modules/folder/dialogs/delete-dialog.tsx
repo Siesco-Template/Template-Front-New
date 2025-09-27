@@ -26,6 +26,8 @@ export function DeleteDialog({ items, open, onOpenChange, onDelete }: DeleteDial
         setIsLoading(false);
     };
 
+    console.log(items, 'items adi')
+
     return (
         <Modal
             open={open}

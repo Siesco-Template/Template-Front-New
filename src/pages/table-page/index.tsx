@@ -235,7 +235,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
             enableSorting: false,
             maxSize: 36,
             Cell: ({ row }: any) => {
-                console.log(row, 'rowwwwww');
                 if (row.original?.isSummaryRow) return null;
                 return (
                     <div
@@ -610,7 +609,6 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
         },
     ];
 
-    console.log(selectedReport, 'detailRow');
     return (
         <>
             <Table_Header
@@ -926,7 +924,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         state={errors.number ? 'error' : undefined}
                         description={errors.number}
                     />
-                    <div id="datepicker-container" style={{ width: '100%', height:"auto" }}>
+                    <div id="datepicker-container" style={{ width: '100%', height: 'auto' }}>
                         <CustomDatePicker
                             label="Tərtib tarixi"
                             value={formData.compileDate ? new Date(formData.compileDate) : null}

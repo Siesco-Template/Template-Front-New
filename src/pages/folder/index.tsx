@@ -25,9 +25,12 @@ function FolderPage() {
                     return [];
                 }
 
+                console.log(data, 'data from server');
+
                 const itemsList = [
                     ...data.folders.map((folder: any) => ({
                         id: crypto.randomUUID(),
+                        sqlId: folder?.sqlId,
                         name: folder.name,
                         type: 'folder' as FolderItem['type'],
                         path: folder.path,
@@ -47,6 +50,7 @@ function FolderPage() {
                     })),
                     ...data.files.map((file: any) => ({
                         id: file.id,
+                        sqlId: file?.sqlId,
                         name: file.fileName,
                         type: 'file' as FolderItem['type'],
                         path: path,

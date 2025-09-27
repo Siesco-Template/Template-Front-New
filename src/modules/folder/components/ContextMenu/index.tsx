@@ -110,9 +110,9 @@ export function FolderContextMenu({
                             <ContextMenuItem icon={AppsAddIcon} onClick={onNewFolder}>
                                 Yeni qovluq
                             </ContextMenuItem>
-                            <ContextMenuItem icon={DescriptionIcon} onClick={onNewFile}>
+                            {/* <ContextMenuItem icon={DescriptionIcon} onClick={onNewFile}>
                                 Yeni fayl
-                            </ContextMenuItem>
+                            </ContextMenuItem> */}
                             <ContextMenuItem icon={AppsAddIcon} onClick={onSelectAll}>
                                 Hamısını seç
                             </ContextMenuItem>

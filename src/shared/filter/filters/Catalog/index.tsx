@@ -72,14 +72,11 @@ const CatalogFilter: React.FC<{
         preload();
     }, [tableId, filter.endpoint]);
 
-    // console.log(filter.value, 'value');
     const [selectedObj, setSelectedObj] = useState<any>(null);
 
     useEffect(() => {
         if (filter?.value && options.length > 0) {
-            // console.log(options, 'options');
             const match = options.find((i) => String(i.value) === String(filter.value));
-            // console.log(match, 'match');
             setSelectedObj(match);
         } else {
             setSelectedObj(null);

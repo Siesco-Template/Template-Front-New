@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { S_Button, S_Textarea } from '@/ui';
 import Modal from '@/ui/dialog';
@@ -26,7 +25,7 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
                 const data = await folderService.getFolderDetail(item?.path || '');
                 setValue(data?.comment || '');
             } catch (error: any) {
-                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'success' });
+                showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
             }
         };
         fetchItem();

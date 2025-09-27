@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/az';

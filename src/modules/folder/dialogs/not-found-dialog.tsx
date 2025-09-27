@@ -1,6 +1,6 @@
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
-
+import styles from './style.module.css';
 interface NotFoundDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -26,7 +26,7 @@ export function NotFoundDialog({ open, onOpenChange, path }: NotFoundDialogProps
             }
         >
             <div className="!mb-4 !text-gray-500">
-                <span className="italic !text-gray-600">{path}</span> ünvanı tapılmadı. Zəhmət olmasa daxil etdiyiniz
+                <span className={styles.not_found_title}>{path}</span> ünvanı tapılmadı. Zəhmət olmasa daxil etdiyiniz
                 ünvanı yenidən yoxlayın
             </div>
         </Modal>

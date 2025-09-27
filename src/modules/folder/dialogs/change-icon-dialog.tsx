@@ -4,21 +4,22 @@ import S_Button from '@/ui/button';
 import Modal from '@/ui/dialog';
 
 import { FolderItem } from '../types';
-import styles from './style.module.css'
+import styles from './style.module.css';
+
 const COLORS = [
-    '#EF4444', // red
-    '#F97316', // orange
-    '#FACC15', // yellow
-    '#4ADE80', // green
-    '#2DD4BF', // teal
-    '#F43F5E', // pinkish red
-    '#0EA5E9', // light blue
-    '#8B5CF6', // violet
-    '#3B82F6', // blue
-    '#84CC16', // lime
-    '#6366F1', // indigo
-    '#EC4899', // pink
-    '#D946EF', // magenta
+    '#EF4444',
+    '#F97316',
+    '#FACC15',
+    '#4ADE80',
+    '#2DD4BF',
+    '#F43F5E',
+    '#0EA5E9',
+    '#8B5CF6',
+    '#3B82F6',
+    '#84CC16',
+    '#6366F1',
+    '#EC4899',
+    '#D946EF',
 ];
 
 interface ChangeIconDialogProps {

@@ -3,7 +3,7 @@
     font-size: var(--fs-12, 12px);
     font-style: normal;
     font-weight: 600;
-    line-height: var(--lh-14, 14px); /* 116.667% */
+    line-height: var(--lh-14, 14px); 
     margin-bottom: var(--size-100);
 }
 
@@ -12,7 +12,7 @@
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 500;
-    line-height: var(--lh-14, 20px); /* 142.857% */
+    line-height: var(--lh-14, 20px); 
 }
 
 .value {
@@ -20,5 +20,19 @@
     font-size: var(--fs-14, 14px);
     font-style: normal;
     font-weight: 400;
-    line-height: var(--lh-14, 20px); /* 142.857% */
+    line-height: var(--lh-14, 20px); 
+}
+
+/* not found dialog */
+
+.not_found_title {
+    color: var(--content-tertiary, #666);
+    font-feature-settings:
+        'liga' off,
+        'clig' off;
+    font-family: Poppins;
+    font-size: var(--fs-14, 14px);
+    font-style: italic;
+    font-weight: 600;
+    line-height: var(--lh-20, 20px); 
 }

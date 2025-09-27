@@ -75,6 +75,7 @@ function useDialogState({
 
     const handleRename = useCallback(() => {
         const selectedItem = selectedItems[0];
+        console.log(selectedItem, 'selected item')
         if (selectedItem) {
             setItemToRename(selectedItem);
             setRenameDialogOpen(true);
@@ -189,6 +190,7 @@ function useDialogState({
     const handleRenameSubmit = useCallback(
         async (newName: string) => {
             if (itemToRename) {
+                console.log(itemToRename, 'item to rename');
                 try {
                     if (itemToRename.type === 'folder') {
                         await folderService.renameFolder({ currentPath: itemToRename.path, newName });
