@@ -74,6 +74,8 @@ export function Folder({
 
     const { deleteItems, updateItem, moveItems, searchItems } = useFolderOperations({ items, setItems, currentPath });
 
+    console.log(items, 'items');
+
     const {
         renameDialogOpen,
         deleteDialogOpen,

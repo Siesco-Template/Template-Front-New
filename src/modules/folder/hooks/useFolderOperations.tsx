@@ -125,6 +125,7 @@ function useFolderOperations({ items, setItems, currentPath }: FolderOperationsP
                 })),
                 ...data.files.map((file: any) => ({
                     id: file.id,
+                    sqlId: file?.sqlId,
                     name: file.fileName,
                     type: 'file' as FolderItem['type'],
                     path: file.folderPath,

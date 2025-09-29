@@ -69,7 +69,6 @@ export function CommentDialog({ open, onOpenChange, item, onSubmit, loading }: C
             <form className="!space-y-4">
                 <S_Textarea
                     id="comment"
-                    className=" !text-black "
                     placeholder="Komment əlavə et"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}

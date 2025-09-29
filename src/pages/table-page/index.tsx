@@ -456,6 +456,7 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                     })),
                     ...data.files.map((file: any) => ({
                         id: file.id,
+                        sqlId: file?.sqlId,
                         name: file.fileName,
                         type: 'file' as FolderItem['type'],
                         path: path,

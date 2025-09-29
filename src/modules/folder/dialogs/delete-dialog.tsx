@@ -52,7 +52,7 @@ export function DeleteDialog({ items, open, onOpenChange, onDelete }: DeleteDial
         >
             <p className={styles.title}>
                 {isMultiple
-                    ? `Siesco qovluğunu silmək istədiyinizdən əminsiniz mi? (${itemCount} element)`
+                    ? `Qovluğu silmək istədiyinizdən əminsiniz mi? (${itemCount} element)`
                     : `${items[0]?.type === 'folder' ? 'Qovluğu' : 'Faylı'} silmək istədiyinizdən əminsiniz mi?`}
             </p>
         </Modal>

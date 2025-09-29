@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/az';
 import { Loader2 } from 'lucide-react';
 
+import { reportService } from '@/services/reports/reports.service';
+
 import { S_Button } from '@/ui';
 import Modal from '@/ui/dialog';
 import { showToast } from '@/ui/toast/showToast';
@@ -31,6 +33,7 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
         const fetchFolderDetails = async () => {
             try {
                 setIsLoading(true);
+                console.log(item, 'itemitem');
                 const data = await folderService.getFolderDetail(item?.path || '');
                 setItemDetails(data);
             } catch (error: any) {
@@ -43,7 +46,7 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
         const fetchFileDetails = async () => {
             try {
                 setIsLoading(true);
-                const data = await folderService.getUserDetail(item?.path || '');
+                const data = await reportService.getReportById(item?.sqlId);
                 setItemDetails(data);
             } catch (error: any) {
                 showToast({ label: error?.data?.message || 'Xəta baş verdi, yenidən cəhd edin', type: 'error' });
@@ -95,7 +98,7 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
                     </div>
                     <div>
                         <div className={styles.key}>Komment</div>
-                        <div className={styles.value}>
+                        <div className={styles.value} style={{ marginTop: 10 }}>
                             {itemDetails?.comment ? itemDetails?.comment : <span className={styles.value}>-</span>}
                         </div>
                     </div>
@@ -121,29 +124,29 @@ export function DetailsDialog({ open, onOpenChange, item }: DetailsDialogProps) 
             >
                 <div className="!space-y-2 !text-[16px] !overflow-y-hidden !px-2">
                     <div className="flex justify-between">
-                        <span className="!font-medium !text-gray-700">Tipi:</span>
-                        <span className="font-normal text-gray-500">File</span>
+                        <span className={styles.key}>Tipi:</span>
+                        <span className={styles.value}>File</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className={styles.key}>Ünvan:</span>
+                        <span className={styles.value}>{item?.path || '-'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className={styles.key}>Unikal nömrə:</span>
+                        <span className={styles.value}>{itemDetails?.number}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className={styles.key}>Rüb:</span>
+                        <span className={styles.value}>{itemDetails?.term}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className={styles.key}>Təşkilat adı:</span>
+                        <span className={styles.value}>{itemDetails?.organizationName}</span>
                     </div>
 
                     <div className="flex justify-between">
-                        <span className="!font-medium !text-gray-700">Ünvan:</span>
-                        <span className="font-normal break-all text-gray-500">{item?.path || '-'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="!font-medium !text-gray-700">Adı:</span>
-                        <span className="font-normal text-gray-500">{itemDetails?.firstName}</span>
-                    </div>
-
-                    <div className="flex justify-between">
-                        <span className="!font-medium !text-gray-700">Soyadı:</span>
-                        <span className="font-normal text-gray-500">{itemDetails?.lastName}</span>
-                    </div>
-
-                    <div className="flex justify-between">
-                        <span className="!font-medium !text-gray-700">Yaranma tarixi:</span>
-                        <span className="font-normal text-gray-500">
-                            {formatDate(new Date(itemDetails?.createDate))}
-                        </span>
+                        <span className={styles.key}>Tərtib tarixi:</span>
+                        <span className={styles.value}>{formatDate(new Date(itemDetails?.compileDate))}</span>
                     </div>
                 </div>
             </Modal>

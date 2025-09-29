@@ -30,7 +30,6 @@ function FolderPage() {
                 const itemsList = [
                     ...data.folders.map((folder: any) => ({
                         id: crypto.randomUUID(),
-                        sqlId: folder?.sqlId,
                         name: folder.name,
                         type: 'folder' as FolderItem['type'],
                         path: folder.path,

@@ -69,13 +69,14 @@ function useDialogState({
     }, []);
 
     const handleDetails = useCallback((item: FolderItem) => {
+        console.log(item, 'iiitem');
         setItemToShowDetails(item);
         setDetailsDialogOpen(true);
     }, []);
 
     const handleRename = useCallback(() => {
         const selectedItem = selectedItems[0];
-        console.log(selectedItem, 'selected item')
+        console.log(selectedItem, 'selected item');
         if (selectedItem) {
             setItemToRename(selectedItem);
             setRenameDialogOpen(true);
@@ -380,6 +381,7 @@ function useDialogState({
                     path: itemToComment.path,
                     comment,
                 });
+                showToast({ label: 'Şərh əlavə olundu', type: 'success' });
             }
         },
         [itemToComment, items, onItemsChange]
