@@ -153,6 +153,19 @@ class AuthService {
             queryParams: { userId },
         });
     }
+
+    async getProfile() {
+        return httpRequest<IUser>(this.authUrl('/GetProfile'), {
+            method: 'GET',
+        });
+    }
+
+    async updateProfile(body: { firstName: string; lastName: string; phoneNumber: string; email: string }) {
+        return httpRequest<IUser>(this.authUrl('/UpdateProfile'), {
+            method: 'PUT',
+            body: JSON.stringify(body),
+        });
+    }
 }
 
 export const authService = new AuthService();

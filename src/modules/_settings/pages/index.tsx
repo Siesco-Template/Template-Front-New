@@ -98,7 +98,6 @@ const SettingsPageLayout = () => {
         document.addEventListener('themeEdited', (e) => {
             const event = e as CustomEvent;
             if (event.detail.result) {
-                showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
                 setHasChange(false);
             }
             setIsSubmitting(false);
@@ -107,7 +106,6 @@ const SettingsPageLayout = () => {
         document.addEventListener('themeCreated', (e) => {
             const event = e as CustomEvent;
             if (event.detail.result) {
-                showToast({ label: 'Dəyişikliklər uğurla tətbiq olundu', type: 'success' });
                 setHasChange(false);
             }
             setIsSubmitting(false);

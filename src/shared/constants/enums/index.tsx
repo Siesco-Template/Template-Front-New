@@ -7,5 +7,5 @@ export enum UserRole {
 export const userRoleOptions = [
     { value: UserRole.SUPER_ADMIN.toString(), label: 'Super Admin' },
     { value: UserRole.ADMIN.toString(), label: 'Admin' },
-    { value: UserRole.SIMPLE_USER.toString(), label: 'Istifədəçi' },
+    { value: UserRole.SIMPLE_USER.toString(), label: 'Istifadəçi' },
 ];

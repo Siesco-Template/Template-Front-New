@@ -6,10 +6,14 @@ import { UserRole } from '@/shared/constants/enums';
 export type IUser = {
     userId: string;
     fullName: string;
-    userRole: UserRole;
+    userRole: UserRole | string;
     accessToken: string;
     expires: string;
     refreshToken: string;
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+    email?: string;
 };
 
 type AuthState = {
