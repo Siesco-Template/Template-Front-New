@@ -935,16 +935,40 @@ const Table_PageContent: React.FC<TablePageMainProps> = ({
                         />
                     </div>
 
-                    <S_Input
+                    <Catalog
+                        items={[
+                            { label: '1-ci rüb', value: 1 },
+                            { label: '2-ci rüb', value: 2 },
+                            { label: '3-cü rüb', value: 3 },
+                            { label: '4-cü rüb', value: 4 },
+                        ]}
+                        getLabel={(i) => i.label}
+                        getRowId={(i) => i.value}
+                        value={
+                            formData.term
+                                ? [
+                                      {
+                                          label: `${formData.term}-ci rüb`,
+                                          value: formData.term,
+                                      },
+                                  ]
+                                : []
+                        }
+                        onChange={(sel) => {
+                            const picked = Array.isArray(sel) ? sel[0] : sel;
+                            if (picked) {
+                                handleChange('term', picked.value);
+                            }
+                        }}
+                        multiple={false}
+                        enableModal={false}
+                        sizePreset="md-lg"
                         label="Rüb"
-                        placeholder="Rüb"
-                        type="number"
-                        min={1}
-                        max={4}
-                        value={formData.term}
-                        onChange={(e) => handleChange('term', Number(e.target.value))}
-                        state={errors.term ? 'error' : undefined}
-                        description={errors.term}
+                        totalItemCount={4}
+                        selectProps={{
+                            state: errors.term ? 'error' : 'default',
+                            description: errors.term,
+                        }}
                     />
 
                     <Catalog

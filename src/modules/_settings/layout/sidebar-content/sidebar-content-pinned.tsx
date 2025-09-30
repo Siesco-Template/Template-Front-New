@@ -29,6 +29,8 @@ const IconComponent = ({ link }: { link: NavigationItem }) => {
 const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen, setSubMenuOpen, toggleSubMenu }) => {
     const { navigationLinks } = useSettingsStore();
 
+    console.log(navigationLinks, 'navigationLinks');
+
     const { position } = useLayoutStore();
     const { permissions } = usePermission();
     const { user } = useAuthStore();
@@ -37,7 +39,10 @@ const Sidebar_Content_Pinned: FC<ISidebar_Content_PinnedProps> = ({ subMenuOpen,
     const filterRoutesByRoleAndPermission = (routes: NavigationItem[], userRole: UserRole): NavigationItem[] => {
         const roleFilteredRoutes = routes
             .filter((route) => {
+                if (route.show === false) return false;
+
                 if (route.roles.length === 0 || userRole === 4 || userRole === 5) return true;
+
                 return route.roles.includes(userRole);
             })
             .map((route) => ({
